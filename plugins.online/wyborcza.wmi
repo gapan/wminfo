@@ -4,7 +4,7 @@
 
 # command: wminfo -p wyborcza.wmi -i 2 -b#c2052c -f#ffffff
 
-lynx --source http://wyborcza.pl/0,0.html | \
+lynx --source http://wyborcza.pl/0,0.html?piano_t=1 | \
 	dos-unix | \
 	perl -pe 's/\t//g;s/\n/ /g;' | \
 	sed 's/<h3> <a /<h3><a /g;s/<h3><a /<h3 a /g;' | \

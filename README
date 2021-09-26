@@ -22,6 +22,7 @@ README.CPU.usage      the benchmarks of the selected plugins.
 README.benchmarks     the complete benchmarks of all wminfo plugins.
 README.colors         color scheme based on the Granger rainbow chart.
 README.multi+wrapper  new classes of plugins: multi and wrapper.
+README.plugin.rerun   the rerun function description.
 README.regex          regular expressions as the update periods.
 THANKS                thanks to the co-authors of wminfo and plugins.
 TODO                  things to implement.
@@ -37,7 +38,7 @@ plugins.conky         plugins using conky (more efficient than their system
                         equivalents).
 plugins.offline       plugins using websites mirrors stored by the online
                         script in http://localhost/wminfo/.
-plugins.online        plugins using websites code get on-the-fly.
+plugins.online        plugins using websites code got on-the-fly.
 plugins.system        plugins monitoring the system and the other
                         miscellaneous plugins.
 samples               plugins designed for the testing purposes.
@@ -63,7 +64,7 @@ Read the COPYING file for the complete text of the license.
 
 Authors
 ----------------------------------------------------------------------------
-wminfo (C) 2011-2014 by Cezary M. Kruk  <c.kruk@bigfoot.com>
+wminfo (C) 2011-2015 by Cezary M. Kruk  <c.kruk@bigfoot.com>
        (C)      2012 by Peter Trenholme
        (C)      2012 by Noam Postavsky
 wmInfo (C)      2000 by Robert Kling

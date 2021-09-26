@@ -5,10 +5,5 @@
 # command: wminfo -p dockapps.wmi -b#35548d -f#ffffff
 
 lynx --source http://dockapps.windowmaker.org/ | \
-	grep file.php | \
-	perl -pe 's/<.*?>/ /g;' | \
-	perl -pe 's/^ +//g;' | \
-	perl -pe 's/ +/ /g;' | \
-	grep -v '^$' | \
-	head -n 10
+	perl -pe 's/<.*?>//g'
 echo

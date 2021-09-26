@@ -34,12 +34,12 @@ then
 	result="$toss$result"
     done
 
+    above=${result:0:3}
+    below=${result: -3}
+
     new_result="$result"
     new_result="${new_result//6/7}"
     new_result="${new_result//9/8}"
-
-    above=${result:0:3}
-    below=${result: -3}
 
     simplified_result="$result"
     simplified_result="${simplified_result//6/8}"
@@ -51,8 +51,15 @@ then
     multiplier=`expr $hexagram - 1`
     record=`expr $multiplier \* 5 + 1`
 
-    tail -n +$record $datefile | head -n 5 | sed -E "s/[78]+ //;s/^above/$above/;s/^below/$below/" | utf8-iso1 > $tempfile
-    grep "$new_result" $datefile | sed 's/\. /./' >> $tempfile
+    if [ "`grep 'NIEBO' $datefile`" != "" ]
+    then
+	encoding="utf8-iso2"
+    else
+	encoding="utf8-iso1"
+    fi
+
+    tail -n +$record $datefile | head -n 5 | sed -E "s/[78]+ //;s/^above/$above/;s/^below/$below/" | $encoding > $tempfile
+    grep "$new_result" $datefile | sed 's/\. /./' | $encoding >> $tempfile
     echo -e "         \n         \n         \n         \n         \n         \n"
 else
     cat $tempfile

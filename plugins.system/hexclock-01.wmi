@@ -1,0 +1,55 @@
+#!/bin/bash
+
+# wminfo plugin: hexadecimal clock and calendar
+
+# command: wminfo -p hexclock-01.wmi -u 1 -b#000000 -f#ffff00
+
+#
+# CONFIGURATION SECTION BEGINS HERE
+#
+
+Year="on"
+
+#
+# CONFIGURATION SECTION ENDS HERE
+#
+
+date=$(date "+%H%M%S%m%d%Y%a")
+
+H=${date:0:2}
+M=${date:2:2}
+S=${date:4:2}
+m=${date:6:2}
+d=${date:8:2}
+Y=${date:10:4}
+a=${date:14:2}
+
+H=${H#0}
+M=${M#0}
+S=${S#0}
+m=${m#0}
+d=${d#0}
+
+STRING=$(printf "%02x" $H $M $S $m $d $Y)
+
+H=${STRING:0:2}
+M=${STRING:2:2}
+S=${STRING:4:2}
+m=${STRING:6:2}
+d=${STRING:8:2}
+Y=${STRING:10:3}
+
+echo "   $H    "
+echo "   $M    "
+echo "   $S    "
+
+if [ "$Year" == "on" ]
+then
+    echo "$m $d $Y"
+elif [ "$Year" == "off" ]
+then
+    echo " $m  $d  "
+fi
+
+echo "   $a    "
+

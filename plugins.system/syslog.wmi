@@ -18,6 +18,12 @@ lines="10"
 # CONFIGURATION SECTION ENDS HERE
 #
 
-tac $file | perl -pe "m/$hostname/;s/.* $hostname .*?: [\[0-9\.\]]+ //;s/^\n$//" | head -n $lines
-echo
+if [ -r $file ]
+then
+    tac $file | perl -pe "m/$hostname/;s/.* $hostname .*?: [\[0-9\.\]]+ //;s/^\n$//" | head -n $lines
+    echo
+else
+    echo "$0: can not read $file file."
+    echo -e "         \n         \n         \n         \n"
+fi
 

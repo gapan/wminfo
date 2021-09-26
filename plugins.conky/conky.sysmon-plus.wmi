@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# wminfo plugin: displays CPU, memory, and swap usages as well as processess number
+# wminfo plugin: displays the numbers of threads and processes and disk IOs
 
-# command: wminfo -p conky.sysmon.wmi -u 3 -b#000000 -f#ff0000
+# command: wminfo -p conky.sysmon-plus.wmi -u 3 -b#000000 -f#ff0000
 
 #
 # CONFIGURATION SECTION BEGINS HERE
@@ -15,7 +15,7 @@ Correction="1.00"	# use the number with two digits after the point
 #
 
 datafile="$HOME/.wminfo/conky.tmp"
-label="SYSMON"
+label="SYSMON-PLUS"
 
 if [ -z "$(grep "^${label}: " "${datafile}")" ]
 then
@@ -70,17 +70,17 @@ DIO=${DIO: -4:5}
 
 BAR="${BAR:-         }"
 
-echo "CPU: $CPU%"
-echo "$BAR"
-echo "FRQ: $FRQ"
-echo "MEM: $MEM%"
-echo "SWP: $SWP%"
+# echo "CPU: $CPU%"
+# echo "$BAR"
+# echo "FRQ: $FRQ"
+# echo "MEM: $MEM%"
+# echo "SWP: $SWP%"
 
-# echo "AVG: $AVG"
-# echo "THR: $THR"
-# echo "PRC: $PRC"
-# echo "IOR: $IOR"
-# echo "IOW: $IOW"
+echo "AVG: $AVG"
+echo "THR: $THR"
+echo "PRC: $PRC"
+echo "IOR: $IOR"
+echo "IOW: $IOW"
 # echo "DIO: $DIO"
 
 echo

@@ -81,14 +81,14 @@ results of the six tosses determine the hexagram -- the first toss is for
 the lowest line and the last toss is for the highest line.  The head side
 (or the blank side) of the coin is yang; the tail side (or the enscripted
 side) is yin.  The coins are tossed for the six times.  By assigning the
-values to yang (three points) and yin (two points) each of the six lines in
-the hexagram are generated from the bottom to the top.  The result of the
-single toss may be equal 6, 7, 8, or 9:
+values to yang (heads -- three points) and yin (tails -- two points) each of
+the six lines in the hexagram are generated from the bottom to the top.  The
+result of the single toss may be equal 6, 7, 8, or 9:
 
-    6    ----x----    old yin changing to yang
-    7    ---------    young yang
-    8    ---- ----    young yin
-    9    ----o----    old yang changing to yin
+    6    ----x----    old yin changing to yang    (three tails)
+    7    ---------    young yang                  (two tails and one heads)
+    8    ---- ----    young yin                   (two heads and one tails)
+    9    ----o----    old yang changing to yin    (three heads)
 
 The odd values symbolize yang or male aspect (white part of the yin and yang
 circle).  The even values symbolize yin or female aspect (black part of the

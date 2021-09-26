@@ -6,10 +6,10 @@
 
 lynx --source localhost/wminfo/cnet.html | \
 	tr -d '\r' | \
-	sed 's/\n/ /g' | \
-	sed 's/"assetHed"><a/"assetHed" a/g' | \
+	perl -pe 's/\n/ /g' | \
 	sed 's/</\n</g' | \
-	grep 'assetHed' | \
+	grep '<h3>' | \
 	sed 's/<.*>//;' | \
+	sed -E 's/^\s+//' | \
 	punctuation
 echo

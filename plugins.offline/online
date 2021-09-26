@@ -7,7 +7,7 @@
 
 pid=$(ps ax | grep online | grep -v 'grep online' | grep -Ev '\-t|\-k' | awk '{print $1}' | perl -pe 's/\n/ /')
 
-runtime=$(ps axo pid,etime,command | grep online | grep -vE 'grep|-t|-k' | awk '{print $2}' | head -n 1)
+runtime=$(ps axo pid,etime,command | grep online | grep -vE 'grep|-t|-k' | awk '{print $2}' | head -n 1 | sed -E 's/[0-9]+-//')
 time=$runtime
 time=${time//:/}
 time=$(expr $time + 0)
@@ -16,6 +16,10 @@ time=$(expr $time + 0)
 # running shorter than six minutes works and running longer sleeps
 
 /sbin/route | grep default
+echo
+ping -c 1 google.com | grep -E 'bytes|packet'
+echo
+ping -c 1 8.8.8.8 | grep -E 'bytes|packet'
 echo
 
 if [ "$pid" != "" ]
@@ -67,8 +71,8 @@ lynx --source http://www.billboard.com/charts/hot-100 > $DIRECTORY/billboard-top
 lynx --source http://www.cnet.com/ > $DIRECTORY/cnet.html.tmp
 lynx --source http://www.commentcamarche.net/ > $DIRECTORY/commentcamarche.html.tmp
 lynx --source http://dockapps.windowmaker.org/ > $DIRECTORY/dockapps.html.tmp
-lynx --source http://wyborcza.biz/Waluty/0,111138,8932151,,,Kursy_srednie_walut_NBP,A.html > $DIRECTORY/currencies-pl-avg.html.tmp
-lynx --source http://wyborcza.biz/Waluty/0,111138,8938582,,,Kursy_kupna_sprzedazy_walut_NBP,C.html > $DIRECTORY/currencies-pl-buy+sell.html.tmp
+lynx --source http://wyborcza.biz/Waluty/0,111138,8932151,,,Kursy_srednie_walut_NBP,A.html?piano_t=1 > $DIRECTORY/currencies-pl-avg.html.tmp
+lynx --source http://wyborcza.biz/Waluty/0,111138,8938582,,,Kursy_kupna_sprzedazy_walut_NBP,C.html?piano_t=1 > $DIRECTORY/currencies-pl-buy+sell.html.tmp
 lynx --source http://www.dpreview.com/ > $DIRECTORY/dpreview.html.tmp
 lynx --source http://freecode.com/ > $DIRECTORY/freecode.html.tmp
 lynx --source http://www.kernel.org/pub/linux/kernel/v2.4/ > $DIRECTORY/kernel-2.4.html.tmp
@@ -82,7 +86,7 @@ links -source -http-bugs.no-compression 1 http://slashdot.org/ > $DIRECTORY/slas
 lynx --source http://www.spiegel.de/ > $DIRECTORY/spiegel.html.tmp
 lynx --source http://www.tvn24.pl/ > $DIRECTORY/tvn24.html.tmp
 lynx --source http://www.twitter.com/CNN > $DIRECTORY/twitter-cnn.html.tmp
-lynx --source http://wyborcza.pl/0,0.html > $DIRECTORY/wyborcza.html.tmp
+lynx --source http://wyborcza.pl/0,0.html?piano_t=1 > $DIRECTORY/wyborcza.html.tmp
 
 for file in $DIRECTORY/*.tmp
 do

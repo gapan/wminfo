@@ -171,8 +171,8 @@ fi
 echo $Sunrise
 echo $Sunset
 echo "$Image$Moon_phase_percent%"
-echo $Moonrise
 echo $Moonset
+echo $Moonrise
 
 echo
 

@@ -1,0 +1,102 @@
+#!/bin/bash
+
+# wminfo plugin: switches the keyboard layout
+
+# command: wminfo -p keyboard.wmi -u 3 -s 0 -b#000000 -f#ffff00
+
+#
+# CONFIGURATION SECTION BEGINS HERE
+#
+
+            # USE TWO-LETTER LABELS FOLLOWED BY THE COMMANDS
+
+keyboard[1]="us setxkbmap us"
+keyboard[2]="de setxkbmap de -variant nodeadkeys"
+keyboard[3]="fr setxkbmap fr"
+keyboard[4]="pl setxkbmap pl"
+
+Label="on"		# "on" or "off"
+LayoutQuery="on"	# "on" or "off"
+
+#
+# CONFIGURATION SECTION ENDS HERE
+#
+
+plugin=${0//*\//}
+tempfile="$HOME/.wminfo/.counter.${plugin/.wmi/.tmp}"
+tempflag="$HOME/.wminfo/.$plugin"
+
+for n in $(seq 1 1023)
+do
+    if [ "${keyboard[$n]}" != "" ]
+    then
+	kbnum=$n
+    fi
+done
+
+if [ -e $tempflag ] && [ ! -s $tempflag ]
+then
+    kbactive=$(setxkbmap -query | grep 'layout:' | awk '{print $2}')
+
+    for k in $(seq 1 $kbnum)
+    do
+	kbtest=${keyboard[$k]}
+	kbtest=${kbtest%% *}
+
+	if [ "$kbtest" == "$kbactive" ]
+	then
+	    kbd=$k
+	fi
+    done
+    echo kbd=$kbd > $tempfile
+    echo step=0 >> $tempfile
+fi
+
+. $tempfile
+
+if [ -s "$tempflag" ]
+then
+    if [ $kbd -ge $kbnum ]
+    then
+	kbd=0
+    fi
+
+    step=0
+
+    kbd=$((kbd + 1))
+    echo kbd=$kbd > $tempfile
+    echo step=0 >> $tempfile
+fi
+
+kbname=${keyboard[$kbd]}
+kbname=${kbname%% *}
+kbcmd=${keyboard[$kbd]}
+kbcmd=${kbcmd#* }
+
+if [ "$Label" == "on" ] && [ "$LayoutQuery" == "on" ]
+then
+    if [ $step -eq 0 ]
+    then
+	print-letter $kbname
+	echo kbd=$kbd > $tempfile
+	echo step=1 >> $tempfile
+    elif [ $step -eq 1 ]
+    then
+	setxkbmap -query | awk '{print $2}'
+	echo -ne "         \n         \n"
+	echo kbd=$kbd > $tempfile
+	echo step=0 >> $tempfile
+    fi
+elif [ "$LayoutQuery" == "on" ]
+then
+    setxkbmap -query | awk '{print $2}'
+    echo -ne "         \n         \n"
+else
+    print-letter $kbname
+fi
+
+if [ -s "$tempflag" ]
+then
+    $kbcmd
+fi
+

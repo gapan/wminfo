@@ -33,6 +33,7 @@ kernel-3.x.wmi                kernel 3.x versions.
 kommersant.wmi                headlines from Russian newspaper kommersant.ru.
 linuxquestions-slackware.wmi  new threads in Slackware section of
                                 LinuxQuestions.org.
+lotto.wmi                     the results of the Polish lottery Lotto.
 nasdaq.wmi                    NASDAQ Stock Prices.
 pitchfork.wmi                 Pitchfork best new albums.
 slackbuilds.wmi               the versions of the applications at

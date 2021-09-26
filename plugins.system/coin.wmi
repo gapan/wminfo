@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# wminfo plugin: tosses coin (click bottom right corner)
+
+# command: wminfo -p coin.wmi -u 1 -s 0 -b#000000 -f#00ffff
+
+tempfile="$HOME/.wminfo/.coin.tmp"
+plugin="$0"
+plugin=".${plugin//*\/}"
+
+C[0]="  .*\  \  /, (   |/_   '. / |-  '. ) '-;-' \ "
+C[1]="    __      /  |    /   |     |__|     CENT  "
+C[2]="                                             "
+
+if [ ! -e $tempfile ] || [ -e "$HOME/.wminfo/$plugin" ]
+then
+    coin=$((RANDOM%2))
+    echo coin=$coin > $tempfile
+    matrix="${C[2]}"
+else
+    . $tempfile
+    matrix="${C[$coin]}"
+fi
+
+matrix[1]="${matrix:0:9}"
+matrix[2]="${matrix:9:9}"
+matrix[3]="${matrix:18:9}"
+matrix[4]="${matrix:27:9}"
+matrix[5]="${matrix:36:9}"
+
+for line in $(seq 1 5)
+do
+    echo "${matrix[line]}"
+done
+

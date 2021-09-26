@@ -2,7 +2,7 @@
 
  wminfo.c
 
- Version 4.1.2 (2014-01-02)
+ Version 4.2.0 (2015-02-20)
 
  - Cezary M. Kruk
    <c.kruk@bigfoot.com>
@@ -23,9 +23,9 @@
 
 */
 
-#define WMINFO_VERSION_CK "4.1.2"
-#define WMINFO_REVYEAR_CK "2011-2014"
-#define WMINFO_REVDATE_CK "2014-01-02"
+#define WMINFO_VERSION_CK "4.2.0"
+#define WMINFO_REVYEAR_CK "2011-2015"
+#define WMINFO_REVDATE_CK "2015-02-20"
 
 #define WMINFO_VERSION_PT "4.0.0"
 #define WMINFO_REVYEAR_PT "     2012"
@@ -112,6 +112,7 @@ void print_help();
 void startup_seq();
 void set_temp_flag();
 void put_temp_flag();
+void fill_temp_flag();
 void cut_temp_flag();
 void make_home_dir();
 
@@ -469,6 +470,7 @@ int main(int argc, char *argv[])
 					if (i == 8) {
 						update = 0 - update_interval;
 						put_temp_flag();
+						fill_temp_flag();
 					}
 
 					but_stat = -1;
@@ -656,6 +658,20 @@ void put_temp_flag()
 		fprintf(stderr, "wminfo: Can not write the temporary \"%s\" file.\n", temp_flag);
 		exit(1);
 	}
+	fclose(myfile);
+}
+
+void fill_temp_flag()
+{
+	set_temp_flag();
+
+	myfile = fopen(temp_flag, "w");
+	if (myfile == NULL) {
+		perror("wminfo: Problems with fopen");
+		fprintf(stderr, "wminfo: Can not write the temporary \"%s\" file.\n", temp_flag);
+		exit(1);
+	}
+	fprintf(myfile, "\n");
 	fclose(myfile);
 }
 

@@ -111,11 +111,7 @@ To automate these processes you may add to your crontab the following task:
                                     *   *
 
 Some weather or cloud condition names are longer than four letters.  In such
-a case you can scroll the line of the text to read the entire entry.
-
-The conky uses N wind direction when it cannot interpret the given value.
-As a result when the wind speed is 0 the conky.weather.wmi plugin displays N
-wind direction instead of VAR or CALM ones.
+a case you may scroll the line of the text to read the entire entry.
 
                                       *
                                     *   *
@@ -134,7 +130,7 @@ conky daemon and restarts it after the breakdown:
 
     */1 * * * * if [ "`ps aux | grep "$USER" | grep conky | grep -vE 'grep|wminfo'`" == "" ] ; then conky -c "$HOME/.wminfo/conky.conf" -d 2> "$HOME/.wminfo/conky.log"; fi
 
-(You should define the above crontab entry as the user that uses
+(You should define the above crontab entry as the user which uses
 ~/.wminfo/conky.conf file monitoring a few weather stations.  Do not put
 that in the system-wide root crontab configuration because that cannot
 help.)

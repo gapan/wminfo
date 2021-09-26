@@ -6,12 +6,9 @@
 
 lynx --source http://www.commentcamarche.net/ | \
 	tr -d '\r' | \
-	perl -pe 's/\n/ /g' | \
-	sed 's/span><a href=/<h2 a href=/g' | \
-	sed 's/<h2><a href=/<h2 a href=/g' | \
-	sed 's/</\n</g' | \
-	grep 'h2 a href' | \
-	sed 's/<.*>//;' | \
+	grep 'h3 class=' | \
+	perl -pe 's/<.*?>//g;' | \
+	sed -E 's/^\s+//;s/ +$//' | \
 	html-iso1 | \
 	punctuation
 echo

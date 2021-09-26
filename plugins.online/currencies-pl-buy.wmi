@@ -4,7 +4,7 @@
 
 # command: wminfo -p currencies-pl-buy.wmi -b#333251 -f#ffffff
 
-lynx --source http://wyborcza.biz/Waluty/0,111138,8938582,,,Kursy_kupna_sprzedazy_walut_NBP,C.html | \
+lynx --source http://wyborcza.biz/Waluty/0,111138,8938582,,,Kursy_kupna_sprzedazy_walut_NBP,C.html?piano_t=1 | \
     perl -pe 's/\n//;s/<td class=(.*)?>/\n<td class=$1>/g' | \
     grep 'td class' | grep -E 'symbol|buy' | \
     grep -v 'buychange' | \

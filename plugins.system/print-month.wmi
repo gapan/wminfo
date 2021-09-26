@@ -1,0 +1,64 @@
+#!/bin/bash
+
+# wminfo plugin: displays large name of the month
+
+# command: wminfo -p print-month.wmi -u 1m -s 0 -b#000000 -f#ffff00
+
+#
+# CONFIGURATION SECTION BEGINS HERE
+#
+
+SIGN="X"	# any sign you like
+
+Block="off"	# "on" or "off"
+
+#
+# CONFIGURATION SECTION ENDS HERE
+#
+
+M=$(date +"%_m")
+
+S=$SIGN
+
+if [ "$Block" == "on" ]
+then
+    M[1]="$S$S$S$S        $S $S$S$S    $S $S $S    $S $S $S $S$S$S$S $S $S "
+    M[2]="$S$S$S$S $S   $S    $S   $S$S$S  $S$S$S $S    $S$S$S $S    $S$S$S "
+    M[3]="$S$S$S$S$S    $S $S $S $S$S$S$S $S $S $S  $S $S $S $S  $S $S $S $S  "
+    M[4]="$S$S$S$S     $S  $S $S$S$S $S$S$S$S $S$S$S $S  $S $S$S$S $S  $S $S   "
+    M[5]="$S$S$S$S$S    $S $S $S $S$S$S$S $S $S   $S$S   $S $S$S$S$S   $S $S$S$S"
+    M[6]="$S$S$S$S        $S $S$S$S    $S $S $S    $S $S $S $S$S$S$S $S $S "
+    M[7]="$S$S$S$S $S      $S $S      $S $S      $S $S   $S$S$S$S $S$S$S "
+    M[8]="$S$S$S$S     $S  $S $S$S$S $S$S$S$S $S$S$S $S  $S   $S $S  $S $S$S$S "
+    M[9]="$S$S$S$S     $S    $S$S$S $S$S$S$S $S$S$S    $S $S   $S$S$S$S $S   "
+    M[10]="$S$S$S$S $S   $S  $S $S$S  $S  $S $S   $S  $S $S   $S$S$S$S $S$S$S "
+    M[11]="$S  $S     $S$S $S $S $S $S  $S $S $S $S $S$S $S $S $S  $S  $S  "
+    M[12]="$S$S$S$S     $S  $S $S$S$S $S  $S $S   $S  $S $S   $S$S$S$S $S$S$S "
+else
+    M[1]="$S$S$S$S        $S $S$S     $S $S $S    $S $S $S $S$S$S  $S $S "
+    M[2]="$S$S$S$S $S   $S    $S   $S$S$S  $S$S  $S    $S$S$S $S    $S$S  "
+    M[3]="$S$S$S$S$S    $S $S $S $S$S$S$S $S $S $S  $S $S $S $S  $S $S $S $S  "
+    M[4]="$S$S$S$S     $S  $S $S$S  $S$S$S$S $S$S$S $S  $S $S$S  $S  $S $S   "
+    M[5]="$S   $S    $S$S $S$S $S$S $S $S $S   $S$S   $S $S$S$S$S   $S $S$S$S"
+    M[6]="$S$S$S$S        $S $S$S     $S $S $S    $S $S $S $S$S$S  $S $S "
+    M[7]="$S$S$S$S $S      $S $S      $S $S      $S $S   $S$S$S   $S$S "
+    M[8]=" $S$S      $S  $S $S$S$S $S$S$S$S $S$S$S $S  $S   $S $S  $S $S$S  "
+    M[9]=" $S$S$S     $S    $S$S$S  $S$S  $S$S$S    $S $S   $S$S$S  $S   "
+    M[10]=" $S$S  $S   $S  $S $S$S  $S  $S $S   $S  $S $S    $S$S   $S$S "
+    M[11]="$S  $S     $S$S $S $S $S $S  $S $S $S $S $S$S $S $S $S  $S  $S  "
+    M[12]="$S$S$S      $S  $S  $S$S $S  $S $S   $S  $S $S   $S$S$S   $S$S "
+fi
+
+M=${M[$M]}
+
+L[1]=${M:0:9}
+L[2]=${M:9:9}
+L[3]=${M:18:9}
+L[4]=${M:27:9}
+L[5]=${M:36:9}
+
+for n in 1 2 3 4 5
+do
+    echo "${L[$n]}"
+done
+

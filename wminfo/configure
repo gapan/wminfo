@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# configure prepares Makefile for wminfo 4.1.2
-# Copyright (C) 2011-2014 Cezary M. Kruk <c.kruk@bigfoot.com>
+# configure prepares Makefile for wminfo 4.2.0
+# Copyright (C) 2011-2015 Cezary M. Kruk <c.kruk@bigfoot.com>
 
-version=4.1.2
+version=4.2.0
 
 if [ "$1" == "-h" -o "$1" == "--help" ]
 then
@@ -53,26 +53,20 @@ OBJS   = wminfo.o ../wmgeneral/wmgeneral.o ../wmgeneral/misc.o ../wmgeneral/list
 all: \$(OBJS)
 	gcc \$(CFLAGS) -o wminfo \$^ -lXext \$(LIBDIR) \$(LIBS) && strip --strip-unneeded wminfo
 	gcc regex.c \$(CFLAGS) -Wall -o regex && strip --strip-unneeded regex
+
 	for f in ../plugins.binary/*.c ; do gcc \$\$f \$(CFLAGS) -Wall -o \$\${f%c}bin && strip --strip-unneeded \$\${f%c}bin ; done
 
 CONTRIB = accuweather conky-parser counter default.wmi dos-unix bash-empty.wmi forecast format \\
 	html-iso1 html-iso2 html-iso5 iso1-utf8 iso2-utf8 iso5-utf8 macos-unix netmon plugin \\
-	print-number punctuation run-all-wminfo-plugins suspend sysmon time+date timestring traffic \\
-	utf8-iso1 utf8-iso2 utf8-iso5 weather- weather-poland wminfo-benchmark wminfo-conky
+	print-letter print-number print-number-padded punctuation run-all-wminfo-plugins suspend \\
+	sysmon time+date timestring traffic utf8-iso1 utf8-iso2 utf8-iso5 weather- weather-poland \\
+	wminfo-benchmark wminfo-conky
 
 DOCS    = BUGS COPYING ChangeLog INSTALL Plugins-HOWTO README README.1st README.CPU.usage \\
-	README.colors README.benchmarks README.multi+wrapper README.regex THANKS TODO
+	README.colors README.benchmarks README.multi+wrapper README.regex README.plugin.rerun \\
+	THANKS TODO
 
 DIRS    = plugins.binary plugins.conky plugins.offline plugins.online plugins.system samples
-
-clean:
-	for i in \$(OBJS) ; do rm -f \$\$i ; done
-	for f in ../plugins.binary/*.bin ; do rm \$\$f ; done
-	rm -f wminfo
-	rm -f regex
-	rm -f *~
-	rm -f core
-	rm -f Makefile
 
 install:
 	cp -p wminfo \$(BINDIR)
@@ -104,6 +98,8 @@ install:
 
 	if [ ! -x \$(BINDIR)/\$\$d/empty.wmi ]; then ln -s \$(BINDIR)/bash-empty.wmi \$(BINDIR)/\$\$d/empty.wmi; fi
 
+	for f in ../plugins.binary/*.bin ; do chmod 755 \$\$f ; chown root:root \$\$f ; cp -p \$\$f \$(BINDIR)/ ; done
+
 uninstall:
 	for f in wminfo regex empty.wmi \$(CONTRIB) \\
 	; do rm -f \$(BINDIR)/\$\$f ; done
@@ -117,6 +113,18 @@ uninstall:
 	rm -f \$(DOCDIR)/*
 
 	if [ -d \$(DOCDIR) ]; then rmdir \$(DOCDIR); fi
+
+	for f in \$(BINDIR)/*.bin ; do rm -f \$\$f ; done
+
+clean:
+	for i in \$(OBJS) ; do rm -f \$\$i ; done
+	rm -f wminfo
+	rm -f regex
+	rm -f *~
+	rm -f core
+	rm -f Makefile
+
+	for f in ../plugins.binary/*.bin ; do rm \$\$f ; done
 
 EOF
 fi

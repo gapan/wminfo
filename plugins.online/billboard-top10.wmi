@@ -6,15 +6,11 @@
 
 lynx --source http://www.billboard.com/charts/hot-100 | \
 	dos-unix | \
-	sed 's/\n/ /g;s/</\n</g' | \
-	grep -E "<h1>|<a href=\"/artist/" | \
-	grep -Ev "<h1><a href=|Browse the Hot 100 Archives" | \
-	sed -E 's/<a href="\/artist\/.*?>/- /g' | \
-	perl -pe 's/\n/ /g;' | \
-	sed 's/</\n</g' | \
-	sed 's/<.*>//' | \
-	perl -pe 's/ +/ /g' | \
-	grep -Ev '^ $|\- \- \-' | \
-	punctuation
-echo
+	perl -pe 's/\n/ /g;s/</\n</g' | \
+	grep -E "<h2>|trackaction=\"Artist Name\"" | \
+	perl -pe 's/\n/ /' | \
+	sed 's/<h2>/\n/g' | \
+	grep 'trackaction' | \
+	sed 's/<.*>/\-/' | \
+	sed -E 's/\s+/ /g;s/^ //'
 

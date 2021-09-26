@@ -2,6 +2,64 @@
 wminfo ChangeLog
 
 
+wminfo 4.2.0, 2015-02-20:
+----------------------------------------------------------------------------
+* Added keyboard.wmi plugin -- it switches the keyboard layout.
+* Added print-letter script -- it displays large letters.
+* Added run-cmd.wmi plugin (a command launcher) and README.run-cmd.wmi file.
+* Added lotto.wmi plugin -- it displays the results of the Polish lottery
+    Lotto.
+* Added README.plugin.rerun file.
+* Added conky.sysmon-plus.wmi plugin -- it is complementary plugin to
+    conky.sysmon.wmi.
+* Updated conky.sysmon.wmi plugin -- now it monitors CPU frequency as well.
+* Updated print-month.wmi, print-day.wmi, print-weekday.wmi, and
+    calendar.wmi plugins -- now they update the data every minute by
+    default.
+* Updated billboard-top10.wmi, commentcamarche.wmi, and kommersant.wmi
+    plugins.
+* Updated messages.wmi, secure.wmi, and syslog.wmi plugins.
+* Updated coin.wmi plugin.
+* Corrected print-weekday.wmi plugin.
+* Updated conky.netmon.wmi plugin.
+* Modified conky.weather.wmi plugin.
+* Modified gettime.wmi plugin -- now it uses the compact format to display
+    the time and date.
+* Updated date-pl.cfg file.
+* Updated conky.conf file.
+* Updated the configure file.
+* Modified Makefile from plugins.binary directory.
+* Updated the documentation.
+
+
+wminfo 4.1.3, 2014-11-28:
+----------------------------------------------------------------------------
+* Added gettime.wmi plugin -- it gets the current date and time and stores
+    it.
+* Added coin.wmi plugin -- it tosses a coin.
+* Added print-month.wmi plugin -- it displays large name of the month.
+* Added print-day.wmi plugin -- it displays large number of the day.
+* Added calendar.wmi plugin.
+* Added conky.fujitsu.wmi plugin -- it displays ACPI status of
+    Fujitsu-Siemens machines (low battery level is set to 20%).
+* Former hexclock.wmi plugin replaced with hexclock-01.wmi and
+    hexclock-02.wmi ones.
+* Added print-number-padded script.
+* Updated conky.conf file.
+* Updated bbc-mundo.wmi, billboard-top10.wmi, cnet.wmi, commentcamarche.wmi,
+    and print-hours.wmi plugins.
+* Updated configure script.
+* Modified semi-analog clock.wmi plugin.
+* Modified print-weekday.wmi plugin.
+* Modified print-number script.
+* Updated online script tests google.com and 8.8.8.8 servers using ping.
+* Updated iching.wmi plugin and added iching-pl.cfg file including Polish
+    translation of the oracle.
+* Updated online script from plugins.offline directory as well as
+    currencies-*.wmi and wyborcza.wmi plugins from plugins.online directory.
+* Updated README.benchmarks file.
+
+
 wminfo 4.1.2, 2014-01-02:
 ----------------------------------------------------------------------------
 * Added beatclock.wmi plugin -- it displays Swatch Internet Time.

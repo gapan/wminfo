@@ -12,7 +12,7 @@
 
 command[1]="sun-moon.wmi"
 command[2]="conky.timezone.wmi"
-Steps="2"
+
 Manual_Mode="off"
 
 #
@@ -24,6 +24,14 @@ name=${0//*\//}
 name=${name/.wmi/}
 tempfile="$HOME/.wminfo/.counter.$name.tmp"
 plugin="$0"
+
+for n in $(seq 1 1023)
+do
+    if [ "${command[$n]}" != "" ]
+    then
+	Steps=$n
+    fi
+done
 
 exit="no"
 

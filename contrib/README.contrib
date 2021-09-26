@@ -11,7 +11,9 @@ accuweather             reads weather reports and forecasts from
 counter                 resets all counters used by different plugins.
 plugin                  displays the commands running the selected wminfo
                           plugins.
+print-letter            displays large letters.
 print-number            displays large numbers from 00 to 99.
+print-number-padded     displays large numbers from 1 to 99.
 suspend                 suspends the system to RAM.
 time+date               displays zone name, time, and date for the given time
                           zone.

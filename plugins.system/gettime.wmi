@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# wminfo plugin: gets the current date and time and stores it
+
+# command: wminfo -p gettime.wmi -u 1 -b#000000 -f#ffff00
+
+tempfile="$HOME/.wminfo/.gettime.tmp"
+plugin="$0"
+plugin=".${plugin//*\/}"
+
+if [ ! -e $tempfile ] || [ -e "$HOME/.wminfo/$plugin" ]
+then
+    time=$(date +"%H%M %m%d")
+    echo "$time" >> $tempfile
+else
+    tac $tempfile
+fi
+
+echo -e "         \n         \n         \n         \n         "
+

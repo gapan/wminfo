@@ -1,0 +1,77 @@
+#!/bin/bash
+
+# wminfo plugin: runs the selected command (click the bottom right corner)
+
+# command: wminfo -p run-cmd.wmi -u 1 -s 0 -b#000000 -f#ffff00
+
+#
+# CONFIGURATION SECTION BEGINS HERE
+#
+
+FONT="-misc-fixed-medium-r-normal--15-140-75-75-c-90-iso10646-1"
+XTERM="/usr/bin/X11/xterm +sb -fg yellow -bg black -geometry 99x49+64+0 -fn $FONT"
+
+           # USE THE LABELS FOLLOWED BY THE COMMANDS
+
+command[1]="geeqie      geeqie"
+command[2]="top         $XTERM -e top"
+command[3]="ps          $XTERM -e 'ps ax | less'"
+command[4]="Xorg.0.log  $XTERM -e less /var/log/Xorg.0.log"
+command[5]="lq.org      $XTERM -e links http://www.linuxquestions.org/questions/slackware-14/"
+
+#
+# CONFIGURATION SECTION ENDS HERE
+#
+
+plugin=${0//*\//}
+tempfile="$HOME/.wminfo/.counter.${plugin/.wmi/.tmp}"
+tempflag="$HOME/.wminfo/.$plugin"
+
+for n in $(seq 1 1023)
+do
+    if [ "${command[$n]}" != "" ]
+    then
+	cmdnum=$n
+    fi
+done
+
+for n in $(seq 1 $cmdnum)
+do
+    LABEL[$n]=${command[$n]}
+    LABEL[$n]=${LABEL[$n]%% *}
+    COMMAND[$n]=${command[$n]}
+    COMMAND[$n]=${COMMAND[$n]#* }
+done
+
+if [ ! -e $tempfile ]
+then
+    echo step=0 > $tempfile
+    echo C=\"$(seq -s ' ' 1 $cmdnum)\" >> $tempfile
+fi
+
+. $tempfile
+
+step=$(($step + 1))
+
+if [ $step -gt $cmdnum ]
+then
+    step=1
+fi
+
+CBEG=${C%% *}
+CEND=${C#* }
+C="$CEND $CBEG"
+
+for n in $C
+do
+    echo "${LABEL[$n]}"
+done
+
+if [ -s "$tempflag" ]
+then
+    eval "${COMMAND[$step]}"
+fi
+
+echo step=$step > $tempfile
+echo C=\"$C\" >> $tempfile
+

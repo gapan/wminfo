@@ -1,0 +1,64 @@
+
+wminfo README.run-cmd.wmi
+
+
+The run-cmd.wmi plugin is a template which you may use to run different
+commands.  In the other words it is a command launcher.
+
+By default there are five commands registered in this plugin:
+
+    command[1]="geeqie      geeqie"
+    command[2]="top         $XTERM -e top"
+    command[3]="ps          $XTERM -e 'ps ax | less'"
+    command[4]="Xorg.0.log  $XTERM -e less /var/log/Xorg.0.log"
+    command[5]="lq.org      $XTERM -e links http://www.linuxquestions.org/questions/slackware-14/"
+
+Most of them use the following $XTERM variable:
+
+    FONT="-misc-fixed-medium-r-normal--15-140-75-75-c-90-iso10646-1"
+    XTERM="/usr/bin/X11/xterm +sb -fg yellow -bg black -geometry 99x49+64+0 -fn $FONT"
+
+The above variables set the font and the properties of the xterm window.
+
+The plugin rotates the registered commands each second.  To run some
+particular command you have to wait until it appears at the top of the list
+and click the bottom right corner of the application window at this very
+moment.  As a result wminfo runs this command.
+
+Each command[n] entry consists of two fields: the first is the label and the
+other is the command itself.  The program displays the labels rotating them
+and performs the registered command after your action.
+
+You may register in such a plugin from 1 to 1023 commands.  The reasonable
+number of the registered commands is 5 because wminfo is capable to display
+five labels at once.
+
+There are five types of the commands:
+
+1. The commands running some action without displaying the output:
+
+    command[1]="mnt.sdb1    mount /mnt/sdb1"
+    command[2]="umnt.sdb1   umount /mnt/sdb1"
+
+2. The commands running some application in its own window:
+
+    command[3]="geeqie      geeqie"
+    command[4]="vlc         vlc"
+
+3. The commands running some application in the xterm window:
+
+    command[5]="top         $XTERM -e top"
+    command[6]="mocp        $XTERM -e mocp"
+
+4. The commands displaying some output in the xterm window using less or
+   more programs:
+
+    command[7]="ps          $XTERM -e 'ps ax | less'"
+    command[8]="lsmod       $XTERM -e 'lsmod | less'"
+
+5. The commands displaying some text file in the xterm window using less or
+   more programs:
+
+    command[9]="Xorg.0.log  $XTERM -e less /var/log/Xorg.0.log"
+    command[10]="packages   $XTERM -e less /usr/src/linux/.config"
+

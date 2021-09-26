@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# wminfo plugin: displays large number of the day
+
+# command: wminfo -p print-day.wmi -u 1m -s 0 -b#000000 -f#ffff00
+
+print-number-padded $(date +"%_d")
+

@@ -5,12 +5,12 @@ BINDIR=$(PREFIX)/bin
 make:
 	for f in *.c ; do gcc -O2 -s $$f -o $${f%c}bin ; done
 
-clean:
-	for f in *.bin ; do rm $$f ; done
-
 install:
-	cp -p *.bin $(BINDIR)/ ; chmod 755 $(BINDIR)/*.bin ; chown root:root $(BINDIR)/*bin
+	chmod 755 *.bin ; chown root:root *.bin ; cp -p *.bin $(BINDIR)/
 
 uninstall:
 	rm -f $(BINDIR)/*.bin
+
+clean:
+	for f in *.bin ; do rm $$f ; done
 

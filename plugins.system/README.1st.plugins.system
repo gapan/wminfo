@@ -15,6 +15,8 @@ alarm.cfg                  configuration file for alarm.wmi plugin.
 date-pl.cfg                configuration file for date-pl.wmi plugin.
 date-us.cfg                configuration file for date-us.wmi plugin.
 days.cfg                   configuration file for days.wmi plugin.
+iching-pl.cfg              configuration file for iching.wmi plugin (Polish
+                             translation).
 iching.cfg                 configuration file for iching.wmi plugin.
 stopwatch.cfg              configuration file for stopwatch.wmi plugin.
 timer.cfg                  configuration file for timer.wmi plugin.
@@ -53,7 +55,9 @@ binclock-vertical-11.wmi   binary clock (4-bits version by grail).
 binclock-vertical-12.wmi   binary clock (4-bits version by grail).
 binclock-vertical-13.wmi   binary clock (4-bits version by Cezary M. Kruk aka
                              w1k0).
+calendar.wmi               calendar.
 clock.wmi                  semi-analog clock.
+coin.wmi                   tosses coin (click bottom right corner).
 cpumon.wmi                 CPU monitor.
 date-pl.wmi                clock and calendar for Polish users.
 date-us.wmi                clock and calendar for American users.
@@ -63,12 +67,15 @@ df.wmi                     df -lh command output.
 dice.wmi                   tosses a dice after you click the bottom right
                              corner.
 fuzzy-clock.wmi            clock writing the time in plain English.
-hexclock.wmi               hexadecimal clock and calendar.
+gettime.wmi                gets the current date and time and stores it.
+hexclock-01.wmi            hexadecimal clock and calendar.
+hexclock-02.wmi            hexadecimal clock and calendar.
 iching.wmi                 I Ching -- The Book of Changes (click the bottom
                              right corner).
 ip.wmi                     displays IP numbers for existing interfaces.
 julian-date.wmi            Julian Date, Modified JD, Lilian Date, Rata Die,
                              and Mars Sol Date (it uses solunar program).
+keyboard.wmi               switches the keyboard layout.
 memory.wmi                 memory -- used, free, buffered, cached.
 messages.wmi               monitors /var/log/messages file.
 netmon.wmi                 displays network traffic for the selected
@@ -76,9 +83,12 @@ netmon.wmi                 displays network traffic for the selected
 pinboard.wmi               displays notes stored in pinboard.cfg file.
 print-hours.wmi            displays large number of the hours.
 print-minutes.wmi          displays large number of the minutes.
+print-month.wmi            displays large name of the month.
 print-seconds.wmi          displays large number of the seconds.
 print-weekday.wmi          displays large name of the weekday.
 ps.wmi                     ps -a command output.
+run-cmd.wmi                runs the selected command (click the bottom right
+                             corner).
 secure.wmi                 monitors /var/log/secure file.
 stopwatch.wmi              counts the time elapsed since it was started.
 sun-moon.wmi               sunrise, sunset, moonrise, moonset times, and the
@@ -99,7 +109,7 @@ wrapper-df.wmi             monitors up to 15 mounted devices.
 wrapper-logfiles.wmi       monitors messages, secure, and syslog log files.
 wrapper-sun-moon-tz.wmi    monitors sun/moon rise/set times and time zones
                              data.
-                          
+
 solunar.patch              a patch for solunar program.
 
                                       *

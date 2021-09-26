@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# wminfo plugin: calendar
+
+# command: wminfo -p calendar.wmi -u 1m -b#000000 -f#ffff00
+
+date +"         %n   %a   %n         %n %b  %_d %n         "
+

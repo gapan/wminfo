@@ -4,7 +4,7 @@
 
 # command: wminfo -p currencies-pl-avg.wmi -b#333251 -f#ffffff
 
-lynx --source http://wyborcza.biz/Waluty/0,111138,8932151,,,Kursy_srednie_walut_NBP,A.html | \
+lynx --source http://wyborcza.biz/Waluty/0,111138,8932151,,,Kursy_srednie_walut_NBP,A.html?piano_t=1 | \
     perl -pe 's/\n//;s/<td class=(.*)?>/\n<td class=$1>/g' | \
     grep 'td class' | grep -E 'symbol|average' | \
     perl -pe 's/<\/strong>.*/<\/strong>/g;s/<\/a><\/strong>\n//' | \

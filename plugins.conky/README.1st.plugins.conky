@@ -26,6 +26,7 @@ conky.diskmon.wmi             disk IO -- total, read, and write.
 conky.entropy.wmi             current entropy and the size of system entropy
                                 pool.
 conky.filesystem1.wmi         filesystem size.
+conky.fujitsu.wmi             ACPI status of Fujitsu-Siemens machines.
 conky.forecast.wmi            displays weather forecasts for today and tomorrow.
 conky.memory.wmi              memory -- used, free, buffered, cached.
 conky.mixer.wmi               sound mixer settings.
@@ -42,6 +43,8 @@ conky.multi-time.wmi          displays MULTI-TIME information set in
 conky.swap.wmi                swap -- used and free.
 conky.sysmon.wmi              displays CPU, memory, and swap usages as well as
                                 the processes number.
+conky.sysmon-plus.wmi         displays the numbers of threads and processes and
+                                disk IOs.
 conky.thinkpad.wmi            ACPI status of IBM/Lenovo ThinkPads.
 conky.timezone.wmi            displays time in different time zones.
 conky.top.wmi                 top CPU usage related command output.

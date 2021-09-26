@@ -5,12 +5,10 @@
 # command: wminfo -p bbc-mundo.wmi -i 1 -b#5c0000 -f#ffffff
 
 lynx --source http://www.bbc.co.uk/mundo/ | \
-	sed 's/\n/ /g' | \
-	sed 's/"link title"><a href=/"link title" a href=/' | \
+	perl -pe 's/\n/ /g' | \
 	sed 's/</\n</g' | \
-	grep '"link title" a href' | \
-	grep -vE 'p class=|h4 class=' | \
-	sed 's/<.*>//;' | \
+	egrep 'hard-news-unit__headline-link|rolling-news__story__headline' | \
+	sed -E 's/<.*>//;s/^\s+//;' | \
 	utf8-iso1 | \
 	punctuation
 echo

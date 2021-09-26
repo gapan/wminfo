@@ -1,0 +1,66 @@
+#!/bin/bash
+
+# wminfo plugin: ACPI status of Fujitsu-Siemens machines
+
+# command: wminfo -p conky.fujitsu.wmi -u 6 -b#000000 -f#00ff00
+
+#
+# CONFIGURATION SECTION BEGINS HERE
+#
+
+Suspend="on"		# "on" or "off" (register the suspend script in /etc/sudoers)
+
+Low_Battery="20"
+
+#
+# CONFIGURATION SECTION ENDS HERE
+#
+
+datafile="$HOME/.wminfo/conky.tmp"
+label="FUJITSU"
+
+if [ "`grep 'temperature_unit fahrenheit' $HOME/.wminfo/conky.conf`" != "" ]
+then
+    TempUnit="F"
+else
+    TempUnit=" C"
+fi
+
+if [ -z "$(grep "^${label}: " "${datafile}")" ]
+then
+cat <<EOF
+$0: ${label} entries in conky.conf are commented.
+         
+         
+         
+         
+EOF
+exit
+fi
+
+#if [ ! -e /proc/acpi/battery/CMB1 ]
+#then
+#    echo "conky.fujitsu.wmi: it isn't Fujitsu-Siemens"
+#    exit
+#fi
+
+grep "^${label}: " $datafile | sed -E "s/${label}: //;s/(.*)h (.*)m .*/\1:\2/;s/ //;s/%([0-9]):/%0\1:/;s/:([0-9]$)/:0\1\n/;s/#/!/g;s/_/./g;s/(^[0-9]+)/TMP: \1$TempUnit/;s/^F$/100%/"
+
+value=`grep "^${label}: D .%" $datafile | awk '{print $3}'`
+value=${value%\%}
+value=${value:-100}
+
+# Attention: to use suspend feature register suspend script in /etc/sudoers file
+
+if [ "$Suspend" == "on" ]
+then
+    if [ $value -le $Low_Battery ] && [ $value -ne 0 ]
+    then
+	sudo `which suspend`
+	sleep 60
+    fi
+fi
+
+echo "         " ; echo "         " ; echo "         "
+
+

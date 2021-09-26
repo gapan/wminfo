@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# print-number: displays large numbers from 00 to 99
+# print-number-padded: displays large numbers from 1 to 99 
 
 #
 # CONFIGURATION SECTION BEGINS HERE
@@ -9,6 +9,8 @@
 SIGN="X"	# any sign you like
 
 Block="off"	# "on" or "off"
+
+Padding="on"	# "on" or "off"
 
 #
 # CONFIGURATION SECTION ENDS HERE
@@ -53,6 +55,11 @@ if [ "$RIGHT" == "" ]
 then
     RIGHT=$LEFT
     LEFT=0
+fi
+
+if [ "$Padding" == "on" ] && [ "$LEFT" == "0" ]
+then
+    N[0]="                    "
 fi
 
 matrix="${N[$LEFT]}${N[$RIGHT]}"

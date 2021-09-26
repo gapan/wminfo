@@ -1,0 +1,54 @@
+
+wminfo README.plugin.rerun
+
+
+The wminfo dockable application was designed as the program displaying
+different information provided by the other programs or scripts.  In the
+version 4.0.0 I implemented the possibility to rerun a plugin manually on
+demand (to rerun any plugin it is enough to click the lower right corner
+of the wminfo window).
+
+The wminfo reruns the plugin when it finds the temporary flag stored
+in the configuration directory such as:
+
+    $HOME/.wminfo/.plugin.wmi
+
+After you click the lower right corner the program it puts such a file
+there, then it loads the plugin and sees this file so it reruns the plugin,
+and finally -- after processing the plugin -- it removes this file in order
+to avoid repeatable reruns.
+
+The wminfo puts this flag also when it starts in order to run the plugin
+for the first time.
+
+In the version 4.2.0 I changed the behavior of the program.  When it
+starts it puts there the flag which is an empty file but when you click
+the lower rigt corner of the application window it puts there the flag
+which is a non-empty file.  As a result it is possible to distinguish the
+initial flag from the flags put into the configuration directory after your
+intentional action.
+
+The following commands define the temporary file in the bash script:
+
+    plugin=${0//*\//}
+    tempflag="$HOME/.wminfo/.$plugin"
+
+Thanks to this mechanism wminfo may use three different strategies of
+performing some actions:
+
+1. The actions performed when the temporary flag exists are executed after
+   the program runs and when you click the bottom right corner of the
+   application window.
+
+2. The actions performed when the temporary flag is not empty are executed
+   just when you click the bottom right corner of the application window.
+
+3. The actions performed when the temporary flag exists and is empty are
+   executed just after the program runs.
+
+The first type of the actions is performed by dice.wmi, gettime.wmi,
+iching.wmi, and different wrappers and multi plugins.
+
+The second type of the actions is performed by keyboard.wmi and run-cmd.wmi
+plugins.
+
