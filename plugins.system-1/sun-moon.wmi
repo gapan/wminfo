@@ -1,0 +1,150 @@
+#!/bin/bash
+
+# wminfo plugin: sunrise, sunset, moonrise, moonset times, and the moonphase
+#                it uses wmSunMoon program available at:
+#                http://linux-bsd-unix.strefa.pl/index.en.html#wmSunMoon
+
+# command: wminfo -p sun-moon.wmi -u 15 -i 2 -b#000000 -f#ffff00
+
+#
+# CONFIGURATION SECTION BEGINS HERE
+#
+
+Latitude="51.11"		# negative south of the equator
+Longitude="-17.02"		# negative east of Greenwich
+
+LocalTimeZone=""		# eg America/New_York
+DistantTimeZone=""		# eg Europe/Warsaw
+
+#
+# CONFIGURATION SECTION ENDS HERE
+#
+
+if [ "`which wmSunMoon`" == "" ]
+then
+    echo "sun-moon.wmi: install wmSunMoon program."
+    echo -e "         \n         \n         \n         \n"
+    exit
+fi
+
+tempfile="$HOME/.wminfo/.sun-moon.tmp"
+
+if [ "$Latitude" != "" ] && [ "$Longitude" != "" ] && [ "$LocalTimeZone" == "" ] && [ "$DistantTimeZone" == "" ]
+then
+    wmSunMoon -lat $Latitude -lon $Longitude -text | grep -E 'sun[rs]|moon[rs]|cycle|phase|visible|day or night|civil|golden' | grep -Ev "yesterday's|tomorrow's|begins|ends|offset" > $tempfile
+elif [ "$Latitude" != "" ] && [ "$Longitude" != "" ] && [ "$LocalTimeZone" != "" ] && [ "$DistantTimeZone" != "" ]
+then
+    wmSunMoon -lat $Latitude -lon $Longitude -tzone $LocalTimeZone $DistantTimeZone -text | grep -E 'sun[rs]|moon[rs]|cycle|phase|visible|day or night|civil|golden|is it today' | grep -Ev "yesterday's|tomorrow's|begins|ends|offset" > $tempfile
+else
+    echo "sun-moon.wmi: undefined latitude and longitude or time zones."
+    exit
+fi
+
+sed -Ei 's/^\s+//;s/ /_/g;s/:_/=/;s/=.*\(/=/;s/\)//' $tempfile
+sed -Ei "s/today's_//" $tempfile
+
+if [ -e $tempfile ]
+then
+    . $tempfile
+#    rm $tempfile
+fi
+
+short_latitude="`echo $Latitude | sed 's/\..*//'`"
+
+if [ "$short_latitude" -ge 0 ]
+then
+    hemisphere="North"
+elif [ "$short_latitude" -lt 0 ]
+then
+    hemisphere="South"
+fi
+
+case $moon_phase in
+    "new_moon")
+    image="   "
+    ;;
+    "1st_quarter")
+    if [ "$hemisphere" == "North" ]
+    then
+	image=" ) "
+    elif [ "$hemisphere" == "South" ]
+    then
+	image=" ( "
+    fi
+    image=" ) "
+    ;;
+    "full_moon")
+    image=" O "
+    ;;
+    "3rd_quarter")
+    if [ "$hemisphere" == "North" ]
+    then
+	image=" ( "
+    elif [ "$hemisphere" == "South" ]
+    then
+	image=" ) "
+    fi
+    ;;
+esac
+
+moon="$image$moon_cycle_fraction"
+offset=$((8-${#moon}))
+
+if [ "$is_moon_visible" == "visible" ]
+then
+    visible="^"
+else
+    visible="ˇ"
+fi
+
+for n in $(seq 1 $offset)
+do
+    visible=" $visible"
+done
+
+if [ "$is_it_today" == "yesterday" ]
+then
+    today="-"
+elif [ "$is_it_today" == "tomorrow" ]
+then
+    today="+"
+else
+    today=" "
+fi
+
+if [ "$is_it_day_or_night" == "day" ]
+then
+    day="  D"
+    night="   "
+elif [ "$is_it_day_or_night" == "night" ]
+then
+    day="   "
+    night="  N"
+fi
+
+if [ "$is_it_civil_twilight" == "morning_civil_twilight" ]
+then
+    mornct=" ^T"
+    morngh="   "
+elif [ "$is_it_golden_hour" == "morning_golden_hour" ]
+then
+    morngh=" ^G"
+    mornct="   "
+elif [ "$is_it_golden_hour" == "evening_golden_hour" ]
+then
+    evengh=" ˇG"
+    evenct="   "
+elif [ "$is_it_civil_twilight" == "evening_civil_twilight" ]
+then
+    evenct=" ˇT"
+    evengh="   "
+else
+    mornct=" "
+    morngh="  "
+    evengh="  "
+    evenct=" "
+fi
+
+echo -e "$sunrise$today$day\n$sunset$today$morngh$evengh\n$moon$visible\n$moonrise$today$mornct$evenct\n$moonset$today$night" | utf8-iso2
+
+echo

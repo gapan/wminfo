@@ -18,19 +18,19 @@ AM_PM="off"
 
 if [ "$Week_Starts" == "Monday" ]
 then
-    Week="%W"
+    Week="%_W"
 elif [ "$Week_Starts" == "Sunday" ]
 then
-    Week="%U"
+    Week="%_U"
 else
     echo "date.wmi: invalid Week_Starts variable."
 fi
 
 if [ "$AM_PM" == "on" ]
 then
-    date +"%I:%M:%S%p %n%A%n%b  %d%nweek $Week%nyear %Y"
+    date +"%I:%M:%S%p %n%A%n%b  %_d%nweek $Week%nyear %Y"
 else
-    date +"%H:%M:%S %n%A%n%b  %d%nweek $Week%nyear %Y"
+    date +"%H:%M:%S %n%A%n%b  %_d%nweek $Week%nyear %Y"
 fi
 
 echo "         "

@@ -1,0 +1,76 @@
+
+wminfo README.1st.plugins.system-2
+
+
+This directory contains plugins that are Internet independent.
+
+To use some of these plugins system-wide copy them manually to the PATH.
+The recommended directory is /usr/local/bin.
+
+run-all-wminfo-plugins     wminfo launcher: runs all wminfo plugins.
+
+alarm.cfg                  configuration file for alarm.wmi plugin.
+days.cfg                   configuration file for days.wmi plugin.
+iching-pl.cfg              configuration file for iching.wmi plugin (Polish
+                             translation).
+iching.cfg                 configuration file for iching.wmi plugin.
+stopwatch.cfg              configuration file for stopwatch.wmi plugin.
+timer.cfg                  configuration file for timer.wmi plugin.
+
+alarm                      edits alarm.cfg file.
+days                       edits days.cfg file.
+stopwatch                  edits stopwatch.cfg file.
+timer                      edits timer.cfg file.
+
+iching                     searches iching.cfg file.
+
+alarm.wmi                  alerts when the given date and time comes.
+                             mailboxes.
+coin.wmi                   tosses coin (click bottom right corner).
+days.wmi                   days since the past date or until the future date.
+dice.wmi                   tosses a dice after you click the bottom right
+                             corner.
+gettime.wmi                gets the current date and time and stores it.
+hexclock-01.wmi            hexadecimal clock and calendar.
+hexclock-02.wmi            hexadecimal clock and calendar.
+hms.wmi                    calculates the time since midnight.
+iching.wmi                 I Ching -- The Book of Changes (click the bottom
+                             right corner).
+ip.wmi                     displays IP numbers for existing interfaces.
+julian-date.wmi            Julian Date, Modified JD, Lilian Date, Rata Die,
+                             and Mars Sol Date (it uses solunar program).
+messages.wmi               monitors /var/log/messages file.
+ps.wmi                     ps -a command output.
+run-cmd.wmi                runs the selected command (click the bottom right
+                             corner).
+secure.wmi                 monitors /var/log/secure file.
+stopwatch.wmi              counts the time elapsed since it was started.
+syslog.wmi                 monitors /var/log/syslog file.
+timer.wmi                  counts the time down since the defined time.
+traffic.wmi                total incoming and outgoing traffic for selected
+                             interfaces.
+wrapper-logfiles.wmi       monitors messages, secure, and syslog log files.
+
+                                      *
+                                    *   *
+
+To test the consecutive plugins run the commands such as:
+
+    plugin.wmi
+
+To use the plugins use the command such as:
+
+    wminfo -p plugin.wmi
+
+or try all plugins with the command:
+
+    run-all-wminfo-plugins
+
+Each plugin contains the information about the suggested command to run it.
+
+                                      *
+                                    *   *
+
+The current directory is copied to the system doc directory during the
+installation of wminfo.
+

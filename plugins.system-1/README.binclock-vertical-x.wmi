@@ -47,7 +47,7 @@ or:
                                     *   *
 
 Fourteen different 4-bits vertical binary clock plugins -- three from
-plugins.binary directory, ten from plugins.system directory, and one from
+plugins.binary directory, ten from plugins.system-1 directory, and one from
 samples directory -- do exactly the same and are the result of the
 discussion in the Programming section of LinuxQuestions.org
 (http://www.linuxquestions.org).
@@ -79,7 +79,7 @@ bash, and two written in Ruby):
   - binclock-vertical-12.wmi by grail
   - binclock-vertical-13.wmi by Cezary M. Kruk aka w1k0
 
-are in the plugins.system directory (these are the plugins using the CPU
+are in the plugins.system-1 directory (these are the plugins using the CPU
 power moderately).
 
 One binary clock (written in bash):

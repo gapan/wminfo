@@ -170,7 +170,7 @@ wrapper-* ones you do not have to worry about the CPU usage.  The wminfo
 alone and plugins that refresh the information every one-three minutes do
 not consume a lot of the power.
 
-The plugins from plugins.system directory use more CPU power so you can
+The plugins from plugins.system-* directory use more CPU power so you can
 consider to use instead of them the conky dependent plugins from
 plugins.conky directory.
 

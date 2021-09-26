@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# configure prepares Makefile for wminfo 4.2.0
+# configure prepares Makefile for wminfo 4.2.1
 # Copyright (C) 2011-2015 Cezary M. Kruk <c.kruk@bigfoot.com>
 
-version=4.2.0
+version=4.2.1
 
 if [ "$1" == "-h" -o "$1" == "--help" ]
 then
@@ -66,7 +66,7 @@ DOCS    = BUGS COPYING ChangeLog INSTALL Plugins-HOWTO README README.1st README.
 	README.colors README.benchmarks README.multi+wrapper README.regex README.plugin.rerun \\
 	THANKS TODO
 
-DIRS    = plugins.binary plugins.conky plugins.offline plugins.online plugins.system samples
+DIRS    = plugins.binary plugins.conky plugins.offline plugins.online plugins.system-1 plugins.system-2 samples
 
 install:
 	cp -p wminfo \$(BINDIR)

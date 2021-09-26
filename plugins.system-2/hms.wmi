@@ -1,0 +1,48 @@
+#!/bin/bash
+
+# wminfo plugin: calculates the time since midnight
+
+# command: wminfo -p hms.wmi -u 1 -b#000000 -f#ffff00
+
+time=`date +"%H %M %S"`
+
+h=`echo $time | cut -d " " -f 1`
+m=`echo $time | cut -d " " -f 2`
+s=`echo $time | cut -d " " -f 3`
+
+h=`expr $h + 0`
+m=`expr $m + 0`
+s=`expr $s + 0`
+
+seconds=$(($h * 3600 + $m * 60 + $s))
+
+hours=$(echo "scale=4 ; $seconds / 3600" | bc)
+
+if [ $h -eq 0 ]
+then
+	hours="0$hours"
+fi
+
+if [ "$h" == "00" ]
+then
+	hours="0"
+fi
+
+minutes=$(echo "scale=2 ; $seconds / 60" | bc)
+
+if [ $h -eq 0 ] && [ $m -eq 0 ]
+then
+	minutes="0$minutes"
+fi
+
+if [ "$m" == "00" ]
+then
+	minutes="0"
+fi
+
+echo "         "
+echo "H $hours"
+echo "M $minutes"
+echo "S $seconds"
+echo "         "
+

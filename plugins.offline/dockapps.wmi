@@ -1,9 +1,0 @@
-#!/bin/bash
-
-# wminfo plugin: new dockapps at dockapps.windowmaker.org
-
-# command: wminfo -p dockapps.wmi -b#35548d -f#ffffff
-
-lynx --source http://dockapps.windowmaker.org/ | \
-	perl -pe 's/<.*?>//g'
-echo

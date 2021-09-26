@@ -1,0 +1,85 @@
+#!/bin/bash
+
+# wminfo plugin: the results of the Polish lottery Lotto
+
+# command: wminfo -p lotto.wmi -i 2 -b#ffd800 -f#000000
+
+tempfile="$HOME/.wminfo/.lotto.tmp"
+
+lynx -source http://www.lotto.pl/lotto/wyniki-i-wygrane | grep 'alt="Lotto"' | sed 's/<img src/\n<img src/g;s/<div class="sortkolejnosc/\n<div class="sortkolejnosc/g' | grep 'sortrosnaco' | perl -pe 's/<.*?>/ /g;s/&nbsp;//;s/ +/ /g;s/-..,//;s/poniedziałek/Pn/;s/wtorek/Wt/;s/środa/Śr/;s/czwartek/Cz/;s/piątek/Pt/;s/sobota/Sb/;s/niedziela/Nd/;s/^ //;s/ $//' | utf8-iso2 > $tempfile.tmp
+
+declare -i number=0
+shopt -s lastpipe
+
+cat $tempfile.tmp |
+while read line
+do
+    number=$number+1
+    text[$number]=$line
+done
+
+declare -A matrix
+
+for n in $(seq 2 2 $number)
+do
+    for m in $(seq 1 3)
+    do
+	matrix[$n,$m]=$(echo ${text[$n]} | cut -d ' ' -f $m)
+    done
+    for m in $(seq 10 15)
+    do
+	pos=$(($m - 6))
+	matrix[$n,$m]=$(echo ${text[$n]} | cut -d ' ' -f $pos)
+    done
+    for m in $(seq 4 9)
+    do
+	prev=$(($n - 1))
+	matrix[$n,$m]=$(echo ${text[$prev]} | cut -d ' ' -f $m)
+    done
+done
+
+> $tempfile.tmp
+
+for n in $(seq $number -2 2)
+do
+    echo -n "LOTTO  " >> $tempfile.tmp
+    echo -n "${matrix[$n,3]} " >> $tempfile.tmp
+    echo -n "${matrix[$n,2]} " | sed 's/-01/ Sty/;s/-02/ Lut/;s/-03/ Mar/;s/-04/ Kwi/;s/-05/ Maj/;s/-06/ Cze/;s/-07/ Lip/;s/-08/ Sie/;s/-09/ Wrz/;s/-10/ Paź/;s/-11/ Lis/;s/-12/ Gru/;s/^0/ /g' | utf8-iso2 >> $tempfile.tmp
+    echo -n " ${matrix[$n,1]} " >> $tempfile.tmp
+    for m in $(seq 4 9)
+    do
+	num=${matrix[$n,$m]}
+	if [ $num -lt 10 ]
+	then
+	    num="0$num"
+	fi
+	echo -n " $num" | sed 's/ 0/  /g' >> $tempfile.tmp
+    done
+    echo >> $tempfile.tmp
+    echo -n " PLUS  " >> $tempfile.tmp
+    echo -n "${matrix[$n,3]} " >> $tempfile.tmp
+    echo -n "${matrix[$n,2]} " | sed 's/-01/ Sty/;s/-02/ Lut/;s/-03/ Mar/;s/-04/ Kwi/;s/-05/ Maj/;s/-06/ Cze/;s/-07/ Lip/;s/-08/ Sie/;s/-09/ Wrz/;s/-10/ Paź/;s/-11/ Lis/;s/-12/ Gru/;s/^0/ /g' | utf8-iso2 >> $tempfile.tmp
+    echo -n " ${matrix[$n,1]} " >> $tempfile.tmp
+    for m in $(seq 10 15)
+    do
+	num=${matrix[$n,$m]}
+	if [ $num -lt 10 ]
+	then
+	    num="0$num"
+	fi
+	echo -n " $num" | sed 's/ 0/  /g' >> $tempfile.tmp
+    done
+    echo >> $tempfile.tmp
+done
+
+if [ -s $tempfile.tmp ]
+then
+    mv $tempfile.tmp $tempfile
+fi
+
+cat $tempfile | tail -n 2 | head -n 1 | cut -b 24-32
+cat $tempfile | tail -n 2 | head -n 1 | cut -b 33-41
+cat $tempfile | tail -n 2 | head -n 1 | cut -b 8-22
+cat $tempfile | tail -n 1 | cut -b 24-32
+cat $tempfile | tail -n 1 | cut -b 33-41
+

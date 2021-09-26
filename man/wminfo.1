@@ -1,7 +1,7 @@
-.TH "WMINFO" "1" "February 20, 2015" "Version 4.2.0" ""
+.TH "WMINFO" "1" "April 1, 2015" "Version 4.2.1" ""
 .SH "NAME"
 .LP
-wminfo - Window Maker showing information dockable application
+wminfo \- Window Maker showing information dockable application
 .SH "SYNOPSIS"
 \fBwminfo\fP [\fI-p\fP <\fIplugin_name\fP>] [\fIoptions\fP]
 .SH "DESCRIPTION"
@@ -34,7 +34,7 @@ sets \fIISO-8859-*\fP encoding \-\- allowed values are \fI1\fP, \fI2\fP,
 .BI \-u\ <\fIupdate_information_period\fP>
 depending on the parameter format sets the period between information
 updates in seconds \-\- default is \fI180\fP \-\- or uses regular expression
-to match the time string (see: README.regex).
+to match the time string (see: \fIREADME.regex\fP).
 .TP
 .BI \-b\ <\fIbackground_color\fP>
 sets the background color in the range from \fI#000000\fP to \fI#ffffff\fP
@@ -71,7 +71,7 @@ displays short help.
 .SH "PROGRAM"
 To display wminfo help run the command:
 .IP
-\fBwminfo -h\fP
+\fBwminfo \-h\fP
 .LP
 or:
 .IP
@@ -79,7 +79,7 @@ or:
 .LP
 To use the plugin run the command such as:
 .IP
-\fBwminfo -p \fIplugin.wmi\fP\fP
+\fBwminfo \-p \fIplugin.wmi\fP\fP
 .LP
 where \fIplugin.wmi\fP is the name of the plugin.
 .LP
@@ -91,7 +91,7 @@ displays in wminfo window wminfo help (it uses \fIdefault.wmi\fP plugin).
 .LP
 The command with an invalid plugin name:
 .IP
-\fBwminfo -p \fIplageen.wmi\fP\fP
+\fBwminfo \-p \fIplageen.wmi\fP\fP
 .LP
 displays the messages such as:
 .IP
@@ -121,15 +121,15 @@ The wminfo window looks like:
 .LP
 Click the given position to get the desired result:
 .IP
-\fIONE\fP -- the middle of the line: switches the scrolling of the line of the text;
+\fIONE\fP \-\- the middle of the line: switches the scrolling of the line of the text;
 .IP
-\fIALL\fP -- upper right corner: switches the scrolling of all lines;
+\fIALL\fP \-\- upper right corner: switches the scrolling of all lines;
 .IP
-\fIUP\fP -- lower left corner: rewinds the text up;
+\fIUP\fP \-\- lower left corner: rewinds the text up;
 .IP
-\fIDOWN\fP -- upper left corner: rewinds the text down;
+\fIDOWN\fP \-\- upper left corner: rewinds the text down;
 .IP
-\fIRERUN\fP -- lower right corner: reruns the plugin on demand.
+\fIRERUN\fP \-\- lower right corner: reruns the plugin on demand.
 .LP
 The wminfo program can display the lines of the text up to 1023 characters
 in a line and no more than 1023 lines of the text.  When the number of the
@@ -232,7 +232,7 @@ This directory contains the binary plugins.  To test them run
 .BI plugins.conky
 This directory contains the \fBconky\fP dependent versions of a few plugins
 that work in a similar way to their \fBbash\fP equivalents from
-\fIplugins.offline\fP, \fIplugins.online\fP, and \fIplugins.system\fP
+\fIplugins.offline\fP, \fIplugins.online\fP, and \fIplugins.system-*\fP
 directories as well as some conky dependent plugins that have not bash
 equivalents.  In order to test them run \fBrun-all-wminfo-plugins\fP script
 and follow the instructions (you can use the \fB-c\fP or \fB--compact\fP
@@ -242,11 +242,11 @@ To use conky-related plugins you have to run conky daemon using \fIconky.conf\fP
 configuration file provided with wminfo.  Keep that file in your \fI~/.wminfo/\fP
 directory.  To start the daemon use the command:
 .IP
-\fBconky -c "$HOME/.wminfo/conky.conf" -d 2> "$HOME/.wminfo/conky.log"\fP
+\fBconky \-c "$HOME/.wminfo/conky.conf" \-d 2> "$HOME/.wminfo/conky.log"\fP
 .IP
 or just run the script:
 .IP
-\fBwminfo-conky -d\fP
+\fBwminfo-conky \-d\fP
 .IP
 Instead or running conky manually you can register it in your \fI~/.xinitrc\fP
 file:
@@ -259,7 +259,7 @@ file:
 .IP
 \fBeval rm "$HOME/.wminfo/.counter.*"\fP
 .IP
-\fBif [ "`ps aux | grep "$USER" | grep conky | grep -vE 'grep|wminfo -p'`" == "" ] ; then conky -c "$HOME/.wminfo/conky.conf" -d 2> "$HOME/.wminfo/conky.log"; fi\fP
+\fBif [ "`ps aux | grep "$USER" | grep conky | grep \-vE 'grep|wminfo \-p'`" == "" ] ; then conky \-c "$HOME/.wminfo/conky.conf" \-d 2> "$HOME/.wminfo/conky.log"; fi\fP
 .IP
 \fBwmaker\fP
 .IP
@@ -270,7 +270,7 @@ minutes or hours conky daemon will break without any error messages.  The
 only method to avoid that is to run the \fBcrontab\fP entry that monitors your
 conky daemon and restarts it after the breakdown:
 .IP
-\fB*/1 * * * * if [ "`ps aux | grep "$USER" | grep conky | grep -vE 'grep|wminfo -p'`" == "" ] ; then conky -c "$HOME/.wminfo/conky.conf" -d 2> "$HOME/.wminfo/conky.log"; fi\fP
+\fB*/1 * * * * if [ "`ps aux | grep "$USER" | grep conky | grep \-vE 'grep|wminfo \-p'`" == "" ] ; then conky \-c "$HOME/.wminfo/conky.conf" \-d 2> "$HOME/.wminfo/conky.log"; fi\fP
 .TP
 .BI plugins.online
 This directory contains a lot of Internet-related plugins.  These plugins
@@ -289,7 +289,7 @@ to use the following crontab task:
 .IP
 or:
 .IP
-\fB*/6 * * * * if [ "`route | grep -E '\fP\fIpan0\fP\fB|\fP\fIwlan0\fP\fB'`" != "" ] ; then /usr/local/bin/online ; fi\fP
+\fB*/6 * * * * if [ "`route | grep \-E '\fP\fIpan0\fP\fB|\fP\fIwlan0\fP\fB'`" != "" ] ; then /usr/local/bin/online ; fi\fP
 .IP
 or the similar specific for your system.
 .IP
@@ -308,7 +308,7 @@ To test the plugins from the current directory run
 You can access mirrored websites with your browser at the address
 \fIhttp://localhost/wminfo/\fP.
 .TP
-.BI plugins.system
+.BI plugins.system-*
 This directory contains the plugins that are Internet independent (see also:
 the plugins from the \fIplugins.conky\fP directory).  To test them run
 \fBrun-all-wminfo-plugins\fP script (you can use the \fB-c\fP or
@@ -366,17 +366,17 @@ really state of the art products.
 .LP
 To learn \fBbash\fP and the command line utilities read:
 .HP 2
-- \fBman bash\fP,
+\- \fBman bash\fP,
 .HP 2
-- \fIBash Guide for Beginners\fP by Machtelt Garrels
+\- \fIBash Guide for Beginners\fP by Machtelt Garrels
 .IP
 (see: \fIhttp://tldp.org/LDP/Bash-Beginners-Guide/html/\fP),
 .HP 2
-- \fIAdvanced Bash-Scripting Guide\fP by Mendel Cooper
+\- \fIAdvanced Bash-Scripting Guide\fP by Mendel Cooper
 .IP
 (see: \fIhttp://tldp.org/LDP/abs/html/\fP),
 .HP 2
-- \fIGNU/Linux Command-Line Tools Summary\fP by Gareth Anderson
+\- \fIGNU/Linux Command-Line Tools Summary\fP by Gareth Anderson
 .IP
 (see: \fIhttp://tldp.org/LDP/GNU-Linux-Tools-Summary/html/\fP).
 .LP
@@ -412,22 +412,22 @@ to translate it to one of the ISO encodings used by the program.
 .B 1.
 .LP
 The first step is to grab the code of the website.  Usually \fBlynx
-\-\-source\fP command does the job but in some cases \fBlinks -source\fP
-command is required -- sometimes with the additional switches.  The commands
+\-\-source\fP command does the job but in some cases \fBlinks \-source\fP
+command is required \-\- sometimes with the additional switches.  The commands
 to download the source code are:
 .IP
 \fBlynx \-\-source\fP \fIhttp://www.linuxquestions.org/questions/slackware-14/\fP
 .LP
 or:
 .IP
-\fBlinks -source -http-bugs.no-compression 1\fP \fIhttp://slashdot.org/\fP
+\fBlinks \-source \-http-bugs.no-compression 1\fP \fIhttp://slashdot.org/\fP
 .LP
 It is possible to download HTML code of the website or FTP server.
 .LP
 In the case of HTML code using DOS \fICR+LF\fP end-of-lines the following
 modification is allowed:
 .IP
-\fBtr -d '\\r'\fP
+\fBtr \-d '\\r'\fP
 .LP
 In the case of HTML code using Mac OS \fICR\fP end-of-lines the following
 modification is required:
@@ -445,7 +445,7 @@ HTML tag:
 .LP
 In some rare cases sed refuses to work but \fBPerl\fP does the job:
 .IP
-\fBperl -pe 's/\\n/ /g;s/</\\n</g'\fP
+\fBperl \-pe 's/\\n/ /g;s/</\\n</g'\fP
 .LP
 If, after that command it is impossible to distinguish the tags including
 the information we want from the other tags, it is necessary to use the
@@ -487,12 +487,12 @@ Including lines with '\fIonclick\fP' word:
 .LP
 Omitting lines with '\fINONE\fP' word:
 .IP
-\fBgrep -v '\fP\fINONE\fP\fB'\fP
+\fBgrep \-v '\fP\fINONE\fP\fB'\fP
 .LP
 There is no need to omit empty lines \-\- wminfo does it for us \-\- though
 we can do it for the cosmetics purposes:
 .IP
-\fBgrep -v '^$'\fP
+\fBgrep \-v '^$'\fP
 .TP
 .B 4.
 .LP
@@ -547,7 +547,7 @@ This is the code for Eastern European language website encoded in \fIUTF-8\fP:
 .LP
 this is the code for Eastern European language website encoded in \fICP-1250\fP:
 .IP
-\fBpiconv -f CP-1250 -t ISO-8859-2 | punctuation\fP
+\fBpiconv \-f CP-1250 \-t ISO-8859-2 | punctuation\fP
 .LP
 In the case of the websites using \fIHTML entities\fP such as:
 \fI&nbsp;\fP, \fI&#728;\fP, \fI&sect;\fP, \fI&Oacute;\fP, \fI&oacute;\fP, 
@@ -565,11 +565,11 @@ This is the code for website using Cyrillic alphabet encoded in \fIUTF-8\fP:
 .LP
 this is the code for website using Cyrillic alphabet encoded in \fIKOI8-R\fP:
 .IP
-\fBpiconv -f KOI8-R -t ISO-8859-5 | punctuation\fP
+\fBpiconv \-f KOI8-R \-t ISO-8859-5 | punctuation\fP
 .LP
 this is the code for website using Cyrillic alphabet encoded in \fICP-1251\fP:
 .IP
-\fBpiconv -f CP-1251 -t ISO-8859-5 | punctuation\fP
+\fBpiconv \-f CP-1251 \-t ISO-8859-5 | punctuation\fP
 .LP
 In the case of the websites using \fIHTML entities\fP such as:
 \fI&nbsp;\fP, \fI&#1026;\fP, \fI&#1075;\fP, \fI&#1107;\fP, \fI&sect;\fP, 
@@ -600,7 +600,7 @@ echo "         "\fP
 .LP
 or:
 .IP
-\fBecho -e "         \\n         \\n         \\n         \\n         \\n"\fP
+\fBecho \-e "         \\n         \\n         \\n         \\n         \\n"\fP
 .LP
 because they clear the application window when the former information
 disappears.
@@ -634,7 +634,7 @@ when the system is on-line:
 .LP
 or:
 .IP
-\fB*/6 * * * * if [ "`route | grep -E '\fP\fIpan0\fP\fB|\fP\fIwlan0\fP\fB'`" != "" ] ; then /usr/local/bin/online ; fi\fP
+\fB*/6 * * * * if [ "`route | grep \-E '\fP\fIpan0\fP\fB|\fP\fIwlan0\fP\fB'`" != "" ] ; then /usr/local/bin/online ; fi\fP
 .LP
 or the similar specific for your system.
 .LP
@@ -665,7 +665,7 @@ You can redirect the output of the plugin to the file or display it with
 new set of the commands.
 .SH "TODO"
 .LP
-Add more \fIISO encodings\fP -- to do that I need your encouragement and
+Add more \fIISO encodings\fP \-\- to do that I need your encouragement and
 your cooperation in the case of the languages which use the alphabets other
 than \fILatin\fP, \fICyrillic\fP, or \fIGreek\fP.  The designing of the
 characters is time consuming so I would like to know that at least one
@@ -694,7 +694,7 @@ can.
 wminfo is provided on the terms of the \fIGNU General Public License v. 3\fP.
 Read the \fICOPYING\fP file for the complete text of the license.
 .SH "AUTHORS"
-wminfo 4.2.0:
+wminfo 4.2.1:
 .IP
 (C) 2011-2015 Cezary M. Kruk  <\fIc.kruk@bigfoot.com\fP>
 .IP

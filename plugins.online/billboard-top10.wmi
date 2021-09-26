@@ -5,12 +5,13 @@
 # command: wminfo -p billboard-top10.wmi -b#d70377 -f#ffffff
 
 lynx --source http://www.billboard.com/charts/hot-100 | \
-	dos-unix | \
 	perl -pe 's/\n/ /g;s/</\n</g' | \
-	grep -E "<h2>|trackaction=\"Artist Name\"" | \
+	grep -E "<h2>|tracklabel=\"Artist Name\"" | \
 	perl -pe 's/\n/ /' | \
 	sed 's/<h2>/\n/g' | \
-	grep 'trackaction' | \
+	grep 'tracklabel' | \
 	sed 's/<.*>/\-/' | \
-	sed -E 's/\s+/ /g;s/^ //'
+	sed -E 's/\s+/ /g;s/^ //' | \
+	perl -pe "s/&#039;/'/g;s/&amp;/&/g" | \
+	uniq
 

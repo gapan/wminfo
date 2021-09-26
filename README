@@ -39,7 +39,7 @@ plugins.conky         plugins using conky (more efficient than their system
 plugins.offline       plugins using websites mirrors stored by the online
                         script in http://localhost/wminfo/.
 plugins.online        plugins using websites code got on-the-fly.
-plugins.system        plugins monitoring the system and the other
+plugins.system-*      plugins monitoring the system and the other
                         miscellaneous plugins.
 samples               plugins designed for the testing purposes.
 

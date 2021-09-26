@@ -2,6 +2,31 @@
 wminfo ChangeLog
 
 
+wminfo 4.2.1, 2015-04-01:
+----------------------------------------------------------------------------
+* Modified sun-moon.wmi plugin -- to use it install wmSunMoon program
+    instead of solunar and run the plugin with a new command using the
+    appropriate ISO encoding.  wmSunMoon is available at:
+    http://linux-bsd-unix.strefa.pl/index.en.html#wmSunMoon
+* Modified conky.wrapper-sun-moon-tz.wmi and wrapper-sun-moon-tz.wmi plugins
+    -- run them now with the new commands using the appropriate ISO
+    encoding.
+* Modified online script from plugins.offline directory.
+* Added hms.wmi plugin -- it calculates the time since midnight in hours,
+    minutes, and seconds.
+* Modified slackbuilds.wmi plugin.
+* Modified print-month.wmi plugin.
+* Updated date.wmi plugin.
+* Updated billboard-top10.wmi plugin.
+* The plugin-system directory split into plugins.system-1 and
+    plugins.system-2 directories.
+* Removed the solunar.patch file.
+* Removed arch-patches.wmi, dockapps.wmi, and freecode.wmi plugins.
+* Updated README.sun-moon.wmi file.
+* Updated the documentation.
+* Program tested in Slackware Linux 14.1 and Linux Mint 17.1 Rebecca.
+
+
 wminfo 4.2.0, 2015-02-20:
 ----------------------------------------------------------------------------
 * Added keyboard.wmi plugin -- it switches the keyboard layout.

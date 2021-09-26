@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# wminfo plugin: monitors weather report and weather forecasts for Wroclaw, Poland
+# wminfo plugin: monitors weather report and weather forecasts
 
 # command: wminfo -p wrapper-weather.wmi -u 6 -i 1 -b#000000 -f#00ffff
 

@@ -61,20 +61,17 @@ fi
 
 if [ ! -d $DIRECTORY ]
 then
-    echo "I can't make $DIRECTORY directory."
+    echo "online: can not make $DIRECTORY directory."
     exit
 fi
 
-links -source -http-bugs.no-compression 1 http://www.archlinux.org/packages/?sort=-last_update > $DIRECTORY/arch-patches.html.tmp
 lynx --source http://www.bbc.co.uk/mundo/ > $DIRECTORY/bbc-mundo.html.tmp
 lynx --source http://www.billboard.com/charts/hot-100 > $DIRECTORY/billboard-top10.html.tmp
 lynx --source http://www.cnet.com/ > $DIRECTORY/cnet.html.tmp
 lynx --source http://www.commentcamarche.net/ > $DIRECTORY/commentcamarche.html.tmp
-lynx --source http://dockapps.windowmaker.org/ > $DIRECTORY/dockapps.html.tmp
 lynx --source http://wyborcza.biz/Waluty/0,111138,8932151,,,Kursy_srednie_walut_NBP,A.html?piano_t=1 > $DIRECTORY/currencies-pl-avg.html.tmp
 lynx --source http://wyborcza.biz/Waluty/0,111138,8938582,,,Kursy_kupna_sprzedazy_walut_NBP,C.html?piano_t=1 > $DIRECTORY/currencies-pl-buy+sell.html.tmp
 lynx --source http://www.dpreview.com/ > $DIRECTORY/dpreview.html.tmp
-lynx --source http://freecode.com/ > $DIRECTORY/freecode.html.tmp
 lynx --source http://www.kernel.org/pub/linux/kernel/v2.4/ > $DIRECTORY/kernel-2.4.html.tmp
 lynx --source http://www.kernel.org/pub/linux/kernel/v2.6/ > $DIRECTORY/kernel-2.6.html.tmp
 lynx --source http://www.kernel.org/pub/linux/kernel/v3.x/ > $DIRECTORY/kernel-3.x.html.tmp
@@ -93,14 +90,17 @@ do
     mv $file $(echo $file | sed 's/\.tmp//')
 done
 
-MIRROR="`cat /etc/slackpkg/mirrors | grep -v '^#'`"
-if [ "$MIRROR" == "" ]
+if [ -e /etc/slackware-version ]
 then
-    echo "Error: none Slackware mirror defined in /etc/slackpkg/mirrors file."
-    echo "         " ; echo "         " ; echo "         " ; echo "         "
-    exit
+    MIRROR="`cat /etc/slackpkg/mirrors | grep -v '^#'`"
+    if [ "$MIRROR" == "" ]
+    then
+	echo "online: none Slackware mirror defined in /etc/slackpkg/mirrors file."
+	echo "         " ; echo "         " ; echo "         " ; echo "         "
+	exit
+    fi
+    lynx --source ${MIRROR}patches/packages/ > $DIRECTORY/slackware-patches.html.tmp
+    mv $DIRECTORY/slackware-patches.html.tmp $DIRECTORY/slackware-patches.html
+    lynx --source ${MIRROR}ChangeLog.txt > $DIRECTORY/ChangeLog.txt
 fi
-lynx --source ${MIRROR}patches/packages/ > $DIRECTORY/slackware-patches.html.tmp
-mv $DIRECTORY/slackware-patches.html.tmp $DIRECTORY/slackware-patches.html
-lynx --source ${MIRROR}ChangeLog.txt > $DIRECTORY/ChangeLog.txt
 

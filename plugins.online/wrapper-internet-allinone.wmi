@@ -1,7 +1,6 @@
 #!/bin/bash
 
-# wminfo plugin: monitors Slackware Linux patches
-#                and Polish zloty buy/sell currency exchange rates
+# wminfo plugin: Slackware Linux patches and Polish zloty exchange rates
 
 # command: wminfo -p wrapper-internet-allinone.wmi -u 15 -b#000000 -f#00ffff
 

@@ -17,48 +17,49 @@ the plugins were reset before performing the benchmark:
 
 contrib:
 
-bash-empty.wmi           : 180.00 real, 0.07 user, 0.07 sys, 0.08% CPU
-default.wmi              : 179.98 real, 0.15 user, 0.07 sys, 0.12% CPU
+bash-empty.wmi           : 179.99 real, 0.07 user, 0.08 sys, 0.08% CPU
+default.wmi              : 179.96 real, 0.15 user, 0.08 sys, 0.13% CPU
 
 
 plugins.binary:
 
-binclock-vertical-01.wmi : 179.99 real, 1.20 user, 0.56 sys, 0.98% CPU
-binclock-vertical-02.wmi : 179.98 real, 1.20 user, 0.55 sys, 0.97% CPU
-binclock-vertical-03.wmi : 179.96 real, 1.33 user, 0.51 sys, 1.02% CPU
-c-empty.wmi              : 179.95 real, 0.07 user, 0.07 sys, 0.07% CPU
+binclock-vertical-01.wmi : 179.98 real, 1.76 user, 0.50 sys, 1.26% CPU
+binclock-vertical-02.wmi : 179.96 real, 1.69 user, 0.49 sys, 1.21% CPU
+binclock-vertical-03.wmi : 179.94 real, 1.70 user, 0.44 sys, 1.19% CPU
+c-empty.wmi              : 179.91 real, 0.04 user, 0.08 sys, 0.06% CPU
 
 
 plugins.conky:
 
-conky.audacious.wmi      : 179.92 real, 1.03 user, 0.33 sys, 0.76% CPU
-conky.date.wmi           : 179.91 real, 3.08 user, 1.00 sys, 2.27% CPU
-conky.diskmon.wmi        : 179.90 real, 1.23 user, 0.36 sys, 0.89% CPU
-conky.entropy.wmi        : 179.87 real, 0.54 user, 0.21 sys, 0.41% CPU
-conky.filesystem1.wmi    : 179.85 real, 0.54 user, 0.21 sys, 0.42% CPU
-conky.forecast.wmi       : 179.83 real, 1.07 user, 0.39 sys, 0.81% CPU
-conky.fujitsu.wmi        : 179.79 real, 0.61 user, 0.23 sys, 0.47% CPU
-conky.memory.wmi         : 179.77 real, 1.05 user, 0.34 sys, 0.77% CPU
-conky.mixer.wmi          : 179.73 real, 1.03 user, 0.35 sys, 0.77% CPU
-conky.moc.wmi            : 179.70 real, 0.99 user, 0.35 sys, 0.75% CPU
-conky.mpd.wmi            : 179.67 real, 0.99 user, 0.34 sys, 0.74% CPU
-conky.multi-system1.wmi  : 179.65 real, 1.34 user, 0.48 sys, 1.01% CPU
-conky.multi-system2.wmi  : 179.63 real, 1.40 user, 0.45 sys, 1.03% CPU
-conky.multi-time.wmi     : 179.60 real, 1.35 user, 0.47 sys, 1.01% CPU
-conky.netmon.wmi         : 179.56 real, 1.37 user, 0.49 sys, 1.03% CPU
-conky.swap.wmi           : 179.53 real, 0.53 user, 0.21 sys, 0.41% CPU
-conky.sysmon.wmi         : 179.52 real, 1.23 user, 0.38 sys, 0.90% CPU
-conky.thinkpad.wmi       : 179.49 real, 0.90 user, 0.32 sys, 0.68% CPU
-conky.timezone.wmi       : 179.45 real, 0.84 user, 0.28 sys, 0.62% CPU
-conky.top.wmi            : 179.41 real, 1.06 user, 0.38 sys, 0.80% CPU
-conky.topmem.wmi         : 179.39 real, 0.61 user, 0.23 sys, 0.47% CPU
-conky.toptime.wmi        : 179.35 real, 0.28 user, 0.11 sys, 0.22% CPU
-conky.uptime.wmi         : 179.33 real, 0.54 user, 0.17 sys, 0.40% CPU
-conky.weather.wmi        : 179.29 real, 1.02 user, 0.39 sys, 0.79% CPU
-conky.wireless.wmi       : 179.25 real, 1.04 user, 0.35 sys, 0.77% CPU
-conky.wrapper-sun-moon-tz: 179.22 real, 1.21 user, 0.42 sys, 0.91% CPU
-conky.wrapper-weather.wmi: 179.19 real, 1.19 user, 0.43 sys, 0.90% CPU
-conky.xmms2.wmi          : 179.14 real, 0.97 user, 0.35 sys, 0.74% CPU
+conky.audacious.wmi      : 179.86 real, 1.85 user, 0.41 sys, 1.26% CPU
+conky.date.wmi           : 179.84 real, 5.44 user, 1.03 sys, 3.60% CPU
+conky.diskmon.wmi        : 179.80 real, 2.25 user, 0.43 sys, 1.49% CPU
+conky.entropy.wmi        : 179.75 real, 0.93 user, 0.25 sys, 0.65% CPU
+conky.filesystem1.wmi    : 179.71 real, 0.98 user, 0.22 sys, 0.67% CPU
+conky.forecast.wmi       : 179.69 real, 1.86 user, 0.40 sys, 1.25% CPU
+conky.fujitsu.wmi        : 179.64 real, 1.10 user, 0.25 sys, 0.75% CPU
+conky.memory.wmi         : 179.60 real, 1.85 user, 0.38 sys, 1.24% CPU
+conky.mixer.wmi          : 179.54 real, 1.81 user, 0.40 sys, 1.23% CPU
+conky.moc.wmi            : 179.48 real, 1.78 user, 0.42 sys, 1.23% CPU
+conky.mpd.wmi            : 179.45 real, 1.75 user, 0.42 sys, 1.21% CPU
+conky.multi-system1.wmi  : 179.42 real, 2.49 user, 0.48 sys, 1.65% CPU
+conky.multi-system2.wmi  : 179.35 real, 2.50 user, 0.49 sys, 1.67% CPU
+conky.multi-time.wmi     : 179.30 real, 2.48 user, 0.49 sys, 1.66% CPU
+conky.netmon.wmi         : 179.25 real, 2.54 user, 0.45 sys, 1.67% CPU
+conky.swap.wmi           : 179.19 real, 0.90 user, 0.26 sys, 0.65% CPU
+conky.sysmon-plus.wmi    : 179.13 real, 2.19 user, 0.39 sys, 1.44% CPU
+conky.sysmon.wmi         : 179.09 real, 2.15 user, 0.43 sys, 1.44% CPU
+conky.thinkpad.wmi       : 179.04 real, 1.65 user, 0.31 sys, 1.10% CPU
+conky.timezone.wmi       : 178.99 real, 1.57 user, 0.33 sys, 1.06% CPU
+conky.top.wmi            : 178.95 real, 1.72 user, 0.40 sys, 1.19% CPU
+conky.topmem.wmi         : 178.90 real, 1.09 user, 0.23 sys, 0.74% CPU
+conky.toptime.wmi        : 178.84 real, 0.43 user, 0.14 sys, 0.32% CPU
+conky.uptime.wmi         : 178.80 real, 0.89 user, 0.20 sys, 0.61% CPU
+conky.weather.wmi        : 178.73 real, 1.85 user, 0.40 sys, 1.26% CPU
+conky.wireless.wmi       : 178.67 real, 1.85 user, 0.40 sys, 1.26% CPU
+conky.wrapper-sun-moon-tz: 178.64 real, 2.33 user, 0.36 sys, 1.51% CPU
+conky.wrapper-weather.wmi: 178.58 real, 2.27 user, 0.47 sys, 1.54% CPU
+conky.xmms2.wmi          : 178.52 real, 1.75 user, 0.42 sys, 1.21% CPU
 
 (During the above test conky used the modified version of the default
 conky.conf file -- MIXER and THINKPAD entries were enabled while AUDACIOUS,
@@ -67,202 +68,205 @@ MOC, MPD, and XMMS2 entries were disabled.)
 
 plugins.offline:
 
-arch-patches.wmi         : 179.98 real, 0.16 user, 0.08 sys, 0.14% CPU
-bbc-mundo.wmi            : 179.97 real, 0.38 user, 0.12 sys, 0.28% CPU
-billboard-top10.wmi      : 179.93 real, 0.25 user, 0.08 sys, 0.19% CPU
-cnet.wmi                 : 179.86 real, 0.28 user, 0.14 sys, 0.23% CPU
-commentcamarche.wmi      : 179.81 real, 0.17 user, 0.09 sys, 0.14% CPU
-currencies-pl-avg.wmi    : 179.75 real, 0.13 user, 0.08 sys, 0.12% CPU
-currencies-pl-buy.wmi    : 179.70 real, 0.12 user, 0.08 sys, 0.11% CPU
-currencies-pl-sell.wmi   : 179.63 real, 0.10 user, 0.08 sys, 0.10% CPU
-dockapps.wmi             : 179.54 real, 0.08 user, 0.06 sys, 0.08% CPU
-dpreview.wmi             : 179.48 real, 0.16 user, 0.09 sys, 0.14% CPU
-forecast.new-york.wmi    : 179.45 real, 4.78 user, 1.73 sys, 3.63% CPU
-forecast.sydney.wmi      : 179.39 real, 5.04 user, 1.83 sys, 3.83% CPU
-forecast.wroclaw.wmi     : 179.37 real, 5.01 user, 1.88 sys, 3.84% CPU
-freecode.wmi             : 179.33 real, 0.13 user, 0.08 sys, 0.12% CPU
-kernel-2.4.wmi           : 179.28 real, 0.11 user, 0.08 sys, 0.11% CPU
-kernel-2.6.wmi           : 179.18 real, 0.12 user, 0.08 sys, 0.11% CPU
-kernel-3.x.wmi           : 179.09 real, 0.18 user, 0.09 sys, 0.15% CPU
-kommersant.wmi           : 179.02 real, 0.17 user, 0.08 sys, 0.14% CPU
-linuxquestions-slackware.: 178.91 real, 0.29 user, 0.13 sys, 0.23% CPU
-nasdaq.wmi               : 178.81 real, 0.09 user, 0.08 sys, 0.09% CPU
-pitchfork.wmi            : 178.71 real, 0.13 user, 0.08 sys, 0.11% CPU
-slackbuilds.wmi          : 178.63 real, 0.08 user, 0.07 sys, 0.08% CPU
-slackware-patches.wmi    : 178.54 real, 0.15 user, 0.08 sys, 0.13% CPU
-slashdot.wmi             : 178.49 real, 0.18 user, 0.10 sys, 0.16% CPU
-spiegel.wmi              : 178.44 real, 0.16 user, 0.07 sys, 0.13% CPU
-tvn24.wmi                : 178.38 real, 0.24 user, 0.09 sys, 0.18% CPU
-twitter.wmi              : 178.30 real, 0.28 user, 0.16 sys, 0.24% CPU
-weather.wmi              : 178.23 real, 2.88 user, 0.94 sys, 2.14% CPU
-wrapper-currencies-pl.wmi: 178.17 real, 2.41 user, 0.92 sys, 1.87% CPU
-wrapper-internet-allinone: 178.08 real, 0.99 user, 0.39 sys, 0.78% CPU
-wrapper-weather.wmi      : 178.02 real, 3.40 user, 1.30 sys, 2.64% CPU
-wyborcza.wmi             : 177.99 real, 0.24 user, 0.12 sys, 0.20% CPU
+bbc-mundo.wmi            : 180.00 real, 0.33 user, 0.10 sys, 0.24% CPU
+billboard-top10.wmi      : 179.96 real, 0.21 user, 0.08 sys, 0.16% CPU
+cnet.wmi                 : 179.89 real, 0.41 user, 0.13 sys, 0.30% CPU
+commentcamarche.wmi      : 179.79 real, 0.33 user, 0.11 sys, 0.24% CPU
+currencies-pl-avg.wmi    : 179.70 real, 0.18 user, 0.09 sys, 0.15% CPU
+currencies-pl-buy.wmi    : 179.58 real, 0.15 user, 0.08 sys, 0.13% CPU
+currencies-pl-sell.wmi   : 179.46 real, 0.15 user, 0.08 sys, 0.13% CPU
+dpreview.wmi             : 179.36 real, 0.22 user, 0.10 sys, 0.18% CPU
+forecast.new-york.wmi    : 179.27 real, 9.09 user, 1.82 sys, 6.08% CPU
+forecast.sydney.wmi      : 179.17 real, 9.79 user, 2.07 sys, 6.62% CPU
+forecast.wroclaw.wmi     : 179.10 real, 9.84 user, 1.90 sys, 6.55% CPU
+kernel-2.4.wmi           : 179.07 real, 0.17 user, 0.08 sys, 0.14% CPU
+kernel-2.6.wmi           : 179.00 real, 0.17 user, 0.08 sys, 0.14% CPU
+kernel-3.x.wmi           : 178.91 real, 0.27 user, 0.10 sys, 0.21% CPU
+kommersant.wmi           : 178.80 real, 0.24 user, 0.09 sys, 0.18% CPU
+linuxquestions-slackware.: 178.69 real, 0.43 user, 0.15 sys, 0.32% CPU
+lotto.wmi                : 178.56 real, 3.52 user, 0.59 sys, 2.30% CPU
+nasdaq.wmi               : 178.45 real, 0.12 user, 0.07 sys, 0.11% CPU
+pitchfork.wmi            : 178.28 real, 0.17 user, 0.09 sys, 0.15% CPU
+slackbuilds.wmi          : 178.12 real, 0.38 user, 0.11 sys, 0.28% CPU
+slackware-patches.wmi    : 178.00 real, 0.17 user, 0.07 sys, 0.13% CPU
+slashdot.wmi             : 177.88 real, 0.21 user, 0.09 sys, 0.16% CPU
+spiegel.wmi              : 177.78 real, 0.20 user, 0.09 sys, 0.16% CPU
+tvn24.wmi                : 177.73 real, 0.30 user, 0.10 sys, 0.22% CPU
+twitter.wmi              : 177.70 real, 0.29 user, 0.14 sys, 0.24% CPU
+weather.wmi              : 177.63 real, 5.50 user, 0.98 sys, 3.65% CPU
+wrapper-currencies-pl.wmi: 177.56 real, 3.67 user, 0.84 sys, 2.54% CPU
+wrapper-internet-allinone: 177.51 real, 1.46 user, 0.35 sys, 1.02% CPU
+wrapper-weather.wmi      : 177.40 real, 6.64 user, 1.35 sys, 4.50% CPU
+wyborcza.wmi             : 177.33 real, 0.26 user, 0.13 sys, 0.22% CPU
 
 
 plugins.online:
 
-arch-patches.wmi         : 179.99 real, 0.12 user, 0.09 sys, 0.12% CPU
-bbc-mundo.wmi            : 179.98 real, 0.27 user, 0.10 sys, 0.20% CPU
-billboard-top10.wmi      : 179.94 real, 0.16 user, 0.09 sys, 0.14% CPU
-cnet.wmi                 : 179.86 real, 0.22 user, 0.11 sys, 0.18% CPU
-commentcamarche.wmi      : 179.84 real, 0.16 user, 0.09 sys, 0.14% CPU
-currencies-pl-avg.wmi    : 179.81 real, 0.13 user, 0.09 sys, 0.12% CPU
-currencies-pl-buy.wmi    : 179.73 real, 0.12 user, 0.08 sys, 0.11% CPU
-currencies-pl-sell.wmi   : 179.65 real, 0.11 user, 0.08 sys, 0.11% CPU
-dockapps.wmi             : 179.60 real, 0.06 user, 0.07 sys, 0.07% CPU
-dpreview.wmi             : 179.59 real, 0.18 user, 0.07 sys, 0.14% CPU
-forecast.new-york.wmi    : 179.51 real, 4.82 user, 1.68 sys, 3.62% CPU
-forecast.sydney.wmi      : 179.46 real, 5.15 user, 1.85 sys, 3.90% CPU
-forecast.wroclaw.wmi     : 179.43 real, 5.13 user, 1.90 sys, 3.92% CPU
-freecode.wmi             : 179.41 real, 0.13 user, 0.09 sys, 0.12% CPU
-kernel-2.4.wmi           : 179.38 real, 0.15 user, 0.07 sys, 0.12% CPU
-kernel-2.6.wmi           : 179.29 real, 0.15 user, 0.08 sys, 0.13% CPU
-kernel-3.x.wmi           : 179.20 real, 0.23 user, 0.11 sys, 0.19% CPU
-kommersant.wmi           : 179.12 real, 0.19 user, 0.08 sys, 0.15% CPU
-linuxquestions-slackware.: 179.02 real, 0.35 user, 0.15 sys, 0.28% CPU
-nasdaq.wmi               : 178.94 real, 0.11 user, 0.07 sys, 0.10% CPU
-pitchfork.wmi            : 178.82 real, 0.15 user, 0.07 sys, 0.12% CPU
-slackbuilds.wmi          : 178.74 real, 0.27 user, 0.15 sys, 0.24% CPU
-slackware-patches.wmi    : 178.64 real, 0.16 user, 0.08 sys, 0.14% CPU
-slashdot.wmi             : 178.58 real, 0.18 user, 0.10 sys, 0.16% CPU
-spiegel.wmi              : 178.56 real, 0.16 user, 0.10 sys, 0.14% CPU
-tvn24.wmi                : 178.49 real, 0.26 user, 0.09 sys, 0.19% CPU
-twitter.wmi              : 178.44 real, 0.34 user, 0.14 sys, 0.27% CPU
-weather.wmi              : 178.37 real, 2.94 user, 1.02 sys, 2.22% CPU
-wrapper-currencies-pl.wmi: 178.31 real, 2.26 user, 0.75 sys, 1.69% CPU
-wrapper-internet-allinone: 178.25 real, 1.02 user, 0.38 sys, 0.78% CPU
-wrapper-weather.wmi      : 178.21 real, 3.45 user, 1.34 sys, 2.69% CPU
-wyborcza.wmi             : 178.14 real, 0.27 user, 0.11 sys, 0.21% CPU
+bbc-mundo.wmi            : 179.97 real, 0.33 user, 0.10 sys, 0.24% CPU
+billboard-top10.wmi      : 179.92 real, 0.21 user, 0.09 sys, 0.17% CPU
+cnet.wmi                 : 179.86 real, 0.29 user, 0.11 sys, 0.22% CPU
+commentcamarche.wmi      : 179.76 real, 0.22 user, 0.08 sys, 0.17% CPU
+currencies-pl-avg.wmi    : 179.69 real, 0.19 user, 0.09 sys, 0.15% CPU
+currencies-pl-buy.wmi    : 179.57 real, 0.16 user, 0.09 sys, 0.14% CPU
+currencies-pl-sell.wmi   : 179.46 real, 0.16 user, 0.08 sys, 0.13% CPU
+dpreview.wmi             : 179.42 real, 0.23 user, 0.10 sys, 0.18% CPU
+forecast.new-york.wmi    : 179.29 real, 9.11 user, 1.84 sys, 6.11% CPU
+forecast.sydney.wmi      : 179.19 real, 9.81 user, 1.94 sys, 6.56% CPU
+forecast.wroclaw.wmi     : 179.13 real, 9.72 user, 2.05 sys, 6.57% CPU
+kernel-2.4.wmi           : 179.08 real, 0.17 user, 0.10 sys, 0.15% CPU
+kernel-2.6.wmi           : 179.02 real, 0.19 user, 0.09 sys, 0.15% CPU
+kernel-3.x.wmi           : 178.89 real, 0.31 user, 0.10 sys, 0.23% CPU
+kommersant.wmi           : 178.78 real, 0.24 user, 0.08 sys, 0.18% CPU
+linuxquestions-slackware.: 178.60 real, 0.46 user, 0.14 sys, 0.33% CPU
+lotto.wmi                : 178.48 real, 3.56 user, 0.62 sys, 2.34% CPU
+nasdaq.wmi               : 178.34 real, 0.11 user, 0.08 sys, 0.11% CPU
+pitchfork.wmi            : 178.22 real, 0.20 user, 0.08 sys, 0.15% CPU
+slackbuilds.wmi          : 178.10 real, 0.37 user, 0.13 sys, 0.28% CPU
+slackware-patches.wmi    : 177.95 real, 0.18 user, 0.07 sys, 0.14% CPU
+slashdot.wmi             : 177.80 real, 0.21 user, 0.09 sys, 0.17% CPU
+spiegel.wmi              : 177.69 real, 0.20 user, 0.10 sys, 0.17% CPU
+tvn24.wmi                : 177.58 real, 0.30 user, 0.11 sys, 0.23% CPU
+twitter.wmi              : 177.52 real, 0.31 user, 0.15 sys, 0.26% CPU
+weather.wmi              : 177.40 real, 5.42 user, 0.89 sys, 3.56% CPU
+wrapper-currencies-pl.wmi: 177.30 real, 3.71 user, 0.84 sys, 2.56% CPU
+wrapper-internet-allinone: 177.15 real, 1.45 user, 0.35 sys, 1.02% CPU
+wrapper-weather.wmi      : 177.05 real, 6.62 user, 1.33 sys, 4.49% CPU
+wyborcza.wmi             : 176.97 real, 0.25 user, 0.14 sys, 0.22% CPU
 
 
-plugins.system:
+plugins.system-1:
 
-alarm.wmi                : 179.93 real, 0.55 user, 0.14 sys, 0.38% CPU
-beatclock.wmi            : 179.92 real, 2.13 user, 0.68 sys, 1.56% CPU
-biff.wmi                 : 179.90 real, 0.68 user, 0.20 sys, 0.49% CPU
-binclock-horizontal-01.wm: 179.87 real, 2.35 user, 0.75 sys, 1.72% CPU
-binclock-vertical-04.wmi : 179.84 real, 0.91 user, 0.37 sys, 0.71% CPU
-binclock-vertical-05.wmi : 179.81 real, 1.44 user, 0.39 sys, 1.02% CPU
-binclock-vertical-06.wmi : 179.80 real, 1.35 user, 0.43 sys, 0.99% CPU
-binclock-vertical-07.wmi : 179.76 real, 2.14 user, 0.68 sys, 1.57% CPU
-binclock-vertical-08.wmi : 179.74 real, 2.42 user, 0.73 sys, 1.75% CPU
-binclock-vertical-09.wmi : 179.71 real, 2.63 user, 0.68 sys, 1.84% CPU
-binclock-vertical-10.wmi : 179.67 real, 2.67 user, 0.79 sys, 1.93% CPU
-binclock-vertical-11.wmi : 179.65 real, 4.64 user, 1.10 sys, 3.19% CPU
-binclock-vertical-12.wmi : 179.63 real, 4.68 user, 1.04 sys, 3.18% CPU
-binclock-vertical-13.wmi : 179.60 real, 2.21 user, 0.63 sys, 1.58% CPU
-calendar.wmi             : 179.57 real, 0.07 user, 0.05 sys, 0.07% CPU
-clock.wmi                : 179.55 real, 0.11 user, 0.06 sys, 0.10% CPU
-coin.wmi                 : 179.52 real, 0.06 user, 0.06 sys, 0.07% CPU
-cpumon.wmi               : 179.51 real, 1.03 user, 0.31 sys, 0.74% CPU
-date-pl.wmi              : 179.49 real, 3.46 user, 1.04 sys, 2.51% CPU
-date-us.wmi              : 179.45 real, 3.27 user, 0.99 sys, 2.37% CPU
-date.wmi                 : 179.38 real, 2.10 user, 0.62 sys, 1.52% CPU
-days.wmi                 : 179.29 real, 0.47 user, 0.19 sys, 0.37% CPU
-df.wmi                   : 179.25 real, 0.70 user, 0.23 sys, 0.52% CPU
-dice.wmi                 : 179.20 real, 1.68 user, 0.51 sys, 1.22% CPU
-fuzzy-clock.wmi          : 179.14 real, 0.11 user, 0.07 sys, 0.10% CPU
-gettime.wmi              : 179.09 real, 2.13 user, 0.61 sys, 1.53% CPU
-hexclock-01.wmi          : 179.04 real, 2.10 user, 0.64 sys, 1.53% CPU
-hexclock-02.wmi          : 178.99 real, 2.16 user, 0.63 sys, 1.56% CPU
-iching.wmi               : 178.96 real, 2.41 user, 0.59 sys, 1.68% CPU
-ip.wmi                   : 178.89 real, 0.10 user, 0.07 sys, 0.09% CPU
-julian-date.wmi          : 178.84 real, 0.96 user, 0.40 sys, 0.76% CPU
-memory.wmi               : 178.77 real, 1.17 user, 0.48 sys, 0.93% CPU
-messages.wmi             : 178.71 real, 0.48 user, 0.17 sys, 0.37% CPU
-netmon.wmi               : 178.65 real, 3.64 user, 1.38 sys, 2.81% CPU
-pinboard.wmi             : 178.62 real, 0.91 user, 0.16 sys, 0.60% CPU
-print-day.wmi            : 178.56 real, 0.08 user, 0.06 sys, 0.08% CPU
-print-hours.wmi          : 178.50 real, 0.08 user, 0.05 sys, 0.07% CPU
-print-minutes.wmi        : 178.43 real, 0.11 user, 0.08 sys, 0.11% CPU
-print-month.wmi          : 178.28 real, 0.07 user, 0.06 sys, 0.07% CPU
-print-seconds.wmi        : 178.16 real, 2.93 user, 0.89 sys, 2.14% CPU
-print-weekday.wmi        : 178.11 real, 0.08 user, 0.05 sys, 0.07% CPU
-ps.wmi                   : 178.08 real, 1.20 user, 0.67 sys, 1.05% CPU
-secure.wmi               : 178.04 real, 0.51 user, 0.18 sys, 0.39% CPU
-stopwatch.wmi            : 178.01 real, 2.26 user, 0.65 sys, 1.64% CPU
-sun-moon.wmi             : 177.98 real, 0.41 user, 0.13 sys, 0.31% CPU
-syslog.wmi               : 177.96 real, 0.47 user, 0.17 sys, 0.36% CPU
-sysmon.wmi               : 177.92 real, 1.70 user, 1.07 sys, 1.56% CPU
-thinkpad.wmi             : 177.88 real, 3.88 user, 1.34 sys, 2.93% CPU
-timer.wmi                : 177.85 real, 2.27 user, 0.69 sys, 1.66% CPU
-timezone.wmi             : 177.81 real, 0.33 user, 0.14 sys, 0.27% CPU
-top.wmi                  : 177.77 real, 0.93 user, 0.89 sys, 1.02% CPU
-traffic.wmi              : 177.73 real, 3.58 user, 1.30 sys, 2.74% CPU
-uptime.wmi               : 177.66 real, 0.46 user, 0.20 sys, 0.37% CPU
-wrapper-date-pinboard.wmi: 177.61 real, 4.29 user, 0.80 sys, 2.87% CPU
-wrapper-date-tz.wmi      : 177.56 real, 4.88 user, 1.76 sys, 3.74% CPU
-wrapper-df.wmi           : 177.50 real, 1.15 user, 0.37 sys, 0.85% CPU
-wrapper-logfiles.wmi     : 177.40 real, 1.13 user, 0.40 sys, 0.86% CPU
-wrapper-sun-moon-tz.wmi  : 177.18 real, 1.36 user, 0.44 sys, 1.02% CPU
+beatclock.wmi            : 179.92 real, 4.29 user, 0.82 sys, 2.84% CPU
+biff.wmi                 : 179.90 real, 1.27 user, 0.30 sys, 0.87% CPU
+binclock-horizontal-01.wm: 179.86 real, 4.62 user, 0.91 sys, 3.08% CPU
+binclock-vertical-04.wmi : 179.81 real, 1.67 user, 0.49 sys, 1.20% CPU
+binclock-vertical-05.wmi : 179.78 real, 2.79 user, 0.56 sys, 1.86% CPU
+binclock-vertical-06.wmi : 179.74 real, 2.78 user, 0.57 sys, 1.86% CPU
+binclock-vertical-07.wmi : 179.72 real, 4.41 user, 0.81 sys, 2.91% CPU
+binclock-vertical-08.wmi : 179.69 real, 4.97 user, 0.83 sys, 3.22% CPU
+binclock-vertical-09.wmi : 179.65 real, 5.11 user, 0.93 sys, 3.36% CPU
+binclock-vertical-10.wmi : 179.62 real, 5.57 user, 1.06 sys, 3.69% CPU
+binclock-vertical-11.wmi : 179.59 real, 8.55 user, 1.44 sys, 5.56% CPU
+binclock-vertical-12.wmi : 179.54 real, 8.51 user, 1.38 sys, 5.51% CPU
+binclock-vertical-13.wmi : 179.49 real, 4.46 user, 0.82 sys, 2.94% CPU
+calendar.wmi             : 179.45 real, 0.16 user, 0.08 sys, 0.13% CPU
+clock.wmi                : 179.41 real, 0.16 user, 0.08 sys, 0.13% CPU
+cpumon.wmi               : 179.36 real, 2.14 user, 0.45 sys, 1.44% CPU
+date-pl.wmi              : 179.32 real, 6.74 user, 1.25 sys, 4.45% CPU
+date-us.wmi              : 179.28 real, 6.67 user, 1.23 sys, 4.41% CPU
+date.wmi                 : 179.24 real, 4.26 user, 0.74 sys, 2.79% CPU
+df.wmi                   : 179.22 real, 1.47 user, 0.31 sys, 1.00% CPU
+fuzzy-clock.wmi          : 179.16 real, 0.16 user, 0.07 sys, 0.13% CPU
+keyboard.wmi             : 179.12 real, 5.36 user, 0.57 sys, 3.31% CPU
+memory.wmi               : 179.09 real, 2.57 user, 0.85 sys, 1.91% CPU
+netmon.wmi               : 179.05 real, 7.91 user, 1.66 sys, 5.34% CPU
+pinboard.wmi             : 178.99 real, 1.29 user, 0.18 sys, 0.82% CPU
+print-day.wmi            : 178.91 real, 0.15 user, 0.09 sys, 0.14% CPU
+print-hours.wmi          : 178.69 real, 0.15 user, 0.09 sys, 0.13% CPU
+print-minutes.wmi        : 178.50 real, 0.15 user, 0.09 sys, 0.14% CPU
+print-month.wmi          : 178.41 real, 0.16 user, 0.09 sys, 0.14% CPU
+print-seconds.wmi        : 178.34 real, 6.20 user, 1.07 sys, 4.08% CPU
+print-weekday.wmi        : 178.27 real, 0.14 user, 0.07 sys, 0.12% CPU
+sun-moon.wmi             : 178.20 real, 1.84 user, 0.30 sys, 1.20% CPU
+sysmon.wmi               : 178.17 real, 2.96 user, 1.09 sys, 2.28% CPU
+thinkpad.wmi             : 178.13 real, 5.78 user, 1.20 sys, 3.92% CPU
+timezone.wmi             : 178.08 real, 0.65 user, 0.16 sys, 0.45% CPU
+top.wmi                  : 178.01 real, 1.62 user, 0.86 sys, 1.39% CPU
+uptime.wmi               : 177.94 real, 0.96 user, 0.24 sys, 0.68% CPU
+wrapper-date-pinboard.wmi: 177.79 real, 7.15 user, 1.18 sys, 4.68% CPU
+wrapper-date-tz.wmi      : 177.55 real, 10.82 user, 2.21 sys, 7.34% CPU
+wrapper-df.wmi           : 177.42 real, 2.40 user, 0.58 sys, 1.68% CPU
+wrapper-sun-moon-tz.wmi  : 177.34 real, 2.34 user, 0.46 sys, 1.58% CPU
+
+
+plugins.system-2:
+
+alarm.wmi                : 179.93 real, 0.67 user, 0.13 sys, 0.44% CPU
+coin.wmi                 : 179.91 real, 3.98 user, 0.70 sys, 2.60% CPU
+days.wmi                 : 179.88 real, 0.89 user, 0.22 sys, 0.62% CPU
+dice.wmi                 : 179.83 real, 2.98 user, 0.55 sys, 1.97% CPU
+gettime.wmi              : 179.75 real, 3.83 user, 0.64 sys, 2.49% CPU
+hexclock-01.wmi          : 179.68 real, 3.90 user, 0.75 sys, 2.59% CPU
+hexclock-02.wmi          : 179.62 real, 3.90 user, 0.74 sys, 2.58% CPU
+hms.wmi                  : 179.54 real, 9.63 user, 1.83 sys, 6.38% CPU
+iching.wmi               : 179.47 real, 4.06 user, 0.73 sys, 2.67% CPU
+ip.wmi                   : 179.38 real, 0.21 user, 0.08 sys, 0.17% CPU
+julian-date.wmi          : 179.33 real, 1.87 user, 0.49 sys, 1.32% CPU
+messages.wmi             : 179.26 real, 0.44 user, 0.13 sys, 0.31% CPU
+ps.wmi                   : 179.15 real, 1.92 user, 0.71 sys, 1.47% CPU
+run-cmd.wmi              : 179.05 real, 12.84 user, 1.19 sys, 7.84% CPU
+secure.wmi               : 178.95 real, 0.45 user, 0.11 sys, 0.31% CPU
+stopwatch.wmi            : 178.89 real, 4.06 user, 0.76 sys, 2.70% CPU
+syslog.wmi               : 178.82 real, 0.44 user, 0.13 sys, 0.32% CPU
+timer.wmi                : 178.70 real, 4.03 user, 0.79 sys, 2.70% CPU
+traffic.wmi              : 178.63 real, 7.33 user, 1.62 sys, 5.01% CPU
+wrapper-logfiles.wmi     : 178.55 real, 1.38 user, 0.31 sys, 0.95% CPU
 
 
 samples:
 
-a-1050-line-plugin.wmi   : 180.00 real, 0.10 user, 0.06 sys, 0.09% CPU
-a-1913-letter-plugin.wmi : 179.99 real, 0.40 user, 0.19 sys, 0.33% CPU
-acrobats-1.wmi           : 179.96 real, 14.31 user, 4.26 sys, 10.32% CPU
-acrobats-2.wmi           : 179.94 real, 15.23 user, 4.51 sys, 10.97% CPU
-binclock-horizontal-02.wm: 179.92 real, 5.05 user, 1.73 sys, 3.77% CPU
-binclock-vertical-14.wmi : 179.90 real, 7.52 user, 3.20 sys, 5.96% CPU
-color01t-800080.wmi      : 179.88 real, 0.06 user, 0.05 sys, 0.06% CPU
-color02p-ff00ff.wmi      : 179.85 real, 0.06 user, 0.05 sys, 0.06% CPU
-color03t-ff80ff.wmi      : 179.83 real, 0.05 user, 0.05 sys, 0.06% CPU
-color04s-8000ff.wmi      : 179.81 real, 0.05 user, 0.06 sys, 0.06% CPU
-color05t-000080.wmi      : 179.76 real, 0.06 user, 0.05 sys, 0.06% CPU
-color06p-0000ff.wmi      : 179.73 real, 0.06 user, 0.05 sys, 0.06% CPU
-color07t-8080ff.wmi      : 179.72 real, 0.05 user, 0.06 sys, 0.06% CPU
-color08s-0080ff.wmi      : 179.69 real, 0.05 user, 0.05 sys, 0.06% CPU
-color09t-008080.wmi      : 179.67 real, 0.06 user, 0.05 sys, 0.06% CPU
-color10p-00ffff.wmi      : 179.65 real, 0.06 user, 0.04 sys, 0.06% CPU
-color11t-80ffff.wmi      : 179.63 real, 0.05 user, 0.06 sys, 0.06% CPU
-color12s-00ff80.wmi      : 179.61 real, 0.05 user, 0.05 sys, 0.05% CPU
-color13t-008000.wmi      : 179.59 real, 0.04 user, 0.05 sys, 0.05% CPU
-color14p-00ff00.wmi      : 179.56 real, 0.05 user, 0.04 sys, 0.05% CPU
-color15t-80ff80.wmi      : 179.54 real, 0.04 user, 0.05 sys, 0.05% CPU
-color16s-80ff00.wmi      : 179.50 real, 0.05 user, 0.04 sys, 0.06% CPU
-color17t-808000.wmi      : 179.49 real, 0.05 user, 0.05 sys, 0.05% CPU
-color18p-ffff00.wmi      : 179.47 real, 0.05 user, 0.04 sys, 0.05% CPU
-color19t-ffff80.wmi      : 179.44 real, 0.04 user, 0.05 sys, 0.05% CPU
-color20s-ff8000.wmi      : 179.42 real, 0.04 user, 0.05 sys, 0.05% CPU
-color21t-800000.wmi      : 179.38 real, 0.05 user, 0.05 sys, 0.05% CPU
-color22p-ff0000.wmi      : 179.34 real, 0.05 user, 0.05 sys, 0.05% CPU
-color23t-ff8080.wmi      : 179.32 real, 0.05 user, 0.05 sys, 0.05% CPU
-color24s-ff0080.wmi      : 179.28 real, 0.05 user, 0.04 sys, 0.05% CPU
-cyclist.wmi              : 179.26 real, 14.15 user, 3.85 sys, 10.04% CPU
-dziadek.wmi              : 179.23 real, 0.14 user, 0.06 sys, 0.11% CPU
-full-utf8-iso1.wmi       : 179.24 real, 0.18 user, 0.07 sys, 0.14% CPU
-full-utf8-iso2.wmi       : 179.21 real, 0.18 user, 0.07 sys, 0.14% CPU
-full-utf8-iso5.wmi       : 179.16 real, 0.17 user, 0.08 sys, 0.14% CPU
-golfer.wmi               : 179.09 real, 13.04 user, 3.82 sys, 9.41% CPU
-gray-000000.wmi          : 179.03 real, 0.04 user, 0.05 sys, 0.05% CPU
-gray-202020.wmi          : 178.96 real, 0.05 user, 0.05 sys, 0.06% CPU
-gray-404040.wmi          : 178.88 real, 0.06 user, 0.04 sys, 0.05% CPU
-gray-606060.wmi          : 178.82 real, 0.05 user, 0.04 sys, 0.05% CPU
-gray-808080-bright.wmi   : 178.77 real, 0.05 user, 0.05 sys, 0.06% CPU
-gray-808080-dark.wmi     : 178.72 real, 0.04 user, 0.05 sys, 0.05% CPU
-gray-a0a0a0.wmi          : 178.69 real, 0.05 user, 0.04 sys, 0.05% CPU
-gray-c0c0c0.wmi          : 178.65 real, 0.05 user, 0.05 sys, 0.06% CPU
-gray-e0e0e0.wmi          : 178.63 real, 0.05 user, 0.04 sys, 0.05% CPU
-gray-ffffff.wmi          : 178.61 real, 0.05 user, 0.05 sys, 0.05% CPU
-html-iso1.wmi            : 178.51 real, 0.24 user, 0.11 sys, 0.19% CPU
-html-iso2.wmi            : 178.48 real, 0.28 user, 0.09 sys, 0.21% CPU
-html-iso5.wmi            : 178.44 real, 0.30 user, 0.13 sys, 0.24% CPU
-last-day.wmi             : 178.35 real, 0.06 user, 0.06 sys, 0.07% CPU
-mondays-child.wmi        : 178.28 real, 0.08 user, 0.06 sys, 0.08% CPU
-ostrich.wmi              : 178.26 real, 15.25 user, 3.72 sys, 10.64% CPU
-quick-koi8r-dummy.wmi    : 178.22 real, 0.08 user, 0.04 sys, 0.07% CPU
-quick-koi8r-iso5.wmi     : 178.19 real, 0.16 user, 0.06 sys, 0.13% CPU
-quick-utf8-dummy.wmi     : 178.13 real, 0.11 user, 0.07 sys, 0.10% CPU
-quick-utf8-iso1.wmi      : 178.11 real, 0.20 user, 0.08 sys, 0.15% CPU
-quick-utf8-iso2.wmi      : 178.10 real, 0.20 user, 0.08 sys, 0.16% CPU
-quick-utf8-iso5.wmi      : 178.05 real, 0.21 user, 0.08 sys, 0.16% CPU
-test-01-50.wmi           : 177.97 real, 0.08 user, 0.05 sys, 0.07% CPU
-test-50-01.wmi           : 177.93 real, 0.10 user, 0.06 sys, 0.09% CPU
-timestring.wmi           : 177.86 real, 0.09 user, 0.05 sys, 0.08% CPU
-welcome.wmi              : 177.79 real, 4.33 user, 1.42 sys, 3.23% CPU
+a-1050-line-plugin.wmi   : 179.99 real, 0.11 user, 0.08 sys, 0.11% CPU
+a-1913-letter-plugin.wmi : 179.96 real, 0.48 user, 0.19 sys, 0.37% CPU
+acrobats-1.wmi           : 179.93 real, 21.33 user, 4.23 sys, 14.21% CPU
+acrobats-2.wmi           : 179.88 real, 28.34 user, 5.16 sys, 18.62% CPU
+binclock-horizontal-02.wm: 179.86 real, 14.95 user, 2.69 sys, 9.81% CPU
+binclock-vertical-14.wmi : 179.84 real, 21.43 user, 5.39 sys, 14.91% CPU
+color01t-800080.wmi      : 179.79 real, 0.07 user, 0.06 sys, 0.07% CPU
+color02p-ff00ff.wmi      : 179.74 real, 0.06 user, 0.07 sys, 0.07% CPU
+color03t-ff80ff.wmi      : 179.67 real, 0.06 user, 0.06 sys, 0.07% CPU
+color04s-8000ff.wmi      : 179.60 real, 0.07 user, 0.06 sys, 0.07% CPU
+color05t-000080.wmi      : 179.55 real, 0.06 user, 0.06 sys, 0.07% CPU
+color06p-0000ff.wmi      : 179.52 real, 0.05 user, 0.07 sys, 0.07% CPU
+color07t-8080ff.wmi      : 179.49 real, 0.06 user, 0.06 sys, 0.07% CPU
+color08s-0080ff.wmi      : 179.44 real, 0.06 user, 0.06 sys, 0.07% CPU
+color09t-008080.wmi      : 179.40 real, 0.05 user, 0.07 sys, 0.07% CPU
+color10p-00ffff.wmi      : 179.36 real, 0.06 user, 0.06 sys, 0.07% CPU
+color11t-80ffff.wmi      : 179.33 real, 0.06 user, 0.06 sys, 0.07% CPU
+color12s-00ff80.wmi      : 179.28 real, 0.07 user, 0.06 sys, 0.07% CPU
+color13t-008000.wmi      : 179.25 real, 0.07 user, 0.05 sys, 0.07% CPU
+color14p-00ff00.wmi      : 179.20 real, 0.06 user, 0.07 sys, 0.07% CPU
+color15t-80ff80.wmi      : 179.15 real, 0.07 user, 0.06 sys, 0.07% CPU
+color16s-80ff00.wmi      : 179.13 real, 0.06 user, 0.07 sys, 0.07% CPU
+color17t-808000.wmi      : 179.10 real, 0.06 user, 0.06 sys, 0.07% CPU
+color18p-ffff00.wmi      : 179.06 real, 0.07 user, 0.05 sys, 0.07% CPU
+color19t-ffff80.wmi      : 179.01 real, 0.06 user, 0.06 sys, 0.07% CPU
+color20s-ff8000.wmi      : 178.98 real, 0.05 user, 0.07 sys, 0.07% CPU
+color21t-800000.wmi      : 178.95 real, 0.06 user, 0.06 sys, 0.07% CPU
+color22p-ff0000.wmi      : 178.90 real, 0.07 user, 0.05 sys, 0.07% CPU
+color23t-ff8080.wmi      : 178.87 real, 0.07 user, 0.05 sys, 0.07% CPU
+color24s-ff0080.wmi      : 178.82 real, 0.07 user, 0.05 sys, 0.07% CPU
+cyclist.wmi              : 178.78 real, 23.65 user, 4.21 sys, 15.59% CPU
+dziadek.wmi              : 178.70 real, 0.20 user, 0.07 sys, 0.15% CPU
+full-utf8-iso1.wmi       : 178.64 real, 0.22 user, 0.10 sys, 0.18% CPU
+full-utf8-iso2.wmi       : 178.58 real, 0.24 user, 0.08 sys, 0.18% CPU
+full-utf8-iso5.wmi       : 178.50 real, 0.22 user, 0.10 sys, 0.18% CPU
+golfer.wmi               : 178.37 real, 22.07 user, 4.18 sys, 14.72% CPU
+gray-000000.wmi          : 178.28 real, 0.07 user, 0.05 sys, 0.07% CPU
+gray-202020.wmi          : 178.18 real, 0.07 user, 0.06 sys, 0.07% CPU
+gray-404040.wmi          : 178.08 real, 0.06 user, 0.06 sys, 0.07% CPU
+gray-606060.wmi          : 177.99 real, 0.06 user, 0.06 sys, 0.07% CPU
+gray-808080-bright.wmi   : 177.95 real, 0.06 user, 0.06 sys, 0.07% CPU
+gray-808080-dark.wmi     : 177.93 real, 0.06 user, 0.06 sys, 0.07% CPU
+gray-a0a0a0.wmi          : 177.87 real, 0.06 user, 0.06 sys, 0.07% CPU
+gray-c0c0c0.wmi          : 177.78 real, 0.07 user, 0.05 sys, 0.07% CPU
+gray-e0e0e0.wmi          : 177.72 real, 0.06 user, 0.06 sys, 0.07% CPU
+gray-ffffff.wmi          : 177.65 real, 0.07 user, 0.06 sys, 0.07% CPU
+html-iso1.wmi            : 177.59 real, 0.35 user, 0.13 sys, 0.27% CPU
+html-iso2.wmi            : 177.52 real, 0.35 user, 0.15 sys, 0.28% CPU
+html-iso5.wmi            : 177.46 real, 0.39 user, 0.15 sys, 0.30% CPU
+last-day.wmi             : 177.40 real, 0.09 user, 0.06 sys, 0.09% CPU
+mondays-child.wmi        : 177.29 real, 0.11 user, 0.08 sys, 0.10% CPU
+ostrich.wmi              : 177.26 real, 25.87 user, 4.12 sys, 16.92% CPU
+quick-koi8r-dummy.wmi    : 177.23 real, 0.10 user, 0.06 sys, 0.09% CPU
+quick-koi8r-iso5.wmi     : 177.14 real, 0.22 user, 0.09 sys, 0.18% CPU
+quick-utf8-dummy.wmi     : 177.07 real, 0.13 user, 0.10 sys, 0.13% CPU
+quick-utf8-iso1.wmi      : 177.01 real, 0.27 user, 0.11 sys, 0.22% CPU
+quick-utf8-iso2.wmi      : 176.95 real, 0.26 user, 0.12 sys, 0.21% CPU
+quick-utf8-iso5.wmi      : 176.88 real, 0.28 user, 0.11 sys, 0.22% CPU
+test-01-50.wmi           : 176.78 real, 0.10 user, 0.06 sys, 0.09% CPU
+test-50-01.wmi           : 176.66 real, 0.15 user, 0.08 sys, 0.13% CPU
+timestring.wmi           : 176.57 real, 0.10 user, 0.06 sys, 0.09% CPU
+welcome.wmi              : 176.50 real, 8.68 user, 1.76 sys, 5.92% CPU
 
                                       *
                                     *   *

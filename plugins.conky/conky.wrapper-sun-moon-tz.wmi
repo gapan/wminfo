@@ -2,7 +2,7 @@
 
 # wminfo plugin: monitors sun/moon rise/set times and time zones data
 
-# command: wminfo -p conky.wrapper-sun-moon-tz.wmi -u 15 -b#000000 -f#ffff00
+# command: wminfo -p conky.wrapper-sun-moon-tz.wmi -u 15 -i 2 -b#000000 -f#ffff00
 
 # the script based on an idea by Peter Trenholme
 

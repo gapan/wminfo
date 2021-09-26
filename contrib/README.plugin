@@ -7,14 +7,14 @@ stored in /usr/local/bin directory (without .wmi extension):
 
     plugin [plugin | -a | --all]
     plugins:
+        acrobats-1
+        acrobats-2
         alarm
-        arch-patches
-        bbc-mundo
         .
         .
         .
-        uptime
-        weather
+        wrapper-sun-moon-tz
+        wrapper-weather
         wyborcza
 
 The same script used with the name of the plugin without .wmi extension
@@ -24,7 +24,9 @@ displays the recommended command for that plugin, for example the command:
 
 displays the following command:
 
-    wminfo -p 'weather.wmi EPWR' -u 5 -s 0 -b#0199fe -f#ffffff
+    wminfo -p 'weather.wmi EPWR' -u 5s -b#0199fe -f#ffffff
+    wminfo -p 'weather.wmi KNYC' -u 5s -b#0199fe -f#ffffff
+    wminfo -p 'weather.wmi YSSY' -u 5s -b#0199fe -f#ffffff
 
 It is possible to use that script with -a or --all switch:
 
@@ -33,14 +35,14 @@ It is possible to use that script with -a or --all switch:
 As a result the plugin script displays the recommended commands for all
 available plugins:
 
-    wminfo -p alarm.wmi -u 60 -c -i 2 -b#000000 -f#ffff00
-    wminfo -p arch-patches.wmi -b#1793d1 -f#ffffff
-    wminfo -p bbc-mundo.wmi -i 1 -b#5c0000 -f#ffffff
+    wminfo -p acrobats-1.wmi -u 0 -t 4 -s 0 -b#000000 -f#00ffff
+    wminfo -p acrobats-2.wmi -u 0 -t 4 -s 0 -b#000000 -f#00ffff
+    wminfo -p alarm.wmi -u 60 -c -i 1 -b#000000 -f#ffff00
     .
     .
     .
-    wminfo -p uptime.wmi -u 15 -s 0 -b#000000 -f#ff0000
-    wminfo -p 'weather.wmi EPWR' -u 5 -s 0 -b#0199fe -f#ffffff
+    wminfo -p wrapper-sun-moon-tz.wmi -u 15 -i 2 -b#000000 -f#ffff00
+    wminfo -p wrapper-weather.wmi -u 6 -i 1 -b#000000 -f#00ffff
     wminfo -p wyborcza.wmi -i 2 -b#c2052c -f#ffffff
 
 To display the descriptions of the plugins use -h or --help switch:
@@ -50,13 +52,13 @@ To display the descriptions of the plugins use -h or --help switch:
 As a result the plugin script displays the descriptions of all available
 plugins:
 
+    acrobats-1.wmi: displays animated acrobats
+    acrobats-2.wmi: displays animated acrobats
     alarm.wmi: alerts when the given date and time comes
-    arch-patches.wmi: Arch Linux patches from Community repository
-    bbc-mundo.wmi: headlines from Spanish service bbc.co.uk/mundo/
     .
     .
     .
-    uptime.wmi: uptime, users, and load averages
-    weather.wmi: displays weather conditions for the selected airport
+    wrapper-sun-moon-tz.wmi: monitors Sun/Moon rise/set times and time zones data
+    wrapper-weather.wmi: monitors weather report and weather forecasts
     wyborcza.wmi: headlines from Polish service wyborcza.pl
 

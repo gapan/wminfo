@@ -2,10 +2,11 @@
 wminfo README.colors
 
 
-By default wminfo plugins from plugins.conky and plugins.system directories
-use the primary colors from CMY (subtractive color model) and RGB (additive
-color model) schemes: cyan, magenta, yellow, red, green, and blue. 
-Different colors are joined with the different types of the plugins:
+By default wminfo plugins from plugins.conky and plugins.system-*
+directories use the primary colors from CMY (subtractive color model)
+and RGB (additive color model) schemes: cyan, magenta, yellow, red,
+green, and blue.  Different colors are joined with the different types
+of the plugins:
 
     code       | color     | plugins
     -----------+-----------+-------------------------------

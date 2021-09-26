@@ -1,0 +1,135 @@
+
+wminfo README.sun-moon.wmi
+
+
+This is the description of new sun-moon.wmi plugin available since wminfo
+4.2.1.  The previous version used the solunar program to display the data.
+Unfortunately solunar at least up to 0.1.2a version displays the wrong
+data when used outside of the GMT time zone.  So I decided to replace it
+with my wmSunMoon dockable application in version 2.0.0 or a newer one.
+
+                                      *
+                                    *   *
+
+The sun-moon.wmi plugin displays the sunrise, sunset, moonrise, and moonset
+times, as well as the Moon phase and the index representing the state of
+the Moon (visible or invisible).  The plugin uses wmSunMoon program to
+determine these data.
+
+wmSunMoon is available at:
+
+    http://linux-bsd-unix.strefa.pl/index.en.html#wmSunMoon
+
+It is compatible with new sun-moon.wmi plugin since version 2.0.0.
+
+                                      *
+                                    *   *
+
+In order to display the data for a given location define its coordinates in
+the configuration section of the sun-moon.wmi plugin:
+
+    Latitude="51.11"		# negative south of the equator
+    Longitude="-17.02"		# negative east of Greenwich
+
+If you are in some other time zone than the given location define also the
+local and distant time zones:
+
+    LocalTimeZone="America/New_York"
+    DistantTimeZone="Europe/Warsaw"
+
+In order to display the list of all available time zones use zoneinfo(7)
+manual page or zoneinfo command -- both available after installing
+wmSunMoon.
+
+New sun-moon.wmi plugin uses the following command to display the data:
+
+    wminfo -p sun-moon.wmi -u 15 -i 2
+
+The additional switch translates properly the indices for the Moon, civil
+twilight, and golden hour.
+
+                                      *
+                                    *   *
+
+March 24, 2015 sun-moon.wmi plugin displayed for Wroclaw, Poland the data
+such as:
+
+          05:00           05:30           06:00           06:30
+    +---------+     +---------+     +---------+     +---------+
+    |05:46    |     |05:46    |     |05:46   D|     |05:46   D|
+    |18:10    |     |18:10    |     |18:10  ^G|     |18:10    |
+    |14%     ˇ| or: |14%     ˇ| or: |14%     ˇ| or: |15%     ˇ| or:
+    |08:06    |     |08:06  ^T|     |08:06    |     |08:06    |
+    |23:27   N|     |23:27   N|     |23:27    |     |23:27    |
+    +---------+     +---------+     +---------+     +---------+
+
+          17:30           18:00           18:30           19:00
+    +---------+     +---------+     +---------+     +---------+
+    |05:46   D|     |05:46   D|     |05:46    |     |05:46    |
+    |18:10    |     |18:10  ˇG|     |18:10    |     |18:10    |
+    |16%     ^| or: |16%     ^| or: |16%     ^| or: |16%     ^|
+    |08:06    |     |08:06    |     |08:06  ˇT|     |08:06    |
+    |23:27    |     |23:27    |     |23:27   N|     |23:27   N|
+    +---------+     +---------+     +---------+     +---------+
+
+  * Two times at the top are the sunrise and sunset times.
+
+  * The percentage such as 14% is the geometric fraction of the Moon way
+    through the current lunar cycle: 0% is for the new Moon, 25% is for
+    the 1st quarter, 50% is for the full Moon, and 75% is for the 3rd
+    quarter.
+
+  * Two times at the bottom are the moonrise and moonset times for a
+    given day.
+
+  * The index next to the percentage tells you whether the Moon is above
+    the horizon ^ (visible) or below it ˇ (invisible).
+
+  * The letter D next to the Sun times means that it is day and the
+    symbols ^G or ˇG mean that it is golden hour (morning or evening).
+
+  * The letter N next to the Moon times means that it is night and the
+    symbols ^T or ˇT mean that it is civil twilight (morning or evening).
+
+  * If the Sun or Moon rise or set does not occurs a given day the program
+    displays --:-- pattern instead of the time value.
+
+You can check Sun and Moon rise and set times using the following site:
+
+    http://www.timeanddate.com/worldclock/sunrise.html
+
+    http://www.timeanddate.com/worldclock/moonrise.html
+
+The slight differences between the data calculated by wmSunMoon and
+www.timeanddate.com are caused by different alghoritms used in their
+cases.
+
+                                      *
+                                    *   *
+
+The new Moon, 1st quarter, full Moon, and 3rd quarter are marked with the
+special symbols seen in the front of the percentage fraction.  The
+following data is for Wroclaw, Poland in February and March 2015:
+
+    02-19 01:00     02-25 15:00     03-05 16:00     03-13 16:00
+    new Moon        1st quarter     full Moon       3rd quarter
+
+    +---------+     +---------+     +---------+     +---------+
+    |06:58    |     |06:45   D|     |06:28   D|     |06:11   D|
+    |17:14    |     |17:25    |     |17:39    |     |17:52    |
+    |   0%   ˇ| or: | ) 25%  ^| or: | O 50%  ˇ| or: | ( 75%  ˇ|
+    |06:52    |     |10:11    |     |17:38    |     |00:53    |
+    |18:15   N|     |00:38    |     |06:06    |     |10:02    |
+    +---------+     +---------+     +---------+     +---------+
+
+In the above examples the empty space preceding the percentage fraction
+signs the new Moon, the ) mark signs the 1st quarter, the O mark signs the
+full Moon, and the ( mark signs the 3rd quarter.  (If you live on the
+southern hemisphere and the latitude value is negative the 1st quarter is
+marked by the ( sign and the 3rd quarter is marked by the ) sign.)
+
+According to the definition the exact values such as 0%, 25%, 50%, and 75%
+correspond to the new Moon, 1st quarter, full Moon, and 3rd quarter.  In
+practice some tolerances are taken into consideration.  wmSunMoon uses
+6.25% tolerances below and above the mentioned values.
+

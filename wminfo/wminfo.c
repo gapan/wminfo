@@ -2,7 +2,7 @@
 
  wminfo.c
 
- Version 4.2.0 (2015-02-20)
+ Version 4.2.1 (2015-04-01)
 
  - Cezary M. Kruk
    <c.kruk@bigfoot.com>
@@ -23,9 +23,9 @@
 
 */
 
-#define WMINFO_VERSION_CK "4.2.0"
+#define WMINFO_VERSION_CK "4.2.1"
 #define WMINFO_REVYEAR_CK "2011-2015"
-#define WMINFO_REVDATE_CK "2015-02-20"
+#define WMINFO_REVDATE_CK "2015-04-01"
 
 #define WMINFO_VERSION_PT "4.0.0"
 #define WMINFO_REVYEAR_PT "     2012"

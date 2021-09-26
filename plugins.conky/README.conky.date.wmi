@@ -35,7 +35,7 @@ I used such a period in order to save the CPU power.  The conky using the
 update interval equal 1.0 uses more power.
 
 Instead of using the conky.date.wmi plugin it is better to use the regular
-date.wmi plugin from the plugins.system directory.  If you prefer the
+date.wmi plugin from the plugins.system-1 directory.  If you prefer the
 conky.date.wmi plugin nevertheless shorten the conky update interval from
 three to one second.
 

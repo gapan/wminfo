@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# wminfo plugin: displays large number of the month
+
+# command: wminfo -p print-month.wmi -u 1m -s 0 -b#000000 -f#ffff00
+
+print-number-padded $(date +"%_m")
+

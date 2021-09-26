@@ -14,7 +14,6 @@ online                        stores localhost versions of Internet websites.
 
 run-all-wminfo-plugins        wminfo launcher: runs all wminfo plugins.
 
-arch-patches.wmi              Arch Linux patches from Community repository.
 bbc-mundo.wmi                 headlines from Spanish service bbc.co.uk/mundo/.
 billboard-top10.wmi           Billboard Top 10.
 cnet.wmi                      headlines from news.cnet.com.
@@ -22,19 +21,17 @@ commentcamarche.wmi           headlines from French service commentcamarche.net.
 currencies-pl-avg.wmi         currency exchange rates of Polish zloty (average).
 currencies-pl-buy.wmi         currency exchange rates of Polish zloty (buy).
 currencies-pl-sell.wmi        currency exchange rates of Polish zloty (sell).
-dockapps.wmi                  new dockapps at dockapps.windowmaker.org.
 dpreview.wmi                  headlines from dpreview.com.
 forecast.new-york.wmi         displays weather forecasts for today and tomorrow.
 forecast.sydney.wmi           displays weather forecasts for today and tomorrow.
 forecast.wroclaw.wmi          displays weather forecasts for today and tomorrow.
-freecode.wmi                  program submissions from freecode.com (formerly
-                                freshmeat.net).
 kernel-2.4.wmi                kernel 2.4 versions.
 kernel-2.6.wmi                kernel 2.6 versions.
 kernel-3.x.wmi                kernel 3.x versions.
 kommersant.wmi                headlines from Russian newspaper kommersant.ru.
 linuxquestions-slackware.wmi  new threads in Slackware section of
                                 LinuxQuestions.org.
+lotto.wmi                     the results of the Polish lottery Lotto.
 nasdaq.wmi                    NASDAQ Stock Prices.
 pitchfork.wmi                 Pitchfork best new albums.
 slackbuilds.wmi               the versions of the applications at
@@ -49,9 +46,8 @@ weather.wmi                   weather conditions for the selected airport.
 wrapper-currencies-pl.wmi     monitors Polish zloty buy/sell currency exchange
                                 rates.
 wrapper-internet-allinone.wmi monitors Slackware Linux patches and Polish zloty
-                                buy/sell currency exchange rates
-wrapper-weather.wmi           monitors weather report and weather forecasts for
-                                Wroclaw, Poland.
+                                buy/sell currency exchange rates.
+wrapper-weather.wmi           monitors weather report and weather forecasts.
 wyborcza.wmi                  headlines from Polish service wyborcza.pl.
 
                                       *
@@ -97,8 +93,7 @@ command.  In such cases the command links -source is helpful.  Sometimes it
 requires the additional switches.  See online script and seek the commands
 mirroring archlinux.org and slashdot.org sites.  After mirroring the site
 locally with links -source command the valid command to download the local
-mirror source code is lynx --source.  See arch-patches.wmi and slashdot.wmi
-wminfo plugins.
+mirror source code is lynx --source.  See slashdot.wmi wminfo plugin.
 
                                       *
                                     *   *

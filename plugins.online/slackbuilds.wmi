@@ -10,14 +10,14 @@
 
 datafile="$HOME/.wminfo/.slackbuilds.tmp"
 
-slackware_version=14.0
+slackware_version=14.1
 
 applications=" | \
-    multimedia/flash-player-plugin | \
-    network/ntop | \
-    network/opera | \
+    multimedia/flashplayer-plugin | \
+    desktop/wmcube | \
     desktop/wminfo | \
     desktop/wmpower | \
+    desktop/wmSunMoon | \
     "
 
 #
