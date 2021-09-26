@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# alarm: edits alarm.cfg
+
+if [ -e alarm.cfg ]
+then
+    FILE="alarm.cfg"
+elif [ -e $HOME/bin/alarm.cfg ]
+then
+    FILE="$HOME/bin/alarm.cfg"
+elif [ -e /usr/local/bin/alarm.cfg ]
+then
+    FILE="/usr/local/bin/alarm.cfg"
+else
+    echo "alarm: there is no alarm.cfg database."
+    exit
+fi
+
+if [ -x `which mcedit` ]
+then
+    mcedit $FILE
+elif [ -x `which nano` ]
+then
+    nano $FILE
+else
+    vim $FILE
+fi

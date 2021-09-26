@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# date-us: edits date-us.cfg
+
+if [ -e date-us.cfg ]
+then
+    FILE="date-us.cfg"
+elif [ -e $HOME/bin/date-us.cfg ]
+then
+    FILE="$HOME/bin/date-us.cfg"
+elif [ -e /usr/local/bin/date-us.cfg ]
+then
+    FILE="/usr/local/bin/date-us.cfg"
+else
+    echo "date-us: there is no date-us.cfg database."
+    exit
+fi
+
+if [ -x `which mcedit` ]
+then
+    mcedit $FILE
+elif [ -x `which nano` ]
+then
+    nano $FILE
+else
+    vim $FILE
+fi

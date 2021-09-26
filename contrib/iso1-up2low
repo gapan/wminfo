@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# converts ISO-8859-1 German, French, and Spanish uppercases to lowercases
+
+perl -pe 'tr/A-Z/a-z/;tr/ÄÖÜÀÂÇÈÉÊËÎÏÔÙÛÍÓÑ/äöüàâçèéêëîïôùûíóñ/;'

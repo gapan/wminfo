@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# wminfo plugin: headlines from Polish service wyborcza.pl
+
+# command: wminfo -p wyborcza.wmi -i 2 -b#c2052c -f#ffffff
+
+lynx --source localhost/wminfo/wyborcza.html | \
+	perl -pe 's/\n/ /g;' | \
+	sed 's/style=""><b>/style="" b>/g;' | \
+	sed 's/class="  red" ><a href="/class="  red"  a href="/g' | \
+	sed 's/<h1 class="  " ><a href=/<h1 class="  " a href=/g' | \
+	sed 's/</\n</g' | \
+	grep -E 'h1 class|red"  a href=|ZJa1' | \
+	perl -pe 's/<.*>//;' | \
+	html-iso1 | \
+	punctuation | \
+	iso2-up2low

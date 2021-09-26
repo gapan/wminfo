@@ -1,0 +1,30 @@
+# time zones: ALL
+
+# use that configuration file with the plugin CompactFormat variable set to "off"
+
+HAST		Pacific/Honolulu (HAST)
+AKST		America/Anchorage (AKST)
+PST		America/Los_Angeles (PST)
+MST		America/Edmonton (MST)
+CST		America/Guatemala (CST)
+EST		America/New_York (EST)
+AST		Atlantic/Bermuda (AST)
+ART		America/Buenos_Aires (ART)
+BRST		America/Sao_Paulo (BRST)
+GMT-1	+01	Etc/GMT+1 (GMT+1) *
+UTC		UTC (UTC); GMT (GMT)
+CET		CET (CET)
+EET		EET (EET)
+EAT		Africa/Khartoum (EAT)
+GMT+4	-04	Etc/GMT-4 (GMT-4) *
+GMT+5	-05	Etc/GMT-5 (GMT-5) *
+GMT+6	-06	Etc/GMT-6 (GMT-6) *
+GMT+7	-07	Etc/GMT-7 (GMT-7) *
+SGT		Asia/Singapore (SGT)
+JST		Asia/Tokyo (JST)
+GMT+10	-10	Etc/GMT-10 (GMT-10) *
+GMT+11	-11	Etc/GMT-11 (GMT-11) *
+GMT+12	-12	Etc/GMT-12 (GMT-12) *
+NZDT		Pacific/Auckland (NZDT)
+
+# * I couldn't find valid time zones definitions for these regions so I used GMT offsets

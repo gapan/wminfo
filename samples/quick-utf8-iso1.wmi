@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# wminfo plugin: tests UTF-8 to ISO-8859-1 conversion
+# command: wminfo -p quick-utf8-iso1.wmi -i 1
+
+links -source quick-utf8.html | \
+    perl -pe 's/\n/ /g;s/</\n</g' | \
+    grep 'CLASS' | sed 's/<.*>//;' | \
+    utf8-iso1 | \
+    punctuation

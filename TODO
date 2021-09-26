@@ -1,6 +1,25 @@
-TODO list for wmInfo
---------------------------------------------------------------
-	* Different (smaller) font support
-	
-Your feedback! If you have nice suggestions, ideas, whatever,
-that aren't on this list, feel free to mail them.
+
+wminfo TODO
+
+
+TODO list by Robert Kling   <robkli-8@student.luth.se> (Jul 27, 2000):
+
+* Different (smaller) font support.
+
+
+TODO list by Cezary M. Kruk <c.kruk@bigfoot.com>       (Sep 21, 2011):
+
+* Add more diacritics to the existing encodings -- especially ISO-8859-2 --
+  and add new ISO encodings.  To do that I need your help.  If you want
+  wminfo to accept diacritics or letters specific for your language send me
+  the sentence encoded in UTF-8 that contain all these letters.  I do not
+  expect you to invent such a sentence but to find the already existing
+  sentence for your language.  You can send it to Markus Kuhn too.  Here is
+  the list of the sentences collected by him:
+
+      http://www.cl.cam.ac.uk/~mgk25/ucs/examples/quickbrown.txt
+
+  The wminfo program can interpret the texts encoded in ISO encodings that
+  is characters fitting the ASCII range from 32 to 255.  So I can implement
+  the characters specific for your language if there exist the suitable ISO
+  encoding.

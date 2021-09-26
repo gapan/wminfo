@@ -1,0 +1,101 @@
+
+wminfo README.conky.weather.wmi
+
+
+The conky.weather.wmi plugin displays the weather information taken from:
+
+    http://weather.noaa.gov/
+
+By default it displays weather conditions for EPWR airport (it is the code
+of Wroclaw, Poland).  The appropriate commands for this code are:
+
+    conky.weather.wmi EPWR
+
+or:
+
+    wminfo -p "conky.weather.wmi EPWR" -u 6
+
+If you would like to display the weather conditions for the other location
+you have to modify all WEATHER entries in conky configuration file --
+~/.conkyrc or /etc/conky/conky.conf -- changing the ICAO code and then run
+the conky.weather.wmi plugin using that code instead of EPWR.
+
+To find the four letters ICAO code go to the following site, select a state
+or a country, and then select a location:
+
+    http://weather.noaa.gov/
+
+If you want to know the weather conditions for a few locations you can use
+one of the following methods:
+
+1. If you would like to display all these weather reports constantly put in
+   the conky configuration file a few groups of the entries such as
+   WEATHER1, WEATHER2, WEATHER3, etc. and prepare a few plugins such as
+   conky.weather1.wmi, conky.weather2.wmi, conky.weather3.wmi, etc.
+   customizing the Weather variables in the configuration section of the
+   plugins.
+
+2. If you would like to know the weather conditions for some location all
+   the time and the weather conditions in the other places from time to time
+   use conky.weather.wmi plugin for the first location and regular
+   weather.wmi plugin from plugins.offline or plugins.online directories in
+   the other cases.
+
+The conky.weather.wmi plugin displays the following information in the odd
+steps:
+
+    +---------+
+    |EPWR 1630|
+    |TMP: 4 C |
+    |PRS: 1028|
+    |HUM: 92% |
+    |WDS: 3   |
+    +---------+
+
+and the following information in the even steps:
+
+    +---------+     +---------+
+    |EPWR 1630|     |EPWR 1630|
+    |WTH: RAIN|     |SKY: CLEA|
+    |PRS: 1028| or: |PRS: 1028|
+    |HUM: 92% |     |HUM: 92% |
+    |WDD: SE  |     |WDD: SE  |
+    +---------+     +---------+
+
+The second and the last line differ in odd and even steps.  The consecutive
+data mean:
+
+* EPWR 1630  -- weather conditions for EPWR airport at 16:30 in local time;
+* TMP: 4 C   -- temperature is 4 C;
+* WTH: RAIN  -- weather conditions: displayed in the even steps;
+* SKY: CLEAR -- sky conditions: displayed in the even steps when the weather
+                  conditions are undefined;
+* PRS: 1028  -- pressure is 1028 hPa;
+* HUM: 92%   -- humidity is 92%;
+* WDS: 3     -- wind speed is 3 km/h;
+* WDD: SE    -- wind direction is a Southeast.
+
+The conky.weather.wmi plugin uses Celsius degrees by default.  If you prefer
+Fahrenheit degrees modify conky configuration file changing the following
+entry:
+
+    temperature_unit celsius
+
+to:
+
+    temperature_unit fahrenheit
+
+and modify conky.weather.wmi plugin changing:
+
+    TempUnit=" C"
+
+to:
+
+    TempUnit="F"
+
+Some weather or cloud condition names are longer that four letters.  In such
+a case you can scroll the line of the text to read the entire entry.
+
+The conky uses N wind direction when it cannot interpret the given value.
+As a result when the wind speed is 0 the conky.weather.wmi plugin displays N
+wind direction instead of VAR or CALM ones.

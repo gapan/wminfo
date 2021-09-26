@@ -1,0 +1,115 @@
+
+wminfo README.1st.plugins.conky
+
+
+This directory contains conky dependent versions of a few plugins:
+
+run-all-conky-plugins    wminfo launcher: runs all wminfo conky plugins.
+
+conky.conf               conky configuration file.
+conky.patch              a patch useful for conky.thinkpad.wmi plugin.
+
+conky.date.wmi           clock and calendar.
+conky.moc.wmi            moc status (music on console).
+conky.netmon.wmi         displays network traffic for the selected
+                           interfaces.
+conky.sysmon.wmi         displays CPU, memory, and swap usages as well as
+                           the processes number.
+conky.thinkpad.wmi       ACPI status of IBM/Lenovo ThinkPads.
+conky.timezone.wmi       displays time in different time zones.
+conky.top.wmi            top command output.
+conky.uptime.wmi         uptime, users, and load averages.
+conky.weather.wmi        displays weather conditions for the selected
+                           airport.
+conky.wireless.wmi       wireless connection status.
+
+The conky dependent plugins are more economical than their regular
+counterparts so it is a good idea to use them -- except for conky.date.wmi
+-- in order to lower the CPU power usage.
+
+Before using the plugins from the current directory copy conky.conf file to
+ ~/.conkyrc or /etc/conky/conky.conf one.  Then replace the USERNAME string
+in the following entry:
+
+    overwrite_file /tmp/.USERNAME.conky.tmp
+
+with your user name.  Finally run conky command.  You can run it using the
+appropriate ~/.xinitrc file:
+
+    ------------------------------------------------------------------------
+    xhost `hostname`
+    xmodmap ~/.Xmodmap
+    if [ "`ps au | grep $USER | grep conky | grep -v grep`" == "" ] ; then conky -d ; fi
+    wmaker
+    ------------------------------------------------------------------------
+
+By default conky uses Celsius degrees:
+
+    temperature_unit celsius
+
+In order to use Fahrenheit degrees you have to customize the conky
+configuration file:
+
+    temperature_unit fahrenheit
+
+In such a case you also have to modify conky.thinkpad.wmi and
+conky.weather.wmi plugins changing the variable:
+
+    TempUnit=" C"
+
+to:
+
+    TempUnit="F"
+
+In the default configuration conky updates the data each three seconds.  I
+chose such an update interval in order to save the CPU power.  As a result
+the shortest update time for the conky dependent plugins is equal to three
+seconds.  In the case of the conky dependent plugins that update the data
+less frequently use the update times that are the multiples of 3 such as 6,
+15, 60 etc.
+
+If you would like to shorten the update interval to one second change the
+following entry in the conky configuration file from:
+
+    update_interval 3.0
+
+to:
+
+    update_interval 1.0
+
+In such a case you can also customize the update interval when the machine
+works on batteries from:
+
+    update_interval_on_battery 6.0
+
+to:
+
+    update_interval_on_battery 2.0
+
+During the tests of the conky configuration it is convenient to run conky
+from the terminal emulator and display the output on the console.  To
+achieve that change the following entry in the conky configuration file
+from:
+
+    out_to_console no
+
+to:
+
+    out_to_console yes
+
+To test the consecutive plugins run the commands such as:
+
+    conky.plugin.wmi
+
+To use the plugins use the commands such as:
+
+    wminfo -p conky.plugin.wmi
+
+or try all plugins with the command:
+
+    run-all-conky-plugins
+
+Each plugin contains the information about the suggested command to run it.
+
+The current directory is copied to the system doc directory during the
+installation of wminfo.

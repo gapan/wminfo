@@ -1,0 +1,41 @@
+#!/bin/bash
+
+# wminfo plugin: displays RX and TX parameters for different interfaces
+
+# Attention: netmon.wmi plugin uses netmon script
+#            the number in quotation marks should be equal the value of -u switch
+
+# command: wminfo -p "netmon.wmi 5" -u 5 -s 0 -b#000000 -f#ff00ff
+
+if [ "$1" == "" ]
+then
+    scalefactor=1
+else
+    scalefactor=$1
+fi
+
+LO=`netmon lo $scalefactor`
+ETH0=`netmon eth0 $scalefactor`
+WLN0=`netmon wlan0 $scalefactor`
+
+LO_RX="`echo $LO | awk '{print $4}'`"
+LO_TX="`echo $LO | awk '{print $7}'`"
+ETH0_RX="`echo $ETH0 | awk '{print $4}'`"
+ETH0_TX="`echo $ETH0 | awk '{print $7}'`"
+WLN0_RX="`echo $WLN0 | awk '{print $4}'`"
+WLN0_TX="`echo $WLN0 | awk '{print $7}'`"
+
+if [ `echo $LO_RX | sed 's/[BKMGT]//'` -gt `echo $LO_TX | sed 's/[BKMGT]//'` ]
+then
+    echo "LO   $LO_RX"
+else
+    echo "LO   $LO_TX"
+fi
+
+echo "ETH0 $ETH0_RX"
+echo "ETH0 $ETH0_TX"
+echo "WLN0 $WLN0_RX"
+echo "WLN0 $WLN0_TX"
+
+echo "         "; echo "         "; echo "         "; echo "         "; echo "         "; 
+

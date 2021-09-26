@@ -1,0 +1,59 @@
+
+wminfo README.1st.plugins.system
+
+
+This directory contains plugins that are Internet independent:
+
+run-all-system-plugins   wminfo launcher: runs all wminfo system plugins.
+
+alarm                    edits alarm.cfg file.
+date-pl                  edits date-pl.cfg file.
+date-us                  edits date-us.cfg file.
+pinboard                 edits ~/.pinboard file.
+stopwatch                edits stopwatch.cfg file.
+timer                    edits timer.cfg file.
+timezone                 edits timezone.cfg file.
+
+netmon                   network traffic script used by netmon.wmi plugin.
+sysmon                   CPU usage script used by sysmon.wmi plugin.
+traffic                  network traffic script used by traffic.wmi plugin.
+
+alarm.wmi                alerts when the given date and time comes.
+biff.wmi                 displays the numbers of the messages in five
+                           mailboxes.
+date-pl.wmi              clock and calendar for Polish users.
+date-us.wmi              clock and calendar for American users.
+date.wmi                 clock and calendar.
+df.wmi                   df -lh command output.
+ip.wmi                   displays IP numbers for existing interfaces.
+netmon.wmi               displays network traffic for the selected
+                           interfaces.
+pinboard.wmi             displays notes stored in ~/.pinboard file.
+ps.wmi                   ps -a command output.
+stopwatch.wmi            counts the time elapsed since it was started.
+sysmon.wmi               displays CPU, memory, and swap usages as well as
+                           average load.
+thinkpad.wmi             ACPI status of IBM/Lenovo ThinkPads.
+timer.wmi                counts the time down since the defined time.
+timezone.wmi             displays time in different time zones.
+top.wmi                  top command output.
+traffic.wmi              total incoming and outgoing traffic for selected
+                           interfaces.
+uptime.wmi               uptime, users, and load averages.
+
+To test the consecutive plugins run the commands such as:
+
+    plugin.wmi
+
+To use the plugins use the command such as:
+
+    wminfo -p plugin.wmi
+
+or try all plugins with the command:
+
+    run-all-system-plugins
+
+Each plugin contains the information about the suggested command to run it.
+
+The current directory is copied to the system doc directory during the
+installation of wminfo.

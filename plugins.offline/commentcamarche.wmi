@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# wminfo plugin: headlines from French service commentcamarche.net
+
+# command: wminfo -p commentcamarche.wmi -i 1 -b#d6071b -f#ffffff
+
+lynx --source localhost/wminfo/commentcamarche.html | \
+	tr -d '\r' | \
+	perl -pe 's/\n/ /g' | \
+	sed 's/span><a href=/<h2 a href=/g' | \
+	sed 's/<h2><a href=/<h2 a href=/g' | \
+	sed 's/</\n</g' | \
+	grep 'h2 a href' | \
+	sed 's/<.*>//;' | \
+	iso1-up2low | \
+	html-iso1 | \
+	punctuation

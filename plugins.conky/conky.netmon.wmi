@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# wminfo plugin: displays RX and TX parameters for different interfaces
+
+# command: wminfo -p conky.netmon.wmi -u 3 -b#000000 -f#ff00ff
+
+datafile="/tmp/.$USER.conky.tmp"
+
+grep '^NETMON: ' $datafile | sed -E 's/NETMON: //;s/\.[0-9]+//'
+

@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# converts uppercases to lowercases
+
+tr A-Z a-z

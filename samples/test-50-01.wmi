@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# wminfo plugin: tests HTML text from 0 to 50 characters in line
+# command: wminfo -p test-50-00.wmi
+
+# test different scroll and rewind speeds using -s and -r switches
+
+links -source test.html | \
+    perl -pe 's/\n/ /g;s/</\n</g' | \
+    grep '<P>' | sed 's/<.*>//;' | \
+    tac
+

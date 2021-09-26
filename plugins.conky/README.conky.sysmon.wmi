@@ -1,0 +1,20 @@
+
+wminfo README.conky.sysmon.wmi
+
+
+The conky.sysmon.wmi plugin displays CPU, memory, and swap usage, as well as
+the processes number:
+
+    +---------+
+    |CPU: 23% |
+    |||       |
+    |MEM: 11% |
+    |SWP: 0%  |
+    |PRC: 171 |
+    +---------+
+
+* CPU: 23% -- CPU usage in percents;
+* ||       -- CPU usage bar;
+* MEM: 11% -- memory usage in percents;
+* SWP: 0%  -- swap usage in percents;
+* PRC: 171 -- the number of the processes.

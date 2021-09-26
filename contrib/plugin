@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# plugin: displays the command running the selected wminfo plugin
+
+# Attention: plugin script recognizes plugins ending with *.wmi only
+
+if [ ! $1 ]
+then
+    echo "plugin [plugin]"
+    echo "plugins:"
+    for plugin in `ls /usr/local/bin/*.wmi | sed 's/\/usr\/local\/bin\///;s/.wmi//'`
+    do
+	echo "    $plugin"
+    done
+    exit
+fi
+
+if [ -x /usr/local/bin/$1.wmi ]
+then
+    command=`cat /usr/local/bin/$1.wmi | grep '# command:' | sed 's/# command: //'`
+    echo $command
+else
+    echo "plugin: there is no $1.wmi plugin in the PATH"
+fi
+
+

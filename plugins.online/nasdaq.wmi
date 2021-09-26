@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# wminfo plugin: NASDAQ Stock Prices
+
+# command: wminfo -p nasdaq.wmi -b#43b1e6 -f#ffffff
+
+lynx --source http://www.advfn.com/nasdaq/nasdaq.asp | \
+	sed 's/\n/ /g;s/</\n</g' | \
+	grep 'pricechange' | \
+	sed 's/<.*alt="//;s/">/ /' | \
+	sed 's/\(.*\) \(.*\) \(.*\)/\1 \3 \2/'

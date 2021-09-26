@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# wminfo plugin: Pitchfork best new albums
+
+# command: wminfo -p pitchfork.wmi -b#ef4135 -f#ffffff
+
+lynx --source localhost/wminfo/pitchfork.html | \
+	perl -pe 's/\n/ /g' | \
+	perl -pe 's/\s+/ /g' | \
+	sed 's/</\n</g' | \
+	grep -E '/reviews/albums' | \
+	sed 's/<.*>//' | \
+	grep -Ev '^Tweet$|^Reviews$|^Albums$|^$|^ $' | \
+	perl -pe 's/^ (.*)\n/$1- /'
+echo

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# wminfo plugin: tests UTF-8 to dummy conversion
+# command: wminfo -p quick-koi8r-dummy.wmi
+
+links -width 512 -dump quick-koi8r.html | \
+	perl -pe 's/^\s+//'

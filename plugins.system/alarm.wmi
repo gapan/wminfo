@@ -1,0 +1,86 @@
+#!/bin/bash
+
+# wminfo plugin: alerts when the given date and time comes
+
+# command: wminfo -p alarm.wmi -u 60 -c -i 2 -b#000000 -f#ffff00
+
+#
+# CONFIGURATION SECTION BEGINS HERE
+#
+
+player="play"
+sound="/usr/share/sounds/purple/alert.wav"
+
+#
+# CONFIGURATION SECTION ENDS HERE
+#
+
+if [ -e alarm.cfg ]
+then
+    alarmfile="alarm.cfg"
+elif [ -e $HOME/bin/alarm.cfg ]
+then
+    alarmfile="$HOME/bin/alarm.cfg"
+elif [ -e /usr/local/bin/alarm.cfg ]
+then
+    alarmfile="/usr/local/bin/alarm.cfg"
+else
+    echo "alarm.wmi: there is no alarm.cfg database."
+    exit
+fi
+
+alarm="off"
+
+year="`date +"%y"`"
+month="`date +"%m"`"
+weekday="`date +"%a"`"
+day="`date +"%d"`"
+hour="`date +"%H"`"
+minute="`date +"%M"`"
+
+if [ "`cat $alarmfile | grep -E "^$minute +-"`" != "" ]
+then
+    alarm="on"
+    perl -pe "s/^($minute +)?- (.*?)(  )?$/\1- \2 /" -i $alarmfile
+fi
+
+if [ "`cat $alarmfile | grep -E "^$hour:$minute +-"`" != "" ]
+then
+    alarm="on"
+    perl -pe "s/^($hour:$minute +)?- (.*?)(  )?$/\1- \2 /" -i $alarmfile
+fi
+
+if [ "`cat $alarmfile | grep -E "^$weekday $hour:$minute +-"`" != "" ]
+then
+    alarm="on"
+    perl -pe "s/^($weekday $hour:$minute +)?- (.*?)(  )?$/\1- \2 /" -i $alarmfile
+fi
+
+if [ "`cat $alarmfile | grep -E "^$day $hour:$minute +-"`" != "" ]
+then
+    alarm="on"
+    perl -pe "s/^($day $hour:$minute +)?- (.*?)(  )?$/\1- \2 /" -i $alarmfile
+fi
+
+if [ "`cat $alarmfile | grep -E "^$month-$day $hour:$minute +-"`" != "" ]
+then
+    alarm="on"
+    perl -pe "s/^($month-$day $hour:$minute +)?- (.*?)(  )?$/\1- \2 /" -i $alarmfile
+fi
+
+if [ "`cat $alarmfile | grep -E "^$year-$month-$day $hour:$minute +-"`" != "" ]
+then
+    alarm="on"
+    perl -pe "s/^($year-$month-$day $hour:$minute +)?- (.*?)(  )?$/\1- \2 /" -i $alarmfile
+fi
+
+# alarm="off"
+
+if [ "$alarm" == "on" ] && [ "which $player 2>/dev/null" != "" ] && [ -e $sound ]
+then
+    $player $sound
+fi
+
+cat $alarmfile | perl -pe 's/([A-Za-z]* ?[0-9-]* ?[0-9:?]+) +- (.*?)( +)?$/$2 - $1$3/' | \
+    utf8-iso2 # | sed -E 's/^/"/;s/$/"/'
+

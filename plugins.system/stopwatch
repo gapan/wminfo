@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# stopwatch: edits stopwatch.cfg
+
+if [ "$1" == "-reset" ]
+then
+    stopwatch.wmi -reset
+    exit
+fi
+
+if [ -e stopwatch.cfg ]
+then
+    FILE="stopwatch.cfg"
+elif [ -e $HOME/bin/stopwatch.cfg ]
+then
+    FILE="$HOME/bin/stopwatch.cfg"
+elif [ -e /usr/local/bin/stopwatch.cfg ]
+then
+    FILE="/usr/local/bin/stopwatch.cfg"
+else
+    echo "stopwatch: there is no stopwatch.cfg plugin."
+    exit
+fi
+
+if [ -x `which mcedit` ]
+then
+    mcedit $FILE
+elif [ -x `which nano` ]
+then
+    nano $FILE
+else
+    vim $FILE
+fi

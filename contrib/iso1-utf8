@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# converts ISO-8859-1 lowercases to UTF-8 lowercases
+# recognizes German, French, and Spanish letters
+
+perl -pe "tr/A-Z/a-z/;s/ä/Ã¤/g;s/ö/Ã¶/g;s/ü/Ã¼/g;s/ß/ÃŸ/g;s/à/Ã /g;s/â/Ã¢/g;s/ç/Ã§/g;s/è/Ã¨/g;s/é/Ã©/g;s/ê/Ãª/g;s/ë/Ã«/g;s/î/Ã®/g;s/ï/Ã¯/g;s/ô/Ã´/g;s/ù/Ã¹/g;s/û/Ã»/g;s/ÿ/Ã¿/g;s/ae/Ã¦/g;s/oe/Å“/g;s/á/Ã¡/g;s/í/Ã­/g;s/ó/Ã³/g;s/ñ/Ã±/g;s/ / /g;"

@@ -1,0 +1,48 @@
+
+wminfo README.conky.wireless.wmi
+
+
+The conky.wireless.wmi plugin displays the wireless interface status:
+
+    Home-Network
+    DE:AD:BA:BE:AB:ED
+    ||||||||||
+    1 Mb/s
+    Managed
+
+In the wminfo dockable application window that information looks like that:
+
+    +---------+
+    |HOME-NETW|
+    |DE:AD:BA:|
+    |||||||||||
+    |1 MB/S   |
+    |MANAGED  |
+    +---------+
+
+The consecutive lines display:
+
+1. Wireless access point ESSID.
+2. Wireless access point MAC address.
+3. Wireless link quality bar.
+4. Wireless bitrate.
+5. Wireless mode (Managed/Ad-Hoc/Master).
+
+When the wireless interface does not work the plugin displays the following
+information:
+
+    off/any
+    Not-Associated
+    ||||||||||
+    1 Mb/s
+    Managed
+
+It looks in the wminfo dockable application like that:
+
+    +---------+
+    |OFF/ANY  |
+    |NOT-ASSOC|
+    |||||||||||
+    |1 MB/S   |
+    |MANAGED  |
+    +---------+

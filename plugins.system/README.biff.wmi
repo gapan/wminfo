@@ -1,0 +1,152 @@
+
+wminfo README.biff.wmi
+
+
+The biff.wmi plugin is designed as a replacement of wmbiff dockapp.  The
+plugin diplays the numbers of the e-mail messages in the selected mailboxes:
+
+    +---------+
+    |SPOOL-  0|
+    |AIM  +  1|
+    |GMAIL+  3|
+    |YAHOO- 12|
+    |         |
+    +---------+
+
+The plus sign means the number on the right side is the number of unread
+messages.  The minus sign means the number on the right side is the number
+of read messages (that is there are no new messages in the given mailbox).
+
+The biff.wmi plugin started with the recommended command:
+
+    wminfo -p biff.wmi -u 5 -c
+
+starts to scroll the line for the given mailbox when the new message comes.
+
+The wmbiff dockapp does much more than the biff.wmi plugin.  It allows to
+download the messages automatically and to display the content of the
+selected mailbox.
+
+It is possible to emulate these two function using the appropriate scripts.
+The concrete solution depends on the programs used to download the messages
+and to display the content of the mailboxes.  The following description is
+for mutt and testmail:
+
+    http://linux-bsd-unix.strefa.pl/index.en.html#testmail
+
+If you use other programs and you would like to download and read e-mail
+messages using the method described here you have to customize it to your
+needs.
+
+The first script is named mybiff:
+
+    ------------------------------------------------------------------------
+    #!/bin/bash
+    
+    # mybiff: opens mailbox with mutt or downloads messages with testmail
+    
+    if [ ! $1 ]
+    then
+        echo "mybiff [mbox [-]]"
+        exit
+    fi
+    
+    if [ -e $HOME/mbox-$1 ] && [ ! $2 ]
+    then
+        xterm -geometry 99x49+64+0 -fn 9x15 -name "mutt-$1" -e mutt -F $HOME/.muttrc-$1 -f $HOME/mbox-$1
+    elif [ -e $HOME/mbox-$1 ] && [ "$2" == "-" ]
+    then
+        if [ "`ps ax | grep 'testmail .* $1' | grep -v 'grep'`" == "" ] ; then $HOME/bin/testmail --extdget - $1 ; fi
+    else
+        echo "mybiff: there is no \"$HOME/mbox-$1\" mailbox."
+    fi
+    ------------------------------------------------------------------------
+
+Assuming you have two testmail mailboxes:
+
+    $HOME/mbox-gmail
+
+and
+
+    $HOME/mbox-yahoo
+
+the commands:
+
+    mybiff gmail
+
+or:
+
+    mybiff yahoo
+
+will run mutt displaying the contents of these mailboxes and the commands:
+
+    mybiff gmail -
+
+or:
+
+    mybiff yahoo -
+
+will download the e-mail messages from these domains using testmail and the
+selected method (--extdget in the example above).
+
+To simplify that it is worth preparing the script named mybiff-to:
+
+    ------------------------------------------------------------------------
+    #!/bin/bash
+    
+    /usr/local/bin/mybiff `basename $0` $*;
+    ------------------------------------------------------------------------
+
+Next you have to prepare two symbolic links:
+
+    ln -s mybiff-to gmail
+
+and
+
+    ln -s mybiff-to yahoo
+
+As a result you can use the commands:
+
+    gmail
+
+or:
+
+    yahoo
+
+to open the mailboxes or the commands:
+
+    gmail -
+
+or:
+
+    yahoo -
+
+to download the messages.
+
+The last step is to automate the e-mail messages downloading.  In order to
+achieve that you need the consecutive script named online.mbox:
+
+    ------------------------------------------------------------------------
+    #!/bin/bash
+    
+    # online.mbox: downloads e-mail messages from selected mailboxes
+    
+    for mbox in gmail yahoo
+    do
+        su -c "$mbox -" YOUR_LOGIN_HERE
+    done
+    ------------------------------------------------------------------------
+
+In the example above you have to replace YOUR_LOGIN_HERE text with your
+login name.
+
+To download the messages with online.mbox script it is enough to add to
+the crontab the following task:
+
+    */6 * * * * if [ -e /usr/local/bin/online.mbox ] ; then if [ "`route | grep 'default'`" != "" ] ; then /usr/local/bin/online.mbox 1> /dev/null ; fi ; fi
+
+The simpler case is when you already registered the crontab task running the
+online script found in the plugins.offline directory.  It runs online.mbox
+script using the following command:
+
+    . /usr/local/bin/online.mbox

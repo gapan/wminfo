@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# wminfo plugin: uptime, users, and load average
+
+# command: wminfo -p conky.uptime.wmi -u 6 -b#000000 -f#ffff00
+
+datafile="/tmp/.$USER.conky.tmp"
+
+grep '^UPTIME: ' $datafile | sed -E 's/UPTIME: //;s/UPT: //;s/: ([0-9][0-9]\.)/:\1/'
+

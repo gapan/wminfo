@@ -1,0 +1,102 @@
+#!/bin/bash
+
+# Based on the shell script found here:
+# http://meinit.nl/shell-script-measure-network-throughput-linux-machines
+
+# Usage: traffic [interface [-reset]]
+#
+# interface
+#     The interface to monitor, default is eth0.
+
+if [ "$1" == "-reset" ] ; then
+    traffic.wmi -reset
+    exit
+fi
+
+shopt -s expand_aliases
+alias c='perl -e '\''$_="@ARGV"; print eval $_, "\n"'\'''
+
+readargs(){
+if [ "$1" != "" ] ; then
+    interface="$1"
+else
+    interface="eth0"
+fi
+}
+
+printrxbytes(){
+/sbin/ifconfig "$interface" | grep "RX bytes" | cut -d: -f2 | awk '{ print $1 }'
+}
+
+printtxbytes(){
+/sbin/ifconfig "$interface" | grep "TX bytes" | cut -d: -f3 | awk '{ print $1 }'
+}
+
+bytestohumanreadable(){
+multiplier="0"
+number=$((256*$1))
+while [ "$number" -ge 16384 ] ; do
+    multiplier=$(($multiplier+1))
+    number=$(($number/1024))
+done
+number=`c int \(100*$number/256\)/100`
+case "$multiplier" in
+    1)
+	echo "${number}K"
+    ;;
+    2)
+	echo "${number}M"
+    ;;
+    3)
+	echo "${number}G"
+    ;;
+    4)
+	echo "${number}T"
+    ;;
+    5)
+	echo "${number}P"
+    ;;
+    6)
+	echo "${number}E"
+    ;;
+    7)
+	echo "${number}Z"
+    ;;
+    8)
+	echo "${number}Y"
+    ;;
+    *)
+	echo "${number}B"
+    ;;
+esac
+}
+
+printresults(){
+rxbytes=$(printrxbytes)
+txbytes=$(printtxbytes)
+if [ ! -e $tempfile ] || [ ! -s $tempfile ]; then
+    echo oldrxbytes="$rxbytes" > $tempfile
+    echo oldtxbytes="$txbytes" >> $tempfile
+else
+    . $tempfile
+fi
+if [ "$oldrxbytes" == "" ] ; then
+    oldrxbytes=0
+fi
+if [ "$oldtxbytes" == "" ] ; then
+    oldtxbytes=0
+fi
+if [ "$oldrxbytes" -a "$rxbytes" -a "$oldtxbytes" -a "$txbytes" ] ; then
+    echo "$interface RX = $(bytestohumanreadable $(($rxbytes - $oldrxbytes))) TX = $(bytestohumanreadable $(($txbytes - $oldtxbytes)))"
+fi
+}
+
+counter="1"
+readargs $1 $2
+tempfile="/tmp/.$USER.traffic.$interface.tmp"
+if [ "$2" == "-reset" ]
+then
+    > $tempfile
+fi
+printresults
+

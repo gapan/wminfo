@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# wminfo plugin: new threads subjects in Slackware section
+#                of LinuxQuestions.org
+
+# command: wminfo -p linuxquestions-slackware.wmi -u 60 -b#405788 -f#ffffff
+
+lynx --source localhost/wminfo/linuxquestions-slackware.html | \
+    perl -pe 's/\n/ /g;s/</\n</g' | \
+    grep 'thread_title_' | \
+    sed 's/<.*>//;' | \
+    tail -n 50 | \
+    punctuation

@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# wminfo launcher: runs all wminfo conky plugins
+
+if [ "`ps au | grep $USER | grep conky | grep -v grep`" == "" ]
+then
+    echo "Before running conky dependent plugins configure and run conky"
+    echo "according to the README.1st.plugins.conky document."
+    exit
+fi
+
+wminfo -p conky.date.wmi -u 1 -b#000000 -f#ffff00 &
+sleep 1
+wminfo -p conky.moc.wmi -u 3 -b#000000 -f#00ffff &
+sleep 1
+wminfo -p conky.netmon.wmi -u 3 -b#000000 -f#ff00ff &
+sleep 1
+wminfo -p conky.sysmon.wmi -u 3 -b#000000 -f#ff0000 &
+sleep 1
+wminfo -p conky.thinkpad.wmi -u 3 -b#000000 -f#00ff00 &
+sleep 1
+wminfo -p conky.timezone.wmi -u 15 -b#000000 -f#ffff00 &
+sleep 1
+wminfo -p conky.top.wmi -u 3 -b#000000 -f#ff0000 &
+sleep 1
+wminfo -p conky.uptime.wmi -u 6 -b#000000 -f#ffff00 &
+sleep 1
+wminfo -p "conky.weather.wmi EPWR" -u 6 -b#0199fe -f#ffffff &
+sleep 1
+wminfo -p conky.wireless.wmi -u 3 -b#000000 -f#ff00ff &
+

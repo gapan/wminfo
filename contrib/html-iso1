@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# converts HTML upper- and lowercases to ISO-8859-1 lowercases
+# recognizes German, French, and Spanish letters
+
+perl -pe "tr/A-Z/a-z/;s/&Auml;/ä/g;s/&Ouml;/ö/g;s/&Uuml;/ü/g;s/&szlig;/ß/g;s/&Agrave;/à/g;s/&Acirc;/â/g;s/&Ccedil;/ç/g;s/&Egrave;/è/g;s/&Eacute;/é/g;s/&Ecirc;/ê/g;s/&Euml;/ë/g;s/&Icirc;/î/g;s/&Iuml;/ï/g;s/&Ocirc;/ô/g;s/&Ugrave;/ù/g;s/&Ucirc;/û/g;s/&Yuml;/ÿ/g;s/&Aacute;/á/g;s/&Ntilde;/ñ/g;s/&auml;/ä/g;s/&ouml;/ö/g;s/&uuml;/ü/g;s/&szlig;/ß/g;s/&agrave;/à/g;s/&acirc;/â/g;s/&ccedil;/ç/g;s/&egrave;/è/g;s/&eacute;/é/g;s/&ecirc;/ê/g;s/&euml;/ë/g;s/&icirc;/î/g;s/&iuml;/ï/g;s/&ocirc;/ô/g;s/&ugrave;/ù/g;s/&ucirc;/û/g;s/&yuml;/ÿ/g;s/&aacute;/á/g;s/&ntilde;/ñ/g;s/&Oacute;/Ó/g;s/&oacute;/ó/g;"

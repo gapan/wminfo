@@ -1,22 +1,75 @@
-Installation instructions for wmInfo
+
+wminfo INSTALL
+
 
 Requirements
----------------------------------------------------------------
-- root access	If you want to install the software system-wide
+----------------------------------------------------------------------------
+Root access if you want to install the program system-wide.
 
 
 Installation
---------------------------------------------------------------
-1)  % tar -zxvfs wminfo-1.51.tar.gz
-2)  % cd wminfo/wminfo
-3)  % make 
-4)  % su root
-5)  % make install
-6)  % wminfo & (or wminfo -h for brief help).
+----------------------------------------------------------------------------
+  tar xzf wminfo-2.5.2.tar.gz
+  cd wminfo-2.5.2/wminfo
+  ./configure
+  make
+  su -                     # to install the program system-wide
+  killall wminfo           # if an old version of wminfo is running
+  make install
+
+The ./configure command prepares Makefile installing wminfo in /usr/local
+directory.  To install it in /usr directory use ./configure --prefix=/usr
+command.
+
+All options controlled by the program switches are collected at the
+beginning of wminfo.c file for easy modifications if required.  So if you
+would like to change the default behavior of wminfo modify those variables
+before the compilation and installation of the program.
 
 
-General Notes
---------------------------------------------------------------
-Note 1: If "make install" fails on your system, please edit
-        the Makefile to set the paths according to your setup.
-        "make install" defaults to /usr/local/bin, $HOME & /etc.
+Usage
+----------------------------------------------------------------------------
+After the installation go to /usr/local/doc/wminfo-2.5.2 or
+/usr/doc/wminfo-2.5.2 directory depending on the installation method and try
+the plugins from plugins.online, plugins.system, and plugins.conky
+directories.  To test them use respectively run-all-internet-plugins,
+run-all-system-plugins, and run-all-conky-plugins scripts.  Before testing
+conky dependent plugins you have to configure and run conky.  You can also
+test wminfo running plugins from samples directory.  To run them use
+run-all-samples script.
+
+After the tests you can kill all wminfo instances running killall wminfo
+command.
+
+Instead of the plugins from plugins.online directory you can use the plugins
+from plugins.offline directory.  The latter do not require the constant
+Internet access but some system customization is necessary in order to use
+them.
+
+To use the particular plugins system-wide copy them to /usr/local/bin
+directory.  Some plugins use scripts or text files.  Copy them together with
+the plugins.  To use plugins from plugins.offline directory copy as well
+online script and register it in crontab.  The directories with the plugins
+include useful README files.  Read them if you want to know more.
+
+To run wminfo use the following commands:
+
+  wminfo -h                # displays brief help
+  wminfo -p plugin.wmi     # runs a plugin
+
+Each plugin includes a comment with the recommended command to run it
+including: update time, ISO encoding, and background and foreground colors.
+The same commands appear in run-all-*-plugins scripts from plugins.conky,
+plugins.offline, plugins.online, and plugins.system directories.
+
+If wminfo displays its help in dockable application window (that is it uses
+default.wmi plugin) it means that the used command is wrong -- for example
+you omitted -p switch before the plugin.wmi name.
+
+For more information see: man wminfo.
+
+
+Deinstallation
+----------------------------------------------------------------------------
+  cd wminfo-2.5.2/wminfo
+  make uninstall

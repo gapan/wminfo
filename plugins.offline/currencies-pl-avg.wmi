@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# wminfo plugin: currencies exchange rates of Polish zloty (average)
+
+# command: wminfo -p currencies-pl-sell.avg -b#333251 -f#ffffff
+
+lynx --source localhost/wminfo/currencies-pl-avg.html | \
+    perl -pe 's/\n//;s/<td class=(.*)?>/\n<td class=$1>/g' | \
+    grep 'td class' | grep -E 'symbol|average' | \
+    perl -pe 's/<\/strong>.*/<\/strong>/g;s/<\/a><\/strong>\n//' | \
+    tr '\r\t' ' ' | \
+    grep -v '10000 IDR' | \
+    perl -pe 's/<.*?>/ /g;s/ +/ /g' | \
+    perl -pe 's/CLP (.)\.(.)(.)(.)./CLP 0.0$1$2$3/;s/HUF (.)\.(.)(.)(.)./HUF 0.0$1$2$3/' | \
+    perl -pe 's/INR (.)\.(.)(.)(.)./INR 0.0$1$2$3/;s/ISK (.)\.(.)(.)(.)./ISK 0.0$1$2$3/' | \
+    perl -pe 's/JPY (.)\.(.)(.)(.)./JPY 0.0$1$2$3/;s/KRW (.)\.(.)(.)(.)./KRW 0.0$1$2$3/' | \
+    perl -pe 's/ [0-9]+ //' | \
+    grep -v '^$' | \
+    sort

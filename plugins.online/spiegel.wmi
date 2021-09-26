@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# wminfo plugin: headlines from German service spiegel.de
+
+# command: wminfo -p spiegel.wmi -i 1 -b#bb010e -f#ffffff
+
+lynx --source http://www.spiegel.de/ | \
+	tr -d '\r' | \
+	perl -pe 's/\n/ /g' | \
+	sed 's/<h3><a href=/<h3 a href=/g' | \
+	sed 's/</\n</g' | \
+	grep 'h3 a' | \
+	grep 'title=' | \
+	perl -pe 's/<.*>//;' | \
+	iso1-up2low | \
+	punctuation

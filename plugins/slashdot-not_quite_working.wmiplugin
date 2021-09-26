@@ -1,1 +1,0 @@
-lynx --source www.slashdot.org | grep 'size=4' | cut -d '>' -f 3

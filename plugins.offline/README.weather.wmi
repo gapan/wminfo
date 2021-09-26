@@ -1,0 +1,90 @@
+
+wminfo README.weather.wmi
+
+
+The weather.wmi plugin is somewhat complicated so it deserves the special
+attention.  It requires constant Internet connection.  To run weather.wmi
+plugin you have to know the nearest airport ICAO code.  To find the four
+letters ICAO code go to the following site, select a state or a country, and
+then select a location:
+
+    http://weather.noaa.gov/
+
+The sample ICAO code is EPWR (it is the code for Wroclaw, Poland).  The
+appropriate commands for this code are:
+
+    weather.wmi EPWR
+
+or:
+
+    wminfo -p "weather.wmi EPWR" -u 5
+
+The first command displays the weather conditions for EPWR.  The other runs
+wminfo dockapp and updates the weather conditions for EPWR every five
+seconds.  These updates concern displayed information.  In order to lower
+network traffic weather.wmi connects to the weather server every three
+minutes.  That period is hardcoded in the plugin.
+
+Note that plugin name and ICAO code are in common quotation marks.  The
+other arguments passed to the plugin should be included in the same
+quotation marks.  ICAO code has to precede the other arguments.
+
+The weather.wmi plugin displays the following information in odd steps:
+
+    +---------+
+    |EPWR 1600|
+    |TMP: 19 C|
+    |PRS: 1021|
+    |HUM: 63% |
+    |WND: 1   |
+    +---------+
+
+and the following information in even steps:
+
+    +---------+
+    |EPWR 1600|
+    |DEW: 12 C|
+    |PRS: 1021|
+    |HUM: 63% |
+    |WND: NW  |
+    +---------+
+
+The second and the last line differ in odd and even steps.  The consecutive
+data means:
+
+* EPWR 1600 -- weather conditions for EPWR airport at 16:00 in local time;
+* TMP: 19 C -- temperature is 19 C;
+* DEW: 12 C -- dew point is 12 C;
+* PRS: 1021 -- pressure is 1021 hPa;
+* HUM: 63%  -- humidity is 63%;
+* WND: 1    -- wind speed is 1 m/s;
+* WND: NW   -- wind blows from Northwest.
+
+Instead of Celsius degrees the plugin can use Fahrenheit degrees.  Instead
+of hectoPascals the plugin can use millimeters of Mercury or inches of
+Mercury.  Instead of meters/seconds the plugin can use kilometers/hour,
+miles per hour, or knots.
+
+In order to change the default units permanently you have to edit the
+configuration section of weather.wmi.  In order to use the different units
+than default ones you can use the appropriate switches such as: -C or -F for
+temperature, -hPa, -mmHg, or -inHg for pressure, and -m/s, -km/h, -mph, or
+-kt for wind speed.  In such a case the valid command can look like that:
+
+    wminfo -p "weather.wmi EPWR -C -hPa -m/s" -u 5
+
+The weather.wmi plugin downloads the weather report each three minutes and
+stores it in ~/.weatherrc.XXXX file where XXXX is the ICAO airport code.  If
+there is no Internet connection weather.wmi uses old ~/.weatherrc.XXXX file.
+In such a case the plugin performs the consecutive steps less frequently and
+in some situations blanks the dockapp window for a while.
+
+If the system was off-line for more than 24 hours and weather.wmi could not
+update ~/.weatherrc.XXXX file the wminfo program displays the following
+information instead of the time:
+
+* EPWR >24H
+
+Attention: if you used conky.weather.wmi plugin before and you would like to
+run weather.wmi plugin now remove weather temporary file from /tmp
+directory.

@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# converts UTF-8 German, French, Spanish, and Polish uppercases to lowercases
+
+perl -pe 'tr/A-Z/a-z/;tr/ÄÖÜÀÂÇÈÉÊËÎÏÔÙÛŸÍÓÑĄĆĘŁŃÓŚŹŻ/äöüàâçèéêëîïôùûÿíóñąćęłńóśźż/;'

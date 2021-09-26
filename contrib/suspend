@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# suspends the system to RAM
+
+# check the present virtual terminal
+FGCONSOLE=`fgconsole`
+
+# switch to virtual terminal 12
+chvt 12
+
+/sbin/hwclock --systohc
+
+# write all unwritten data (just in case)
+sync
+
+# suspend-to-ram
+echo -n mem > /sys/power/state
+
+/sbin/hwclock --hctosys
+
+# switch back to virtual terminal running X
+chvt $FGCONSOLE
+

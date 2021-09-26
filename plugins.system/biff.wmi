@@ -1,0 +1,103 @@
+#!/bin/bash
+
+# wminfo plugin: displays the numbers of the messages in five mailboxes
+
+# command: wminfo -p biff.wmi -u 5 -c -b#202020 -f#0000ff
+
+#
+# CONFIGURATION SECTION BEGINS HERE
+#
+
+NAME1="spool"
+MBOX1="/var/mail/$USER"
+
+#NAME2="gmail"
+#MBOX2="$HOME/mbox-gmail"
+
+#NAME3="yahoo"
+#MBOX3="$HOME/mbox-yahoo"
+
+NAME4=""
+MBOX4=""
+
+NAME5=""
+MBOX5=""
+
+#
+# CONFIGURATION SECTION ENDS HERE
+#
+
+function test_mailbox {
+if [ "$2" != "" ] && [ -e $2 ]
+then
+	ALL="0"
+	NEW="0"
+	OLD="0"
+	tempfile="/tmp/.$USER.biff.$1.tmp"
+	if [ ! -e $tempfile ]
+	then
+	    > $tempfile
+	fi
+	. $tempfile
+	NEWSIZE=`ls -lL $2 | awk '{print $5}'`
+	if [ "$OLDSIZE" == "" ] || [ $OLDSIZE -ne $NEWSIZE ]
+	then
+	    ALL=`egrep -c "^To: " $2`
+	    OLD=`egrep -c "^Status: RO$" $2`
+	    NEW="`expr $ALL - $OLD`"
+	    if [ $NEW -gt 0 ]
+	    then
+		echo "NEW=$NEW" > $tempfile
+	    else
+		echo "OLD=$OLD" > $tempfile
+	    fi
+	    echo "OLDSIZE=$NEWSIZE" >> $tempfile
+	fi
+	if [ $NEW -gt 0 ]
+	then
+	    if [ "$NEW" -lt 10 ]
+	    then
+		NEW="  $NEW"
+	    elif [ "$NEW" -lt 100 ]
+	    then
+		NEW=" $NEW"
+	    fi
+	else
+	    if [ "$OLD" -lt 10 ]
+	    then
+		OLD="  $OLD"
+	    elif [ "$OLD" -lt 100 ]
+	    then
+		OLD=" $OLD"
+	    fi
+	fi
+	NAME="$1"
+	LENGTH="`echo $NAME | wc -m`"
+	OFFSET="`expr 6 - $LENGTH`"
+	if [ $OFFSET -gt 0 ]
+	then
+		for n in `seq 1 $OFFSET`
+		do
+			NAME="$NAME "
+		done
+	elif [ $OFFSET -lt 0 ]
+	then
+		NAME="`echo $NAME | cut -b 1-5`"
+	fi
+	if [ $NEW -gt 0 ]
+	then
+	    echo "$NAME+$NEW"
+	else
+	    echo "$NAME-$OLD"
+	fi
+fi
+}
+
+test_mailbox $NAME1 $MBOX1
+test_mailbox $NAME2 $MBOX2
+test_mailbox $NAME3 $MBOX3
+test_mailbox $NAME4 $MBOX4
+test_mailbox $NAME5 $MBOX5
+
+echo "         "; echo "         "; echo "         "; echo "         "; echo "         "; 
+

@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# wminfo plugin: headlines from news.cnet.com
+
+# command: wminfo -p cnet.wmi -b#e6090a -f#ffffff
+
+lynx --source localhost/wminfo/cnet.html | \
+	tr -d '\r' | \
+	sed 's/\n/ /g' | \
+	sed 's/"assetHed"><a/"assetHed" a/g' | \
+	sed 's/</\n</g' | \
+	grep 'assetHed' | \
+	sed 's/<.*>//;' | \
+	punctuation
+

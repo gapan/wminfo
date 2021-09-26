@@ -1,0 +1,137 @@
+#!/bin/bash
+
+# wminfo plugin: counts the time elapsed since it was started
+
+# Attention: the command stopwatch.wmi -reset resets the stopwatch
+#            the plugin resets the stopwatch after 999h 59m 59s
+
+# command: wminfo -p stopwatch.wmi -u 1 -b#000000 -f#ffff00
+
+
+if [ -e stopwatch.cfg ]
+then
+    . stopwatch.cfg
+elif [ -e $HOME/bin/stopwatch.cfg ]
+then
+    . $HOME/bin/stopwatch.cfg
+elif [ -e /usr/local/bin/stopwatch.cfg ]
+then
+    . /usr/local/bin/stopwatch.cfg
+else
+    echo "stopwatch.wmi: there is no stopwatch.cfg file."
+    exit
+fi
+
+datafile="$HOME/.stopwatch"
+tempfile="/tmp/.$USER.stopwatch.tmp"
+
+if [ "$1" == "-reset" ]
+then
+    > $datafile
+    echo "passed=0" > $tempfile
+    exit
+fi
+
+if [ ! -e $datafile ] || [ ! -s $datafile ]
+then
+    echo "olddate=`date +"%s"`" > $datafile
+fi
+
+if [ ! -e $tempfile ]
+then
+    echo "passed=0" > $tempfile
+fi
+
+. $datafile
+. $tempfile
+
+newdate="`date +"%s"`"
+
+let "datediff=$newdate-$olddate"
+
+let hours="$datediff/3600"
+let minutes="($datediff-$hours*3600)/60"
+let seconds="$datediff-$hours*3600-$minutes*60"
+
+if [ $hours -lt 10 ]
+then
+    hours="0$hours"
+fi
+
+if [ $minutes -lt 10 ]
+then
+    minutes="0$minutes"
+fi
+
+if [ $seconds -lt 10 ]
+then
+    seconds="0$seconds"
+fi
+
+if [ $hours -lt 1000 ]
+then
+    echo "$hours:$minutes:$seconds"
+    if [ "$hours:$minutes:$seconds" == "$time_1" ]
+    then
+	$command_1_many
+	$command_1_once
+	echo "passed=1" > $tempfile
+    elif [ "$hours:$minutes:$seconds" == "$time_2" ]
+    then
+	$command_2_many
+	$command_2_once
+	echo "passed=2" > $tempfile
+    elif [ "$hours:$minutes:$seconds" == "$time_3" ]
+    then
+	$command_3_many
+	$command_3_once
+	echo "passed=3" > $tempfile
+    elif [ "$hours:$minutes:$seconds" == "$time_4" ]
+    then
+	$command_4_many
+	$command_4_once
+	echo "passed=4" > $tempfile
+    fi
+else
+    > $datafile
+    echo "passed=0" > $tempfile
+    echo "         "; echo "         "; echo "         "; echo "         "; echo "         "
+fi
+
+# exit
+
+#
+# SECTION TO REMOVE BEGINS HERE
+#
+
+if [ "$passed" == "0" ]
+then
+    echo "         "; echo "         "; echo "         "; echo "         "
+elif [ "$passed" == "1" ]
+then
+    echo -n
+    $command_1_many
+elif [ "$passed" == "2" ]
+then
+    echo -n
+    $command_2_many
+    $command_1_many
+elif [ "$passed" == "3" ]
+then
+    echo -n
+    $command_3_many
+    $command_2_many
+    $command_1_many
+elif [ "$passed" == "4" ]
+then
+    echo -n
+    $command_4_many
+    $command_3_many
+    $command_2_many
+    $command_1_many
+fi
+
+#
+# SECTION TO REMOVE ENDS HERE
+#
+

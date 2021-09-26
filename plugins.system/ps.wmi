@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# wminfo plugin: ps -a command output
+
+# command: wminfo -p ps.wmi -u 5 -b#000000 -f#ff0000
+
+ps -a | awk '{print $1,$4}' | grep -vE "ps|awk|grep|tac" | sed -E 's/(.*) (.*)/\2 \1/' | tac

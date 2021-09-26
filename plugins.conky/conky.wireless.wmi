@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# wminfo plugin: wireless connection status
+
+# command: wminfo -p conky.wireless.wmi -u 3 -b#000000 -f#ff00ff
+
+datafile="/tmp/.$USER.conky.tmp"
+
+grep 'WIRELESS: ' $datafile | \
+    sed -E "s/WIRELESS: //;s/#/|/g;s/_/ /g"
+

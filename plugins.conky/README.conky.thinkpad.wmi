@@ -1,0 +1,111 @@
+
+wminfo README.conky.thinkpad.wmi
+
+
+The conky.thinkpad.wmi plugin displays the ACPI status of IBM/Lenovo
+ThinkPads.
+
+1. When the battery is absent:
+
+    +---------+
+    |0%  --:--|
+    |.........|
+    |CPU: 71 C|
+    |GPU: 68 C|
+    |FAN: 3535|
+    +---------+
+
+2. When the battery is loaded:
+
+    +---------+
+    |50%-01:20|
+    |!!!!!....|
+    |CPU: 73 C|
+    |GPU: 68 C|
+    |FAN: 3472|
+    +---------+
+
+3. When the battery is full:
+
+    +---------+
+    |100%     |
+    |!!!!!!!!!|
+    |CPU: 72 C|
+    |GPU: 69 C|
+    |FAN: 4330|
+    +---------+
+
+4. When the battery is drained:
+
+    +---------+
+    |50%+01:51|
+    |!!!!!....|
+    |CPU: 73 C|
+    |GPU: 68 C|
+    |FAN: 3578|
+    +---------+
+
+* 0%, 50%, 100% -- the battery percentage;
+* --:--         -- there is no battery;
+* -01:20        -- the time left to the end of the loading (minus sign means
+                     loading);
+* +01:51        -- the time left to the end of the draining (plus sign means
+                     draining);
+* CPU: 71 C     -- the CPU (central processing unit) temperature;
+* GPU: 68 C     -- the GPU (graphics processing unit) temperature;
+* FAN: 3535     -- fan speed.
+
+If the conky.thinkpad.wmi plugin displays the message UNKNOWN instead of the
+loading or the draining times it means conky does not work as it should.  In
+such a situation you have to patch the source of the conky with conky.patch
+and compile and install that patched version:
+
+    tar xjf conky-1.8.1.tar.bz2
+    cp conky.patch conky-1.8.1
+    cd conky-1.8.1
+    ./configure
+    patch -p1 < conky.patch	# <-- patching the conky source
+    make
+    make install
+
+Slackware users can copy conky.patch into SlackBuild conky directory and
+insert the following line:
+
+    patch -p 1 -i $CWD/conky.patch
+
+into conky.SlackBuild script just above the make command.
+
+The conky.thinkpad.wmi plugin can suspend the system when the battery is
+low.  By default it is customized to suspend the system when the battery
+percentage is less than 5% though the suspending is disabled by default:
+
+    if [ $value -lt 5 ]
+    then
+        echo sudo /usr/bin/suspend
+    fi
+
+To enable the suspending register /usr/bin/suspend script in /etc/sudoers
+configuration file and remove the echo command that precedes above the sudo
+/usr/bin/suspend command.
+
+The conky.thinkpad.wmi plugin uses Celsius degrees by default.  If you
+prefer Fahrenheit degrees modify conky configuration file changing the
+following entry:
+
+    temperature_unit celsius
+
+to:
+
+    temperature_unit fahrenheit
+
+and modify conky.thinkpad.wmi plugin changing:
+
+    TempUnit=" C"
+
+to:
+
+    TempUnit="F"
+
+The conky.thinkpad.wmi plugin is less responsive than the regular
+thinkpad.wmi plugin.  For example it displays non empty battery bar for a
+long time after disconnecting the battery from the machine.

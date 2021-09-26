@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# converts punctuation from HTML and UTF-8 to ASCII
+
+perl -pe "s/&quot;/\"/g;s/&amp;/&/g;s/&lt;/</g;s/&gt;/>/g;" | \
+perl -pe "s/¡/!/g;s/«/\"/g;s/»/\"/g;s/¿/?/g;s/–/-/g;s/—/-/g;s/‘/\`/g;s/’/'/g;s/„/\"/g;s/“/\"/g;s/”/\"/g;s/…/.../g;" | \
+perl -pe "s/&iexcl;/!/g;s/&laquo;/\"/g;s/&raquo;/\"/g;s/&iquest;/?/g;s/&ndash;/-/g;s/&mdash;/-/g;s/&lsquo;/\`/g;s/&rsquo;/'/g;s/&bdquo;/\"/g;s/&ldquo;/\"/g;s/&rdquo;/\"/g;s/&hellip;/.../g;" | \
+perl -pe "s/�/\"/g;s/�/\"/g;" | \
+perl -pe "s/&#39;/'/g"

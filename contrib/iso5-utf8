@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# converts ISO-8859-5 lowercases to UTF-8 lowercases
+# recognizes Russian alphabet
+
+perl -pe "tr/A-Z/a-z/;s/–/–∞/g;s/—/–±/g;s/“/–≤/g;s/”/–≥/g;s/‘/–¥/g;s/’/–µ/g;s/÷/–∂/g;s/◊/–∑/g;s/ÿ/–∏/g;s/Ÿ/–π/g;s/⁄/–∫/g;s/€/–ª/g;s/‹/–º/g;s/›/–Ω/g;s/ﬁ/–æ/g;s/ﬂ/–ø/g;s/‡/—Ä/g;s/·/—Å/g;s/‚/—Ç/g;s/„/—É/g;s/‰/—Ñ/g;s/Â/—Ö/g;s/Ê/—Ü/g;s/Á/—á/g;s/Ë/—à/g;s/È/—â/g;s/Í/—ä/g;s/Î/—ã/g;s/Ï/—å/g;s/Ì/—ç/g;s/Ó/—é/g;s/Ô/—è/g;s/’/–Å/g;s/’/—ë/g;"

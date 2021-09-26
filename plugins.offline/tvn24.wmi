@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# wminfo plugin: headlines from Polish service tvn24.pl
+
+# command: wminfo -p tvn24.wmi -i 2 -b#0076db -f#ffffff
+
+lynx --source localhost/wminfo/tvn24.html | \
+    sed 's/\n/ /g;s/</\n</g' | \
+    grep 'blink2' | \
+    sed 's/<.*>//;' | \
+    punctuation | \
+    iso2-up2low | \
+    sed 's/^ //' | \
+    sed 's/"//g;'

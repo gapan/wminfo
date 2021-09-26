@@ -1,0 +1,37 @@
+
+wminfo README.conky.top.wmi
+
+
+The conky.top.wmi plugin displays the top command output regarding the CPU
+usage:
+
+The raw data provided by conky looks like that:
+
+    TOP:  15.59 firefox         
+    TOP:   4.55 X               
+    TOP:   0.33 conky           
+    TOP:   0.17 wminfo          
+    TOP:   0.17 kworker/1:2     
+
+The plugin simplifies that information so it looks like that:
+
+    15 firefox         
+     4 X               
+     0 conky           
+     0 wminfo          
+     0 kworker/0:2     
+
+That information looks in the wminfo dockable application window like that:
+
+    +---------+
+    |15 FIREFO|
+    | 4 X     |
+    | 0 CONKY |
+    | 0 WMINFO|
+    | 0 KWORKE|
+    +---------+
+
+I did not find the method of rounding the fractions up with conky so the
+conky.top.wmi plugin simply truncates the fractions.  As a result instead of
+rounding up the numbers such as 15.59 or 4.55 to 16 and 5 it truncates them
+to 15 and 4.

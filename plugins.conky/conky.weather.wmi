@@ -1,0 +1,116 @@
+#!/bin/bash
+
+# wminfo plugin: displays weather conditions for the selected airport
+
+# command: wminfo -p "conky.weather.wmi EPWR" -u 6 -b#0199fe -f#ffffff
+
+# Attention: EPWR in the command above is the ICAO code for Wroclaw, Poland;
+# before running weather.wmi plugin find your nearest airport ICAO code.
+# In order to find ICAO code go to the following site, select a state or a
+# country, and then select a location: http://weather.noaa.gov/
+
+#
+# CONFIGURATION SECTION BEGINS HERE
+#
+
+Weather="^WEATHER: "   # conky configuration
+
+TempUnit=" C"          # " C" for Celsius
+                       # "F" for Fahrenheit
+
+#
+# CONFIGURATION SECTION ENDS HERE
+#
+
+datafile="/tmp/.$USER.conky.tmp"
+
+if [ "$1" == "" ]
+then
+cat <<EOF
+weather.wmi: displays weather conditions for the selected airport
+command:
+    wminfo -p "weather.wmi XXXX -u 6"
+    XXXX: ICAO airport code (see: http://weather.noaa.gov/)
+EOF
+exit
+fi
+
+tempfile="/tmp/.$USER.weather.$1.tmp"
+counter="/tmp/.$USER.counter.tmp"
+
+if [ ! -e $counter ]
+then
+    echo "step=1" > $counter
+fi
+
+. $counter
+
+grep "$Weather" $datafile | sed "s/$Weather//" | sed -E 's/: /="/;s/$/"/' > $tempfile
+. $tempfile
+
+TME=`echo $TME | sed 's/.* //;s/://'`
+
+if [ "$TME" == "" ]
+then
+    TME="0"
+elif [ $TME -gt 0 ]
+then
+    TME=`echo $TME | sed -E 's/^0+//'`
+fi
+
+TMZ=`date +"%z" | sed -E 's/([+-])0/\1/'`
+
+let "TME=$TME+$TMZ"
+
+if [ $TME -ge 2400 ]
+then
+    let "TME=$TME-2400"
+elif [ $TME -lt 0 ]
+then
+    let "TME=$TME+2400"
+fi
+
+if [ $TME -lt 10 ]
+then
+    TME="000$TME"
+elif [ $TME -lt 100 ]
+then
+    TME="00$TME"
+elif [ $TME -lt 1000 ]
+then
+    TME="0$TME"
+fi
+
+if [ "`find $datafile -mtime +0`" != "" ]
+then
+    TME=">24h"
+fi
+
+if [ $step -eq 1 ]
+then
+    echo "$SID $TME"
+    if [ $TMP -lt 0 ]
+    then
+	echo "TMP:$TMP$TempUnit"
+    else
+	echo "TMP: $TMP$TempUnit"
+    fi
+    echo "PRS: $PRS"
+    echo "HUM: $HUM%"
+    echo "WDS: $WDS"
+    echo "step=2" > $counter
+elif [ $step -eq 2 ]
+then
+    echo "$SID $TME"
+    if [ "$WTH" != "" ]
+    then
+	echo "WTH: $WTH"
+    else
+	echo "SKY: $SKY"
+    fi
+    echo "PRS: $PRS"
+    echo "HUM: $HUM%"
+    echo "WDD: $WDD"
+    echo "step=1" > $counter
+fi
+

@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# wminfo plugin: displays notes stored in ~/.pinboard
+
+# Attention: the following script is customized to ISO-8859-2 codepage
+
+# command: wminfo -p pinboard.wmi -u 15 -i 2 -b#000000 -f#00ffff
+
+if [ ! -s ~/.pinboard ]
+then
+    echo > ~/.pinboard
+fi
+
+cat ~/.pinboard | \
+	utf8-iso2
+echo "         "; echo "         "; echo "         "; echo "         "; echo "         "

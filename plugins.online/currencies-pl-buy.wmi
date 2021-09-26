@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# wminfo plugin: currencies exchange rates of Polish zloty (average)
+
+# command: wminfo -p currencies-pl-sell.avg -b#333251 -f#ffffff
+
+lynx --source http://wyborcza.biz/Waluty/0,111138,8938582,,,Kursy_kupna_sprzedazy_walut_NBP,C.html | \
+    perl -pe 's/\n//;s/<td class=(.*)?>/\n<td class=$1>/g' | \
+    grep 'td class' | grep -E 'symbol|buy' | \
+    grep -v 'buychange' | \
+    perl -pe 's/<\/strong>.*/<\/strong>/g;s/<\/a><\/strong>\n//' | \
+    tr '\r\t' ' ' | \
+    perl -pe 's/<.*?>/ /g;s/ +/ /g' | \
+    perl -pe 's/HUF (.)\.(.)(.)(.)./HUF 0.0$1$2$3/;s/JPY (.)\.(.)(.)(.)./JPY 0.0$1$2$3/' | \
+    perl -pe 's/ [0-9]+ //' | \
+    grep -v '^$' | \
+    sort

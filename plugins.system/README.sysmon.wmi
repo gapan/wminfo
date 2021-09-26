@@ -1,0 +1,21 @@
+
+wminfo README.sysmon.wmi
+
+
+The sysmon.wmi plugin displays CPU usage using sysmon script as well as
+memory and swap usages and the average load for the last minute.
+
+I tested Window Maker running eleven plugins and a few applications I use
+all the time.  As a result I observed that sysmon.wmi reports the CPU usage
+higher 1.42 times than the real CPU usage.  So I corrected that using the
+following line in the sysmon script:
+
+    # The correction of the overestimated value.
+    let "DIFF_USAGE=(100*$DIFF_USAGE/142)"
+
+If the values showed by sysmon.wmi on your system are invalid first remove
+the above line from the sysmon script and then try to implement the
+correction proper for your system.
+
+As for free memory report the sysmon.wmi plugin informs about used memory
+only -- without buffered and cached memory.

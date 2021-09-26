@@ -1,0 +1,45 @@
+#!/bin/bash
+
+# wminfo plugin: displays time in different time zones
+
+# command: wminfo -p conky.timezone.wmi -u 15 -b#000000 -f#ffff00
+
+#
+# CONFIGURATION SECTION BEGINS HERE
+#
+
+CompactFormat="on"     # "on" or "off"
+
+#
+# CONFIGURATION SECTION ENDS HERE
+#
+
+datafile="/tmp/.$USER.conky.tmp"
+
+if [ "$CompactFormat" != "on" ]
+then
+    grep '^TIMEZONE: ' $datafile | grep -v 'LOCAL' | sed -E 's/TIMEZONE: //;s/^(...)[A-Z]+/\1/'
+else
+    tempfile="/tmp/.$USER.timezone.tmp"
+    grep '^TIMEZONE: ' $datafile | sed 's/TIMEZONE: //' | sed -E 's/ /="/;s/$/"/' > $tempfile
+    . $tempfile
+    LOCAL=`echo $LOCAL | sed 's/.* //;s/-//'`
+    grep '^TIMEZONE: ' $datafile | grep -v 'LOCAL' | sed -E 's/TIMEZONE: //;s/ /_/g' | \
+    while read timezone junk
+    do
+	TMP=`echo $timezone | sed 's/.*_//;s/-//'`
+	if [[ $LOCAL -eq 1231 && $TMP -eq 0101 ]]
+	then
+	    echo "$timezone" | sed -E 's/^(..)[A-Z]+/\1/;s/([0-9])_/\1+_/;s/_/ /g'
+	elif [ $LOCAL -gt $TMP ] || [[ $LOCAL -eq 0101 && $TMP -eq 1231 ]]
+	then
+	    echo "$timezone" | sed -E 's/^(..)[A-Z]+/\1/;s/([0-9])_/\1-_/;s/_/ /g'
+	elif [ $LOCAL -lt $TMP ]
+	then
+	    echo "$timezone" | sed -E 's/^(..)[A-Z]+/\1/;s/([0-9])_/\1+_/;s/_/ /g'
+	else
+	    echo "$timezone" | sed -E 's/^(..)[A-Z]+/\1/;s/([0-9])_/\1__/;s/_/ /g'
+	fi
+    done
+fi
+

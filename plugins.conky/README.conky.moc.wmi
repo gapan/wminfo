@@ -1,0 +1,52 @@
+
+wminfo README.conky.moc.wmi
+
+
+The conky.moc.wmi plugin monitors moc (music on console) player actions and
+displays the information such as:
+
+    Steve Coleman
+    Genesis - The Opening Of The Way
+    Day One
+    01:25
+    160kbps
+
+In the wminfo dockable application window that information looks like that:
+
+    +---------+
+    |STEVE COL|
+    |GENESIS -|
+    |DAY ONE  |
+    |01:25    |
+    |160KBPS  |
+    +---------+
+
+To see full artist name, album title, and track title that do not fit the
+application window you have to scroll the appropriate line of the text.
+
+The consecutive lines display:
+
+1. Artist or group name.
+2. Album title.
+3. Track title.
+4. The time of the current track.
+5. Bitrate.
+
+When moc does not play the music the conky.moc.wmi plugin displays the
+following information:
+
+    no artist
+    no album
+    no song
+    0:00
+    0Kbps
+
+In the wminfo dockable application window that information looks like that:
+
+    +---------+
+    |NO ARTIST|
+    |NO ALBUM |
+    |NO SONG  |
+    |0:00     |
+    |0KBPS    |
+    +---------+

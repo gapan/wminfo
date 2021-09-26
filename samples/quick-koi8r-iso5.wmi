@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# wminfo plugin: tests UTF-8 to ISO-8859-5 conversion
+# command: wminfo -p quick-koi8r-iso5.wmi -i 5
+
+links -source quick-koi8r.html | \
+    perl -pe 's/\n/ /g;s/</\n</g' | \
+    grep 'CLASS' | sed 's/<.*>//;' | \
+    koi8r-up2low | \
+    punctuation | \
+    piconv -f KOI8-R -t ISO-8859-5

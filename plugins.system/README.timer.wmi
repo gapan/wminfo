@@ -1,0 +1,65 @@
+
+wminfo README.timer.wmi
+
+
+The timer.wmi plugin counts the time down since the defined time and alerts
+you when 00:00:00 is reached.  By default it displays a message and plays a
+sound.
+
+The timer setting and the actions are defined in timer.cfg file, for
+example:
+
+
+    time="00:00:30"
+    command_many="echo time passed"
+    command_once="play /usr/share/sounds/purple/alert.wav"
+
+The command_many variable is for the actions repeated continuously such as
+displaying the message; the command_once variable is for the actions
+performed just once.
+
+After reaching 00:00:00 the timer displays the message, plays the sound and
+it continues to count the time down in order to inform you how much time
+elapsed since the alert.
+
+The positive times such as:
+
+    +---------+
+    |+00:00:15|
+    |         |
+    |         |
+    |         |
+    |         |
+    +---------+
+
+mean there is 15 seconds to 00:00:00.
+
+The negative times such as:
+
+    +---------+
+    |-00:00:15|
+    |TIME PASS|
+    |         |
+    |         |
+    |         |
+    +---------+
+
+mean there is 15 seconds after 00:00:00.
+
+You can reset the timer at any time using the commands:
+
+    timer.wmi -reset
+
+or:
+
+    timer -reset
+
+If you neither reset nor exit the plugin at all it resets itself after 99
+hours, 59 minutes, and 59 seconds (it is 4 days and 4 hours) because it is
+not possible to display the time such as -100:00:00 on nine characters wide
+wminfo window.
+
+The timer script edits timer.cfg configuration file.  In order to be able to
+modify it as a non-root user and to store in that file your own alarms it is
+better to copy timer.cfg file to your ~/bin directory instead of
+/usr/local/bin one.

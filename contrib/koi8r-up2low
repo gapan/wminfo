@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# converts KOI8-R Russian uppercases to lowercases
+
+perl -pe 'tr/A-Z/a-z/;tr/áâ÷çäåöúéêëìíîïğòóôõæèãşûıÿùøüàñ/ÁÂ×ÇÄÅÖÚÉÊËÌÍÎÏĞÒÓÔÕÆÈÃŞÛİßÙØÜÀÑ/;'

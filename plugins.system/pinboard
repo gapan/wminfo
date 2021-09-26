@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# pinboard: edits ~/.pinboard
+
+FILE="~/.pinboard"
+
+if [ -x `which mcedit` ]
+then
+    mcedit $FILE
+elif [ -x `which nano` ]
+then
+    nano $FILE
+else
+    vim $FILE
+fi

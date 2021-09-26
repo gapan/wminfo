@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# wminfo launcher: runs all wminfo sample plugins
+
+wminfo -p quick-koi8r-dummy.wmi &
+sleep 1
+wminfo -p quick-koi8r-iso5.wmi -i 5 &
+sleep 1
+wminfo -p quick-utf8-dummy.wmi &
+sleep 1
+wminfo -p quick-utf8-iso1.wmi -i 1 &
+sleep 1
+wminfo -p quick-utf8-iso2.wmi -i 2 &
+sleep 1
+wminfo -p quick-utf8-iso5.wmi -i 5 &
+sleep 1
+wminfo -p test-01-50.wmi &
+sleep 1
+wminfo -p test-50-01.wmi &

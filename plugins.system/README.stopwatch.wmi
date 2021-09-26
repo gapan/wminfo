@@ -1,0 +1,66 @@
+
+wminfo README.stopwatch.wmi
+
+
+The stopwatch.wmi plugin counts the time elapsed since it was started or
+reset and alerts you when the given time comes.  It accepts up to four
+different alarms.  By default it displays a message and plays a sound but it
+can perform other actions such as suspending the system.
+
+The times of the alarms and the actions are defined in stopwatch.cfg file,
+for example:
+
+    time_1="00:00:05"
+    command_1_many="echo 5 seconds passed"
+    command_1_once="play /usr/share/sounds/purple/alert.wav"
+
+Because the plugin is restarted each second it has to display the message
+such as stored above in command_1_many variable repeatedly.  At the end of
+the plugin there is so called SECTION TO REMOVE.  It repeats all
+$command_?_many commands continuously.
+
+If you want the command to perform some action instead of displaying the
+messages set it as command_?_once and reset command_?_many, for example:
+
+    time_1="12:00:00"
+    command_1_many=
+    command_1_once="sudo /usr/bin/suspend"
+
+Instead of setting the command_?_* variable to an empty value you can
+comment it, for example:
+
+    time_1="12:00:00"
+    # command_1_many="echo nothing interesting"
+    command_1_once="sudo /usr/bin/suspend"
+
+Do not assign the action other than displaying the text to any
+command_?_many, for example:
+
+    time_1="12:00:00"
+    command_1_many="sudo /usr/bin/suspend"
+    command_1_once=
+
+In such a case the stopwatch.wmi plugin would repeat the suspending
+immediately after each resume.
+
+In the other words: all the command_?_many commands are for the actions
+repeated each second and all the command_?_once commands are for the actions
+performed just once.
+
+You can reset the stopwatch at any time using the commands:
+
+    stopwatch.wmi -reset
+
+or:
+
+    stopwatch -reset
+
+If you neither reset nor exit the plugin at all it resets itself after 999
+hours, 59 minutes, and 59 seconds (it is 41 days and 16 hours) because it is
+not possible to display the time such as 1000:00:00 on nine characters wide
+wminfo window.
+
+The stopwatch script edits stopwatch.cfg configuration file.  In order to be
+able to modify it as non-root user and to store in that file your own alarms
+it is better to copy stopwatch.cfg file to your ~/bin directory instead of
+/usr/local/bin one.

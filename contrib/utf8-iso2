@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# converts UTF-8 upper- and lowercases to ISO-8859-2 lowercases
+# recognizes Polish letters
+
+perl -pe "tr/A-Z/a-z/;s/Ä„/±/g;s/Ä†/æ/g;s/Ä˜/ê/g;s/Å/³/g;s/Åƒ/ñ/g;s/Ã“/ó/g;s/Åš/¶/g;s/Å¹/¼/g;s/Å»/¿/g;s/Ä…/±/g;s/Ä‡/æ/g;s/Ä™/ê/g;s/Å‚/³/g;s/Å„/ñ/g;s/Ã³/ó/g;s/Å›/¶/g;s/Åº/¼/g;s/Å¼/¿/g;"

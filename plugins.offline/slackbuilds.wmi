@@ -1,0 +1,42 @@
+#!/bin/bash
+
+# wminfo plugin: displays the versions of the applications at SlackBuilds.org
+
+# command: wminfo -p slackbuilds.wmi -c -b#666666 -f#ffffff
+
+#
+# CONFIGURATION SECTION BEGINS HERE
+#
+
+datafile="$HOME/.slackbuilds"
+
+slackware_version=13.37
+
+applications=" | \
+    multimedia/flash-player-plugin | \
+    network/ntop | \
+    network/opera | \
+    desktop/wminfo | \
+    "
+
+#
+# CONFIGURATION SECTION ENDS HERE
+#
+
+if [ ! -e $datafile ] || [ ! -s $datafile ] || [ "`find $datafile -mmin +3`" != "" ]
+then
+    ping -c1 slackbuilds.org > /tmp/.$USER.slackbuilds.org 2>&1
+    if [ "`cat /tmp/.$USER.slackbuilds.org | grep 'unknown host'`" == "" ]
+    then
+	> $datafile
+	for application in $applications
+	do
+	    lynx --source http://slackbuilds.org/repository/$slackware_version/$application/ | \
+		grep '</h2>' | \
+		sed -E 's/^ +//;s/ +/ /;s/<\/h2>//;s/[\(\)]//g' >> $datafile
+	done
+    fi
+fi
+
+cat $datafile
+echo "         "; echo "         "; echo "         "; echo "         "; echo "         "

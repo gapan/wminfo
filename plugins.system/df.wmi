@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# wminfo plugin: df -lh command output
+
+# command: wminfo -p df.wmi -u 5 -s 0 -b#000000 -f#00ff00
+
+df -lh | grep '^/dev' | sed 's/\/dev\///' | awk '{print $1,$4}'
+echo "         "; echo "         "; echo "         "; echo "         "; echo "         "

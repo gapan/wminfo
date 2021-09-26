@@ -1,0 +1,65 @@
+#!/bin/bash
+
+# wminfo plugin: uptime, users, and load averages
+
+# command: wminfo -p uptime.wmi -u 60 -s 0 -b#000000 -f#ffff00
+
+UPTIME="`uptime`"
+
+if [ "`echo $UPTIME | grep 'min'`" != "" ]
+then
+    if [ "`echo $UPTIME | sed -E 's/  / /g;s/.* ([0-9]+) min.*/\1/;'`" -lt "10" ]
+    then
+	hours="`echo $UPTIME | sed -E 's/  / /g;s/.* ([0-9]+) min.*/0:0\1/;'`"
+    else
+	hours="`echo $UPTIME | sed -E 's/  / /g;s/.* ([0-9]+) min.*/0:\1/;'`"
+    fi
+else
+    hours="`echo $UPTIME | sed -E 's/  / /g;s/.* ([0-9]+:[0-9]+).*/\1/;'`"
+fi
+
+if [ "`echo $UPTIME | grep 'day'`" != "" ]
+then
+    days="`echo $UPTIME | sed -E 's/  / /g;s/.* ([0-9]+) days?.*/\1d/;'`"
+fi
+
+if [ "$days" != "" ] && [ "`echo $days | sed 's/d//'`" -ge "100" ]
+then
+    hours="`echo $hours | sed 's/:.*/h/'`"
+fi
+
+users="`echo $UPTIME | sed -E 's/  / /g;s/.* ([0-9]+ users?).*/\1/;'`"
+
+load01="`echo $UPTIME | sed -E 's/  / /g;s/.* load average: ([0-9\.]+), ([0-9\.]+), ([0-9\.]+)/\1/;'`"
+load05="`echo $UPTIME | sed -E 's/  / /g;s/.* load average: ([0-9\.]+), ([0-9\.]+), ([0-9\.]+)/\2/;'`"
+load15="`echo $UPTIME | sed -E 's/  / /g;s/.* load average: ([0-9\.]+), ([0-9\.]+), ([0-9\.]+)/\3/;'`"
+
+if [ "`echo $UPTIME | grep 'day'`" == "" ]
+then
+    echo "$hours"
+else
+    echo "$days $hours"
+fi
+echo "$users"
+
+if [ `echo $load01 | cut -c 1` -lt 10 ]
+then
+    echo "01m: $load01"
+else
+    echo "01m:$load01"
+fi
+
+if [ `echo $load05 | cut -c 1` -lt 10 ]
+then
+    echo "05m: $load05"
+else
+    echo "05m:$load05"
+fi
+
+if [ `echo $load15 | cut -c 1` -lt 10 ]
+then
+    echo "15m: $load15"
+else
+    echo "15m:$load15"
+fi
+

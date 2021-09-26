@@ -1,0 +1,148 @@
+
+wminfo README.CPU.usage
+
+
+If you use Internet related wminfo plugins except for the weather.wmi you do
+not have to worry about the CPU usage.  The wminfo alone and plugins that
+refresh the information every one-three minutes do not consume a lot of
+power.  In the other case you can consider using the conky dependent plugins
+instead of: netmon.wmi, sysmon.wmi, thinkpad.wmi, top.wmi, uptime.wmi, and
+weather.wmi plugins (see: plugins.conky directory).
+
+As for wminfo dockapp I optimized it in two steps.  The following table
+shows the CPU usage and the X Window CPU usage for twenty running wminfo
+Internet plugins in off-line versions as well as the averages for one wminfo
+instance:
+
+    wminfo | CPU     | X CPU | CPU avg | X CPU avg
+    -------+---------+-------+---------+----------
+    1.60   | 7.3-8.1 | 21-26 | 0.38    | 1.16
+    2.00   | 2.0-2.7 |  7-9  | 0.12    | 0.41
+    2.10   | 0.8-1.5 |  2-3  | 0.06    | 0.14
+
+The mentioned above wminfo 1.60 is an unpublished version of the program
+that uses an unoptimized code the same as the original wminfo 1.51 but
+offers the new features the same as wminfo 2.20 allowing to run the modern
+versions of plugins and compare the results.
+
+The system related plugins and weather.wmi consume more power.
+
+There are four factors that influence the CPU usage.  The first factor is
+the frequency of the updates.  The more often wminfo refreshes the
+information the higher the CPU usage is.  The second factor is the
+complication of the plugin.  More complicated plugins require more CPU
+power.  The third and the fourth factors take place in the case of biff.wmi
+plugin.  The CPU usage increases when biff.wmi plugin checks more mailboxes
+and when these mailboxes are of a big size.
+
+With wminfo 2.3.0 I optimized the plugins consuming a lot of the CPU power.
+With wminfo 2.4.0 I compared a few plugins using more frequent and less
+frequent updates and decided to decrease the default frequency of the
+updates for these plugins.  With wminfo 2.5.0 I introduced a few conky
+dependent plugins that use less CPU power than their regular counterparts.
+
+I tested eleven wminfo plugins I use all the time in order to establish
+their CPU power demands.  The following table lists these plugins together
+with their dockapp replacements:
+
+    wminfo plugins        | dockapps
+    ----------------------+-----------
+    date-pl.wmi           | wmCalClock
+    thinkpad.wmi          | wmpower
+    sysmon.wmi            | wmsm.app
+    top.wmi               | wmtop
+    uptime.wmi            | wmsm.app
+    df.wmi                | pywmhdmon
+    netmon.wmi            | wmnet
+    biff.wmi              | wmbiff
+    weather.wmi           | wmweather
+    linuxquestions-*.wmi  | -
+    slackware-patches.wmi | -
+
+The following table provides the information about the results of the tests
+that I performed.  ``Wasteful totals'' below are for the plugins updating
+the information every three seconds.  ``Economical totals'' are for the
+plugins updating the information every five seconds.
+
+    plugins               | updates | CPU usage | median
+    ----------------------+---------+-----------+--------
+    thinkpad.wmi          |   3     |  3.8-4.6  |  4.2    Correction="on"  draining battery
+                          |   3     |  3.2-4.5  |  3.7                     loading battery
+                          |   3     |  2.5-3.5  |  2.8                     using power supply
+                          |   3     |  3.8-4.6  |  4.2    Correction="off" draining battery
+                          |   3     |  3.3-4.5  |  4.0                     loading battery
+                          |   3     |  2.5-3.2  |  2.7                     using power supply
+    thinkpad.wmi          |   5     |  0.5-4.5  |  4.0    Correction="on"  draining battery
+                          |   5     |  0.2-4.3  |  3.7                     loading battery
+                          |   5     |  0.3-3.5  |  2.5                     using power supply
+                          |   5     |  0.3-4.8  |  3.8    Correction="off" draining battery
+                          |   5     |  0.3-4.1  |  3.6                     loading battery
+                          |   5     |  0.2-3.2  |  2.7                     using power supply
+    ----------------------+---------+-----------+--------
+    weather.wmi           |   3     |  3.8-4.7  |  4.2
+    weather.wmi           |   5     |  0.3-4.5  |  3.8
+    ----------------------+---------+-----------+--------
+    netmon.wmi            |   3     |  3.5-4.3  |  3.8
+    netmon.wmi            |   5     |  0.0-4.3  |  3.6
+    ----------------------+---------+-----------+--------
+    sysmon.wmi            |   3     |  2.0-2.5  |  2.3
+    sysmon.wmi            |   5     |  0.2-2.8  |  2.3
+    ----------------------+---------+-----------+--------
+    top.wmi               |   3     |  0.7-1.3  |  1.0
+    top.wmi               |   5     |  0.2-1.2  |  0.7
+    ----------------------+---------+-----------+--------
+    date-pl.wmi           |   1     |  3.6-4.5  |  4.0
+    biff.wmi              |   5     |  0.0-3.0  |  2.5    5 mailboxes, 70 MB
+    df.wmi                |   5     |  0.0-1.0  |  0.7
+    uptime.wmi            |  60     |  0.0-1.8  |  0.5
+    linuxquestions-*.wmi  |  60     |  0.0-2.0  |  0.2
+    slackware-patches.wmi | 180     |  0.0-1.7  |  0.2
+    ----------------------+---------+-----------+--------
+    wasteful totals                 | 18.9-24.0 | 20.9    draining battery
+                                    | 18.2-22.4 | 20.6    loading battery
+                                    | 17.2-21.2 | 19.4    using power supply
+    --------------------------------+-----------+--------
+    economical totals               | 12.0-21.4 | 14.5    draining battery
+                                    | 11.9-20.4 | 14.1    loading battery
+                                    | 11.3-16.6 | 14.4    using power supply
+
+Window Maker started with two xterms and top but without running any wminfo
+plugin consumes 0.0-0.3 percent of the CPU.  The same Window Maker running
+the mentioned above eleven wminfo plugins in wasteful versions consumes
+about 20.3% of the CPU and in economical versions -- about 14.3% of the CPU.
+It is a significant saving.  The plugins that refresh the information less
+frequently are less responsive but the savings of the CPU power justify
+worse responsiveness.
+
+The mentioned above dockable applications use 0.5-2.5 percent of the CPU.
+Above 14 percent of the CPU usage in the case of wminfo plugins in
+economical versions is a lot but that is the price of an uniform look of the
+desktop and much more information offered by the discussed wminfo plugins in
+the comparison to their dockable applications replacements.
+
+To determine the CPU usage I used the following command:
+
+    top -b -n 40 | grep '^Cpu' | sort -n
+
+I performed all the tests in off-line mode and I ignored extremly high
+results (peaks).
+
+The last table shows the temperatures of the CPU, video, and mainboard when
+none wminfo plugin is running and when all eleven discussed above plugins
+are working:
+
+                | CPU | VID | M-B
+    ------------+-----+-----+------
+    all plugins | 73 C| 70 C| 50 C
+    (wasteful)  |     |     |
+    ------------+-----+-----+------
+    all plugins | 66 C| 63 C| 48 C
+    (economical)|     |     |
+    ------------+-----+-----+------
+    none plugin | 58 C| 55 C| 48 C
+                |     |     |
+
+All discussed plugins use about 3 MB of memory.
+
+All the above tests were performed on ThinkPad X60s using Intel(R) Core(TM)
+Duo CPU L2400 @ 1.66GHz.

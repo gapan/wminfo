@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# wminfo plugin: moc status (music on console)
+
+# command: wminfo -p conky.moc.wmi -u 3 -b#000000 -f#00ffff
+
+datafile="/tmp/.$USER.conky.tmp"
+
+grep '^MOC: ' $datafile | \
+    sed -E "s/^MOC: //"
+

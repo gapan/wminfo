@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# wminfo plugin: displays CPU, memory, and swap usages as well as average load
+
+# Attention: sysmon.wmi plugin uses sysmon script
+
+# command: wminfo -p sysmon.wmi -u 5 -s 0 -b#000000 -f#ff0000
+
+sysmon
+
+MEMORY=`free -m | grep 'Mem:'`
+SWAP=`free -m | grep 'Swap:'`
+
+MEMORY_TOTAL=`echo $MEMORY | awk '{print $2}'`
+MEMORY_USED=`echo $MEMORY | awk '{print $3}'`
+MEMORY_BUFFERS=`echo $MEMORY | awk '{print $6}'`
+MEMORY_CACHED=`echo $MEMORY | awk '{print $7}'`
+
+SWAP_TOTAL=`echo $SWAP | awk '{print $2}'`
+SWAP_USED=`echo $SWAP | awk '{print $3}'`
+
+let "MEM=100*($MEMORY_USED-$MEMORY_BUFFERS-$MEMORY_CACHED)/$MEMORY_TOTAL"
+echo "MEM: $MEM%"
+
+let "SWP=100*$SWAP_USED/$SWAP_TOTAL"
+echo "SWP: $SWP%"
+
+AVG=`top -b | head -n 1 | sed 's/.* load average: //' |awk '{print $1}' | sed 's/,//'`
+
+if [ `echo $AVG | cut -c 1` -lt 10 ]
+then
+    echo "AVG: $AVG"
+else
+    echo "AVG:$AVG"
+fi
+

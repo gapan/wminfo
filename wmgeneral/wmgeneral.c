@@ -9,33 +9,36 @@
 
 	Author: Martijn Pieterse (pieterse@xs4all.nl)
 
-	---
+	------------------------------------------------------------
 	CHANGES:
-    ---
-    14/09/1998 (Dave Clark, clarkd@skyia.com)
-        * Updated createXBMfromXPM routine
-        * Now supports >256 colors
+	------------------------------------------------------------
+	22/07/2011 (Cezary M. Kruk, c.kruk@bigfoot.com)
+		* Updated GetXPM and openXwindow in order to
+		  allow to specify the colors.
+	14/09/1998 (Dave Clark, clarkd@skyia.com)
+		* Updated createXBMfromXPM routine.
+		* Now supports >256 colors.
 	11/09/1998 (Martijn Pieterse, pieterse@xs4all.nl)
 		* Removed a bug from parse_rcfile. You could
-		  not use "start" in a command if a label was 
+		  not use "start" in a command if a label was
 		  also start.
 		* Changed the needed geometry string.
 		  We don't use window size, and don't support
 		  negative positions.
 	03/09/1998 (Martijn Pieterse, pieterse@xs4all.nl)
-		* Added parse_rcfile2
+		* Added parse_rcfile2.
 	02/09/1998 (Martijn Pieterse, pieterse@xs4all.nl)
-		* Added -geometry support (untested)
+		* Added -geometry support (untested).
 	28/08/1998 (Martijn Pieterse, pieterse@xs4all.nl)
-		* Added createXBMfromXPM routine
+		* Added createXBMfromXPM routine.
 		* Saves a lot of work with changing xpm's.
 	02/05/1998 (Martijn Pieterse, pieterse@xs4all.nl)
-		* changed the read_rc_file to parse_rcfile, as suggested by Marcelo E. Magallon
+		* changed the read_rc_file to parse_rcfile,
+		  as suggested by Marcelo E. Magallon.
 		* debugged the parse_rc file.
 	30/04/1998 (Martijn Pieterse, pieterse@xs4all.nl)
-		* Ripped similar code from all the wm* programs,
-		  and put them in a single file.
-
+		* Ripped similar code from all the wm*
+		  programs, and put them in a single file.
 */
 
 #include <stdlib.h>
@@ -56,15 +59,15 @@
 /*****************/
 
 Window		Root;
-int			screen;
-int			x_fd;
-int			d_depth;
+int		screen;
+int		x_fd;
+int		d_depth;
 XSizeHints	mysizehints;
 XWMHints	mywmhints;
 Pixel		back_pix, fore_pix;
 char		*Geometry = "";
 Window		iconwin, win;
-GC			NormalGC;
+GC		NormalGC;
 XpmIcon		wmgen;
 Pixmap		pixmask;
 
@@ -93,7 +96,7 @@ void AddMouseRegion(int, int, int, int, int);
 int CheckMouseRegion(int, int);
 
 /*******************************************************************************\
-|* parse_rcfile																   *|
+|* parse_rcfile									*|
 \*******************************************************************************/
 
 void parse_rcfile(const char *filename, rckeys *keys) {
@@ -102,7 +105,7 @@ void parse_rcfile(const char *filename, rckeys *keys) {
 	char	temp[128];
 	char	*tokens = " :\t\n";
 	FILE	*fp;
-	int		i,key;
+	int	i,key;
 
 	fp = fopen(filename, "r");
 	if (fp) {
@@ -128,7 +131,7 @@ void parse_rcfile(const char *filename, rckeys *keys) {
 }
 
 /*******************************************************************************\
-|* parse_rcfile2															   *|
+|* parse_rcfile2								*|
 \*******************************************************************************/
 
 void parse_rcfile2(const char *filename, rckeys2 *keys) {
@@ -137,7 +140,7 @@ void parse_rcfile2(const char *filename, rckeys2 *keys) {
 	char	temp[128];
 	char	*tokens = " :\t\n";
 	FILE	*fp;
-	int		i,key;
+	int	i,key;
 	char	*family = NULL;
 
 	fp = fopen(filename, "r");
@@ -162,18 +165,18 @@ void parse_rcfile2(const char *filename, rckeys2 *keys) {
 
 
 /*******************************************************************************\
-|* GetXPM																	   *|
+|* GetXPM									*|
 \*******************************************************************************/
 
 static void GetXPM(XpmIcon *wmgen, char *pixmap_bytes[]) {
 
 	XWindowAttributes	attributes;
-	int					err;
+	int			err;
 
 	/* For the colormap */
 	XGetWindowAttributes(display, Root, &attributes);
 
-	wmgen->attributes.valuemask |= (XpmReturnPixels | XpmReturnExtensions);
+	wmgen->attributes.valuemask |= (XpmReturnPixels | XpmReturnExtensions | XpmColorSymbols);
 
 	err = XpmCreatePixmapFromData(display, Root, pixmap_bytes, &(wmgen->pixmap),
 					&(wmgen->mask), &(wmgen->attributes));
@@ -185,12 +188,12 @@ static void GetXPM(XpmIcon *wmgen, char *pixmap_bytes[]) {
 }
 
 /*******************************************************************************\
-|* GetColor																	   *|
+|* GetColor									*|
 \*******************************************************************************/
 
 static Pixel GetColor(char *name) {
 
-	XColor				color;
+	XColor			color;
 	XWindowAttributes	attributes;
 
 	XGetWindowAttributes(display, Root, &attributes);
@@ -205,13 +208,13 @@ static Pixel GetColor(char *name) {
 }
 
 /*******************************************************************************\
-|* flush_expose																   *|
+|* flush_expose									*|
 \*******************************************************************************/
 
 static int flush_expose(Window w) {
 
 	XEvent 		dummy;
-	int			i=0;
+	int		i=0;
 
 	while (XCheckTypedWindowEvent(display, w, Expose, &dummy))
 		i++;
@@ -220,7 +223,7 @@ static int flush_expose(Window w) {
 }
 
 /*******************************************************************************\
-|* RedrawWindow																   *|
+|* RedrawWindow									*|
 \*******************************************************************************/
 
 void RedrawWindow(void) {
@@ -234,7 +237,7 @@ void RedrawWindow(void) {
 }
 
 /*******************************************************************************\
-|* RedrawWindowXY															   *|
+|* RedrawWindowXY								*|
 \*******************************************************************************/
 
 void RedrawWindowXY(int x, int y) {
@@ -248,7 +251,7 @@ void RedrawWindowXY(int x, int y) {
 }
 
 /*******************************************************************************\
-|* AddMouseRegion															   *|
+|* AddMouseRegion								*|
 \*******************************************************************************/
 
 void AddMouseRegion(int index, int left, int top, int right, int bottom) {
@@ -263,7 +266,7 @@ void AddMouseRegion(int index, int left, int top, int right, int bottom) {
 }
 
 /*******************************************************************************\
-|* CheckMouseRegion															   *|
+|* CheckMouseRegion								*|
 \*******************************************************************************/
 
 int CheckMouseRegion(int x, int y) {
@@ -286,26 +289,25 @@ int CheckMouseRegion(int x, int y) {
 }
 
 /*******************************************************************************\
-|* createXBMfromXPM															   *|
+|* createXBMfromXPM								*|
 \*******************************************************************************/
 void createXBMfromXPM(char *xbm, char **xpm, int sx, int sy) {
 
 	int		i,j,k;
 	int		width, height, numcol, depth;
-    int 	zero=0;
+	int		zero=0;
 	unsigned char	bwrite;
-    int		bcount;
-    int     curpixel;
+	int		bcount;
+	int		curpixel;
 	
 	sscanf(*xpm, "%d %d %d %d", &width, &height, &numcol, &depth);
-
 
     for (k=0; k!=depth; k++)
     {
         zero <<=8;
         zero |= xpm[1][k];
     }
-        
+
 	for (i=numcol+1; i < numcol+sy+1; i++) {
 		bcount = 0;
 		bwrite = 0;
@@ -318,7 +320,6 @@ void createXBMfromXPM(char *xbm, char **xpm, int sx, int sy) {
                 curpixel <<=8;
                 curpixel |= xpm[i][j+k];
             }
-                
             if ( curpixel != zero ) {
 				bwrite += 128;
 			}
@@ -334,7 +335,7 @@ void createXBMfromXPM(char *xbm, char **xpm, int sx, int sy) {
 }
 
 /*******************************************************************************\
-|* copyXPMArea																   *|
+|* copyXPMArea									*|
 \*******************************************************************************/
 
 void copyXPMArea(int x, int y, int sx, int sy, int dx, int dy) {
@@ -344,7 +345,7 @@ void copyXPMArea(int x, int y, int sx, int sy, int dx, int dy) {
 }
 
 /*******************************************************************************\
-|* copyXBMArea																   *|
+|* copyXBMArea									*|
 \*******************************************************************************/
 
 void copyXBMArea(int x, int y, int sx, int sy, int dx, int dy) {
@@ -354,7 +355,7 @@ void copyXBMArea(int x, int y, int sx, int sy, int dx, int dy) {
 
 
 /*******************************************************************************\
-|* setMaskXY																   *|
+|* setMaskXY									*|
 \*******************************************************************************/
 
 void setMaskXY(int x, int y) {
@@ -364,23 +365,23 @@ void setMaskXY(int x, int y) {
 }
 
 /*******************************************************************************\
-|* openXwindow																   *|
+|* openXwindow									*|
 \*******************************************************************************/
-void openXwindow(int argc, char *argv[], char *pixmap_bytes[], char *pixmask_bits, int pixmask_width, int pixmask_height) {
+void openXwindow(int argc, char *argv[], char *pixmap_bytes[], char *pixmask_bits, int pixmask_width, int pixmask_height, XpmColorSymbol *colorspec) {
 
 	unsigned int	borderwidth = 1;
-	XClassHint		classHint;
-	char			*display_name = NULL;
-	char			*wname = argv[0];
+	XClassHint	classHint;
+	char		*display_name = NULL;
+	char		*wname = argv[0];
 	XTextProperty	name;
 
-	XGCValues		gcv;
+	XGCValues	gcv;
 	unsigned long	gcm;
 
-	char			*geometry = NULL;
+	char		*geometry = NULL;
 
-	int				dummy=0;
-	int				i, wx, wy;
+	int		dummy=0;
+	int		i, wx, wy;
 
 	for (i=1; argv[i]; i++) {
 		if (!strcmp(argv[i], "-display")) {
@@ -404,6 +405,12 @@ void openXwindow(int argc, char *argv[], char *pixmap_bytes[], char *pixmask_bit
 	x_fd    = XConnectionNumber(display);
 
 	/* Convert XPM to XImage */
+	if (colorspec) {
+		for (i = 0; colorspec[i].name; i++)
+			colorspec[i].pixel = GetColor(colorspec[i].value);
+		wmgen.attributes.numsymbols   = i;
+		wmgen.attributes.colorsymbols = colorspec;
+	}
 	GetXPM(&wmgen, pixmap_bytes);
 
 	/* Create a window to hold the stuff */
@@ -419,7 +426,7 @@ void openXwindow(int argc, char *argv[], char *pixmap_bytes[], char *pixmask_bit
 
 	mysizehints.width = 64;
 	mysizehints.height = 64;
-		
+
 	win = XCreateSimpleWindow(display, Root, mysizehints.x, mysizehints.y,
 				mysizehints.width, mysizehints.height, borderwidth, fore_pix, back_pix);
 	

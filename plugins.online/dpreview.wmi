@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# wminfo plugin: headlines from dpreview.com
+
+# command: wminfo -p dpreview.wmi -b#6594eb -f#ffffff
+
+lynx --source http://www.dpreview.com/ | \
+	sed 's/\n/ /g' | \
+	sed 's/class="title"><a href=/class="title" a href=/g' | \
+	sed 's/</\n</g' | \
+	grep 'class="title"' | \
+	up2low | \
+	tr -d '\r' | \
+	sed 's/just posted: //' | \
+	sed 's/<.*>//;' | \
+	grep -v '^$' | \
+	punctuation | \
+	head -n 25

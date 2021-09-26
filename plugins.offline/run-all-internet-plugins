@@ -1,0 +1,54 @@
+#!/bin/bash
+
+# wminfo launcher: runs all wminfo Internet dependent plugins
+
+wminfo -p arch-patches.wmi -b#1793d1 -f#ffffff &
+sleep 1
+wminfo -p bbc-mundo.wmi -i 1 -b#5c0000 -f#ffffff &
+sleep 1
+wminfo -p billboard-top10.wmi -b#d70377 -f#ffffff &
+sleep 1
+wminfo -p cnet.wmi -b#e6090a -f#ffffff &
+sleep 1
+wminfo -p commentcamarche.wmi -i 1 -b#d6071b -f#ffffff &
+sleep 1
+wminfo -p currencies-pl-avg.wmi -b#333251 -f#ffffff &
+sleep 1
+wminfo -p currencies-pl-buy.wmi -b#333251 -f#ffffff &
+sleep 1
+wminfo -p currencies-pl-sell.wmi -b#333251 -f#ffffff &
+sleep 1
+wminfo -p dockapps.wmi -b#35548d -f#ffffff &
+sleep 1
+wminfo -p dpreview.wmi -b#6594eb -f#ffffff &
+sleep 1
+wminfo -p freecode.wmi -b#184860 -f#ffffff &
+sleep 1
+wminfo -p kernel-2.4.wmi -b#ffffdd -f#000000 &
+sleep 1
+wminfo -p kernel-2.6.wmi -b#ffffdd -f#000000 &
+sleep 1
+wminfo -p kernel-3.0.wmi -b#ffffdd -f#000000 &
+sleep 1
+wminfo -p kommersant.wmi -i 5 -b#576675 -f#ffffff &
+sleep 1
+wminfo -p linuxquestions-slackware.wmi -u 60 -b#405788 -f#ffffff &
+sleep 1
+wminfo -p nasdaq.wmi -b#43b1e6 -f#ffffff &
+sleep 1
+wminfo -p pitchfork.wmi -b#ef4135 -f#ffffff &
+sleep 1
+wminfo -p slackbuilds.wmi -c -b#666666 -f#ffffff &
+sleep 1
+wminfo -p slackware-patches.wmi -b#d3d3d3 -f#000000 &
+sleep 1
+wminfo -p slashdot.wmi -b#005e5e -f#ffffff &
+sleep 1
+wminfo -p spiegel.wmi -i 1 -b#bb010e -f#ffffff &
+sleep 1
+wminfo -p tvn24.wmi -i 2 -b#0076db -f#ffffff &
+sleep 1
+wminfo -p "weather.wmi EPWR" -u 5 -s 0 -b#0199fe -f#ffffff &
+sleep 1
+wminfo -p wyborcza.wmi -i 2 -b#c2052c -f#ffffff &
+

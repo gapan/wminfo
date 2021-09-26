@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# wminfo plugin: Billboard Top 10
+
+# command: wminfo -p billboard-top10.wmi -b#d70377 -f#ffffff
+
+lynx --source localhost/wminfo/billboard-top10.html | \
+	sed 's/\n/ /g;s/</\n</g' | \
+	grep -E 'item-title|item-artist' | \
+	grep -v 'artistId' | \
+	perl -pe 's/\n//g' | \
+	sed 's/<div class="item-artist" style="display:none;">/ - /g' | \
+	sed 's/</\n</g' | \
+	sed 's/<.*>//;' | \
+	grep -v '^$' | \
+	punctuation
+echo

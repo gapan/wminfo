@@ -1,0 +1,74 @@
+#!/bin/bash
+
+# wminfo plugin: total incoming and outgoing traffic for selected interfaces
+
+# Attention: traffic.wmi plugin uses traffic script
+#            the command traffic.wmi -reset resets the traffic counters
+#            the plugin resets the traffic counters after 999h 59m 59s
+
+# command: wminfo -p traffic.wmi -u 5 -s 0 -b#000000 -f#ff00ff
+
+ETH0=`traffic eth0 $1`
+WLN0=`traffic wlan0 $1`
+
+ETH0_RX="`echo $ETH0 | awk '{print $4}'`"
+ETH0_TX="`echo $ETH0 | awk '{print $7}'`"
+WLN0_RX="`echo $WLN0 | awk '{print $4}'`"
+WLN0_TX="`echo $WLN0 | awk '{print $7}'`"
+
+datafile="$HOME/.traffic"
+
+if [ "$1" == "-reset" ]
+then
+    > $datafile
+    exit
+fi
+
+if [ ! -e $datafile ] || [ ! -s $datafile ]
+then
+    echo "olddate=`date +"%s"`" > $datafile
+fi
+
+. $datafile
+
+newdate="`date +"%s"`"
+
+let "datediff=$newdate-$olddate"
+
+let hours="$datediff/3600"
+let minutes="($datediff-$hours*3600)/60"
+let seconds="$datediff-$hours*3600-$minutes*60"
+
+if [ $hours -lt 10 ]
+then
+    hours="0$hours"
+fi
+
+if [ $minutes -lt 10 ]
+then
+    minutes="0$minutes"
+fi
+
+if [ $seconds -lt 10 ]
+then
+    seconds="0$seconds"
+fi
+
+if [ $hours -lt 1000 ]
+then
+    echo "$hours:$minutes:$seconds"
+else
+    > $datafile
+    traffic eth0 -reset 1>/dev/null
+    traffic wlan0 -reset 1>/dev/null
+    echo "         "; echo "         "; echo "         "; echo "         "; echo "         "
+    exit
+fi
+
+echo "E0 $ETH0_RX"
+echo "E0 $ETH0_TX"
+echo "W0 $WLN0_RX"
+echo "W0 $WLN0_TX"
+
+echo "         "; echo "         "; echo "         "; echo "         "; echo "         "; 
+

@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# converts UTF-8 upper- and lowercases to ISO-8859-5 lowercases
+# recognizes Russian alphabet
+
+perl -pe "tr/A-Z/a-z/;s/–ê/–/g;s/–ë/—/g;s/–í/“/g;s/–ì/”/g;s/–î/‘/g;s/–ï/’/g;s/–ñ/÷/g;s/–ó/◊/g;s/–ò/ÿ/g;s/–ô/Ÿ/g;s/–ö/⁄/g;s/–õ/€/g;s/–ú/‹/g;s/–ù/›/g;s/–û/ﬁ/g;s/–ü/ﬂ/g;s/–†/‡/g;s/–°/·/g;s/–¢/‚/g;s/–£/„/g;s/–§/‰/g;s/–•/Â/g;s/–¶/Ê/g;s/–ß/Á/g;s/–®/Ë/g;s/–©/È/g;s/–™/Í/g;s/–´/Î/g;s/–¨/Ï/g;s/–≠/Ì/g;s/–Æ/Ó/g;s/–Ø/Ô/g;s/–∞/–/g;s/–±/—/g;s/–≤/“/g;s/–≥/”/g;s/–¥/‘/g;s/–µ/’/g;s/–∂/÷/g;s/–∑/◊/g;s/–∏/ÿ/g;s/–π/Ÿ/g;s/–∫/⁄/g;s/–ª/€/g;s/–º/‹/g;s/–Ω/›/g;s/–æ/ﬁ/g;s/–ø/ﬂ/g;s/—Ä/‡/g;s/—Å/·/g;s/—Ç/‚/g;s/—É/„/g;s/—Ñ/‰/g;s/—Ö/Â/g;s/—Ü/Ê/g;s/—á/Á/g;s/—à/Ë/g;s/—â/È/g;s/—ä/Í/g;s/—ã/Î/g;s/—å/Ï/g;s/—ç/Ì/g;s/—é/Ó/g;s/—è/Ô/g;s/–Å/’/g;s/—ë/’/g;"

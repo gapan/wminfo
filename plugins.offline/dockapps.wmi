@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# wminfo plugin: new dockapps at www.dockapps.org
+
+# command: wminfo -p dockapps.wmi -b#35548d -f#ffffff
+
+lynx --source localhost/wminfo/dockapps.html | \
+	grep file.php | \
+	perl -pe 's/<.*?>/ /g;' | \
+	perl -pe 's/^ +//g;' | \
+	perl -pe 's/ +/ /g;' | \
+	grep -v '^$' | \
+	head -n 10

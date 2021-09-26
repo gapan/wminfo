@@ -1,0 +1,49 @@
+
+wminfo README.conky.date.wmi
+
+
+The conky.date.wmi plugin displays the following information:
+
+    +---------+
+    |16:39:57 |
+    |THURSDAY |
+    |DEC  01  |
+    |WEEK 48  |
+    |YEAR 2011|
+    +---------+
+
+That plugin started in the default conky configuration provided with the
+wminfo dockable application updates the displayed time every three seconds
+because in the default configuration conky updates the information every
+three seconds:
+
+    update_interval 3.0
+
+I used such a period in order to save the CPU power.  The conky using the
+update interval equal 1.0 uses more power.
+
+Instead of using the conky.date.wmi plugin it is better to use the regular
+date.wmi plugin from the plugins.system directory.  If you prefer the
+conky.date.wmi plugin nevertheless shorten the conky update interval from
+three to one second.
+
+In the default conky configuration the setting for the clock looks like
+that:
+
+    DATE: ${time %H:%M:%S}
+
+It displays the hours from 00 to 23.
+
+If you prefer the hours in AM/PM format use the following setting:
+
+    DATE: ${time %I:%M:%S%p}
+
+In the default conky configuration the setting for the week looks like that:
+
+    DATE: ${time week %V}
+
+It assumes the week begins on Monday.
+
+For the week beginning on Sunday use the following setting:
+
+    DATE: ${time week %U}

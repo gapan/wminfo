@@ -29,7 +29,7 @@ struct _rckeys2 {
 typedef struct {
 	Pixmap			pixmap;
 	Pixmap			mask;
-	XpmAttributes	attributes;
+	XpmAttributes		attributes;
 } XpmIcon;
 
   /*******************/
@@ -45,7 +45,7 @@ Display		*display;
 void AddMouseRegion(int index, int left, int top, int right, int bottom);
 int CheckMouseRegion(int x, int y);
 
-void openXwindow(int argc, char *argv[], char **, char *, int, int);
+void openXwindow(int argc, char *argv[], char **, char *, int, int, XpmColorSymbol *);
 void RedrawWindow(void);
 void RedrawWindowXY(int x, int y);
 

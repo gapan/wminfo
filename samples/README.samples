@@ -1,0 +1,66 @@
+
+wminfo README.samples
+
+
+This directory contains the following files:
+
+run-all-samples       wminfo launcher: runs all wminfo sample plugins.
+
+quick-utf8.html       HTML file in UTF-8 encoding including sample sentences
+                        in English, German, French, Spanish, Polish, and
+                        Russian.
+quick-utf8-iso1.wmi   wminfo plugin converting HTML text in UTF-8 to the
+                        ASCII text encoded in ISO-8859-1.
+quick-utf8-iso2.wmi   wminfo plugin converting HTML text in UTF-8 to the
+                        ASCII text encoded in ISO-8859-2.
+quick-utf8-iso5.wmi   wminfo plugin converting HTML text in UTF-8 to the
+                        ASCII text encoded in ISO-8859-5.
+quick-koi8r.html      HTML file in KOI8-R encoding including sample
+                        sentences in English and Russian.
+quick-koi8r-iso5.wmi  wminfo plugin converting HTML text in KOI8-R to the
+                        ASCII text encoded in ISO-8859-5 -- it uses piconv
+                        program to convert the codepage.
+quick-utf8-dummy.wmi  wminfo plugin converting HTML text in UTF-8 to the
+                        plain ASCII text.
+quick-koi8r-dummy.wmi wminfo plugin converting HTML text in KOI8-R to the
+                        plain ASCII text.
+
+test.html             HTML file with lines of text from 0 to 50 characters.
+test-00-50.wmi        wminfo plugin for testing scrolling and rewinding
+                        speeds.
+test-50-00.wmi        wminfo plugin for testing scrolling and rewinding
+                        speeds.
+
+In order to display properly the text in German, French, and Spanish run the
+command:
+
+    wminfo -p quick-utf8-iso1.wmi -i 1
+
+In order to display properly the text in Polish run the command:
+
+    wminfo -p quick-utf8-iso2.wmi -i 2
+
+In order to display properly the text in Russian run these commands:
+
+    wminfo -p quick-utf8-iso5.wmi -i 5
+
+or:
+
+    wminfo -p quick-koi8r-iso5.wmi -i 5
+
+In order to test default scrolling and rewinding speeds run these commands:
+
+    wminfo -p test-00-50.wmi
+
+or:
+
+    wminfo -p test-50-00.wmi
+
+and test different values using -s and -r switches.
+
+To try all sample plugins use the command run-all-samples.
+
+Each plugin contains the information about the suggested command to run it.
+
+The current directory is copied to the system doc directory during the
+installation of wminfo.

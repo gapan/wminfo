@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# timezone: edits timezone.cfg
+
+if [ -e timezone.cfg ]
+then
+    FILE="timezone.cfg"
+elif [ -e $HOME/bin/timezone.cfg ]
+then
+    FILE="$HOME/bin/timezone.cfg"
+elif [ -e /usr/local/bin/timezone.cfg ]
+then
+    FILE="/usr/local/bin/timezone.cfg"
+else
+    echo "timezone: there is no timezone.cfg database."
+    exit
+fi
+
+if [ -x `which mcedit` ]
+then
+    mcedit $FILE
+elif [ -x `which nano` ]
+then
+    nano $FILE
+else
+    vim $FILE
+fi

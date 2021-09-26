@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# timer: edits timer.cfg
+
+if [ "$1" == "-reset" ]
+then
+    timer.wmi -reset
+    exit
+fi
+
+if [ -e timer.cfg ]
+then
+    FILE="timer.cfg"
+elif [ -e $HOME/bin/timer.cfg ]
+then
+    FILE="$HOME/bin/timer.cfg"
+elif [ -e /usr/local/bin/timer.cfg ]
+then
+    FILE="/usr/local/bin/timer.cfg"
+else
+    echo "timer: there is no timer.cfg file."
+    exit
+fi
+
+if [ -x `which mcedit` ]
+then
+    mcedit $FILE
+elif [ -x `which nano` ]
+then
+    nano $FILE
+else
+    vim $FILE
+fi

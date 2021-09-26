@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# wminfo plugin: new Slackware patches
+
+# command: wminfo -p slackware-patches.wmi -b#d3d3d3 -f#000000
+
+# That plugin uses the same mirror you enabled in /etc/slackpkg/mirrors
+# file.  It looks for Slackware patches and stores the data in
+# /tmp/.patches.tmp file.  Finally it displays the information about the
+# available patches.
+
+tempfile=/tmp/.$USER.patches.tmp
+
+lynx --source localhost/wminfo/slackware-patches.html | \
+grep .txz | grep -v .asc | grep HREF | sed 's/.*packages\///;s/"//' > $tempfile
+ls /var/cache/packages/patches/packages/ | grep -v .asc >> $tempfile
+ls /var/cache/packages/patches/packages/ | grep -v .asc >> $tempfile
+
+cat $tempfile | sort | uniq -u
+echo "         "; echo "         "; echo "         "; echo "         "; echo "         "

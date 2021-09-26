@@ -1,0 +1,59 @@
+#!/bin/bash
+
+# wminfo plugin: clock and calendar for Polish users
+
+# command: wminfo -p date-pl.wmi -u 1 -i 2 -b#000000 -f#ffff00
+
+LANG="pl_PL.UTF-8"
+
+tempfile="/tmp/.$USER.date-pl.tmp"
+
+date +"%H:%M:%S %n%a %_d %b" | \
+    sed 's/pon/pn/;s/wto/wt/;s/śro/śr/;s/czw/cz/;s/pią/pt/;s/sob/sb/;s/nie/nd/' | \
+    utf8-iso2
+
+if [ -e date-pl.cfg ]
+then
+    datefile="date-pl.cfg"
+elif [ -e $HOME/bin/date-pl.cfg ]
+then
+    datefile="$HOME/bin/date-pl.cfg"
+elif [ -e /usr/local/bin/date-pl.cfg ]
+then
+    datefile="/usr/local/bin/date-pl.cfg"
+else
+    echo "date-pl.wmi: there is no date-pl.cfg database."
+    exit
+fi
+
+current_date="`date +"%m %d"`"
+current_year="`date +"%Y"`"
+
+if [ ! -e $tempfile ] || [ "`grep \"$current_year $current_date\" $tempfile`" == "" ] || [ $datefile -nt $tempfile ]
+then
+    echo "$current_year $current_date" > $tempfile
+    grep "^$current_year $current_date" $datefile | sed -E 's/[0-9]+ [0-9]+ [0-9]+ //' | utf8-iso2 >> $tempfile
+    grep "^$current_date" $datefile | sed -E 's/[0-9]+ [0-9]+ //' | utf8-iso2 >> $tempfile
+    filelength=`wc -l $tempfile | awk '{print $1}'`
+    let "filelength=$filelength-1"
+    sed -i 's/ /_/g' $tempfile
+    tail -n $filelength $tempfile | \
+    while read line junk
+    do
+	length=`echo $line | wc -m`
+        if [ $length -lt 10 ]
+        then
+	    let "offset=10-$length"
+	    for step in `seq 1 $offset`
+	    do
+		sed -i "s/^$line/$line /" $tempfile
+	    done
+        fi
+    done
+    sed -i 's/_/ /g' $tempfile
+fi
+
+cat $tempfile | grep -v "$current_year $current_date"
+
+echo "         "; echo "         "
+

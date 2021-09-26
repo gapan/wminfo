@@ -1,0 +1,270 @@
+#!/bin/bash
+
+# wminfo plugin: displays weather conditions for the selected airport
+
+# command: wminfo -p "weather.wmi EPWR" -u 5 -s 0 -b#0199fe -f#ffffff
+
+# Attention: EPWR in the command above is the ICAO code for Wroclaw, Poland;
+# before running weather.wmi plugin find your nearest airport ICAO code.
+# In order to find ICAO code go to the following site, select a state or a
+# country, and then select a location: http://weather.noaa.gov/
+
+#
+# CONFIGURATION SECTION BEGINS HERE
+#
+
+Temperature="C"		# "C" for Celsius
+			# "F" for Fahrenheit
+
+Pressure="hPa"		# "hPa" for hectoPascals
+			# "mmHg" for millimeters of Mercury
+			# "inHg" for inches of Mercury
+
+Wind_Speed="m/s"	# "m/s" for meters/seconds
+			# "km/h" for kilometers/hour
+			# "mph" for miles per hour
+			# "kt" for knots
+
+#
+# CONFIGURATION SECTION ENDS HERE
+#
+
+# ICAO codes of airports in Poland:         . . .
+#                                       . .   GD  . . . . .
+# EPBY Bydgoszcz (doesn't work)       . SC      o          .
+# EPGD Gdansk-Rebiechowo              .o                   .
+# EPKT Katowice                       .     PO x      WA   .
+# EPKK Krakow                         .    o         o    .
+# EPLL Lodz                           .           LL       .
+# EPPO Poznan                         .  x  WR   o          .
+# EPRZ Rzeszow-Jasionka                 .  o                 .
+# EPSC Szczecin                           ..    KT KK   RZ .
+# EPWA Warszawa-Okecie                       . o  o    o  .
+# EPWR Wroclaw Ii                              .         .
+# EPZG Zielona Gora (doesn't work)               . . . . .
+
+station="$1"
+
+datafile="$HOME/.weather.$station"
+tempfile="/tmp/.$USER.weather.$station.tmp"
+
+if [ "$1" == "" ]
+then
+cat <<EOF
+weather.wmi: displays weather conditions for the selected airport
+command:
+    wminfo -p "weather.wmi XXXX [options]"
+    XXXX: ICAO airport code (see: http://weather.noaa.gov/)
+options:
+    -C or -F
+    -hPa or -mmHg, or -inHg
+    -m/s or -km/h, or -mph, or -kt
+EOF
+exit
+fi
+
+if [ "`echo $* | grep '\-C'`" != "" ]
+then
+    Temperature="C"
+elif [ "`echo $* | grep '\-F'`" != "" ]
+then
+    Temperature="F"
+fi
+
+if [ "`echo $* | grep '\-hPa'`" != "" ]
+then
+    Pressure="hPa"
+elif [ "`echo $* | grep '\-mmHg'`" != "" ]
+then
+    Pressure="mmHg"
+elif [ "`echo $* | grep '\-inHg'`" != "" ]
+then
+    Pressure="inHg"
+fi
+
+if [ "`echo $* | grep '\-m/s'`" != "" ]
+then
+    Wind_Speed="m/s"
+elif [ "`echo $* | grep '\-km/h'`" != "" ]
+then
+    Wind_Speed="km/h"
+elif [ "`echo $* | grep '\-mph'`" != "" ]
+then
+    Wind_Speed="mph"
+elif [ "`echo $* | grep '\-kt'`" != "" ]
+then
+    Wind_Speed="kt"
+fi
+
+if [ ! -e $tempfile ]
+then
+    echo "2" > $tempfile
+fi
+
+if [ ! -e $datafile ] || [ ! -s $datafile ] || [ "`find $datafile -mmin +3`" != "" ]
+then
+    ping -c1 weather.noaa.gov > /tmp/.$USER.weather.noaa.gov 2>&1
+    if [ "`cat /tmp/.$USER.weather.noaa.gov | grep 'unknown host'`" == "" ]
+    then
+	lynx --source http://weather.noaa.gov/pub/data/observations/metar/decoded/$station.TXT > $datafile
+    fi
+fi
+
+time="`cat $datafile | grep 'UTC' | perl -pe 's/.*?([0-9]+) UTC.*/$1/;'`"
+time="`echo $time | sed 's/^0*//'`"
+
+if [ "$time" == "" ]
+then
+    time="0"
+fi
+
+time_zone=`date +"%z" | sed -E 's/([+-])0/\1/'`
+
+let "time=$time+$time_zone"
+
+if [ $time -ge 2400 ]
+then
+    let "time=$time-2400"
+elif [ $time -lt 0 ]
+then
+    let "time=$time+2400"
+fi
+
+if [ $time -lt 10 ]
+then
+    time="000$time"
+elif [ $time -lt 100 ]
+then
+    time="00$time"
+elif [ $time -lt 1000 ]
+then
+    time="0$time"
+fi
+
+if [ "`find $datafile -mtime +0`" != "" ]
+then
+    time=">24h"
+fi
+
+STATION="$station $time"
+
+function print_data {
+    if [ "`head -n 1 $tempfile`" == "1" ]
+    then
+	cat $tempfile | grep -E "$station|TMP:|PRS:|HUM:|WND1:" | sed 's/WND1/WND/'
+	echo "         "
+    elif [ "`head -n 1 $tempfile`" == "2" ]
+    then
+	cat $tempfile | grep -E "$station|DEW:|PRS:|HUM:|WND2:" | sed 's/WND2/WND/'
+	echo "         "
+    fi
+}
+
+function read_data {
+    TEMPERATURE="`grep "TMP" $tempfile`"
+    DEW_POINT="`grep "DEW" $tempfile`"
+    PRESSURE="`grep "PRS" $tempfile`"
+    HUMIDITY="`grep "HUM" $tempfile`"
+    WIND_SPEED="`grep "WND1" $tempfile`"
+    WIND_FROM="`grep "WND2" $tempfile`"
+}
+
+function write_data {
+    if [ "`head -n 1 $tempfile`" == "1" ]
+    then
+	echo "2" > $tempfile
+    elif [ "`head -n 1 $tempfile`" == "2" ]
+    then
+	echo "1" > $tempfile
+    fi
+    echo "$STATION" >> $tempfile
+    echo "$TEMPERATURE" >> $tempfile
+    echo "$DEW_POINT" >> $tempfile
+    echo "$PRESSURE" >> $tempfile
+    echo "$HUMIDITY" >> $tempfile
+    echo "$WIND_SPEED" >> $tempfile
+    echo "$WIND_FROM" >> $tempfile
+}
+
+if [ "$time" == "`grep "$station" $tempfile | sed 's/.... //'`" ]
+then
+    print_data
+    read_data
+    write_data
+    exit
+fi
+
+if [ "$Temperature" == "C" ]
+then
+    temperature="`cat $datafile | grep 'Temperature:' | perl -pe 's/.*?([0-9\-]+) C.*/$1/;'`"
+    dew_point="`cat $datafile | grep 'Dew Point:' | perl -pe 's/.*?([0-9\-]+) C.*/$1/;'`"
+    TEMPERATURE="TMP: $temperature C"
+    DEW_POINT="DEW: $dew_point C"
+elif [ "$Temperature" == "F" ]
+then
+    temperature="`cat $datafile | grep 'Temperature:' | perl -pe 's/.*?([0-9\-]+) F.*/$1/;'`"
+    dew_point="`cat $datafile | grep 'Dew Point:' | perl -pe 's/.*?([0-9\-]+) F.*/$1/;'`"
+    TEMPERATURE="TMP: ${temperature}F"
+    DEW_POINT="DEW: ${dew_point}F"
+fi
+
+if [ `echo $TEMPERATURE | awk '{print $2}'` -lt 0 ]
+then
+    TEMPERATURE="`echo $TEMPERATURE | sed 's/ //'`"
+fi
+
+if [ `echo $DEW_POINT | awk '{print $2}'` -lt 0 ]
+then
+    DEW_POINT="`echo $DEW_POINT | sed 's/ //'`"
+fi
+
+pressure="`cat $datafile | grep 'Pressure' | perl -pe 's/.*?([0-9]+) hPa.*/$1/;'`"
+
+if [ "$Pressure" == "mmHg" ]
+then
+    let "pressure=($pressure*75+50)/100"
+elif [ "$Pressure" == "inHg" ]
+then
+    let "pressure=($pressure*75/254+5)/10"
+fi
+
+PRESSURE="PRS: $pressure"
+
+humidity="`cat $datafile | grep 'Humidity:' | perl -pe 's/.*?([0-9]+%).*/$1/;'`"
+
+HUMIDITY="HUM: $humidity"
+
+wind_speed="`cat $datafile | grep 'Wind:' | perl -pe 's/.*?([0-9]+) MPH.*/$1/;'`"
+
+if [ "$Wind_Speed" == "kt" ]
+then
+    wind_speed="`cat $datafile | grep 'Wind:' | perl -pe 's/.*?([0-9]+) KT.*/$1/;'`"
+fi
+
+if [ "`cat $datafile | grep 'Wind:' | grep 'Variable'`" != "" ]
+then
+    wind_from="VAR"
+else
+    wind_from="`cat $datafile | grep 'Wind:' | awk '{print $4}'`"
+fi
+
+if [ "`cat $datafile | grep 'Wind:' | grep 'Calm:'`" != "" ]
+then
+    wind_from="CALM"
+    wind_speed="0"
+fi
+
+if [ "$Wind_Speed" == "m/s" ]
+then
+    let "wind_speed=($wind_speed*4+5)/10"
+elif [ "$Wind_Speed" == "km/h" ]
+then
+    let "wind_speed=(($wind_speed*4+5)/10*3600/100+5)/10"
+fi
+
+WIND_SPEED="WND1: $wind_speed"
+WIND_FROM="WND2: $wind_from"
+
+print_data
+write_data
+

@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# wminfo plugin: clock and calendar
+
+# Attention: %V switch assumes the week begins in Monday
+#            for week beginning in Sunday use %U switch;
+#            if you prefer the hour in AM/PM format use
+#            instead of: %H:%M:%S the string: %I:%M:%S%p
+
+# command: wminfo -p date.wmi -u 1 -s 0 -b#000000 -f#ffff00
+
+date +"%H:%M:%S %n%A%n%b  %d%nweek %V%nyear %Y"

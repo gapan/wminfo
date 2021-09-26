@@ -1,0 +1,261 @@
+
+wminfo Plugins-HOWTO
+
+
+This is the short instruction for wminfo plugins writers.  The wminfo
+program displays dynamically different frequently changing information.
+It can be headline news, currency exchange rates, system updates etc.
+
+In order to display the particular information got from the website or FTP
+server it is enough to: download the source code of the site, change it to
+one line and then insert a line break before each HTML tag, look up for the
+required information and pass over the useless information, and finally
+remove all HTML tags leaving the ASCII text only.
+
+In the case of the websites in languages using diacritic characters or
+special alphabets additional modifications of the code are required in order
+to translate it to one of the ISO encodings used by the program.
+
+
+1.
+
+The first step is to grab the code of the website.  Usually lynx does the
+job but in some cases links is required -- sometimes with the additional
+switches.  The commands to download the source code are:
+
+    lynx --source http://www.linuxquestions.org/questions/slackware-14/
+
+or:
+
+    links -source http://slashdot.org/
+
+It is possible to download HTML code of the website or FTP server.
+
+In the case of HTML code using DOS CR+LF end-of-lines the following
+modification is allowed:
+
+    tr -d '\r'
+
+In the case of HTML code using Mac OS CR end-of-lines the following
+modification is required:
+
+    tr '\r' '\n'
+
+
+2.
+
+The second step is to clean the code formatting.  A convenient method is
+to convert the code into one line by replacing new line characters with
+spaces and then to insert new line characters before each HTML tag:
+
+    sed 's/\n/ /g;s/</\n</g'
+
+In some rare cases sed refuses to work but perl does the job:
+
+    perl -pe 's/\n/ /g;s/</\n</g'
+
+If, after that command it is impossible to distinguish the tags including
+the information we want from the other tags, it is necessary to use the
+trick implemented in plugins: bbc-mundo.wmi, cnet.wmi, dpreview.wmi,
+pitchfork.wmi, spiegel.wmi, and wyborcza.wmi.
+
+In such a case we split the above command into two parts.
+
+At the beginning we use the command:
+
+    sed 's/\n/ /g'
+
+Then we seek for a pair of tags in which one tag includes some keyword and
+the other tag includes our information.  Next we change all these following
+pairs of HTML tags into one tag nonsensical from HTML validity point of view
+but helpful when the script has to identify the information using the
+mentioned keyword.  The sample command joins the tag ending with
+'class="title">' with the tag beginning with '<a href=':
+
+    sed 's/class="title"><a href=/class="title" a href=/g'
+
+At the end we insert new line characters before each HTML tag:
+
+    sed 's/</\n</g'
+
+
+3.
+
+The third step is to select the information we look for.  There are two
+methods –- one is to include some information and the other is to omit
+some information.
+
+To include and omit the information we use grep -- in the other case with
+-v switch:
+
+Including lines with 'onclick' word:
+
+    grep 'onclick'
+
+Omitting lines with 'NONE' word:
+
+    grep -v 'NONE'
+
+There is no need to omit empty lines -- wminfo does it for us -- though we
+can do it for the cosmetics purposes:
+
+    grep -v '^$'
+
+
+4.
+
+The fourth step is to remove all HTML tags:
+
+    sed 's/<.*>//;'
+
+
+5.
+
+The preparation of the websites written in English, German, French, Spanish,
+Polish, and Russian require a few additional steps.  The wminfo program
+recognizes diacritics used in those languages according to ISO-8859-1 and
+ISO-8859-2 encodings and Cyrillic alphabet according to ISO-8859-5 encoding
+but it requires the conversion when the website uses the other encoding.
+Moreover wminfo accepts only lowercase diacritics and Cyrillic letters.  All
+utf-* filters change uppercases to lowercases.  In other cases the
+conversion from uppercases to lowercases is necessary.  The appropriate
+conversions perform filters named *up2low.
+
+The samples directory contains two multilingual HTML files and some
+corresponding wminfo plugins for educational purposes.
+
+5.1
+
+The simplest case is with English.  To display punctuation marks properly it
+is enough to filter the output of the plugin through the following script:
+
+    punctuation
+
+5.2.
+
+German, French, and Spanish require a few filters...
+
+This is the code for the website in mentioned languages encoded in UTF-8:
+
+    utf8-iso1 | punctuation
+
+and this is the code for the website encoded in ISO-8859-1:
+
+    iso1-up2low | punctuation
+
+5.3.
+
+Polish is a more complicated case...
+
+This is the code for Polish-language website encoded in UTF-8:
+
+    utf8-iso2 | punctuation
+
+this is the code for Polish-language website encoded in CP-1250:
+
+    cp1250-up2low | piconv -f CP-1250 -t ISO-8859-2 | punctuation
+
+and this is the code for Polish-language website encoded in ISO-8859-2:
+
+    iso2-up2low | punctuation
+
+5.4.
+
+The most complicated case is Russian...
+
+This is the code for Russian-language website encoded in UTF-8:
+
+    utf8-iso5 | punctuation
+
+this is the code for Russian-language website encoded in KOI8-R:
+
+    koi8r-up2low | piconv -f KOI8-R -t ISO-8859-5 | punctuation
+
+this is the code for Russian-language website encoded in CP-1251:
+
+    cp1251-up2low | piconv -f CP-1251 -t ISO-8859-5 | punctuation
+
+and this is the code for Russian-language website encoded in ISO-8859-5:
+
+    iso5-up2low | punctuation
+
+
+6.
+
+If there is a risk that the output of some plugin can be sometimes empty --
+for example after the upgrade of the system the list of the patches is empty
+-- to avoid the segmentation fault it is enough to put at the end of such a
+plugin the command:
+
+    echo
+
+The better method is to use the following commands:
+
+    echo "         "
+    echo "         "
+    echo "         "
+    echo "         "
+    echo "         "
+
+because they clear the application window when the former information
+disappears.
+
+If the input does not end with the end-of-line mark to prevent the
+segmentation fault the same command is necessary:
+
+    echo
+
+All the above commands are not the parts of the pipeline but separate
+commands put at the end of the plugin.
+
+
+7.
+
+The above instruction covers basics of wminfo plugins writing.  In specific
+situations the optimal order of the steps may be different and the other
+operations may be required.  In plugins.* and samples directories there is a
+lot of instructive scripts.
+
+
+8.
+
+Instead of grabbing the information with the plugin it is possible to grab
+it with the script registered in crontab and store it locally.  In such a
+case wminfo plugins can use these local mirrors of different websites.
+
+The following crontab tasks run online script every six minutes when the
+system is on-line:
+
+    */6 * * * * if [ "`route | grep 'default'`" != "" ] ; then /usr/local/bin/online ; fi
+
+or:
+
+    */6 * * * * if [ "`route | grep -E 'pan0|wlan0'`" != "" ] ; then /usr/local/bin/online ; fi
+
+or the similar specific for your system.
+
+As a result crontab runs online script every six minutes and that script
+runs registered commands.  Because crontab task recognizes Internet
+connection and runs online script only if the system is on-line wminfo is
+able to display information even without Internet connection using old
+temporary and mirror files.  That method results in more stable work of the
+program because it can display the information regardless of the Internet
+connection.  It prevents aborting wminfo when the timeout is too long and
+prevents stucking of the scrolling text when the program gets the
+information.
+
+Some websites do not allow to download the source code with lynx --source
+command.  In such a case the command links -source is helpful.  Sometimes it
+requires the additional switches.  After mirroring the site locally with
+links -source command the valid command to download the local mirror source
+code is lynx --source.
+
+
+9.
+
+The websites change from time to time.  Some changes can cause the
+particular wminfo plugin stop to work.  In such a situation try to remove
+the consecutive commands one by one starting from the end of the plugin.
+You can redirect the output of the plugin to the file or display it with
+less.  When you will see the correct output recreate the plugin using the
+new set of commands.

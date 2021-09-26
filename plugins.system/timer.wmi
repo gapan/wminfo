@@ -1,0 +1,99 @@
+#!/bin/bash
+
+# wminfo plugin: counts the time down since the defined time
+
+# Attention: the command timer.wmi -reset resets the timer
+#            the plugin resets the timer after 99h 59m 59s
+
+# command: wminfo -p timer.wmi -u 1 -b#000000 -f#ffff00
+
+if [ -e timer.cfg ]
+then
+    . timer.cfg
+elif [ -e $HOME/bin/timer.cfg ]
+then
+    . $HOME/bin/timer.cfg
+elif [ -e /usr/local/bin/timer.cfg ]
+then
+    . /usr/local/bin/timer.cfg
+else
+    echo "timer.wmi: there is no timer.cfg file."
+    exit
+fi
+
+datafile="$HOME/.timer"
+
+if [ "$1" == "-reset" ]
+then
+    > $datafile
+    exit
+fi
+
+if [ ! -e $datafile ] || [ ! -s $datafile ]
+then
+    hours=`echo $time | cut -d ':' -f 1`
+    minutes=`echo $time | cut -d ':' -f 2`
+    seconds=`echo $time | cut -d ':' -f 3`
+    let "timer=$hours*3600+$minutes*60+$seconds"
+    echo "timer=$timer" > $datafile
+fi
+
+. $datafile
+
+if [ $timer -lt 0 ]
+then
+    timer=`echo $timer | sed 's/-//'`
+    sign="-"
+else
+    sign="+"
+fi
+
+let "hours=$timer/3600"
+let "minutes=($timer-$hours*3600)/60"
+let "seconds=$timer-$hours*3600-$minutes*60"
+
+timer="$sign$timer"
+
+if [ $hours -lt 10 ]
+then
+    hours="0$hours"
+fi
+
+if [ $minutes -lt 10 ]
+then
+    minutes="0$minutes"
+fi
+
+if [ $seconds -lt 10 ]
+then
+    seconds="0$seconds"
+fi
+
+if [ $timer -gt -360000 ] # -100:00:00
+then
+    echo "$sign$hours:$minutes:$seconds"
+else
+    > $datafile
+    echo "         "; echo "         "; echo "         "; echo "         "; echo "         "
+    exit
+fi
+
+if [ $timer -gt 0 ]
+then
+    echo "         "; echo "         "; echo "         "; echo "         "
+fi
+
+if [ $timer -eq 0 ]
+then
+    $command_many
+    $command_once
+fi
+
+if [ $timer -lt 0 ]
+then
+    $command_many
+fi
+
+let "timer=$timer-1"
+echo "timer=$timer" > $datafile
+

@@ -1,0 +1,57 @@
+
+wminfo README.traffic.wmi
+
+
+The traffic.wmi plugin displays the total incoming and outgoing traffic for
+the selected interfaces.  The default interfaces are eth0 and wlan0.  To
+change that you have to modify the plugin.
+
+The wminfo window running the traffic.wmi plugin looks like that:
+
+    +---------+
+    |01:04:12 |
+    |E0 1.56G |
+    |E0 0.17G |
+    |W0 0B    |
+    |W0 0B    |
+    +---------+
+
+The consecutive lines display:
+
+1. The time since the plugin was ran or reset.
+2. The eth0 incoming traffic.
+3. The eth0 outgoing traffic.
+4. The wlan0 incoming traffic.
+5. The wlan0 outgoing traffic.
+
+The units of traffic are:
+
+    B -- bytes
+    K -- kilobytes
+    M -- megabytes
+    G -- gigabytes
+    T -- terabytes
+    P -- petabytes
+    E -- exabytes
+    Z -- zettabytes
+    Y -- yottabytes
+
+Each consecutive unit is 1024 times bigger than the previous one.
+
+Because the plugin uses the hexadecimal calculations when the value of the
+traffic changes from say 63.99 MB to 64.00 MB the plugin displays the value
+0.06G instead of 64M.  In other words the value such as 0.06G corresponds to
+the range from 64.00 MB to 69.99 MB.
+
+You can reset the traffic counters at any time using the commands:
+
+    traffic.wmi -reset
+
+or:
+
+    traffic -reset
+
+If you neither reset nor exit the plugin at all it resets itself after 999
+hours, 59 minutes, and 59 seconds (it is 41 days and 16 hours) because it is
+not possible to display the time such as 1000:00:00 on nine characters wide
+wminfo window.

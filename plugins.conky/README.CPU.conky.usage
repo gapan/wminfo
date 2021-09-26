@@ -1,0 +1,107 @@
+
+wminfo README.CPU.conky.usage
+
+
+The conky versions of a few plugins use less CPU power than their regular
+counterparts so it is worth considering to use them instead of those
+``classical plugins''.  As for the conky dependent plugins there are four
+factors that influence the usage of the CPU:
+
+1. The frequency of the conky updates -- the more frequently conky updates
+   the information the more CPU power it uses.  In the default conky
+   configuration provided with the wminfo dockable application conky updates
+   the information every three seconds when the machine uses the power
+   supply and every six seconds when the machine uses the battery.
+
+2. The number of the conky entries -- the more factors conky monitors the
+   more CPU power it uses.  It is recommended to comment in the conky
+   configuration file all unused entries.
+
+3. The complication of the plugin -- more complicated plugins use more CPU
+   power.
+
+4. The frequency of the updates of the information determined in the wminfo
+   command -- the more frequently wminfo runs the plugin the more CPU power
+   it uses.
+
+I performed the tests for eight ``classical plugins'' compared to their conky
+dependent versions:
+
+                classical plugins | conky plugins
+                ------------------+--------------------+
+                date.wmi          | conky.date.wmi     |
+                netmon.wmi        | conky.netmon.wmi   |
+                sysmon.wmi        | conky.sysmon.wmi   |
+                thinkpad.wmi      | conky.thinkpad.wmi |
+                timezone.wmi      | conky.timezone.wmi |
+                top.wmi           | conky.top.wmi      |
+                uptime.wmi        | conky.uptime.wmi   |
+                weather.wmi       | conky.weather.wmi  | conky and plugins updates
+    ----------+-------------------+--------------------+------------------------------------
+    CPU usage | 6.5-31.2          | 11.1-13.6          | conky = 1.0
+    median    | 11.3              | 12.6               | date = 1, timezone = 1, uptime = 1
+    ----------+-------------------+--------------------+------------------------------------
+    CPU usage |                   | 5.0-8.7            | conky = 1.0
+    median    |                   | 6.1                | date = 1, timezone = 15, uptime = 6
+    ----------+-------------------+--------------------+------------------------------------
+    CPU usage |                   | 4.2-8.8            | conky = 3.0
+    median    |                   | 6.0                | date = 1, timezone = 15, uptime = 6
+    ----------+-------------------+--------------------+------------------------------------
+
+The following table compares eleven ``classical plugins'' that I use all the
+time to the set combined from five ``classical plugins'' and six conky
+dependent plugins:
+
+
+                classical plugins     | combined plugins
+                ----------------------+----------------------
+                date-pl.wmi           | date-pl.wmi
+                thinkpad.wmi          | conky.thinkpad.wmi
+                sysmon.wmi            | conky.sysmon.wmi
+                top.wmi               | conky.top.wmi
+                uptime.wmi            | conky.uptime.wmi
+                df.wmi                | df.wmi
+                netmon.wmi            | conky.netmon.wmi
+                biff.wmi              | biff.wmi
+                weather.wmi           | conky.weather.wmi
+                linuxquestions-*.wmi  | linuxquestions-*.wmi
+                slackware-patches.wmi | slackware-patches.wmi
+    ----------+-----------------------+----------------------
+    CPU usage | 8.3-19.4              | 7.3-11.4
+    median    | 14.8                  | 9.5
+    ----------+-----------------------+----------------------
+
+The usage of the conky dependent plugins instead of their regular
+counterparts significantly lowers the CPU power demands.
+
+To determine the CPU usage I used the following command:
+
+    top -b -n 40 | grep '^Cpu' | sort -n
+
+I performed all the tests in off-line mode and I ignored extremly high
+results (peaks).
+
+The commands used to run the combined set of the mentioned above eleven
+plugins were:
+
+    wminfo -p date-pl.wmi -u 1 -i 2 &
+    sleep 1
+    wminfo -p conky.thinkpad.wmi -u 3 &
+    sleep 1
+    wminfo -p conky.sysmon.wmi -u 3 &
+    sleep 1
+    wminfo -p conky.top.wmi -u 3 &
+    sleep 1
+    wminfo -p conky.uptime.wmi -u 6 &
+    sleep 1
+    wminfo -p df.wmi -u 6 -s 0 &
+    sleep 1
+    wminfo -p conky.netmon.wmi -u 3 &
+    sleep 1
+    wminfo -p biff.wmi -u 6 -c &
+    sleep 1
+    wminfo -p "conky.weather.wmi EPWR" -u 6 &
+    sleep 1
+    wminfo -p linuxquestions-slackware.wmi -u 60 &
+    sleep 1
+    wminfo -p slackware-patches.wmi &

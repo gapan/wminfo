@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# wminfo plugin: headlines from Russian newspaper kommersant.ru
+
+# command: wminfo -p kommersant.wmi -i 5 -b#576675 -f#ffffff
+
+lynx --source http://www.kommersant.ru/ | \
+	sed 's/\n/ /g;' | \
+	sed 's/class="title"><a href=/class="title" a href=/g' | \
+	sed 's/</\n</g;' | \
+	grep 'class="title"' | \
+	sed 's/<.*>//;' | \
+	punctuation | \
+	cp1251-up2low | \
+	piconv -f CP-1251 -t ISO-8859-5

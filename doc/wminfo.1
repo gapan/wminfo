@@ -1,0 +1,444 @@
+.TH "WMINFO" "1" "January 14, 2012" "Version 2.5.2" ""
+.SH "NAME"
+.LP
+wminfo is a dockapp that displays text-format information using the plugin.
+The standard plugin is a shell script.  The plugin writes the information to
+stdout and wminfo captures the output and displays it row by row.  Using the
+appropriate plugins wminfo can display different information got from the
+system or from Internet.
+.SH "SYNTAX"
+.B wminfo
+[
+.B OPTIONS
+]
+.SH "OPTIONS"
+.TP
+.BI \-p\ <plugin_name>
+selects wminfo plugin to run.
+.TP
+.BI \-s\ <scrolling_speed>
+sets scrolling speed from 0 upwards \-\- default is 1.
+.TP
+.BI \-r\ <rewinding_speed>
+sets rewinding speed from 0 upwards \-\- default is 18.
+.TP
+.BI \-i\ <iso_encoding_number>
+sets ISO-8859-* encoding \-\- allowed values are 1, 2, 5, and 0 for none \-\-
+default is 0.
+.TP
+.BI \-u\ <update_information_period>
+sets the period between information updates in seconds \-\- default is 180.
+.TP
+.BI \-b\ <background_color>
+sets background color in the range from #000000 to #ffffff \-\- default is
+#000000.
+.TP
+.BI \-f\ <foreground_color>
+sets foreground color in the range from #000000 to #ffffff \-\- default is
+#bbbbbb.
+.TP
+.BI \-c
+scrolls changed lines \-\- default is to not scroll (value 0).
+.TP
+.BI \-k
+keeps empty lines \-\- default is to not keep (value 0).
+.TP
+.BI \-h
+displays short help.
+.SH "PLUGINS"
+A lot of plugins is included in the tarball \fIplugins.*\fP and
+\fIsamples\fP directories.  Both these directories are copied to the system
+\fIdoc\fP directory during the installation of wminfo.
+.LP
+Note that the plugins need not have the extension wmi and need not to be the
+shell scripts.
+.LP
+On the other hand it is easier to write and test shell scripts without
+running wminfo and it is convenient to use wmi extension to distiguish wminfo
+plugins from the other scripts.
+.SH "DOCKAPP"
+.IP
++---------+
+.br
+|DOWN^ ALL|
+.br
+|    ^    |
+.br
+|   ONE   |
+.br
+|    v    |
+.br
+|UP  v    |
+.br
++---------+
+.LP
+To activate or deactivate the scrolling of the line of the text click that
+line in the middle (position ONE).
+.LP
+To activate or deactivate the scrolling of all lines click the upper right
+corner of the application window (positon ALL).
+.LP
+To rewind the text down or up click the upper (DOWN) or the lower (UP) left
+corner of the application window.  Rewinding of the text is also possible
+with the mouse scroll wheel.
+.LP
+The wminfo program can display the lines of text up to 1037 characters in
+line.
+.LP
+To check the lengths of the lines there is enough to redirect wminfo plugin
+output:
+.IP
+plugin.wmi > file.tmp
+.LP
+Each wminfo instance uses most of the time 0.29% of CPU or even less (that is
+the average for Intel(R) Core(TM) Duo CPU L2400 @ 1.66GHz).  The CPU usage
+increases when wminfo updates the information or scrolls the text.
+.SH "FILES"
+.TP
+.BI contrib
+this directory contains the scripts \fIutf8-iso?\fP converting from UTF-8 to
+ISO-8859-[1,2,5], the scripts \fI*up2low\fP converting uppercases to
+lowercases in different codepages, script \fIhtml-iso1\fP converting from
+HTML encoding to ISO-8859-1, script \fIpunctuation\fP converting punctuation
+marks from HTML encoding and UTF-8 to ASCII, as well as two plugins:
+\fIdefault.wmi\fP and \fIempty.wmi\fP.  The first plugin displays wminfo
+help when there is no plugin name in the command line or there is no -p switch;
+the second plugin displays empty application window.  All these scripts and
+plugins are copied to the PATH during the installation of wminfo.
+.TP
+.BI plugins.conky
+this directory contains the conky dependent versions of a few plugins as
+well as some conky dependent plugins that have not regular counterparts.
+.TP
+.BI plugins.online
+this directory contains over twenty plugins for wminfo and
+\fIrun-all-internet-plugins\fP script running these plugins with recommended
+commands.  These plugins work when there is constant Internet access.
+.TP
+.BI plugins.offline
+this directory contains the same plugins as the directory above but in
+versions not requiring the constant Internet access.  Before running these
+plugins you have to run at least once \fIonline\fP script when Internet
+connection is available.  The recommended method of running that script is
+to use the following crontab task:
+.IP
+*/6 * * * * if [ "`route | grep 'default'`" != "" ] ; then /usr/local/bin/online ; fi
+.IP
+or:
+.IP
+*/6 * * * * if [ "`route | grep -E 'pan0|wlan0'`" != "" ] ; then /usr/local/bin/online ; fi
+.IP
+or the similar specific for your system.
+.IP
+The \fIonline\fP script stores mirrored sites in
+\fI/var/www/htdocs/wminfo\fP directory.  So it has to be run with root
+priviledges or root has to make such a directory and change its mode bits to
+allow the other users to write there.  If your HTTPD server stores HTML
+files in another location than \fI/var/www/htdocs\fP customize
+\fIDIRECTORY\fP variable at the beginning of \fIonline\fP script.  The
+wminfo plugins from the current directory require working HTTPD server.
+.IP
+You can access mirrored websites with your browser at the address
+\fIhttp://localhost/wminfo/\fP.
+.TP
+.BI plugins.system
+this directory contains plugins that are Internet independent (see also: the
+plugins from the \fIplugins.conky\fP directory).
+.TP
+.BI samples
+this directory contains two HTML files: \fIquick-utf8.html\fP and
+\fIquick-koi8r.html\fP with the sentences in English, German, French,
+Polish, and Russian as well as a few \fIquick-*-*.wmi\fP wminfo plugins that
+display these HTML files using the proper ISO-8859-[1,2,5] encoding.
+Additional \fItest.html\fP file and two \fItest-*.wmi\fP wminfo plugins are
+useful during the tests of the scrolling and rewinding speeds.
+.SH "Plugins-HOWTO"
+This is the short instruction for wminfo plugins writers.  The wminfo
+program displays dynamically different frequently changing information. 
+It can be headline news, currency exchange rates, system updates etc.
+.LP
+In order to display the particular information got from the website or FTP
+server it is enough to: download the source code of the site, change it to
+one line and then insert a line break before each HTML tag, look up for the
+required information and pass over the useless information, and finally
+remove all HTML tags leaving the ASCII text only.
+.LP
+In the case of the websites in languages using diacritic characters or
+special alphabets additional modifications of the code are required in order
+to translate it to one of the ISO encodings used by the program.
+.TP
+.B 1.
+.LP
+The first step is to grab the code of the website.  Usually lynx does the
+job but in some cases links is required -- sometimes with the additional
+switches.  The commands to download the source code are:
+.IP
+lynx \-\-source http://www.linuxquestions.org/questions/slackware-14/
+.LP
+or:
+.IP
+links -source http://slashdot.org/
+.LP
+It is possible to download HTML code of the website or FTP server.
+.LP
+In the case of HTML code using DOS CR+LF end-of-lines the following
+modification is allowed:
+.IP
+tr -d '\\r'
+.LP
+In the case of HTML code using Mac OS CR end-of-lines the following
+modification is required:
+.IP
+tr '\\r' '\\n'
+.TP
+.B 2.
+.LP
+The second step is to clean the code formatting.  A convenient method is
+to convert the code into one line by replacing new line characters with
+spaces and then to insert new line characters before each HTML tag:
+.IP
+sed 's/\\n/ /g;s/</\\n</g'
+.LP
+In some rare cases sed refuses to work but perl does the job:
+.IP
+perl -pe 's/\\n/ /g;s/</\\n</g'
+.LP
+If, after that command it is impossible to distinguish the tags including
+the information we want from the other tags, it is necessary to use the
+trick implemented in plugins: \fIbbc-mundo.wmi\fP, \fIcnet.wmi\fP,
+\fIdpreview.wmi\fP, \fIpitchfork.wmi\fP, \fIspiegel.wmi\fP,
+and \fIwyborcza.wmi\fP.
+.LP
+In such a case we split the above command into two parts.
+.LP
+At the beginning we use the command:
+.IP
+sed 's/\\n/ /g'
+.LP
+Then we seek for a pair of tags in which one tag includes some keyword and
+the other tag includes our information.  Next we change all these following
+pairs of HTML tags into one tag nonsensical from HTML validity point of view
+but helpful when the script has to identify the information using the
+mentioned keyword.  The sample command joins the tag ending with
+'class="title">' with the tag beginning with '<a href=':
+.IP
+sed 's/class="title"><a href=/class="title" a href=/g'
+.LP
+At the end we insert new line characters before each HTML tag:
+.IP
+sed 's/</\\n</g'
+.TP
+.B 3.
+.LP
+The third step is to select the information we look for.  There are two
+methods \-\- one is to include some information and the other is to omit
+some information.
+.LP
+To include and omit the information we use grep \-\- in the other case with
+-v switch:
+.LP
+Including lines with 'onclick' word:
+.IP
+grep 'onclick'
+.LP
+Omitting lines with 'NONE' word:
+.IP
+grep -v 'NONE'
+.LP
+There is no need to omit empty lines \-\- wminfo does it for us \-\- though
+we can do it for the cosmetics purposes:
+.IP
+grep -v '^$'
+.TP
+.B 4.
+.LP
+The fourth step is to remove all HTML tags:
+.IP
+sed 's/<.*>//;'
+.TP
+.B 5.
+.LP
+The preparation of the websites written in English, German, French, Spanish,
+Polish, and Russian require a few additional steps.  The wminfo program
+recognizes diacritics used in those languages according to ISO-8859-1 and
+ISO-8859-2 encodings and Cyrillic alphabet according to ISO-8859-5 encoding
+but it requires the conversion when the website uses the other encoding. 
+Moreover wminfo accepts only lowercase diacritics and Cyrillic letters.  All
+\fIutf-*\fP filters change uppercases to lowercases.  In other cases the
+conversion from uppercases to lowercases is necessary.  The appropriate
+conversions perform filters named \fI*up2low\fP.
+.LP
+The \fIsamples\fP directory contains two multilingual HTML files and some
+corresponding wminfo plugins for educational purposes.
+.TP
+.B 5.1
+.LP
+The simplest case is with English.  To display punctuation marks properly it
+is enough to filter the output of the plugin through the following script:
+.IP
+punctuation
+.TP
+.B 5.2.
+.LP
+German, French, and Spanish require a few filters...
+.LP
+This is the code for the website in mentioned languages encoded in UTF-8:
+.IP
+utf8-iso1 | punctuation
+.LP
+and this is the code for the website encoded in ISO-8859-1:
+.IP
+iso1-up2low | punctuation
+.TP
+.B 5.3.
+.LP
+Polish is a more complicated case...
+.LP
+This is the code for Polish-language website encoded in UTF-8:
+.IP
+utf8-iso2 | punctuation
+.LP
+this is the code for Polish-language website encoded in CP-1250:
+.IP
+cp1250-up2low | piconv -f CP-1250 -t ISO-8859-2 | punctuation
+.LP
+and this is the code for Polish-language website encoded in ISO-8859-2:
+.IP
+iso2-up2low | punctuation
+.TP
+.B 5.4.
+.LP
+The most complicated case is Russian...
+.LP
+This is the code for Russian-language website encoded in UTF-8:
+.IP
+utf8-iso5 | punctuation
+.LP
+this is the code for Russian-language website encoded in KOI8-R:
+.IP
+koi8r-up2low | piconv -f KOI8-R -t ISO-8859-5 | punctuation
+.LP
+this is the code for Russian-language website encoded in CP-1251:
+.IP
+cp1251-up2low | piconv -f CP-1251 -t ISO-8859-5 | punctuation
+.LP
+and this is the code for Russian-language website encoded in ISO-8859-5:
+.IP
+iso5-up2low | punctuation
+.TP
+.B 6.
+.LP
+If there is a risk that the output of some plugin can be sometimes empty
+\-\- for example after the upgrade of the system the list of the patches is
+empty \-\- to avoid the segmentation fault it is enough to put at the end of
+such a plugin the command:
+.IP
+echo
+.LP
+The better method is to use the following commands:
+.IP
+echo "         "
+.br
+echo "         "
+.br
+echo "         "
+.br
+echo "         "
+.br
+echo "         "
+.LP
+because they clear the application window when the former information
+disappears.
+.LP
+If the input does not end with the end-of-line mark to prevent the
+segmentation fault the same command is necessary:
+.IP
+echo
+.LP
+All the above commands are not the parts of the pipeline but separate
+commands put at the end of the plugin.
+.TP
+.B 7.
+.LP
+The above instruction covers basics of wminfo plugins writing.  In specific
+situations the optimal order of the steps may be different and the other
+operations may be required.  In \fIplugins.*\fP and \fIsamples\fP
+directories there is a lot of instructive scripts.
+.TP
+.B 8.
+.LP
+Instead of grabbing the information with the plugin it is possible to grab
+it with the script registered in crontab and store it locally.  In such a
+case wminfo plugins can use these local mirrors of different websites.
+.LP
+The following crontab tasks run \fIonline\fP script every six minutes when
+the system is on-line:
+.IP
+*/6 * * * * if [ "`route | grep 'default'`" != "" ] ; then /usr/local/bin/online ; fi
+.LP
+or:
+.IP
+*/6 * * * * if [ "`route | grep -E 'pan0|wlan0'`" != "" ] ; then /usr/local/bin/online ; fi
+.LP
+or the similar specific for your system.
+.LP
+As a result crontab runs \fIonline\fP script every six minutes and that
+script runs registered commands.  Because crontab task recognizes Internet
+connection and runs \fIonline\fP script only if the system is on-line wminfo
+is able to display information even without Internet connection using old
+temporary and mirror files.  That method results in more stable work of the
+program because it can display the information regardless of the Internet
+connection.  It prevents aborting wminfo when the timeout is too long and
+prevents stucking of the scrolling text when the program gets the
+information.
+.LP
+Some websites do not allow to download the source code with lynx \-\-source
+command.  In such a case the command links \-source is helpful.  Sometimes it
+requires the additional switches.  After mirroring the site locally with
+links \-source command the valid command to download the local mirror source
+code is lynx \-\-source.
+.TP
+.B 9.
+.LP
+The websites change from time to time.  Some changes can cause the
+particular wminfo plugin stop to work.  In such a situation try to remove
+the consecutive commands one by one starting from the end of the plugin.
+You can redirect the output of the plugin to the file or display it with
+less.  When you will see the correct output recreate the plugin using the
+new set of commands.
+.SH "TODO"
+.HP 2
+* Add more diacritics to existing encodings \-\- especially ISO-8859-2 \-\-
+and add new ISO encodings.  To do that I need your help.  If you want wminfo
+accept diacritics or letters specific for your language send me the sentence
+encoded in UTF-8 that contain all these letters.  I do not expect you invent
+such a sentence but you find the already existing sentence for your
+language.  You can send it to Markus Kuhn too.  Here is the list of the
+sentences collected by him:
+.IP "" 6
+\fIhttp://www.cl.cam.ac.uk/~mgk25/ucs/examples/quickbrown.txt\fP
+.IP "" 2
+The wminfo program can interpret the texts encoded in ISO encodings that is
+characters fitting the ASCII range from 32 to 255.  So I can implement the
+characters specific for your language if there exist the suitable ISO
+encoding.
+.SH "BUGS"
+If you discover any bugs in this software, please send a bugreport to
+\fIc.kruk@bigfoot.com\fP and describe the problem as a detailed way as you
+can.  The address \fIrobkli-8@student.luth.se\fP of the original program
+author is no longer valid.
+.SH "LICENSE"
+wminfo is provided on the terms of the GNU General Public License v. 3.
+Read the COPYING file for the complete text of the license.
+.SH "AUTHORS"
+wminfo 2.5.2 (C) 2011 Cezary M. Kruk <\fIc.kruk@bigfoot.com\fP>
+.LP
+wmInfo 1.51 (C) 2000 Robert Kling <\fIrobkli-8@student.luth.se\fP>
+.SH "WMDOCKAPPS"
+For more Window Maker dockapps see:
+.IP
+\fIhttp://dockapps.org/\fP
+.LP
+and
+.IP
+\fIhttp://web.cs.mun.ca/~gstarkes/wmaker/dockapps/\fP.

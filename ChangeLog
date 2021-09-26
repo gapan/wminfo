@@ -1,0 +1,221 @@
+
+wminfo ChangeLog
+
+
+wminfo 2.5.2, 2012-01-14:
+----------------------------------------------------------------------------
+* Modified arch-patches.wmi plugin (now the plugin displays the last
+    updates from Community repository).
+* Updated conky.thinkpad.wmi plugin (now it copes with the unknown battery).
+* Modified conky.weather.wmi plugin and conky.conf file (the CLD variable
+    renamed to the SKY one).
+* Updated date-pl.wmi and date-us.wmi plugins (now the longer old text does
+    not interfere with the shorter new one).
+* Updated date-pl.cfg file (now it uses the correct holidays names).
+* Updated dpreview.wmi plugin (now it displays just the headline news and
+    uses the proper apostrophe sign).
+* Modified freecode.wmi plugin (now it displays just the new submissions).
+* Updated kernel-2.6.wmi plugin (now it removes unwanted information).
+* Updated kernel-3.0.wmi plugin and renamed to kernel-3.x.wmi (now it
+    displays the information about all kernels from 3.x series).
+* Modified ps.wmi plugin (now it displays the commands prior to the
+    processess IDs).
+* Updated online script (it interacts with the new versions of
+    arch-patches.wmi and kernel-3.x.wmi plugins from plugins.offline
+    directory).
+* Updated punctuation script (now it translates &#39; sequence to the
+    apostrophe sign).
+* Changed the shape of the letter R.
+* Updated the documentation.
+
+
+wminfo 2.5.1, 2011-12-26:
+----------------------------------------------------------------------------
+* Updated conky.timezone.wmi, timezone.wmi, timezone.wmi.00, and
+    timezone.wmi.30 plugins (corrections for the turn of the year from 12-31
+    to 01-01).
+* Modified conky.thinkpad.wmi plugin (now it suspends the system when the
+    battery percentage is lower than 5%).
+* The freshmeat.wmi plugin renamed to freecode.wmi.
+* The linuxquestions.wmi plugin renamed to linuxquestions-slackware.wmi.
+* Removed russia-online.wmi plugin.
+* Updated online script from plugins.offline directory.
+* Changed the shapes of the digits 6 and 9.
+* Revised and updated the documentation.
+
+
+wminfo 2.5.0, 2011-12-19:
+----------------------------------------------------------------------------
+* Added conky.date.wmi, conky.moc.wmi, conky.netmon.wmi, conky.sysmon.wmi,
+    conky.thinkpad.wmi, conky.timezone.wmi, conky.top.wmi, conky.uptime.wmi,
+    conky.weather.wmi, and conky.wireless.wmi plugins (the conky dependent
+    plugins are more economical in the CPU usage than their regular
+    counterparts).
+* Added the conky.conf configuration file customized to the work with the
+    conky dependent wminfo plugins.
+* Added the conky.patch file by Tiago Marques Vale that improves the way
+    conky provides the data for the conky.thinkpad.wmi plugin.
+* Added the documentation that discusses the usage of the conky and the
+    conky dependent plugins.
+* Updated kernel-2.4.wmi, pitchfork.wmi, and weather.wmi plugins.
+* Added kommersant.wmi plugin (russia-online.wmi plugin does not work now
+    because of invalid code of http://www.rol.ru service).
+* Changed the shapes of the digits 2, 3, and 5 as well as N tilde diacritic.
+* Proofread and updated the documentation.
+
+
+wminfo 2.4.0, 2011-11-20:
+----------------------------------------------------------------------------
+* Added stopwatch.wmi, timer.wmi, timezone.wmi (as well as timezone.wmi.00
+    and timezone.wmi.30), and traffic.wmi plugins.
+* Added stopwatch, timer, timezone, and traffic scripts.
+* Added README.stopwatch.wmi, README.timer.wmi, README.timezone.wmi, and
+    README.traffic.wmi documents.
+* Reduced the default frequency of the updates from 3 seconds to 5 seconds
+    for: weather.wmi, netmon.wmi, sysmon.wmi, thinkpad.wmi, top.wmi, and
+    traffic.wmi results in savings of the CPU power.
+* Revised README.CPU.usage discusses the above savings.
+* Modified netmon.wmi plugin and netmon script.
+* Modified pinboard.wmi plugin and pinboard script (now both of them use
+    ~/.pinboard file).
+* Modified alarm.wmi, date-pl.wmi, and date-us.wmi plugins.
+* Modified alarm, date-pl, and date-us scripts.
+* Files: alarm.txt, date-pl.txt, and date-us.txt renamed to: alarm.cfg,
+    date-pl.cfg, and date-us.cfg.
+* Updated billboard-top10.wmi, date.wmi, dpreview.wmi, russia-online.wmi,
+    and weather.wmi plugins.
+* Changed the format of the weather.wmi plugin temporary file.  To allow the
+    plugin to read the new settings you have to remove the old
+    /tmp/.$USER.weather.XXXX.tmp file.
+* Added iso1-utf8, iso2-utf8, and iso5-utf8 scripts.
+* The time of the first wminfo update reduced to one second.
+* Changed the appearance of the asterisk character.
+* Renamed README.alarm to README.alarm.wmi and README.date-xx to
+    README.date-xx.wmi.
+* Updated the documentation.
+
+
+wminfo 2.3.0, 2011-10-30:
+----------------------------------------------------------------------------
+* Optimized biff.wmi, sysmon.wmi, thinkpad.wmi, and weather.wmi plugins as
+    well as sysmon script use less CPU power.
+* Revised README.CPU.usage covers the above mentioned optimizations.
+* Modified online script assures more stable work of wminfo plugins from
+    plugins.offline directory.
+* Updated biff.wmi plugin displays the numbers of read and unread messages.
+* Added date-pl.wmi and date-us.wmi plugins for Polish and American users.
+* Added date-pl and date-us scripts that edit the respective text databases.
+* Added alarm.wmi, ip.wmi and slackbuilds.wmi plugins.
+* Added alarm script that edits alarm.txt text database.
+* Added README.alarm and README.date-xx documents.
+* Updated run-all-internet-plugins and run-all-system-plugins scripts.
+* Updated date.wmi, dpreview.wmi, and all kernel-?.?.wmi plugins.
+* Renamed and updated test-??-??.wmi plugins and updated run-all-samples
+    script from the samples directory.
+* Removed wminfo bug that caused jamming of the scrolling lines.
+* Improved wminfo scrolling and rewinding functions.
+* Added README.Privacy document.
+* Changed the convention of the numbering of the program versions.
+* Updated the documentation.
+
+
+wminfo 2.20, 2011-10-18:
+----------------------------------------------------------------------------
+* Added biff.wmi, kernel-3.0.wmi, netmon.wmi, pinboard.wmi, sysmon.wmi,
+    top.wmi, uptime.wmi, and weather.wmi plugins.
+* Updated currencies-pl-*.wmi, date.wmi, kernel-2.4.wmi, kernel-2.6.wmi,
+    ps-a.wmi, slackware-patches.wmi, slashdot.wmi, thinkpad.wmi, tvn24.wmi,
+    and wyborcza.wmi plugins.
+* Updated online script from plugins.offline directory.
+* Updated all run-all-*-plugins scripts from the respective directories.
+* Added plugin script that displays the command running the selected wminfo
+    plugin and suspend script that suspends the system to RAM.
+* The plugins that are Internet independent moved to the plugins.system
+    directory.
+* Changed the appearance of a few punctuation marks and of the 0 digit.
+* Updated wminfo accepts rewind speed equal 0.
+* Added new documents: README.CPU.usage, README.biff.wmi, README.netmon.wmi,
+    README.sysmon.wmi, README.thinkpad.wmi, and README.weather.wmi.
+* The ps-a.wmi plugin renamed to ps.wmi.
+* README.plugins.offline and README.plugins.online renamed to
+    README.1st.plugins.offline and README.1st.plugins.online.
+* Updated the documentation.
+
+
+wminfo 2.10, 2011-09-21:
+----------------------------------------------------------------------------
+* Further decrease of the program CPU demands from 0.12% per instance to
+    0.06% and decreased X CPU usage from 0.41% to 0.14%.
+* Added up2low script converting uppercases to lowerceases.
+* Added date.wmi and dockapps.wmi plugins.
+* Updated html-iso1, iso1-up2low, and utf8-up2low scripts.
+* Updated dpreview.wmi, pitchfork.wmi, russia-online.wmi, and wyborcza.wmi
+    plugins.
+* Updated the documentation.
+
+
+wminfo 2.00, 2011-08-01:
+----------------------------------------------------------------------------
+* A lot of new plugins and sample files.
+* Removed functions removing HTML tags and consecutive spaces -- the control
+    over the input text is now in the user's hands.
+* Expanded character set: added punctuation marks and symbols, German,
+    French, and Spanish diacritics (ISO-8859-1), Polish diacritics
+    (ISO-8859-2), and Cyrillic alphabet (ISO-8859-5).
+* Modified the typeface used by the program.
+* Added the possibility of choosing the color of the background and the
+    foreground in the range from #000000 to #ffffff.
+* Added random temporary files handling instead of using one static
+    temporary file -- as a result it is possible to run a few instances of
+    wminfo at the same time.
+* Improved scrolling and rewinding functions -- now these functions work
+    much better than in the previous version of the program.
+* Decreased the program CPU demands from 0.38% per instance to 0.12% and
+    decreased X CPU usage from 1.16% to 0.41%.
+* All variables controlled by the switches are collected at the beginning of
+    wminfo.c for easy modifications of the default values if required.
+* A lot of different minor changes and improvements.
+* Added html-iso1, utf8-iso1, utf8-iso2, and utf8-iso5 scripts to convert
+    from HTML or UTF-8 encodings to the codepages ISO-8859-[1,2,5];
+    utf8-up2low script to convert UTF-8 German, French, Spanish, and Polish
+    uppercases to lowercases; iso[1,2,5]-up2low scripts to convert
+    ISO-8859-[1,2,5] uppercases to lowercases; iso2-up2low and
+    cp1250-up2low scripts to convert ISO-8859-2 and CP-1250 Polish
+    uppercases to lowercases; koi8r-up2low and cp1251-up2low scripts to
+    convert KOI8-R and CP-1251 Russian uppercases to lowercases; punctuation
+    script to convert punctuation from HTML or UTF-8 encodings to ASCII.
+* Sample HTML files in UTF-8 and KOI8-R encodings as well as the
+    corresponding plugins for the demonstration and learning purposes.
+* Added Plugins-HOWTO file describing the basics of wminfo plugins writing.
+* Added a manual page man wminfo.
+* The configure file instead of static Makefile.
+* License changed to GNU GPL v. 3.
+* The name of the program changed to wminfo.
+
+All the above changes and additions made by Cezary M. Kruk
+<c.kruk@bigfoot.com>
+http://linux-bsd-unix.strefa.pl/
+
+
+wmInfo 1.51, 2000-08-01:
+----------------------------------------------------------------------------
+* Print help if no argument is given.
+* Added rewind speed.
+* New plugin(s).
+
+
+wmInfo 1.5:
+----------------------------------------------------------------------------
+* Changed name to wmInfo.
+* HUGE makeover, now the app is very generic.
+
+
+wmSvt 1.02:
+----------------------------------------------------------------------------
+* Added some command-line options.
+* Fixed nasty parsing bug.
+
+
+wmSvt 1.0a:
+----------------------------------------------------------------------------
+* Initial release.

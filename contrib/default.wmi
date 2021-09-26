@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# wminfo plugin: default plugin
+
+wminfo

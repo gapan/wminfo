@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# wminfo plugin: clock and calendar
+
+# command: wminfo -p conky.date.wmi -u 1 -b#000000 -f#ffff00
+
+datafile="/tmp/.$USER.conky.tmp"
+
+grep '^DATE: ' $datafile | sed 's/DATE: //'
+

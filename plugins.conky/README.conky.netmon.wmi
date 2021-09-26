@@ -1,0 +1,35 @@
+
+wminfo README.conky.netmon.wmi
+
+
+The conky.netmon.wmi plugin displays the download and the upload speeds for
+the selected interfaces -- by default: lo, eth0, and wlan0.
+
+The raw data provided by conky looks like that:
+
+    NETMON: LO   23.9K
+    NETMON: ETH0 927B
+    NETMON: ETH0 32.5K
+    NETMON: WLN0 0B
+    NETMON: WLN0 0B
+
+The plugin simplifies that information so it looks in the wminfo dockable
+application like that:
+
+    +---------+
+    |LO   23K |
+    |ETH0 927B|
+    |ETH0 32K |
+    |WLN0 0B  |
+    |WLN0 0B  |
+    +---------+
+
+There is one entry for lo interface above because the download and the
+upload speeds for that interface are equal.  As for the other interfaces the
+first entry displays the download speed and the other entry displays the
+upload speed.
+
+I did not find the method of rounding the fractions up with conky so the
+conky.netmon.wmi plugin simply truncates the fractions.  As a result instead
+of rounding up the numbers such as 23.9 or 32.5 to 24 and 33 it truncates
+them to 23 and 32.

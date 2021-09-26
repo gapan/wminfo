@@ -1,0 +1,33 @@
+# time zone: CET (CET)
+
+# use that configuration file with the plugin CompactFormat variable set to "on"
+
+11	HI	Hawaii-Aleutian Standard Time (Honolulu, Hawaii, United States)
+10	PF	Gambier Time (Gambier Islands, French Polynesia)
+9	AK	Alaska Standard Time (Anchorage, Alaska, United States)
+8	CA	Pacific Standard Time (Los Angeles, California, United States)
+7	GT	Central Standard Time (Guatemala, Guatemala)
+6	NY	Eastern Standard Time (New York, New York, United States)
+5	BR	Amazon Time (Manaus, Amazonas, Brazil)
+4	AR	Argentina Time (Buenos Aires, Argentina)
+3	GS	King Edward Point, South Georgia and the South Sandwich Islands *
+2	AZ	Azores Time (Azores, Portugal) **
+UTC		Coordinated Universal Time (Greenwich Mean Time, London) ***
+CET		Central European Time (Madrid) ***
+EET		Eastern European Time (Athens) ***
+22	IQ	Arabia Standard Time (Baghdad, Iraq)
+21	OM	Gulf Standard Time (Muscat, Oman)
+20	PK	Pakistan Standard Time (Karachi, Pakistan)
+19	KZ	Alma-Ata Time (Astana, Kazakhstan)
+18	TH	Indochina Time (Bangkok, Thailand)
+17	HK	Hong Kong Time (Hong Kong, Hong Kong Special Administrative Region)
+16	JP	Japan Standard Time (Tokyo, Japan)
+15	PG	Papua New Guinea Time (Port Moresby, Papua New Guinea)
+14	AU	Eastern Daylight Time (Sydney, New South Wales, Australia)
+13	KC	Kamchatka Time (Petropavlovsk-Kamchatsky, Russia) **
+12	NZ	New Zealand Daylight Time (Auckland, New Zealand)
+
+# *   that region hasn't ISO code so the code for the selected island is used
+# **  these regions haven't ISO codes so the custom abbreviations are used
+# *** these regions haven't ISO codes so the plugin uses two letter abbreviations
+

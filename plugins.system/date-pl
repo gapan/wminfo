@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# date-pl: edits date-pl.cfg
+
+if [ -e date-pl.cfg ]
+then
+    FILE="date-pl.cfg"
+elif [ -e $HOME/bin/date-pl.cfg ]
+then
+    FILE="$HOME/bin/date-pl.cfg"
+elif [ -e /usr/local/bin/date-pl.cfg ]
+then
+    FILE="/usr/local/bin/date-pl.cfg"
+else
+    echo "date-pl: there is no date-pl.cfg database."
+    exit
+fi
+
+if [ -x `which mcedit` ]
+then
+    mcedit $FILE
+elif [ -x `which nano` ]
+then
+    nano $FILE
+else
+    vim $FILE
+fi

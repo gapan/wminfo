@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# wminfo plugin: top command output
+
+# command: wminfo -p top.wmi -u 5 -b#000000 -f#ff0000
+
+top -b | head -n 12 | tail -n 5 | awk '{print $9,$12}'

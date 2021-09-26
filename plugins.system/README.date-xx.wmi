@@ -1,0 +1,62 @@
+
+wminfo README.date-xx.wmi
+
+
+Two wminfo plugins -- date-pl.wmi and date-us.wmi -- display the time, the
+date, and holidays as well as the other events celebrated or occuring
+respectively in Poland and in America according to the data stored in the
+related date-pl.cfg and date-us.cfg text databases.
+
+You can register the other anniversaries and events in one of these files.
+
+The format for the anniversaries recurring the same day each year is:
+
+    MM DD Anniversary Name
+
+for example:
+
+    12 21 Frank Zappa (* 1940)
+    12 04 Frank Zappa (+ 1993)
+
+The format for the events occuring just once is:
+
+    YYYY MM DD Event Name
+
+for example:
+
+    2012 12 21 The End Of The World
+
+The scripts date-pl and date-us allow to edit the respective text databases.
+
+The date-?? script edits date-??.cfg configuration file.  Instead of putting
+the date-??.cfg database in /usr/local/bin directory it is more convenient
+to put it in ~/bin directory.  In such a case you can edit text database
+without root priviledges and you can store your own anniversaries and events
+in that file.
+
+If you need three lines for optional holidays and events instead of the
+command:
+
+    date +"%H:%M:%S %n%A%n%b %d"
+
+use in date-us.wmi plugin two following commands:
+
+    date +"%H:%M:%S"
+    date +"%a %b %d" | sed -E 's/^(..)./\1/'
+
+If you prefer the hour in AM/PM format use instead of:
+
+    %H:%M:%S
+
+the string:
+
+    %I:%M:%S%p
+
+Attention: according to the American Federal Law when a holiday falls on a
+day off such as Saturday or Sunday the holiday for Federal employees usually
+is observed on Monday (when the holiday falls on Sunday) or Friday (when the
+holiday falls on Saturday).
+
+If you live outside America and Poland you can create your own text database
+covering the holidays specific for your country.  In such a case you have
+also to customize date-??.wmi plugin and date-?? script.

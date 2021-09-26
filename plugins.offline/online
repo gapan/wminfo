@@ -1,0 +1,63 @@
+#!/bin/bash
+
+# online script: stores localhost versions of Internet websites
+
+# to run it use the crontab task such as:
+# */6 * * * * if [ "`route | grep 'default'`" != "" ] ; then /usr/local/bin/online ; fi
+
+if [ -x /usr/local/bin/online.mbox ]
+then
+    . /usr/local/bin/online.mbox
+fi
+
+DIRECTORY="/var/www/htdocs/wminfo"
+
+if [ ! -d $DIRECTORY ]
+then
+    mkdir -p $DIRECTORY
+fi
+
+if [ ! -d $DIRECTORY ]
+then
+    echo "I can't make $DIRECTORY directory."
+    exit
+fi
+
+links -source -http-bugs.no-compression 1 http://www.archlinux.org/packages/?sort=-last_update > $DIRECTORY/arch-patches.html.tmp
+lynx --source http://www.bbc.co.uk/mundo/ > $DIRECTORY/bbc-mundo.html.tmp
+lynx --source http://www.billboard.com/charts/hot-100 > $DIRECTORY/billboard-top10.html.tmp
+lynx --source http://www.cnet.com/ > $DIRECTORY/cnet.html.tmp
+lynx --source http://www.commentcamarche.net/ > $DIRECTORY/commentcamarche.html.tmp
+lynx --source http://www.dockapps.org/ > $DIRECTORY/dockapps.html.tmp
+lynx --source http://wyborcza.biz/Waluty/0,111138,8932151,,,Kursy_srednie_walut_NBP,A.html > $DIRECTORY/currencies-pl-avg.html.tmp
+lynx --source http://wyborcza.biz/Waluty/0,111138,8938582,,,Kursy_kupna_sprzedazy_walut_NBP,C.html > $DIRECTORY/currencies-pl-buy+sell.html.tmp
+lynx --source http://www.dpreview.com/ > $DIRECTORY/dpreview.html.tmp
+lynx --source http://freecode.com/ > $DIRECTORY/freecode.html.tmp
+lynx --source http://www.kernel.org/pub/linux/kernel/v2.4/ > $DIRECTORY/kernel-2.4.html.tmp
+lynx --source http://www.kernel.org/pub/linux/kernel/v2.6/ > $DIRECTORY/kernel-2.6.html.tmp
+lynx --source http://www.kernel.org/pub/linux/kernel/v3.x/ > $DIRECTORY/kernel-3.x.html.tmp
+lynx --source http://www.kommersant.ru/ > $DIRECTORY/kommersant.html.tmp
+lynx --source http://www.linuxquestions.org/questions/slackware-14/ > $DIRECTORY/linuxquestions-slackware.html.tmp
+lynx --source http://www.advfn.com/nasdaq/nasdaq.asp > $DIRECTORY/nasdaq.html.tmp
+lynx --source http://pitchfork.com/reviews/best/albums/ > $DIRECTORY/pitchfork.html.tmp
+links -source http://slashdot.org/ > $DIRECTORY/slashdot.html.tmp
+lynx --source http://www.spiegel.de/ > $DIRECTORY/spiegel.html.tmp
+lynx --source http://www.tvn24.pl/ > $DIRECTORY/tvn24.html.tmp
+lynx --source http://wyborcza.pl/0,0.html > $DIRECTORY/wyborcza.html.tmp
+
+for file in $DIRECTORY/*.tmp
+do
+    mv $file `echo $file | sed 's/\.tmp//'`
+done
+
+MIRROR="`cat /etc/slackpkg/mirrors | grep -v '^#'`"
+if [ "$MIRROR" == "" ]
+then
+    echo "Error: none Slackware mirror defined in /etc/slackpkg/mirrors file."
+    echo "         " ; echo "         " ; echo "         " ; echo "         "
+    exit
+fi
+lynx --source ${MIRROR}patches/packages/ > $DIRECTORY/slackware-patches.html.tmp
+mv $DIRECTORY/slackware-patches.html.tmp $DIRECTORY/slackware-patches.html
+lynx --source ${MIRROR}ChangeLog.txt > $DIRECTORY/ChangeLog.txt
+

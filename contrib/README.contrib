@@ -1,0 +1,22 @@
+
+wminfo README.contrib
+
+
+This directory contains the following scripts and plugins:
+
+plugin            displays the command running the selected wminfo plugin.
+suspend           suspends the system to RAM.
+
+iso?-utf8         convert from ISO-8859-[1,2,5] to UTF-8.
+utf8-iso?         convert from UTF-8 to ISO-8859-[1,2,5].
+*-up2low          convert uppercases to lowercases in different codepages.
+up2low            converts uppercases to lowercases.
+html-iso1         converts from HTML encoding to ISO-8859-1.
+punctuation       converts punctuation marks from HTML and UTF-8 encodings
+                    to ASCII.
+default.wmi       displays wminfo help when there is no plugin name in the
+                    command or there is no -p switch.
+empty.wmi         displays empty application window.
+
+All these scripts and plugins are copied to the PATH during the installation
+of wminfo.
