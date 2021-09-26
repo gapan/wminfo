@@ -1,0 +1,42 @@
+# time zones: time zones by region/city
+
+# region/city		ISO	description
+
+Pacific/Niue		NU	(Niue)
+Pacific/Honolulu	HI	(Hawaii)
+Pacific/Gambier		PF	(French Polynesia)
+America/Anchorage	AK	(Alaska)
+America/Los_Angeles	CA	(California)
+America/Guatemala	GT	(Republic of Guatemala)
+America/Mexico_City	MX	(Mexico)
+America/New_York	NY	(New York)
+America/Manaus		BR	(Brazil)
+America/Buenos_Aires	AR	(Argentina)
+Atlantic/South_Georgia	GS	(South Georgia and the South Sandwich Islands)
+Atlantic/Cape_Verde	CV	(Cape Verde)
+Atlantic/Azores		AZ	(Azores) *
+Africa/Accra		GH	(Ghana)
+Europe/London		GB	(United Kingdom)
+Europe/Paris		FR	(France)
+Europe/Athens		GR	(Greece)
+Europe/Moscow		RU	(Russian Federation)
+Asia/Baghdad		IQ	(Iraq)
+Asia/Muscat		OM	(Oman)
+Asia/Karachi		PK	(Pakistan)
+Asia/Kolkata		IN	(India)
+Asia/Kathmandu		NP	(Nepal)
+Asia/Almaty		KZ	(Kazakhstan)
+Asia/Bangkok		TH	(Thailand)
+Asia/Hong_Kong		HK	(Hong Kong)
+Asia/Tokyo		JP	(Japan)
+Australia/Sydney	AU	(Australia)
+Pacific/Port_Moresby	PG	(Papua New Guinea)
+Pacific/Noumea		NC	(New Caledonia)
+Asia/Kamchatka		KM	(Kamchatka) **
+Pacific/Auckland	NZ	(New Zealand)
+Pacific/Apia		WS	(Samoa)
+Pacific/Kiritimati	KI	(Kiribati -- International Date Line)
+
+#  * AZ isn't regular region ISO code
+# ** KM isn't regular region ISO code
+

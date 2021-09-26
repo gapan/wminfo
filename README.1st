@@ -1,0 +1,306 @@
+
+wminfo README.1st
+
+
+wminfo is a dockapp that displays text-format information using the plugin.
+The standard plugin is a shell script.  The plugin writes the information to
+stdout and wminfo captures the output and displays it row by row.  Using the
+appropriate plugins wminfo can display different information got from the
+system or from Internet.
+
+The wminfo program was designed as a platform to run the plugins written in
+bash.  Since the version 4.0.0 it allows also to run the scripts written in
+different languages as well as the binary programs.
+
+                                      *
+                                    *   *
+
+Summary:
+
+To use the wminfo dockable application and the plugins:
+
+1) install wminfo;
+
+2) go to /usr/local/doc/wminfo-4.1.2 or /usr/doc/wminfo-4.1.2
+   directory and test the plugins from plugins.* directories
+   except for the plugins.offline one running in each case the
+   run-all-wminfo-plugins scripts;
+
+3) copy all executable files from the respective directories to
+   /usr/local/bin directory;
+
+4) copy all *.cfg files from the respective directories to your
+   ~/bin directory;
+
+5) use plugin -h command to display the descriptions of the
+   plugins; use plugin -a command to establish the commands
+   running wminfo with the individual plugins;
+
+6) select the plugins you are interested in and run them using
+   these commands;
+
+7) enjoy.
+
+If you encountered any problem check first the BUGS file for the possible
+solution.
+
+
+                                      *
+                                    *   *
+
+To compile and install wminfo go to wminfo subdirectory and use the
+standard command sequence:
+
+    ./configure
+    make
+    make install
+
+Instead of ./configure command you can run ./configure --prefix=/usr one in
+order to install wminfo in /usr directory instead of /usr/local one.
+
+                                      *
+                                    *   *
+
+To display wminfo help run the command:
+
+    wminfo -h
+
+or:
+
+    wminfo
+
+To use the plugin run the command such as:
+
+    wminfo -p plugin.wmi
+
+where plugin.wmi is the name of the plugin.
+
+The command without -p switch:
+
+    wminfo plugin.wmi
+
+displays in wminfo window wminfo help (it uses default.wmi plugin).
+
+The command with an invalid plugin name:
+
+    wminfo -p plageen.wmi
+
+displays the messages such as:
+
+    sh: plageen.wmi: command not found
+    wminfo: there is no "plageen.wmi" plugin or it is invalid.
+
+The similar message appears when plugin.wmi is not executable or it is not
+script nor binary program.
+
+                                      *
+                                    *   *
+
+The wminfo window looks like:
+
+    +---------+
+    |DOWN  ALL|
+    |   ONE   |
+    |   ONE   |
+    |   ONE   |
+    |UP  RERUN|
+    +---------+
+
+Click the given position to get the desired result:
+
+    ONE   -- the middle of the line:
+             switches the scrolling of the line of the text;
+
+    ALL   -- upper right corner:
+             switches the scrolling of all lines;
+
+    UP    -- lower left corner:
+             rewinds the text up;
+
+    DOWN  -- upper left corner:
+             rewinds the text down;
+
+    RERUN -- lower right corner:
+             reruns the plugin on demand.
+
+The wminfo program can display the lines of the text up to 1023 characters
+in a line and no more than 1023 lines of the text.  When the number of the
+characters in some line is bigger wminfo splits that line after each
+consecutive 1023 character and it displays just first 1023 lines of the
+text.
+
+To check the lengths and the number of the lines it is enough to redirect
+wminfo plugin output to a file:
+
+    plugin.wmi > file.tmp
+
+                                      *
+                                    *   *
+
+Sample plugins such as date.wmi, timezone.wmi, weather.wmi, and
+forecast.wroclaw.wmi look in the wminfo window like:
+
+    +---------+     +---------+     +---------+     +---------+
+    |16:37:00 |     |EDT 10:37|     |EPWR 1600|     |WROCLAW  |
+    |FRIDAY   |     |GMT 14:37|     |TMP: 19 C|     |TODAY    |
+    |SEP  23  | or: |MSK 18:37| or: |PRS: 1021| or: |HI: 19 C |
+    |WEEK 38  |     |IST 20:07|     |HUM: 63% |     |LO: 7 C  |
+    |YEAR 2011|     |EST 00:37|     |WND: 1   |     |MOSTLY CL|
+    +---------+     +---------+     +---------+     +---------+
+
+Most of the plugins are configurable so you can change the data displayed by
+them.  For example you can use the AM/PM time format, monitor the other time
+zones, display the weather reports and forecasts for the other locations,
+and use Fahrenheit degrees instead of the Celsius ones.
+
+The conky-related plugins use usually less of the system resources than
+their bash equivalents so instead of the mentioned above timezone.wmi,
+weather.wmi, and forecast.wroclaw.wmi sample plugins it is better to use
+conky.timezone.wmi, conky.weather.wmi, and conky.forecast.wmi ones with the
+appropriate ~/.wminfo/conky.conf configuration file.
+
+                                      *
+                                    *   *
+
+To use wminfo you need some plugins.  The complete set of the plugins as
+well as all provided documents are copied during the installation to the
+/usr/local/doc/wminfo-4.1.2 or /usr/doc/wminfo-4.1.2 directory depending on
+the installation method.
+
+Before you test them install in the system the following packages: lynx,
+links, curl, and conky.  In order to run all the binary clocks from the
+plugins.system directory install also Lua, gawk (4.0.0 or newer), and Ruby.
+
+In order to test the plugins from the following subdirectories:
+
+  - plugins.binary
+  - plugins.conky
+  - plugins.online
+  - plugins.system
+
+go to the respective directory and run run-all-wminfo-plugins script (you
+can use the -c or --compact switch when wminfo windows are placed sparsely).
+
+The script kills all running wminfo instances -- if any -- checks if the
+required programs and configuration settings are available, if any user
+action is required displays the appropriate messages, and when everything is
+all right runs the wminfo with the plugins from the current directory.
+
+In order to test the plugins from the following subdirectory:
+
+  - plugins.offline
+
+the appropriate configuration is required.
+
+The plugins from plugins.offline subdirectory are similar to the plugins
+from the mentioned above plugins.online subdirectory but they work also when
+your machine is off-line.  So after you test the ``online'' versions of the
+plugins you can use the ``offline'' ones instead.
+
+That requires the crontab entry which runs online script from
+plugins.offline directory every few minutes when the Internet connection is
+active such as:
+
+    */6 * * * * if [ "`route | grep 'default'`" != "" ] ; then /usr/local/bin/online ; fi
+
+or:
+
+    */6 * * * * if [ "`route | grep -E 'pan0|wlan0'`" != "" ] ; then /usr/local/bin/online ; fi
+
+It requires also a working HTTP server which keeps files in /var/www/htdocs
+directory. (The wminfo plugins from plugins.offline subdirectory seek for
+the required files in http://localhost/wminfo directory.)
+
+After the first execution of the online script you can try the plugins from
+plugins.offline subdirectory running the run-all-wminfo-plugins script
+(optionally with -c or --compact switch).
+
+You can also test the plugins from the following subdirectories:
+
+  - contrib
+  - samples
+
+running the respective run-all-wminfo-plugins scripts.
+
+After the tests you can kill all wminfo instances running killall wminfo
+command.
+
+                                      *
+                                    *   *
+
+After the above tests copy some plugins to the /usr/local/bin directory. 
+The simple solution is to copy all executable files from the respective
+directories to /usr/local/bin directory and copy all *.cfg files to your
+~/bin directory.  As a result each plugin which you will run with wminfo
+will work properly.
+
+The more complicated solution is to copy just the plugins you are interested
+in together with the accompanying scripts and configuration files.  The
+plugins have the names with .wmi extensions, for example: days.wmi (the
+binary plugins have .bin extension and require accompanying .wmi scripts). 
+Some plugins have accompanying scripts -- the name of the script is the same
+as the name of the plugin but without the .wmi extension, for example: days. 
+Some plugins have accompanying configuration files -- the name of the
+configuration file is the same as the name of the plugin but instead of .wmi
+extension it uses .cfg extension, for example: days.cfg.  Copy these scripts
+and configuration files to /usr/local/bin directory as well.  You can put
+the configuration files also to your ~/bin directory in order to be able to
+modify them without the root priviledges.
+
+You do not need copy the scripts from the contrib directory to
+/usr/local/bin one because during the installation those scripts are copied
+to the appropriate directory -- /usr/local/bin or /usr/bin depending on the
+installation method.
+
+Each plugin includes a comment with the recommended command to run it and
+the comment with the description.  You can display the recommended commands
+for all the plugins copied to /usr/local/bin directory using the command
+plugin -a or plugin --all or display the descriptions using the command
+plugin -h or plugin --help.
+
+                                      *
+                                    *   *
+
+To use conky-related plugins you have to run conky daemon using conky.conf
+configuration file provided with wminfo.  Keep that file in your ~/.wminfo/
+directory.  To start the daemon use the command:
+
+    conky -c "$HOME/.wminfo/conky.conf" -d 2> "$HOME/.wminfo/conky.log"
+
+or just run the script:
+
+    wminfo-conky -d
+
+Instead or running conky manually you can register it in your ~/.xinitrc
+file:
+
+    #-----------------------------------------------------------
+    xhost `hostname`
+    xmodmap ~/.Xmodmap
+    eval rm "$HOME/.wminfo/.counter.*"
+    if [ "`ps aux | grep $USER | grep conky | grep -vE 'grep|wminfo -p'`" == "" ] ; then conky -c "$HOME/.wminfo/conky.conf" -d 2> "$HOME/.wminfo/conky.log"; fi
+    wmaker
+    #-----------------------------------------------------------
+
+If you put a few weather monitors in the conky.conf file after a couple of
+minutes or hours conky daemon will break without any error messages.  The
+only method to avoid that is to run the crontab entry that monitors your
+conky daemon and restarts it after the breakdown:
+
+    */1 * * * * if [ "`ps aux | grep "$USER" | grep conky | grep -vE 'grep|wminfo -p'`" == "" ] ; then conky -c "$HOME/.wminfo/conky.conf" -d 2> "$HOME/.wminfo/conky.log"; fi
+
+                                      *
+                                    *   *
+
+The plugins from plugins.online and plugins.offline directories are in many
+cases rather examples of the possibilities of wminfo than useful tools.  To
+monitor different websites you have to write your own plugins.  If you are
+new to bash scripting read Plugins-HOWTO or man wminfo section named
+Plugins-HOWTO.
+
+                                      *
+                                    *   *
+
+If you would like to know more read the other documents provided with the
+wminfo package.
+

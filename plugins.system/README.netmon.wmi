@@ -3,9 +3,9 @@ wminfo README.netmon.wmi
 
 
 The netmon.wmi plugin uses netmon script to establish the network traffic.
-The netmon script uses /sbin/ifconfig.  The data reported by /sbin/ifconfig
-is incremental.  Let us assume the network traffic is equal to 1 Mbit.  In
-such a situation the command:
+It uses /sbin/ifconfig program.  The data reported by /sbin/ifconfig is
+incremental.  Let us assume the network traffic is equal to 1 Mbit.  In such
+a situation the command:
 
      wminfo -p netmon.wmi -u 1
 
@@ -20,21 +20,32 @@ reports the traffic overstated two times, the command:
 reports the traffic overstated three times, etc.
 
 So in order to get the valid values it is necessary to run netmon.wmi plugin
-using a coefficient that corresponds to the frequency of the updates. As a
-result the valid commands are:
+using a coefficient that corresponds to the frequency of the updates.  So
+the valid commands are:
 
      wminfo -p netmon.wmi -u 1
-     wminfo -p "netmon.wmi 1" -u 1
-     wminfo -p "netmon.wmi 2" -u 2
-     wminfo -p "netmon.wmi 3" -u 3
-     wminfo -p "netmon.wmi 4" -u 4
-     wminfo -p "netmon.wmi 5" -u 5
+     wminfo -p 'netmon.wmi 1' -u 1
+     wminfo -p 'netmon.wmi 2' -u 2
+     wminfo -p 'netmon.wmi 3' -u 3
+     wminfo -p 'netmon.wmi 4' -u 4
+     wminfo -p 'netmon.wmi 5' -u 5
 
 and so on.
 
 The only case when the coefficient is not necessary is when wminfo updates
-the information every second because the default coefficient is equal to 1.
+the information every second because the default coefficient is equal 1.
 
-The netmon.wmi plugin monitors lo, eth0, and wlan0 interfaces.  In order to
-monitor the other interfaces it is necessary to modify the entire netmon.wmi
-plugin.
+The netmon.wmi plugin looks in the wminfo window like:
+
+    +---------+
+    |LO   6M  |
+    |ETH: 1G  |
+    |ETH: 104M|
+    |WLN: 0B  |
+    |WLN: 0B  |
+    +---------+
+
+The netmon.wmi plugin monitors lo, eth0. eth1, wlan0, and wlan1 interfaces.
+In order to monitor the other interfaces it is necessary to modify the
+entire netmon.wmi plugin.
+

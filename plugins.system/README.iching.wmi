@@ -1,0 +1,153 @@
+
+wminfo README.iching.wmi
+
+
+The iching.wmi plugin generates and displays the hexagrams from ``I Ching --
+The Book of Changes'', for example:
+
+    64. Wei Chi / Before Completion
+    969 LI THE CLINGING, FLAME
+    876 K'AN THE ABYSMAL, WATER
+    BEFORE COMPLETION. Success. But if the little fox, after nearly completing the crossing, gets his tail in the water, there is nothing that would further.
+    Fire over water: the image of the condition before transition. Thus the superior man is careful in the differentiation of things, so that each finds its place.
+    60.878877 Chieh / Limitation
+
+That information looks in the wminfo window like:
+
+    +---------+
+    |64. WEI C|
+    |969 LI TH|
+    |876 K'AN |
+    |BEFORE CO|
+    |FIRE OVER|
+    +---------+
+
+The six lines include:
+
+1. The number and the name of the hexagram.
+2. The values for the lines of the upper trigram, its name and the aspect.
+3. The values for the lines of the lower trigram, its name and the aspect.
+4. The judgment.
+5. The image.
+6. The hexagram after the change (visible after the scrolling of the text).
+
+There are no comments here as well as there are no the descriptions of the
+changing lines represented by the numbers 9 and 6.  So the information
+displayed by the iching.wmi plugin is useable for the experienced ``I
+Ching'' users or for the ones owning the more detailed version of ``The Book
+of Changes''.
+
+You will find the online version of ``I Ching'' here:
+
+    http://www.ichingfortune.com/hexagrams.php
+
+or here:
+
+    http://www.akirarabelais.com/i/i.html
+
+The iching.wmi plugin changes the hexagram after you click the bottom right
+corner of the application window.
+
+                                      *
+                                    *   *
+
+The iching script displays the result for the given hexagram or for the
+sequence of the tosses.
+
+The command:
+
+    iching 64
+
+displays hexagram 64.
+
+Assuming that the consecutive tosses gave the numbers 6, 7, 8, 9, 6, and 9
+the command:
+
+    iching 969876
+
+displays hexagram 64 together with the reference to the hexagram 60 (after
+the change).
+
+That script used with the ``oracle'' parameter generates and displays the
+hexagram:
+
+    iching oracle
+
+                                      *
+                                    *   *
+
+To generate a hexagram in a traditional way one may use three coins.  The
+results of the six tosses determine the hexagram -- the first toss is for
+the lowest line and the last toss is for the highest line.  The head side
+(or the blank side) of the coin is yang; the tail side (or the enscripted
+side) is yin.  The coins are tossed for the six times.  By assigning the
+values to yang (three points) and yin (two points) each of the six lines in
+the hexagram are generated from the bottom to the top.  The result of the
+single toss may be equal 6, 7, 8, or 9:
+
+    6    ----x----    old yin changing to yang
+    7    ---------    young yang
+    8    ---- ----    young yin
+    9    ----o----    old yang changing to yin
+
+The odd values symbolize yang or male aspect (white part of the yin and yang
+circle).  The even values symbolize yin or female aspect (black part of the
+yin and yang circle).
+
+The last, 64 hexagram looks like:
+
+    ---------
+    ---- ----
+    ---------
+    ---- ----
+    ---------
+    ---- ----
+
+or assuming that the consecutive tosses gave the numbers 6, 7, 8, 9, 6, and
+9:
+
+    ----o----    9
+    ----x----    6
+    ----o----    9
+    ---- ----    8
+    ---------    7
+    ----x----    6
+
+The lines represented by 9 and 6:
+
+    9    ----o----
+    6    ----x----
+
+are the lines that head towards the change.
+
+The yang:
+
+    9    ----o----
+
+is going to the yin:
+
+    8    ---- ----
+
+and the yin:
+
+    6    ----x----
+
+is going to the yang:
+
+    7    ---------
+
+So the mentioned hexagram after the complete change would become:
+
+    ---- ----    8
+    ---------    7
+    ---- ----    8
+    ---- ----    8
+    ---------    7
+    ---------    7
+
+It is hexagram 60.
+
+As a result each hexagram -- depending on the values got for the consecutive
+lines -- can change to any other hexagram or remain unchanged.  So the
+oracle gives in total 64 x 64 = 4096 different divinations.
+

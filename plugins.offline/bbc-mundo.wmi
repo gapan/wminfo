@@ -13,3 +13,4 @@ lynx --source localhost/wminfo/bbc-mundo.html | \
 	sed 's/<.*>//;' | \
 	utf8-iso1 | \
 	punctuation
+echo

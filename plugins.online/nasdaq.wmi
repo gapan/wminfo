@@ -2,10 +2,11 @@
 
 # wminfo plugin: NASDAQ Stock Prices
 
-# command: wminfo -p nasdaq.wmi -b#43b1e6 -f#ffffff
+# command: wminfo -p nasdaq.wmi -b#742723 -f#ffffff
 
-lynx --source http://www.advfn.com/nasdaq/nasdaq.asp | \
-	sed 's/\n/ /g;s/</\n</g' | \
-	grep 'pricechange' | \
-	sed 's/<.*alt="//;s/">/ /' | \
-	sed 's/\(.*\) \(.*\) \(.*\)/\1 \3 \2/'
+lynx --source http://www.barchart.com/stocks/nasdaq100.php | \
+	grep '_last' | \
+	sed 's/<td id="dt1_//;s/_last" align="right" class="//;s/qb_shad//;s/qb_line//;s/" nowrap="nowrap">/ /;s/<\/td>//;s/ds_last//' | \
+	perl -pe 's/^\s+//' | \
+	grep -vE '_columnsort_none|Last Price:' | awk '{printf ("%4s %-6s\n", $1, $2)}'
+echo

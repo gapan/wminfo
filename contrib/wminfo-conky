@@ -1,0 +1,56 @@
+#!/bin/bash
+
+# wminfo-conky: starts the conky daemon using wminfo settings,
+#               or restarts the daemon, or test if it works
+
+directory="$HOME/.wminfo"
+
+if [ "`which conky 2> /dev/null`" == "" ]
+then
+    echo "wminfo-conky: install conky before running the script."
+    exit
+fi
+
+if [ ! -f $directory/conky.conf ]
+then
+    echo "wminfo-conky: there is no $directory/conky.conf configuration file."
+    exit
+fi
+
+if [ "$1" == "" ]
+then
+cat <<EOF
+wminfo-conky: starts the conky daemon using wminfo settings,
+              or restarts the daemon, or test if it works
+
+wminfo-conky [-d | --daemon | -r | --restart | -t | --test]
+EOF
+    exit
+fi
+
+if [ "$1" == "-d" ] || [ "$1" == "--daemon" ]
+then
+    if [ "`ps aux | grep 'conky -c' | grep '.wminfo'`" == "" ]
+    then
+	conky -c "$directory/conky.conf" -d 2> "$directory/conky.log"
+    else
+	echo "wminfo-conky: conky daemon is running already"
+    fi
+elif [ "$1" == "-r" ] || [ "$1" == "--restart" ]
+then
+    if [ "`ps aux | grep 'conky -c' | grep '.wminfo'`" == "" ]
+    then
+	echo "wminfo-conky: conky daemon is not running yet"
+    else
+	killall -SIGUSR1 conky
+    fi
+elif [ "$1" == "-t" ] || [ "$1" == "--test" ]
+then
+    if [ "`ps aux | grep 'conky -c' | grep '.wminfo'`" == "" ]
+    then
+	echo "wminfo-conky: conky daemon is not running"
+    else
+	echo "wminfo-conky: conky daemon is running"
+    fi
+fi
+

@@ -1,0 +1,122 @@
+
+wminfo README.binclock-vertical-x
+
+
+The present directory includes ten 4-bits binary clock plugins:
+binclock-vertical-04.wmi, binclock-vertical-05.wmi,
+binclock-vertical-06.wmi, binclock-vertical-07.wmi,
+binclock-vertical-08.wmi, binclock-vertical-09.wmi,
+binclock-vertical-10.wmi, binclock-vertical-11.wmi,
+binclock-vertical-12.wmi, and binclock-vertical-13.wmi.  These plugins use
+more of the CPU power than their three binary equivalents from the
+plugins.binary directory though less of the CPU power than one equivalent
+from the samples directory.
+
+At 16:48:23 the binary clock 4-bits plugin the following information:
+
+    HH MM SS
+      | *|  |
+     *|* |  |
+     *|  |**|
+    * |  | *|
+
+which looks in the wminfo window like:
+
+    +---------+
+    |HH MM SS |
+    |  | *|  ||
+    | *|* |  ||
+    | *|  |**||
+    |* |  | *||
+    +---------+
+
+Likewise their binary equivalents the Lua, gawk, bash, and Ruby plugins
+allow to switch off the label or the separators using the configuration
+sections of the respective scripts.  In default settings both the label and
+the separators are switched on:
+
+    Label="on"
+    Separators="on"
+
+or:
+
+    Label = "1"
+    Separators = "1"
+
+                                      *
+                                    *   *
+
+Fourteen different 4-bits vertical binary clock plugins -- three from
+plugins.binary directory, ten from plugins.system directory, and one from
+samples directory -- do exactly the same and are the result of the
+discussion in the Programming section of LinuxQuestions.org
+(http://www.linuxquestions.org).
+
+A few debaters -- PTrenholme, H_TeXMeX_H, grail, ntubski, and w1k0 -- wrote
+the 4-bits vertical binary clocks designed as the plugins for wminfo (some
+of them wrote a few versions).
+
+Three binary clocks (written in C):
+
+  - binclock-vertical-01.bin by PTrenholme
+  - binclock-vertical-02.bin by PTrenholme,
+  - binclock-vertical-03.bin by H_TeXMeX_H,
+
+are in the plugins.binary directory (these are the plugins using the CPU
+power the least).
+
+Ten binary clocks (one written in Lua, two written in gawk, five written in
+bash, and two written in Ruby):
+
+  - binclock-vertical-04.wmi by PTrenholme (requires Lua interpreter),
+  - binclock-vertical-05.wmi by PTrenholme,
+  - binclock-vertical-06.wmi by PTrenholme (requires gawk 4.0.0 or newer),
+  - binclock-vertical-07.wmi by PTrenholme,
+  - binclock-vertical-08.wmi by grail,
+  - binclock-vertical-09.wmi by PTrenholme,
+  - binclock-vertical-10.wmi by Noam Postavsky aka ntubski,
+  - binclock-vertical-11.wmi by grail,
+  - binclock-vertical-12.wmi by grail
+  - binclock-vertical-13.wmi by Cezary M. Kruk aka w1k0
+
+are in the plugins.system directory (these are the plugins using the CPU
+power moderately).
+
+One binary clock (written in bash):
+
+  - binclock-vertical-14.wmi by Cezary M. Kruk aka w1k0
+
+is in the samples directory (this is the plugin using the CPU power the
+most).
+
+I added to all of them the necessary comments as well as the procedures
+allowing to switch on and switch off the label and the separators.
+
+The CPU usage of the respective plugins used by wminfo is the following:
+
+    plugin                   | author     | language | CPU usage
+    -------------------------+------------+----------+----------
+    binclock-vertical-01.wmi | PTrenholme | C        |  0.97%
+    binclock-vertical-02.wmi | PTrenholme | C        |  0.96%
+    binclock-vertical-03.wmi | H_TeXMeX_H | C        |  0.97%
+    -------------------------+------------+----------+----------
+    binclock-vertical-04.wmi | PTrenholme | Lua      |  1.12%
+    binclock-vertical-05.wmi | PTrenholme | gawk     |  1.63%
+    binclock-vertical-06.wmi | PTrenholme | gawk     |  1.64%
+    binclock-vertical-07.wmi | PTrenholme | bash     |  2.60%
+    binclock-vertical-08.wmi | grail      | bash     |  2.85%
+    binclock-vertical-09.wmi | PTrenholme | bash     |  2.97%
+    binclock-vertical-10.wmi | ntubski    | bash     |  3.21%
+    binclock-vertical-11.wmi | grail      | Ruby     |  4.87%
+    binclock-vertical-12.wmi | grail      | Ruby     |  4.87%
+    binclock-vertical-13.wmi | w1k0       | bash     |  2.64%
+    -------------------------+------------+----------+----------
+    binclock-vertical-14.wmi | w1k0       | bash     | 10.07%
+    -------------------------+------------+----------+----------
+
+The performance was measured with wminfo-benchmark from contrib directory
+running for 180 seconds.  To learn about the benchmarks see the
+README.wminfo-benchmark file from the contrib directory.
+
+Thank you LinuxQuestions.org guys for your kind assistance once again.
+

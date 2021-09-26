@@ -34,29 +34,74 @@ to put it in ~/bin directory.  In such a case you can edit text database
 without root priviledges and you can store your own anniversaries and events
 in that file.
 
-If you need three lines for optional holidays and events instead of the
-command:
+The date-us.wmi plugin looks in the wminfo window like:
 
-    date +"%H:%M:%S %n%A%n%b %d"
+    +---------+
+    |23:39:23 |
+    |SUNDAY   |
+    |JUN 17   |
+    |FATHER'S |
+    |         |
+    +---------+
 
-use in date-us.wmi plugin two following commands:
+The date-pl.wmi plugin looks in the wminfo window like:
 
-    date +"%H:%M:%S"
-    date +"%a %b %d" | sed -E 's/^(..)./\1/'
+    +---------+
+    |23:39:23 |
+    |ND 17 CZE|
+    |LAURY    |
+    |MARCJANA |
+    |         |
+    +---------+
 
-If you prefer the hour in AM/PM format use instead of:
+If you need three lines for the optional holidays and events change in the
+configuration section of the date-us.wmi plugin the variable:
 
-    %H:%M:%S
+    Compact_Format="off"
 
-the string:
+to:
 
-    %I:%M:%S%p
+    Compact_Format="on"
+
+If you prefer the hour in AM/PM format change in the configuration section
+of the date-us.wmi plugin the variable:
+
+    AM_PM="off"
+
+to:
+
+    AM_PM="on"
+
+After the above changes the date-us.wmi plugin looks in the wminfo window
+like:
+
+    +---------+
+    |11:39:23P|
+    |SU JUN 17|
+    |FATHER'S |
+    |         |
+    |         |
+    +---------+
 
 Attention: according to the American Federal Law when a holiday falls on a
 day off such as Saturday or Sunday the holiday for Federal employees usually
 is observed on Monday (when the holiday falls on Sunday) or Friday (when the
 holiday falls on Saturday).
 
+If you use the localized system and the conky.date.wmi plugin displays
+the text ignoring diacritic characters try to run wminfo using the
+appropriate encoding and filter the plugin output.  For example the
+valid command for the Polish-language system is:
+
+    wminfo -p date-pl.wmi -u 1 -i 2
+
+The plugin should convert the weekday names in a proper way:
+
+    date +"%a %_d %b" | \
+    sed 's/pon/pn/;s/wto/wt/;s/śro/śr/;s/czw/cz/;s/pią/pt/;s/sob/sb/;s/nie/nd/' | \
+    utf8-iso2 >> $tempfile
+
 If you live outside America and Poland you can create your own text database
 covering the holidays specific for your country.  In such a case you have
 also to customize date-??.wmi plugin and date-?? script.
+

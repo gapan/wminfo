@@ -50,3 +50,26 @@ In the wminfo dockable application window that information looks like that:
     |0:00     |
     |0KBPS    |
     +---------+
+
+                                      *
+                                    *   *
+
+The moc-related settings used in conky.conf can cause two problems:
+
+The first problem is the CPU overload.  When conky uses these settings the
+CPU usage is very high -- in the extreme situations it reaches 100% as
+reported by the conky.sysmon.wmi plugin.
+
+The other problem is the unstable work of conky.  When conky uses the
+mentioned settings after exiting X Window conky locks the console displaying
+endlessly the message:
+
+    FATAL_ERROR The server is not running
+
+Because of these bugs the conky moc related settings stored in conky.conf
+file are commented.  To get rid of that last error it is necessary to run
+mocp -S server prior to running the conky daemon.  You can use in your
+~/.xinitrc the command such as:
+
+    if [ "`ps aux | grep "$USER" | grep mocp | grep -v 'grep'`" == "" ] ; then mocp -S; fi
+

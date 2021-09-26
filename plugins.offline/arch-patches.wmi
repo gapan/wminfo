@@ -13,4 +13,5 @@ lynx --source localhost/wminfo/arch-patches.html | \
     perl -pe 's/^.*?>//;s/<.*?>//g;s/ +/ /g' | \
     uniq | \
     grep -v "$rejected_architecture"
-echo "         "; echo "         "; echo "         "; echo "         "; echo "         "
+echo -e "         \n         \n         \n         \n         "
+

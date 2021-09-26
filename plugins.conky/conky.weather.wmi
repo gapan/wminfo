@@ -2,88 +2,120 @@
 
 # wminfo plugin: displays weather conditions for the selected airport
 
-# command: wminfo -p "conky.weather.wmi EPWR" -u 6 -b#0199fe -f#ffffff
+# command: wminfo -p 'conky.weather.wmi EPWR' -u 6s -b#0199fe -f#ffffff
+# command: wminfo -p 'conky.weather.wmi KNYC' -u 6s -b#0199fe -f#ffffff
+# command: wminfo -p 'conky.weather.wmi YSSY' -u 6s -b#0199fe -f#ffffff
 
 # Attention: EPWR in the command above is the ICAO code for Wroclaw, Poland;
 # before running weather.wmi plugin find your nearest airport ICAO code.
 # In order to find ICAO code go to the following site, select a state or a
 # country, and then select a location: http://weather.noaa.gov/
 
-#
-# CONFIGURATION SECTION BEGINS HERE
-#
-
-Weather="^WEATHER: "   # conky configuration
-
-TempUnit=" C"          # " C" for Celsius
-                       # "F" for Fahrenheit
-
-#
-# CONFIGURATION SECTION ENDS HERE
-#
-
-datafile="/tmp/.$USER.conky.tmp"
-
 if [ "$1" == "" ]
 then
 cat <<EOF
-weather.wmi: displays weather conditions for the selected airport
+conky.weather.wmi: displays weather conditions for the selected airport
 command:
-    wminfo -p "weather.wmi XXXX -u 6"
+    wminfo -p 'weather.wmi XXXX -u 6'
     XXXX: ICAO airport code (see: http://weather.noaa.gov/)
 EOF
 exit
 fi
 
-tempfile="/tmp/.$USER.weather.$1.tmp"
-counter="/tmp/.$USER.counter.tmp"
+datafile="$HOME/.wminfo/conky.tmp"
+tempfile="$HOME/.wminfo/.weather.$1.tmp"
+counter="$HOME/.wminfo/.counter.weather.$1.tmp"
+label="WEATHER"
 
-if [ ! -e $counter ]
+if [ "`grep 'temperature_unit fahrenheit' $HOME/.wminfo/conky.conf`" != "" ]
 then
-    echo "step=1" > $counter
+    TempUnit="F"
+else
+    TempUnit=" C"
 fi
 
-. $counter
+if [ -z "$(grep "^${label}: " "${datafile}")" ]
+then
+cat <<EOF
+$0: ${label} entries in conky.conf are commented.
+         
+         
+         
+         
+EOF
+exit
+fi
 
-grep "$Weather" $datafile | sed "s/$Weather//" | sed -E 's/: /="/;s/$/"/' > $tempfile
+if [ ! -e ${counter} ]
+then
+    step=1
+    touch ${counter}
+else
+    step=2
+    rm -f ${counter}
+fi
+
+weather=`grep "^${label}: " $datafile | grep $1`
+
+weather=${weather//; /; export }
+weather=${weather/${label}: /export SID=}
+
+echo $weather > $tempfile
 . $tempfile
 
-TME=`echo $TME | sed 's/.* //;s/://'`
-
-if [ "$TME" == "" ]
+if [ "$TME" == "" ] && [ "$PRS" == "0" ] && [ "$HUM" == "0" ]
 then
-    TME="0"
-elif [ $TME -gt 0 ]
-then
-    TME=`echo $TME | sed -E 's/^0+//'`
+cat <<EOF
+conky.weather.wmi: there's no "$1" station or there's no Internet connection.
+         
+         
+         
+         
+EOF
+exit
 fi
 
-TMZ=`date +"%z" | sed -E 's/([+-])0/\1/'`
+TME=${TME/* /}
+TME=${TME/:/}
 
-let "TME=$TME+$TMZ"
+TME=${TME#000}
+TME=${TME#00}
+TME=${TME#0}
+
+TME=${TME:-0}
+
+TMZ=`date +"%z"`
+TMZ=${TMZ/+0/+}
+TMZ=${TMZ/-0/-}
+
+TME=$(($TME+ $TMZ))
 
 if [ $TME -ge 2400 ]
 then
-    let "TME=$TME-2400"
+    TME=$(($TME-2400))
 elif [ $TME -lt 0 ]
 then
-    let "TME=$TME+2400"
+    TME=$(($TME+2400))
 fi
 
-if [ $TME -lt 10 ]
-then
-    TME="000$TME"
-elif [ $TME -lt 100 ]
-then
-    TME="00$TME"
-elif [ $TME -lt 1000 ]
-then
-    TME="0$TME"
-fi
+TME="000$TME"
+TME=${TME: -4:4}
 
-if [ "`find $datafile -mtime +0`" != "" ]
+if [ "`find $datafile -mtime +1`" != "" ]
 then
     TME=">24h"
+fi
+
+if [ "$TMP" == "" ]
+then
+cat <<EOF
+conky.weather.wmi: something bad happened -- no temperature.
+         
+         
+         
+         
+EOF
+    exit
 fi
 
 if [ $step -eq 1 ]
@@ -97,8 +129,7 @@ then
     fi
     echo "PRS: $PRS"
     echo "HUM: $HUM%"
-    echo "WDS: $WDS"
-    echo "step=2" > $counter
+    echo "WND: $WDS"
 elif [ $step -eq 2 ]
 then
     echo "$SID $TME"
@@ -110,7 +141,6 @@ then
     fi
     echo "PRS: $PRS"
     echo "HUM: $HUM%"
-    echo "WDD: $WDD"
-    echo "step=1" > $counter
+    echo "WND: $WDD"
 fi
 

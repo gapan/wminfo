@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# wminfo plugin: tests UTF-8 to ISO-8859-5 conversion
+# command: wminfo -p full-utf8-iso5.wmi -i 5
+
+links -source full-utf8.html | \
+    perl -pe 's/\n/ /g;s/</\n</g' | \
+    grep 'CLASS' | sed 's/<.*>//;' | \
+    utf8-iso5

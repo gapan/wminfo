@@ -1,0 +1,95 @@
+#!/bin/bash
+
+# wminfo plugin: binary clock and calendar (6-bits version)
+
+# command: wminfo -p binclock-horizontal-01.wmi -u 1 -b#000000 -f#ffff00
+
+#
+# CONFIGURATION SECTION BEGINS HERE
+#
+
+Labels="on"
+
+Separators="on"
+
+#
+# CONFIGURATION SECTION ENDS HERE
+#
+
+D=$(date "+%_H%_M%_S%_m%_d")
+
+D[1]=${D:0:2}
+D[2]=${D:2:2}
+D[3]=${D:4:2}
+D[4]=${D:6:2}
+D[5]=${D:8:2}
+
+ B[0]="    "
+ B[1]="   *"
+ B[2]="  * "
+ B[3]="  **"
+ B[4]=" *  "
+ B[5]=" * *"
+ B[6]=" ** "
+ B[7]=" ***"
+ B[8]="*   "
+ B[9]="*  *"
+B[10]="* * "
+B[11]="* **"
+B[12]="**  "
+B[13]="** *"
+B[14]="*** "
+B[15]="****"
+
+dectobin() {
+    D=$(($1+0))
+    n=$2
+    B=""
+    if [ $D -le 15 ]
+    then
+	B="  ${B[$D]}"
+    elif [ $D -ge 16 ] && [ $D -le 31 ]
+    then
+	D=$(($D-16))
+	B=" *${B[$D]}"
+    elif [ $D -ge 32 ] && [ $D -le 47 ]
+    then
+	D=$(($D-32))
+	B="* ${B[$D]}"
+    elif [ $D -ge 48 ]
+    then
+	D=$(($D-48))
+	B="**${B[$D]}"
+    fi
+    S[$n]="$B"
+}
+
+for n in 1 2 3 4 5
+do
+    dectobin D[$n] $n
+done
+
+if [ "$Separators" == "on" ]
+then
+    v="|"
+    h="_"
+else
+    v=" "
+    h=" "
+fi
+
+if [ "$Labels" == "on" ]
+then
+    echo "H $v${S[1]}"
+    echo "M $v${S[2]}"
+    echo "S$h$v${S[3]}"
+    echo "M $v${S[4]}"
+    echo "D $v${S[5]}"
+else
+    echo "  $v${S[1]}"
+    echo "  $v${S[2]}"
+    echo " $h$v${S[3]}"
+    echo "  $v${S[4]}"
+    echo "  $v${S[5]}"
+fi
+

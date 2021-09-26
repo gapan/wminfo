@@ -1,0 +1,49 @@
+#!/bin/bash
+
+# invocation-counter: the general counter handling multi-window plugins
+
+# the script written by Peter Trenholme
+
+function invocation-counter()
+{
+  local f n count i temp
+  if [ $# -eq 0 ] || [ ${1/1/1} == "-" ]
+  then
+     cat <<EOF >&2
+invocation-counter: returns the number of times it has been called
+                    since it's last initialization.
+
+invocation-counter counter_name [-initalize | seconds]
+
+EOF
+      exit -1
+  fi
+  file="${HOME}/.wminfo/.counter.${1}."
+  if [ $# -eq 2 ]
+  then
+    rm -f ${file}*.tmp 2>/dev/null
+    touch ${file}1.tmp
+    return 1
+  fi
+  temp="$(ls -D1 ${file}*.tmp 2>/dev/null)"
+  if [ $? -ne 0 ] || [ ${#temp} -eq 0 ]
+  then
+    echo "invocation-counter: no counter file (${file}*.tmp) exists."
+    return 255
+  fi
+  count=0
+  for f in "${temp}"
+  do
+    i="${f%.tmp}"
+    i=${i##*.}
+    if [ $((i+0)) -gt ${count} ]
+    then
+      count=$((i+0))
+    fi
+  done
+  rm -f ${file}*.tmp 2>/dev/null
+  count=$((count + 1))
+  touch ${file}${count}.tmp
+  return ${count}
+}
+

@@ -4,32 +4,77 @@ wminfo README.samples
 
 This directory contains the following files:
 
-run-all-samples       wminfo launcher: runs all wminfo sample plugins.
+run-all-wminfo-plugins     wminfo launcher: runs all wminfo plugins.
 
-quick-utf8.html       HTML file in UTF-8 encoding including sample sentences
-                        in English, German, French, Spanish, Polish, and
-                        Russian.
-quick-utf8-iso1.wmi   wminfo plugin converting HTML text in UTF-8 to the
-                        ASCII text encoded in ISO-8859-1.
-quick-utf8-iso2.wmi   wminfo plugin converting HTML text in UTF-8 to the
-                        ASCII text encoded in ISO-8859-2.
-quick-utf8-iso5.wmi   wminfo plugin converting HTML text in UTF-8 to the
-                        ASCII text encoded in ISO-8859-5.
-quick-koi8r.html      HTML file in KOI8-R encoding including sample
-                        sentences in English and Russian.
-quick-koi8r-iso5.wmi  wminfo plugin converting HTML text in KOI8-R to the
-                        ASCII text encoded in ISO-8859-5 -- it uses piconv
-                        program to convert the codepage.
-quick-utf8-dummy.wmi  wminfo plugin converting HTML text in UTF-8 to the
-                        plain ASCII text.
-quick-koi8r-dummy.wmi wminfo plugin converting HTML text in KOI8-R to the
-                        plain ASCII text.
+a-1050-line-plugin.wmi     the plugin displaying the maximal number of the
+                             lines.
+a-1913-letter-plugin.wmi   the plugin including a 1,913-letter long line.
 
-test.html             HTML file with lines of text from 0 to 50 characters.
-test-00-50.wmi        wminfo plugin for testing scrolling and rewinding
-                        speeds.
-test-50-00.wmi        wminfo plugin for testing scrolling and rewinding
-                        speeds.
+binclock-horizontal-02.wmi binary clock and calendar (6-bits version).
+binclock-vertical-14.wmi   binary clock (4-bits version by Cezary M. Kruk aka
+                             w1k0).
+
+color*-*.wmi               24 plugins with live color samples.
+gray-*.wmi                 10 plugins with neutral (gray) color samples.
+
+color.html                 HTML file demonstrating different color palettes.
+colors.jpg                 JPEG file showing color wheel.
+
+acrobats-1.wmi             displays animated acrobats.
+acrobats-2.wmi             displays animated acrobats.
+cyclist.wmi                displays animated cyclist.
+dziadek.wmi                Dziadek -- Polish nursery rhyme (it uses timestring
+                             script).
+golfer.wmi                 displays animated golfer.
+last-day.wmi               runs the action the last day of the month.
+ostrich.wmi                displays animated ostrich.
+timestring.wmi             runs the action depending on the current time (it
+                             uses timestring script).
+mondays-child.wmi          Monday's Child -- nursery rhyme (it uses timestring
+                             script).
+
+full-utf8.html             HTML file in UTF-8 encoding including character's set
+                             used in ISO-8859-[1,2,5] encodings.
+full-utf8-iso1.wmi         wminfo plugin converting HTML characters in UTF-8 to
+                             the text encoded in ISO-8859-1.
+full-utf8-iso2.wmi         wminfo plugin converting HTML characters in UTF-8 to
+                             the text encoded in ISO-8859-2.
+full-utf8-iso5.wmi         wminfo plugin converting HTML characters in UTF-8 to
+                             the text encoded in ISO-8859-5.
+html.html                  HTML file using HTML entities.
+html-iso1.wmi              tests HTML entities conversion to ISO-8859-1.
+html-iso2.wmi              tests HTML entities conversion to ISO-8859-2.
+html-iso5.wmi              tests HTML entities conversion to ISO-8859-5.
+
+quick-koi8r.html           HTML file in KOI8-R encoding including sample
+                             sentences in English and Russian.
+quick-koi8r-iso5.wmi       wminfo plugin converting HTML text in KOI8-R to the
+                             ASCII text encoded in ISO-8859-5 -- it uses piconv
+                             program to convert the codepage.
+quick-koi8r-dummy.wmi      wminfo plugin converting HTML text in KOI8-R to the
+                             plain ASCII text.
+
+quick-utf8.html            HTML file including the sentences in English, German,
+                             French, Spanish, Polish, and Russian.
+quick-utf8-iso1.wmi        wminfo plugin converting HTML text in UTF-8 to the
+                             text encoded in ISO-8859-1.
+quick-utf8-iso2.wmi        wminfo plugin converting HTML text in UTF-8 to the
+                             text encoded in ISO-8859-2.
+quick-utf8-iso5.wmi        wminfo plugin converting HTML text in UTF-8 to the
+                             text encoded in ISO-8859-5.
+quick-utf8-dummy.wmi       wminfo plugin converting HTML text in UTF-8 to the
+                             plain ASCII text.
+
+test.html                  HTML file with lines of text from 1 to 50 characters.
+test-01-50.wmi             wminfo plugin for testing scrolling and rewinding
+                             speeds.
+test-50-01.wmi             wminfo plugin for testing scrolling and rewinding
+                             speeds.
+
+welcome.wmi                displays animated welcome.
+
+                                      *
+                                    *   *
 
 In order to display properly the text in German, French, and Spanish run the
 command:
@@ -58,9 +103,15 @@ or:
 
 and test different values using -s and -r switches.
 
-To try all sample plugins use the command run-all-samples.
+To try all sample plugins use the command:
+
+    run-all-wminfo-plugins.
 
 Each plugin contains the information about the suggested command to run it.
 
+                                      *
+                                    *   *
+
 The current directory is copied to the system doc directory during the
 installation of wminfo.
+

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# suspends the system to RAM
+# suspend: suspends the system to RAM
 
 # check the present virtual terminal
 FGCONSOLE=`fgconsole`

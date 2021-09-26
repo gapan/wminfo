@@ -6,40 +6,29 @@ The conky.weather.wmi plugin displays the weather information taken from:
 
     http://weather.noaa.gov/
 
-By default it displays weather conditions for EPWR airport (it is the code
-of Wroclaw, Poland).  The appropriate commands for this code are:
+By default it displays the weather conditions for KNYC, EPWR, and YSSY
+airports (these are the codes of New York, USA; Wroclaw, Poland; Sydney,
+Australia). The appropriate commands for this codes are:
 
+    conky.weather.wmi KNYC
     conky.weather.wmi EPWR
+    conky.weather.wmi YSSY
 
 or:
 
-    wminfo -p "conky.weather.wmi EPWR" -u 6
+    wminfo -p 'conky.weather.wmi KNYC' -u 6
+    wminfo -p 'conky.weather.wmi EPWR' -u 6
+    wminfo -p 'conky.weather.wmi YSSY' -u 6
 
 If you would like to display the weather conditions for the other location
 you have to modify all WEATHER entries in conky configuration file --
-~/.conkyrc or /etc/conky/conky.conf -- changing the ICAO code and then run
-the conky.weather.wmi plugin using that code instead of EPWR.
+~/.wminfo/conky.conf -- changing the ICAO code and then run the
+conky.weather.wmi plugin using that code instead of KNYC, EPWR, or YSSY.
 
 To find the four letters ICAO code go to the following site, select a state
 or a country, and then select a location:
 
     http://weather.noaa.gov/
-
-If you want to know the weather conditions for a few locations you can use
-one of the following methods:
-
-1. If you would like to display all these weather reports constantly put in
-   the conky configuration file a few groups of the entries such as
-   WEATHER1, WEATHER2, WEATHER3, etc. and prepare a few plugins such as
-   conky.weather1.wmi, conky.weather2.wmi, conky.weather3.wmi, etc.
-   customizing the Weather variables in the configuration section of the
-   plugins.
-
-2. If you would like to know the weather conditions for some location all
-   the time and the weather conditions in the other places from time to time
-   use conky.weather.wmi plugin for the first location and regular
-   weather.wmi plugin from plugins.offline or plugins.online directories in
-   the other cases.
 
 The conky.weather.wmi plugin displays the following information in the odd
 steps:
@@ -49,7 +38,7 @@ steps:
     |TMP: 4 C |
     |PRS: 1028|
     |HUM: 92% |
-    |WDS: 3   |
+    |WND: 3   |
     +---------+
 
 and the following information in the even steps:
@@ -59,7 +48,7 @@ and the following information in the even steps:
     |WTH: RAIN|     |SKY: CLEA|
     |PRS: 1028| or: |PRS: 1028|
     |HUM: 92% |     |HUM: 92% |
-    |WDD: SE  |     |WDD: SE  |
+    |WND: SE  |     |WND: SE  |
     +---------+     +---------+
 
 The second and the last line differ in odd and even steps.  The consecutive
@@ -72,30 +61,81 @@ data mean:
                   conditions are undefined;
 * PRS: 1028  -- pressure is 1028 hPa;
 * HUM: 92%   -- humidity is 92%;
-* WDS: 3     -- wind speed is 3 km/h;
-* WDD: SE    -- wind direction is a Southeast.
+* WND: 3     -- wind speed is 3 km/h;
+* WND: SE    -- wind direction is a Southeast.
 
-The conky.weather.wmi plugin uses Celsius degrees by default.  If you prefer
-Fahrenheit degrees modify conky configuration file changing the following
-entry:
+                                      *
+                                    *   *
 
-    temperature_unit celsius
+In order to change the weather monitor in conky.conf from EPWR (Wroclaw,
+Poland) to UUDD (Moscow, Russia) it is necessary to replace all ``EPWR''
+labels with ``UUDD'' ones.
 
-to:
+The settings for Wroclaw, Poland look like:
 
-    temperature_unit fahrenheit
+    WEATHER: EPWR ; \
+    TME="${weather http://weather.noaa.gov/pub/data/observations/metar/stations/ EPWR last_update 30}" ; \
+    TMP="${weather http://weather.noaa.gov/pub/data/observations/metar/stations/ EPWR temperature 30}" ; \
+    WTH="${weather http://weather.noaa.gov/pub/data/observations/metar/stations/ EPWR weather 30}" ; \
+    SKY="${weather http://weather.noaa.gov/pub/data/observations/metar/stations/ EPWR cloud_cover 30}" ; \
+    PRS="${weather http://weather.noaa.gov/pub/data/observations/metar/stations/ EPWR pressure 30}" ; \
+    HUM="${weather http://weather.noaa.gov/pub/data/observations/metar/stations/ EPWR humidity 30}" ; \
+    WDS="${weather http://weather.noaa.gov/pub/data/observations/metar/stations/ EPWR wind_speed 30}" ; \
+    WDD="${weather http://weather.noaa.gov/pub/data/observations/metar/stations/ EPWR wind_dir 30}"
 
-and modify conky.weather.wmi plugin changing:
+The valid setting for Moscow, Russia are:
 
-    TempUnit=" C"
+    WEATHER: UUDD ; \
+    TME="${weather http://weather.noaa.gov/pub/data/observations/metar/stations/ UUDD last_update 30}" ; \
+    TMP="${weather http://weather.noaa.gov/pub/data/observations/metar/stations/ UUDD temperature 30}" ; \
+    WTH="${weather http://weather.noaa.gov/pub/data/observations/metar/stations/ UUDD weather 30}" ; \
+    SKY="${weather http://weather.noaa.gov/pub/data/observations/metar/stations/ UUDD cloud_cover 30}" ; \
+    PRS="${weather http://weather.noaa.gov/pub/data/observations/metar/stations/ UUDD pressure 30}" ; \
+    HUM="${weather http://weather.noaa.gov/pub/data/observations/metar/stations/ UUDD humidity 30}" ; \
+    WDS="${weather http://weather.noaa.gov/pub/data/observations/metar/stations/ UUDD wind_speed 30}" ; \
+    WDD="${weather http://weather.noaa.gov/pub/data/observations/metar/stations/ UUDD wind_dir 30}"
 
-to:
+                                      *
+                                    *   *
 
-    TempUnit="F"
+The weather object of conky refreshes the information every 30 minutes.  If
+you would like to force it to refresh the information at a given time,
+reload the daemon.  To achieve that it is enough to use the command
+wminfo-conky -r.  In order to synchronize the phases of conky.forecast.wmi
+and conky.weather.wmi plugins it is enough to run the command counter -r. 
+To automate these processes you may add to your crontab the following task:
 
-Some weather or cloud condition names are longer that four letters.  In such
+    15,45 * * * * /usr/bin/wminfo-conky -r ; /usr/bin/counter -r
+
+                                      *
+                                    *   *
+
+Some weather or cloud condition names are longer than four letters.  In such
 a case you can scroll the line of the text to read the entire entry.
 
 The conky uses N wind direction when it cannot interpret the given value.
 As a result when the wind speed is 0 the conky.weather.wmi plugin displays N
 wind direction instead of VAR or CALM ones.
+
+                                      *
+                                    *   *
+
+The weather.wmi and the conky.weather.wmi plugins use the common counter
+file.  So do not run them at the same time or modify them in order to use
+the separate counter files.
+
+                                      *
+                                    *   *
+
+If you put a few weather monitors in the conky.conf file after a couple of
+minutes or hours conky daemon will break without any error messages.  The
+only method to avoid that is to run the crontab entry that monitors your
+conky daemon and restarts it after the breakdown:
+
+    */1 * * * * if [ "`ps aux | grep "$USER" | grep conky | grep -vE 'grep|wminfo'`" == "" ] ; then conky -c "$HOME/.wminfo/conky.conf" -d 2> "$HOME/.wminfo/conky.log"; fi
+
+(You should define the above crontab entry as the user that uses
+~/.wminfo/conky.conf file monitoring a few weather stations.  Do not put
+that in the system-wide root crontab configuration because that cannot
+help.)
+

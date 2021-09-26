@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# wminfo plugin: color sample
+
+# command: wminfo -p color15t-80ff80.wmi -b#80ff80 -f#000000
+
+echo "#80ff80"
+echo "-"
+

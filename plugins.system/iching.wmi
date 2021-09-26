@@ -1,0 +1,60 @@
+#!/bin/bash
+
+# wminfo plugin: I Ching -- The Book of Changes (click the bottom right corner)
+
+# command: wminfo -p iching.wmi -u 1 -i 1 -b#000000 -f#00ffff
+
+tempfile="$HOME/.wminfo/.iching.tmp"
+plugin="$0"
+plugin=".${plugin//*\/}"
+
+if [ -e iching.cfg ]
+then
+    datefile="iching.cfg"
+elif [ -e $HOME/bin/iching.cfg ]
+then
+    datefile="$HOME/bin/iching.cfg"
+elif [ -e /usr/local/bin/iching.cfg ]
+then
+    datefile="/usr/local/bin/iching.cfg"
+else
+    echo "iching.wmi: There's no iching.cfg file."
+    exit
+fi
+
+if [ ! -e $tempfile ] || [ -e "$HOME/.wminfo/$plugin" ]
+then
+    result=""
+
+    for n in `seq 1 6`
+    do
+	toss=$RANDOM
+	let "toss %= 4"
+	let "toss += 6"
+	result="$toss$result"
+    done
+
+    new_result="$result"
+    new_result="${new_result//6/7}"
+    new_result="${new_result//9/8}"
+
+    above=${result:0:3}
+    below=${result: -3}
+
+    simplified_result="$result"
+    simplified_result="${simplified_result//6/8}"
+    simplified_result="${simplified_result//9/7}"
+
+    hexagram=`grep "$simplified_result" $datefile`
+    hexagram=${hexagram/.*/}
+
+    multiplier=`expr $hexagram - 1`
+    record=`expr $multiplier \* 5 + 1`
+
+    tail -n +$record $datefile | head -n 5 | sed -E "s/[78]+ //;s/^above/$above/;s/^below/$below/" | utf8-iso1 > $tempfile
+    grep "$new_result" $datefile | sed 's/\. /./' >> $tempfile
+    echo -e "         \n         \n         \n         \n         \n         \n"
+else
+    cat $tempfile
+fi
+

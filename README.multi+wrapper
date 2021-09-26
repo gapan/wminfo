@@ -1,0 +1,139 @@
+
+wminfo README.multi+wrapper
+
+
+The wminfo 4.0.0 introduced two new classes of the plugins: multi and
+wrapper.
+
+The multi plugins are conky-related plugins such as:
+
+  - conky.multi-system1.wmi (it displays four screens: sysmon, memory, swap,
+      and uptime);
+
+  - conky.multi-system2.wmi (it displays two screens: sysmon and top);
+
+  - and conky.multi-time.wmi (it displays two screens: time/date and time
+      zone).
+
+The regular conky plugin uses five entries from conky.conf to display the
+data.  The multi plugins use a multiple of the five entries: two or more
+times five.  The sample entries for conky.multi-time.wmi plugin are:
+
+    MULTI-TIME: ${time %H:%M    }
+    MULTI-TIME: ${time %A}
+    MULTI-TIME: ${time %b  %d}
+    MULTI-TIME: ${time week %V}
+    MULTI-TIME: ${time year %Y}
+    ###
+    MULTI-TIME: NY ${tztime America/New_York %H:%M %m-%d}
+    MULTI-TIME: GH ${tztime Africa/Accra %H:%M %m-%d}
+    MULTI-TIME: RU ${tztime Europe/Moscow %H:%M %m-%d}
+    MULTI-TIME: IN ${tztime Asia/Kolkata %H:%M %m-%d}
+    MULTI-TIME: AU ${tztime Australia/Sydney %H:%M %m-%d}
+
+That plugin started with the command:
+
+    wminfo -p conky.multi-time.wmi -u 3
+
+switches the displayed data every three seconds from the time and date to
+the time zone data back and forth:
+
+    +---------+     +---------+
+    |23:09    |     |NY 17:09 |
+    |TUESDAY  |     |GH 21:09 |
+    |OCT  23  | or: |RU 01:09 |
+    |WEEK 43  |     |IN 02:39 |
+    |YEAR 2012|     |AU 08:09 |
+    +---------+     +---------+
+
+Each multi plugin has Manual_Mode variable set by default to "off":
+
+    Manual_Mode="off"
+
+When you switch it to:
+
+    Manual_Mode="on"
+
+the wminfo displays the first screen of the multi plugin only (in that case
+it is the time and date).  To see the consecutive screens you have to click
+the bottom right corner of the wminfo window.
+
+                                      *
+                                    *   *
+
+The wrapper plugins are wrappers for the other plugins:
+
+  - conky.wrapper-sun-moon-tz.wmi (it runs two plugins: sun-moon.wmi and
+      conky.timezone.wmi -- by default it displays sun and moon rise and set
+      times for Wroclaw, Poland);
+
+  - conky.wrapper-weather.wmi (it runs two plugins in four steps:
+      conky.weather.wmi and conky.forecast.wmi -- by default it displays the
+      weather report and the weather forecast for Wroclaw, Poland);
+
+  - wrapper-currencies-pl.wmi (it runs two plugins: currencies-pl-buy.wmi
+      and currencies-pl-sell.wmi -- it displays the currencies exchange
+      rates for Polish zloty);
+
+  - wrapper-date-pinboard.wmi (it runs two plugins: date.wmi and
+      pinboard.wmi);
+
+  - wrapper-date-tz.wmi (it runs two plugins: date.wmi and timezone.wmi);
+
+  - wrapper-df.wmi (it runs one plugin in three steps: df.wmi -- as a result
+      it allows to monitor up to 15 devices);
+
+  - wrapper-internet-allinone.wmi (it runs three plugins:
+      slackware-patches.wmi, currencies-pl-buy.wmi, and
+      currencies-pl-sell.wmi);
+
+  - wrapper-logfiles.wmi (it runs three plugins: messages.wmi, secure.wmi,
+      and syslog.wmi);
+
+  - wrapper-sun-moon-tz.wmi (it runs two plugins: sun-moon.wmi and
+      timezone.wmi -- by default it displays sun and moon rise and set times
+      for Wroclaw, Poland);
+
+  - wrapper-weather.wmi (it runs two plugins in four steps: weather.wmi and
+      forecast.wroclaw.wmi -- it displays the weather report and the weather
+      forecast for Wroclaw, Poland).
+
+The disadvantage of such a solution is a relatively high CPU usage caused by
+the frequent updates of the displayed data in the case of some plugins --
+notably wrapper-date-tz.wmi and wrapper-date-pinboard.wmi.
+
+Each wrapper plugin has Manual_Mode variable set by default to "off":
+
+    Manual_Mode="off"
+
+When you switch it to:
+
+    Manual_Mode="on"
+
+the wminfo runs the first plugin only.  As a result the overall CPU usage by
+different plugins is significantly lower though in some particular cases can
+become higher (see the main README.CPU.usage file for the detailed
+discussion of that issue).  After switching the wrapper plugin to the manual
+mode in order to run the consecutive plugins you have to click the bottom
+right corner of the wminfo window.
+
+                                      *
+                                    *   *
+
+On the basis of the mentioned above multi and wrapper plugins one can easily
+prepare his or her own multi and wrapper plugins.
+
+On my desktop there is the place for eleven plugins.  I use eight regular
+plugins and three wrapper plugins: the first combines weather report and
+weather forecast, the second combines sun and moon rise and set times as
+well as the time zone data, and the third combines the information about
+Slackware Linux patches as well as the currencies exchange rates of Polish
+zloty (buy and sell).  So thanks to the wrapper plugins having the place for
+eleven plugins I manage to run fifteen plugins.
+
+                                      *
+                                    *   *
+
+The idea of the multi plugins is by Peter Trenholme.  The wrapper plugins
+are the creative continuation of that idea.
+

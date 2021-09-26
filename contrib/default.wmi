@@ -2,4 +2,6 @@
 
 # wminfo plugin: default plugin
 
+# command: wminfo -p default.wmi
+
 wminfo

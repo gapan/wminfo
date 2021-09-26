@@ -5,12 +5,9 @@
 # command: wminfo -p spiegel.wmi -i 1 -b#bb010e -f#ffffff
 
 lynx --source localhost/wminfo/spiegel.html | \
-	tr -d '\r' | \
-	perl -pe 's/\n/ /g' | \
-	sed 's/<h3><a href=/<h3 a href=/g' | \
-	sed 's/</\n</g' | \
-	grep 'h3 a' | \
-	grep 'title=' | \
-	perl -pe 's/<.*>//;' | \
-	iso1-up2low | \
+	perl -pe 's/<span class="headline">/\n<span class="headline">/g;s/<\/span>/<\/span>\n/g' | \
+	grep 'class="headline"' | \
+	perl -pe 's/<.*?>//g' | \
 	punctuation
+echo
+

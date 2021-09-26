@@ -1,5 +1,0 @@
-#!/bin/bash
-
-# converts CP-1251 Russian uppercases to lowercases
-
-perl -pe 'tr/A-Z/a-z/;tr/ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞß/àáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ/;'

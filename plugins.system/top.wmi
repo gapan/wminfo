@@ -4,4 +4,5 @@
 
 # command: wminfo -p top.wmi -u 5 -b#000000 -f#ff0000
 
-top -b | head -n 12 | tail -n 5 | awk '{print $9,$12}'
+top -b | sed -n '8,12p;13q' | awk '{printf "%1$2s %2$0s\n",$9,$12}'
+

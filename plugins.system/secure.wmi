@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# wminfo plugin: monitors /var/log/secure file
+
+# command: wminfo -p secure.wmi -u 10 -b#000000 -f#ff0000
+
+#
+# CONFIGURATION SECTION BEGINS HERE
+#
+
+hostname=`hostname`
+
+file="/var/log/secure"
+
+lines="10"
+
+#
+# CONFIGURATION SECTION ENDS HERE
+#
+
+tac $file | perl -pe "m/$hostname/;s/.* $hostname .*?: +//;s/.*last message repeated.*//;s/^\n$//" | head -n $lines
+echo
+

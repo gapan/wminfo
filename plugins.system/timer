@@ -22,12 +22,12 @@ else
     exit
 fi
 
-if [ -x `which mcedit` ]
-then
-    mcedit $FILE
-elif [ -x `which nano` ]
-then
-    nano $FILE
-else
-    vim $FILE
-fi
+for EDITOR in mcedit nano pico elvis vim vi
+do
+    if [ -x `which $EDITOR` ]
+    then
+	break
+    fi
+done
+
+$EDITOR $FILE

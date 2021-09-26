@@ -2,18 +2,18 @@
 
 # wminfo plugin: currencies exchange rates of Polish zloty (average)
 
-# command: wminfo -p currencies-pl-sell.avg -b#333251 -f#ffffff
+# command: wminfo -p currencies-pl-avg.wmi -b#333251 -f#ffffff
 
 lynx --source http://wyborcza.biz/Waluty/0,111138,8932151,,,Kursy_srednie_walut_NBP,A.html | \
     perl -pe 's/\n//;s/<td class=(.*)?>/\n<td class=$1>/g' | \
     grep 'td class' | grep -E 'symbol|average' | \
     perl -pe 's/<\/strong>.*/<\/strong>/g;s/<\/a><\/strong>\n//' | \
     tr '\r\t' ' ' | \
-    grep -v '10000 IDR' | \
     perl -pe 's/<.*?>/ /g;s/ +/ /g' | \
-    perl -pe 's/CLP (.)\.(.)(.)(.)./CLP 0.0$1$2$3/;s/HUF (.)\.(.)(.)(.)./HUF 0.0$1$2$3/' | \
-    perl -pe 's/INR (.)\.(.)(.)(.)./INR 0.0$1$2$3/;s/ISK (.)\.(.)(.)(.)./ISK 0.0$1$2$3/' | \
-    perl -pe 's/JPY (.)\.(.)(.)(.)./JPY 0.0$1$2$3/;s/KRW (.)\.(.)(.)(.)./KRW 0.0$1$2$3/' | \
-    perl -pe 's/ [0-9]+ //' | \
-    grep -v '^$' | \
+    perl -pe 's/ [0-9]+ ([A-Z]+) \n/$1/' | \
+    perl -pe 's/CLP (.)\.(....)/CLP 0.0$1$2/;s/INR (.)\.(....)/INR 0.0$1$2/' | \
+    perl -pe 's/ISK (.)\.(....)/ISK 0.0$1$2/;s/JPY (.)\.(....)/JPY 0.0$1$2/' | \
+    perl -pe 's/KRW (.)\.(....)/KRW 0.0$1$2/;s/HUF (.)\.(....)/HUF 0.0$1$2/' | \
+    perl -pe 's/IDR (.)\.(....)/IDR 0.000$1$2/' | \
     sort
+echo

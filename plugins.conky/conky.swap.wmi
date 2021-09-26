@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# wminfo plugin: swap -- used and free
+
+# command: wminfo -p conky.swap.wmi -u 6 -b#000000 -f#ff0000
+
+# the plugin uses conky-parser function by Peter Trenholme
+
+if [ "`which conky-parser 2> /dev/null`" == "" ]
+then
+    echo "$0: put conky-parser script into PATH."
+    echo -e "         \n         \n         \n         \n"
+    exit
+fi
+
+. conky-parser SWAP

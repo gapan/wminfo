@@ -1,0 +1,97 @@
+#!/bin/bash
+
+# wminfo plugin: semi-analog clock
+
+# command: wminfo -p clock.wmi -u 1m -s 0 -i 1 -b#000000 -f#ffff00
+
+#
+# CONFIGURATION SECTION BEGINS HERE
+#
+
+Units="on"	# "on" or "off"
+
+#
+# CONFIGURATION SECTION ENDS HERE
+#
+
+T="$(date +"%_I%_M")"
+
+H="${T:0:2}"
+M="${T:2:2}"
+
+tens=$(($M/5))
+units=$(($M-$tens*5))
+
+U[0]="  "
+if [ $H -ge 6 ] && [ $H -le 11 ]
+then
+    U[1]=". "
+    U[2]=": "
+    U[3]=":."
+else
+    U[1]=" ."
+    U[2]=" :"
+    U[3]=".:"
+fi
+U[4]="::"
+
+units="${U[$units]}"
+
+if [ "$Units" != "on" ]
+then
+    units="  "
+fi
+
+ H[1]="    / $units       "
+ H[2]="    - $units       "
+ H[3]="      $units -     "
+ H[4]="      $units      -"
+ H[5]="      $units      \\"
+ H[6]="       $units   |  "
+ H[7]="       $units /    "
+ H[8]="       $units -    "
+ H[9]="     - $units      "
+H[10]="-      $units      "
+H[11]="\      $units      "
+H[12]="  |   $units       "
+
+ M[0]="    |                                   ·    "
+ M[1]="    ·   /                               ·    "
+ M[2]="    ·            -                      ·    "
+ M[3]="    ·                     -             ·    "
+ M[4]="    ·                              -    ·    "
+ M[5]="    ·                                   ·   \\"
+ M[6]="    ·                                   |    "
+ M[7]="    ·                               /   ·    "
+ M[8]="    ·                      -            ·    "
+ M[9]="    ·             -                     ·    "
+M[10]="    ·    -                              ·    "
+M[11]="\   ·                                   ·    "
+
+H="${H[$H]}"
+M="${M[$tens]}"
+
+H[2]="${H:0:5}"
+H[3]="${H:5:5}"
+H[4]="${H:10:5}"
+
+M[1]="${M:0:9}"
+M[2]="${M:9:9}"
+ML[2]="${M[2]:0:2}"
+MR[2]="${M[2]:7:2}"
+M[2]="${ML[2]}${H[2]}${MR[2]}"
+M[3]="${M:18:9}"
+ML[3]="${M[3]:0:2}"
+MR[3]="${M[3]:7:2}"
+M[3]="${ML[3]}${H[3]}${MR[3]}"
+M[4]="${M:27:9}"
+ML[4]="${M[4]:0:2}"
+MR[4]="${M[4]:7:2}"
+M[4]="${ML[4]}${H[4]}${MR[4]}"
+M[5]="${M:36:9}"
+
+for n in 1 2 3 4 5
+do
+    echo "${M[$n]}"
+done
+

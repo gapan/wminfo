@@ -1,0 +1,50 @@
+#!/bin/bash
+
+# wminfo plugin: Dziadek -- Polish nursery rhyme
+#                (it uses timestring script)
+
+# command: wminfo -p 'dziadek.wmi "[MTWFS]"' -u "00:00:00" -i 2 -b#000000 -f#00ffff
+
+if [ "$*" == "" ]
+then
+    echo "$0 [MTWFS]"
+    exit
+fi
+
+export process="$PPID"
+export datafile="$HOME/.wminfo/.timestring.tmp"
+timestring "$*"
+. $datafile
+
+LANG=en_US.UTF-8
+
+day=`echo ${timestring[$process]} | sed -E 's/(...).*/\1/'`
+
+case "$day" in
+    "Mon" )
+    verse="W poniedziałek chodził dziadek"
+    ;;
+    "Tue" )
+    verse="We wtorek zszywał worek"
+    ;;
+    "Wed" )
+    verse="W środę golił brodę"
+    ;;
+    "Thu" )
+    verse="We czwartek szukał majtek"
+    ;;
+    "Fri" )
+    verse="W piątek nakupił cielątek"
+    ;;
+    "Sat" )
+    verse="W sobotę miał wielką robotę"
+    ;;
+    "Sun" )
+    verse="W niedzielę zjadł krowę i cielę"
+    ;;
+esac
+
+verse="`echo $verse | utf8-iso2`"
+
+echo "$verse"
+

@@ -2,44 +2,108 @@
 wminfo README.1st.plugins.system
 
 
-This directory contains plugins that are Internet independent:
+This directory contains plugins that are Internet independent.
 
-run-all-system-plugins   wminfo launcher: runs all wminfo system plugins.
+To use some of these plugins system-wide copy them manually to the PATH.
+The recommended directory is /usr/local/bin.
 
-alarm                    edits alarm.cfg file.
-date-pl                  edits date-pl.cfg file.
-date-us                  edits date-us.cfg file.
-pinboard                 edits ~/.pinboard file.
-stopwatch                edits stopwatch.cfg file.
-timer                    edits timer.cfg file.
-timezone                 edits timezone.cfg file.
+run-all-wminfo-plugins     wminfo launcher: runs all wminfo plugins.
 
-netmon                   network traffic script used by netmon.wmi plugin.
-sysmon                   CPU usage script used by sysmon.wmi plugin.
-traffic                  network traffic script used by traffic.wmi plugin.
+pinboard                   edits ~/.wminfo/.pinboard file.
 
-alarm.wmi                alerts when the given date and time comes.
-biff.wmi                 displays the numbers of the messages in five
-                           mailboxes.
-date-pl.wmi              clock and calendar for Polish users.
-date-us.wmi              clock and calendar for American users.
-date.wmi                 clock and calendar.
-df.wmi                   df -lh command output.
-ip.wmi                   displays IP numbers for existing interfaces.
-netmon.wmi               displays network traffic for the selected
-                           interfaces.
-pinboard.wmi             displays notes stored in ~/.pinboard file.
-ps.wmi                   ps -a command output.
-stopwatch.wmi            counts the time elapsed since it was started.
-sysmon.wmi               displays CPU, memory, and swap usages as well as
-                           average load.
-thinkpad.wmi             ACPI status of IBM/Lenovo ThinkPads.
-timer.wmi                counts the time down since the defined time.
-timezone.wmi             displays time in different time zones.
-top.wmi                  top command output.
-traffic.wmi              total incoming and outgoing traffic for selected
-                           interfaces.
-uptime.wmi               uptime, users, and load averages.
+alarm.cfg                  configuration file for alarm.wmi plugin.
+date-pl.cfg                configuration file for date-pl.wmi plugin.
+date-us.cfg                configuration file for date-us.wmi plugin.
+days.cfg                   configuration file for days.wmi plugin.
+iching.cfg                 configuration file for iching.wmi plugin.
+stopwatch.cfg              configuration file for stopwatch.wmi plugin.
+timer.cfg                  configuration file for timer.wmi plugin.
+timezone.cfg*              configuration files for timezone.wmi plugin.
+
+alarm                      edits alarm.cfg file.
+date-pl                    edits date-pl.cfg file.
+date-us                    edits date-us.cfg file.
+days                       edits days.cfg file.
+stopwatch                  edits stopwatch.cfg file.
+timer                      edits timer.cfg file.
+timezone                   edits timezone.cfg file.
+
+iching                     searches iching.cfg file.
+
+alarm.wmi                  alerts when the given date and time comes.
+beatclock.wmi              Swatch Internet Time.
+biff.wmi                   displays the numbers of the messages in five
+                             mailboxes.
+binclock-horizontal-01.wmi binary clock and calendar (6-bits version).
+binclock-vertical-04.wmi   binary clock (4-bits version by Peter Trenholme
+                             aka PTrenholme -- it requires Lua interpreter).
+binclock-vertical-05.wmi   binary clock (4-bits version by Peter Trenholme
+                             aka PTrenholme).
+binclock-vertical-06.wmi   binary clock (4-bits version by Peter Trenholme
+                             aka PTrenholme -- it requires gawk 4.0.0 or
+                             newer).
+binclock-vertical-07.wmi   binary clock (4-bits version by Peter Trenholme
+                             aka PTrenholme).
+binclock-vertical-08.wmi   binary clock (4-bits version by grail).
+binclock-vertical-09.wmi   binary clock (4-bits version by Peter Trenholme
+                             aka PTrenholme).
+binclock-vertical-10.wmi   binary clock (4-bits version by Noam Postavsky aka
+                             ntubski).
+binclock-vertical-11.wmi   binary clock (4-bits version by grail).
+binclock-vertical-12.wmi   binary clock (4-bits version by grail).
+binclock-vertical-13.wmi   binary clock (4-bits version by Cezary M. Kruk aka
+                             w1k0).
+clock.wmi                  semi-analog clock.
+cpumon.wmi                 CPU monitor.
+date-pl.wmi                clock and calendar for Polish users.
+date-us.wmi                clock and calendar for American users.
+date.wmi                   clock and calendar.
+days.wmi                   days since the past date or until the future date.
+df.wmi                     df -lh command output.
+dice.wmi                   tosses a dice after you click the bottom right
+                             corner.
+fuzzy-clock.wmi            clock writing the time in plain English.
+hexclock.wmi               hexadecimal clock and calendar.
+iching.wmi                 I Ching -- The Book of Changes (click the bottom
+                             right corner).
+ip.wmi                     displays IP numbers for existing interfaces.
+julian-date.wmi            Julian Date, Modified JD, Lilian Date, Rata Die,
+                             and Mars Sol Date (it uses solunar program).
+memory.wmi                 memory -- used, free, buffered, cached.
+messages.wmi               monitors /var/log/messages file.
+netmon.wmi                 displays network traffic for the selected
+                             interfaces.
+pinboard.wmi               displays notes stored in pinboard.cfg file.
+print-hours.wmi            displays large number of the hours.
+print-minutes.wmi          displays large number of the minutes.
+print-seconds.wmi          displays large number of the seconds.
+print-weekday.wmi          displays large name of the weekday.
+ps.wmi                     ps -a command output.
+secure.wmi                 monitors /var/log/secure file.
+stopwatch.wmi              counts the time elapsed since it was started.
+sun-moon.wmi               sunrise, sunset, moonrise, moonset times, and the
+                             moonphase (it uses solunar program).
+syslog.wmi                 monitors /var/log/syslog file.
+sysmon.wmi                 displays CPU, memory, and swap usages as well as
+                             average load.
+thinkpad.wmi               ACPI status of IBM/Lenovo ThinkPads.
+timer.wmi                  counts the time down since the defined time.
+timezone.wmi               displays time in different time zones.
+top.wmi                    top command output.
+traffic.wmi                total incoming and outgoing traffic for selected
+                             interfaces.
+uptime.wmi                 uptime, users, and load averages.
+wrapper-date-pinboard.wmi  monitors time/date and pinboard data.
+wrapper-date-tz.wmi        monitors time/date and time zones data.
+wrapper-df.wmi             monitors up to 15 mounted devices.
+wrapper-logfiles.wmi       monitors messages, secure, and syslog log files.
+wrapper-sun-moon-tz.wmi    monitors sun/moon rise/set times and time zones
+                             data.
+                          
+solunar.patch              a patch for solunar program.
+
+                                      *
+                                    *   *
 
 To test the consecutive plugins run the commands such as:
 
@@ -51,9 +115,13 @@ To use the plugins use the command such as:
 
 or try all plugins with the command:
 
-    run-all-system-plugins
+    run-all-wminfo-plugins
 
 Each plugin contains the information about the suggested command to run it.
 
+                                      *
+                                    *   *
+
 The current directory is copied to the system doc directory during the
 installation of wminfo.
+

@@ -12,4 +12,4 @@ lynx --source localhost/wminfo/cnet.html | \
 	grep 'assetHed' | \
 	sed 's/<.*>//;' | \
 	punctuation
-
+echo

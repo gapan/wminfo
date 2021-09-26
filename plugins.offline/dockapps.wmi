@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# wminfo plugin: new dockapps at www.dockapps.org
+# wminfo plugin: new dockapps at dockapps.windowmaker.org
 
 # command: wminfo -p dockapps.wmi -b#35548d -f#ffffff
 
@@ -11,3 +11,4 @@ lynx --source localhost/wminfo/dockapps.html | \
 	perl -pe 's/ +/ /g;' | \
 	grep -v '^$' | \
 	head -n 10
+echo

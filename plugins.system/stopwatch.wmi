@@ -2,18 +2,17 @@
 
 # wminfo plugin: counts the time elapsed since it was started
 
-# Attention: the command stopwatch.wmi -reset resets the stopwatch
-#            the plugin resets the stopwatch after 999h 59m 59s
-
 # command: wminfo -p stopwatch.wmi -u 1 -b#000000 -f#ffff00
 
+# Attention: the command stopwatch.wmi -reset resets the stopwatch
+#            the plugin resets the stopwatch after 999h 59m 59s
 
 if [ -e stopwatch.cfg ]
 then
     . stopwatch.cfg
-elif [ -e $HOME/bin/stopwatch.cfg ]
+elif [ -e "$HOME/bin/stopwatch.cfg" ]
 then
-    . $HOME/bin/stopwatch.cfg
+    . "$HOME/bin/stopwatch.cfg"
 elif [ -e /usr/local/bin/stopwatch.cfg ]
 then
     . /usr/local/bin/stopwatch.cfg
@@ -22,8 +21,8 @@ else
     exit
 fi
 
-datafile="$HOME/.stopwatch"
-tempfile="/tmp/.$USER.stopwatch.tmp"
+datafile="$HOME/.wminfo/.stopwatch.old"
+tempfile="$HOME/.wminfo/.stopwatch.tmp"
 
 if [ "$1" == "-reset" ]
 then
@@ -95,7 +94,7 @@ then
 else
     > $datafile
     echo "passed=0" > $tempfile
-    echo "         "; echo "         "; echo "         "; echo "         "; echo "         "
+    echo -e "         \n         \n         \n         \n         "
 fi
 
 # exit
@@ -106,7 +105,7 @@ fi
 
 if [ "$passed" == "0" ]
 then
-    echo "         "; echo "         "; echo "         "; echo "         "
+    echo -e "         \n         \n         \n         "
 elif [ "$passed" == "1" ]
 then
     echo -n

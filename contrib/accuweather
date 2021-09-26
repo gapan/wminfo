@@ -1,0 +1,34 @@
+#!/bin/bash
+
+# accuweather: reads weather reports and forecasts from rss.accuweather.com
+
+#
+# CONFIGURATION SECTION BEGINS HERE
+#
+
+Metric=1		# 1 for C
+			# 0 for F
+
+#
+# CONFIGURATION SECTION ENDS HERE
+#
+
+if [ "$1" == "" ]
+then
+cat <<EOF
+accuweather: reads weather reports and forecasts from rss.accuweather.com
+
+accuweather ["ABC|XY|XYNNN|CITY" | NNNNN]
+
+for example:
+             "EUR|FR|FR012|PARIS" for Paris
+or:
+             10007 for New York
+EOF
+    exit
+fi
+
+code=`echo $1 | utf8-iso1`
+
+curl -s http://rss.accuweather.com/rss/liveweather_rss.asp\?metric\=$Metric\&locCode\=$code | iso1-utf8
+

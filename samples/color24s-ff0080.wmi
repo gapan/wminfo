@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# wminfo plugin: color sample
+
+# command: wminfo -p color24s-ff0080.wmi -b#ff0080 -f#000000
+
+echo "#ff0080"
+echo "raspberry"
+

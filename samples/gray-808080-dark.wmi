@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# wminfo plugin: color sample
+
+# command: wminfo -p gray-808080-dark.wmi -b#808080 -f#000000
+
+echo "#808080"
+echo "gray"
+

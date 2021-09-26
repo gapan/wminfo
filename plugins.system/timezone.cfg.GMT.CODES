@@ -1,0 +1,30 @@
+# time zones: military/nautical time zones
+
+# offset	code	description
+
+GMT+12		Y	Yankee Time Zone
+GMT+11		X	X-ray Time Zone (Pago Pago, Territory of American Samoa)
+GMT+10		W	Whiskey Time Zone (Honolulu, Hawaii, United States)
+GMT+09		V	Victor Time Zone (Gambier Islands, Französisch-Polynesien)
+GMT+08		U	Uniform Time Zone
+GMT+07		T	Tango Time Zone (Phoenix, Arizona, United States)
+GMT+06		S	Sierra Time Zone (San Jose, Costa Rica)
+GMT+05		R	Romeo Time Zone (Kingston, Jamaica)
+GMT+04		Q	Quebec Time Zone (Québec, Quebec, Canada)
+GMT+03		P	Papa Time Zone (Buenos Aires, Argentina)
+GMT+02		O	Oscar Time Zone (Fernando de Noronha, Pernambuco, Brazil)
+GMT+01		N	November Time Zone (Praia, Cape Verde)
+GMT+00		Z	Zulu Time Zone (Reykjavik, Iceland)
+GMT-01		A	Alpha Time Zone (Algiers, Algeria)
+GMT-02		B	Bravo Time Zone
+GMT-03		C	Charlie Time Zone (Kuwait City, Kuwait)
+GMT-04		D	Delta Time Zone (Abu Dhabi, Abu Dhabi, United Arab Emirates)
+GMT-05		E	Echo Time Zone (Atyrau, Kazakhstan)
+GMT-06		F	Foxtrot Time Zone (Bishkek, Kyrgyzstan)
+GMT-07		G	Golf Time Zone (Phnom Penh, Cambodia)
+GMT-08		H	Hotel Time Zone (Hong Kong, Hong Kong Special Administrative Region)
+GMT-09		I	India Time Zone (Tokyo, Japan)
+GMT-10		K	Kilo Time Zone (Brisbane, Queensland, Australia)
+GMT-11		L	Lima Time Zone (Honiara, Solomon Islands)
+GMT-12		M	Mike Time Zone (Majuro, Marshall Islands)
+

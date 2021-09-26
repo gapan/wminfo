@@ -2,7 +2,7 @@
 
 # wminfo plugin: displays the numbers of the messages in five mailboxes
 
-# command: wminfo -p biff.wmi -u 5 -c -b#202020 -f#0000ff
+# command: wminfo -p biff.wmi -u 5 -c -b#000000 -f#ff00ff
 
 #
 # CONFIGURATION SECTION BEGINS HERE
@@ -10,6 +10,12 @@
 
 NAME1="spool"
 MBOX1="/var/mail/$USER"
+
+if [ ! -e $MBOX1 ]
+then
+    echo "biff.wmi: there's no $MBOX1 mailbox."
+    exit
+fi
 
 #NAME2="gmail"
 #MBOX2="$HOME/mbox-gmail"
@@ -33,7 +39,7 @@ then
 	ALL="0"
 	NEW="0"
 	OLD="0"
-	tempfile="/tmp/.$USER.biff.$1.tmp"
+	tempfile="$HOME/.wminfo/.biff.$1.tmp"
 	if [ ! -e $tempfile ]
 	then
 	    > $tempfile
@@ -44,7 +50,7 @@ then
 	then
 	    ALL=`egrep -c "^To: " $2`
 	    OLD=`egrep -c "^Status: RO$" $2`
-	    NEW="`expr $ALL - $OLD`"
+	    NEW="$(($ALL-$OLD))"
 	    if [ $NEW -gt 0 ]
 	    then
 		echo "NEW=$NEW" > $tempfile
@@ -53,41 +59,16 @@ then
 	    fi
 	    echo "OLDSIZE=$NEWSIZE" >> $tempfile
 	fi
+	NAME="$1    "
+	NAME="${NAME:0:5}"
 	if [ $NEW -gt 0 ]
 	then
-	    if [ "$NEW" -lt 10 ]
-	    then
-		NEW="  $NEW"
-	    elif [ "$NEW" -lt 100 ]
-	    then
-		NEW=" $NEW"
-	    fi
-	else
-	    if [ "$OLD" -lt 10 ]
-	    then
-		OLD="  $OLD"
-	    elif [ "$OLD" -lt 100 ]
-	    then
-		OLD=" $OLD"
-	    fi
-	fi
-	NAME="$1"
-	LENGTH="`echo $NAME | wc -m`"
-	OFFSET="`expr 6 - $LENGTH`"
-	if [ $OFFSET -gt 0 ]
-	then
-		for n in `seq 1 $OFFSET`
-		do
-			NAME="$NAME "
-		done
-	elif [ $OFFSET -lt 0 ]
-	then
-		NAME="`echo $NAME | cut -b 1-5`"
-	fi
-	if [ $NEW -gt 0 ]
-	then
+	    NEW="  ${NEW}"
+	    NEW=${NEW: -3:3}
 	    echo "$NAME+$NEW"
 	else
+	    OLD="  ${OLD}"
+	    OLD=${OLD: -3:3}
 	    echo "$NAME-$OLD"
 	fi
 fi
@@ -98,6 +79,5 @@ test_mailbox $NAME2 $MBOX2
 test_mailbox $NAME3 $MBOX3
 test_mailbox $NAME4 $MBOX4
 test_mailbox $NAME5 $MBOX5
-
-echo "         "; echo "         "; echo "         "; echo "         "; echo "         "; 
+echo -e "         \n         \n         \n         \n         \n"
 

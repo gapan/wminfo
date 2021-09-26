@@ -1,0 +1,41 @@
+#!/bin/bash
+
+# weather-poland: weather reports for the cities in Poland
+
+if [ "`which weather 2> /dev/null`" == "" ]
+then
+    echo "weather-poland: put weather script into PATH."
+    exit
+fi
+
+if [ "$1" == "" ]
+then
+cat <<EOF
+weather-poland: weather reports for the cities in Poland
+
+weather-poland [City Name | -a | --all]
+
+EOF
+fi
+
+# "Dabrowa Gornicza" Jastrzebie Kalisz Lodz Olsztyn Opole Poznan Radom Rybnik Sosnowiec Szczecin Torun 
+
+for city in Bialystok Bielsko-Biala Bydgoszcz Bytom Chorzow Czestochowa \
+	    Elblag Gdansk Gdynia Gliwice "Gorzow Wielkopolski" Katowice \
+	    Kielce Koszalin Krakow Legnica Lublin Plock \
+	    "Ruda Slaska" Rzeszow Slupsk Tarnow Tychy \
+	    Walbrzych Warszawa Wloclawek Wroclaw Zabrze "Zielona Gora"
+do
+	if [ "$1" == "" ]
+	then
+	    echo "    $city"
+	elif [ "$1" == "-a" ] || [ "$1" == "--all" ]
+	then
+	    weather- "$city"
+	    echo
+	else
+	    weather- "$*"
+	    exit
+	fi
+done
+

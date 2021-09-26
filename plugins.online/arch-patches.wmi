@@ -13,4 +13,5 @@ links -source -http-bugs.no-compression 1 http://www.archlinux.org/packages/?sor
     perl -pe 's/^.*?>//;s/<.*?>//g;s/ +/ /g' | \
     uniq | \
     grep -v "$rejected_architecture"
-echo "         "; echo "         "; echo "         "; echo "         "; echo "         "
+echo -e "         \n         \n         \n         \n         "
+

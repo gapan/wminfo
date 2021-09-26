@@ -1,16 +1,31 @@
 #!/bin/bash
 
-# wminfo plugin: displays notes stored in ~/.pinboard
+# wminfo plugin: displays notes stored in pinboard.cfg file
 
-# Attention: the following script is customized to ISO-8859-2 codepage
+# command: wminfo -p pinboard.wmi -u 15 -i 1 -b#000000 -f#00ffff
 
-# command: wminfo -p pinboard.wmi -u 15 -i 2 -b#000000 -f#00ffff
+# Attention: the following script is customized to ISO-8859-1 codepage
 
-if [ ! -s ~/.pinboard ]
+if [ -e pinboard.cfg ]
 then
-    echo > ~/.pinboard
+    FILE="pinboard.cfg"
+elif [ -e $HOME/bin/pinboard.cfg ]
+then
+    FILE="$HOME/bin/pinboard.cfg"
+elif [ -e /usr/local/bin/pinboard.cfg ]
+then
+    FILE="/usr/local/bin/pinboard.cfg"
+else
+    if [ ! -d $HOME/bin ]
+    then
+	mkdir $HOME/bin
+    fi
+    FILE="$HOME/bin/pinboard.cfg"
+    echo "pinboard.wmi: empty $FILE text database created." > $FILE
 fi
 
-cat ~/.pinboard | \
-	utf8-iso2
-echo "         "; echo "         "; echo "         "; echo "         "; echo "         "
+cat $FILE | \
+	utf8-iso1
+echo -e "         \n         \n         \n         \n         "
+
+

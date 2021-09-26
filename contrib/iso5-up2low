@@ -1,5 +1,0 @@
-#!/bin/bash
-
-# converts ISO-8859-5 Russian uppercases to lowercases
-
-perl -pe 'tr/A-Z/a-z/;tr/°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏ/ĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîï/;'

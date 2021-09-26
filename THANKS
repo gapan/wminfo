@@ -1,0 +1,64 @@
+
+wminfo THANKS
+
+
+* thanks to Peter Trenholme aka PTrenholme from http://www.linuxquestions.org
+  for:
+
+  - the help in designing the run-all-wminfo-plugins script;
+
+  - the inspiration to redesign the characters' table and made characters'
+    recognition simpler and more universal at the same time;
+
+  - the inspiration and the help in the redesigning the plugins using better
+    coding techniques -- as a result improved plugins use significantly less
+    of the CPU power;
+
+  - the conky-parser function which simplifies coding of the conky-related
+    plugins;
+
+  - the inspiration to write multi-screen and wrapper plugins;
+
+  - the binclock-vertical-01.c plugin written in C;
+
+  - the binclock-vertical-02.c plugin written in C;
+
+  - the binclock-vertical-04.wmi plugin written in Lua (it requires Lua
+    interpreter);
+
+  - the binclock-vertical-05.wmi plugin written in gawk;
+
+  - the binclock-vertical-06.wmi plugin written in gawk (it requires gawk
+    4.0.0 or newer);
+
+  - the binclock-vertical-07.wmi plugin written in bash;
+
+  - the binclock-vertical-09.wmi plugin written in bash.
+
+* thanks to Noam Postavsky aka ntubski from http://www.linuxquestions.org
+  for:
+
+  - the patch for wminfo.c that allows to use as the plugins not only shell
+    scripts but also Perl, AWK, Ruby etc. scripts as well as binary
+    executables;
+
+  - the patch for wminfo.c that rids wminfo of storing data in a temporary
+    file;
+
+  - the co-authoring of the wminfo-benchmark testing wminfo plugins
+    performance;
+
+  - the binclock-vertical-10.wmi plugin written in bash.
+
+* thanks to grail from http://www.linuxquestions.org for:
+
+  - the binclock-vertical-08.wmi plugin written in bash;
+
+  - the binclock-vertical-11.wmi plugin written in Ruby;
+
+  - the binclock-vertical-12.wmi plugin written in Ruby.
+
+* thanks to H_TeXMeX_H from http://www.linuxquestions.org for:
+
+  - the binclock-vertical-03.c plugin written in C.
+

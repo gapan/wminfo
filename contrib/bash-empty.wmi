@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# wminfo plugin: bash empty plugin
+
+# command: wminfo -p bash-empty.wmi
+
+echo "bash"
+

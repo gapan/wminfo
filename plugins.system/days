@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# days: edits days.cfg
+
+if [ -e days.cfg ]
+then
+    FILE="days.cfg"
+elif [ -e $HOME/bin/days.cfg ]
+then
+    FILE="$HOME/bin/days.cfg"
+elif [ -e /usr/local/bin/days.cfg ]
+then
+    FILE="/usr/local/bin/days.cfg"
+else
+    echo "days: there is no days.cfg database."
+    exit
+fi
+
+for EDITOR in mcedit nano pico elvis vim vi
+do
+    if [ -x `which $EDITOR` ]
+    then
+	break
+    fi
+done
+
+$EDITOR $FILE

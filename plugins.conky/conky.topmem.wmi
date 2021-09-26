@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# wminfo plugin: top memory usage related command output
+
+# command: wminfo -p conky.topmem.wmi -u 6 -b#000000 -f#ff0000
+
+datafile="$HOME/.wminfo/conky.tmp"
+label="TOPMEM"
+
+if [ -z "$(grep "^${label}: " "${datafile}")" ]
+then
+cat <<EOF
+$0: no "${label}" entries were found in ${datafile} file.
+         
+         
+         
+         
+EOF
+    exit
+fi
+
+grep "^${label}: " $datafile | sed -E "s/${label}:  //;s/\.[0-9]+//"
+
+echo
+

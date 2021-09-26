@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# wminfo plugin: filesystem size
+
+# command: wminfo -p conky.filesystem1.wmi -u 6 -b#000000 -f#00ff00
+
+# the plugin uses conky-parser function by Peter Trenholme
+
+if [ "`which conky-parser 2> /dev/null`" == "" ]
+then
+    echo "$0: put conky-parser script into PATH."
+    echo -e "         \n         \n         \n         \n"
+    exit
+fi
+
+. conky-parser FILESYSTEM1

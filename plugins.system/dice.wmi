@@ -1,0 +1,40 @@
+#!/bin/bash
+
+# wminfo plugin: tosses a dice after you click the bottom right corner
+
+# command: wminfo -p dice.wmi -u 1 -s 0 -b#000000 -f#00ffff
+
+tempfile="$HOME/.wminfo/.dice.tmp"
+plugin="$0"
+plugin=".${plugin//*\/}"
+
+D[0]="                                             "
+D[1]="                      O                      "
+D[2]="               O             O               "
+D[3]="               O      O      O               "
+D[4]="           O   O             O   O           "
+D[5]="           O   O      O      O   O           "
+D[6]="           O O O             O O O           "
+
+if [ ! -e $tempfile ] || [ -e "$HOME/.wminfo/$plugin" ]
+then
+    dice=$((RANDOM%6))
+    dice=$(($dice+1))
+    echo dice=$dice > $tempfile
+    matrix="${D[0]}"
+else
+    . $tempfile
+    matrix="${D[$dice]}"
+fi
+
+matrix[1]="${matrix:0:9}"
+matrix[2]="${matrix:9:9}"
+matrix[3]="${matrix:18:9}"
+matrix[4]="${matrix:27:9}"
+matrix[5]="${matrix:36:9}"
+
+for line in 1 2 3 4 5
+do
+    echo "${matrix[line]}"
+done
+

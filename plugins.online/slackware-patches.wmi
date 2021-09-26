@@ -6,19 +6,19 @@
 
 # That plugin uses the same mirror you enabled in /etc/slackpkg/mirrors
 # file.  It looks for Slackware patches and stores the data in
-# /tmp/.patches.tmp file.  Finally it displays the information about the
-# available patches.
+# $HOME/.wminfo/.patches.tmp file.  Finally it displays the information
+# about the available patches.
 
-MIRROR="`cat /etc/slackpkg/mirrors | grep -v '^#'`"
+MIRROR="`cat /etc/slackpkg/mirrors 2> /dev/null | grep -v '^#'`"
 
 if [ "$MIRROR" == "" ]
 then
-    echo "Error: none Slackware mirror defined in /etc/slackpkg/mirrors file."
-    echo "         " ; echo "         " ; echo "         " ; echo "         "
+    echo "slackware-patches.wmi: none Slackware mirror defined in /etc/slackpkg/mirrors file."
+    echo -e "         \n         \n         \n         \n"
     exit
 fi
 
-tempfile=/tmp/.$USER.patches.tmp
+tempfile="$HOME/.wminfo/.slackware-patches.tmp"
 
 lynx --source ${MIRROR}patches/packages/ | \
 grep .txz | grep -v .asc | grep HREF | sed 's/.*packages\///;s/"//' > $tempfile
@@ -26,4 +26,5 @@ ls /var/cache/packages/patches/packages/ | grep -v .asc >> $tempfile
 ls /var/cache/packages/patches/packages/ | grep -v .asc >> $tempfile
 
 cat $tempfile | sort | uniq -u
-echo "         "; echo "         "; echo "         "; echo "         "; echo "         "
+echo -e "         \n         \n         \n         \n         "
+

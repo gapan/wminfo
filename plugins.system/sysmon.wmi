@@ -2,35 +2,47 @@
 
 # wminfo plugin: displays CPU, memory, and swap usages as well as average load
 
+# command: wminfo -p sysmon.wmi -u 5 -b#000000 -f#ff0000
+
 # Attention: sysmon.wmi plugin uses sysmon script
 
-# command: wminfo -p sysmon.wmi -u 5 -s 0 -b#000000 -f#ff0000
+# the script by Cezary M. Kruk and Peter Trenholme
 
-sysmon
+#
+# CONFIGURATION SECTION BEGINS HERE
+#
 
-MEMORY=`free -m | grep 'Mem:'`
-SWAP=`free -m | grep 'Swap:'`
+export Correction="1.00"	# use the number with two digits after the point
 
-MEMORY_TOTAL=`echo $MEMORY | awk '{print $2}'`
-MEMORY_USED=`echo $MEMORY | awk '{print $3}'`
-MEMORY_BUFFERS=`echo $MEMORY | awk '{print $6}'`
-MEMORY_CACHED=`echo $MEMORY | awk '{print $7}'`
+CPU_Bar="on"
 
-SWAP_TOTAL=`echo $SWAP | awk '{print $2}'`
-SWAP_USED=`echo $SWAP | awk '{print $3}'`
+#
+# CONFIGURATION SECTION ENDS HERE
+#
 
-let "MEM=100*($MEMORY_USED-$MEMORY_BUFFERS-$MEMORY_CACHED)/$MEMORY_TOTAL"
-echo "MEM: $MEM%"
-
-let "SWP=100*$SWAP_USED/$SWAP_TOTAL"
-echo "SWP: $SWP%"
-
-AVG=`top -b | head -n 1 | sed 's/.* load average: //' |awk '{print $1}' | sed 's/,//'`
-
-if [ `echo $AVG | cut -c 1` -lt 10 ]
+if [ "`which sysmon 2> /dev/null`" == "" ]
 then
-    echo "AVG: $AVG"
+    echo "$0: put sysmon script into PATH."
+    echo -e "         \n         \n         \n         \n"
+    exit
+fi
+
+if [ "$CPU_Bar" == "on" ]
+then
+    lines="2"
 else
-    echo "AVG:$AVG"
+    lines="1"
+fi
+
+sysmon | head -n $lines
+free -m | awk '/Mem:/{printf("MEM:%4d%\n",int(100*($3-$6-$7)/$2))};\
+    /Swap:/{printf("SWP:%5s\n",($2)?int(100*($3/$2))"%":"None")}'
+
+if [ "$lines" == "2" ]
+then
+    top -b -n 1 | awk '/^Tasks/{printf("PRC:%5s\n",$4);exit}'
+elif [ "$lines" == "1" ]
+then
+    top -b -n 1 | awk '/^Tasks/{printf("PRC:%5s\n",$4);exit};/^top /{printf("AVG:%5s\n", gensub(/,/,"",1,$13))}'
 fi
 

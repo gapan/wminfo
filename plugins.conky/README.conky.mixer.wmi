@@ -1,0 +1,25 @@
+
+wminfo conky.mixer.wmi
+
+
+The conky.mixer.wmi displays the following information:
+
+    MIXER: VOL: 14
+    MIXER: MIX: 80%
+    MIXER: ##########
+    MIXER: L: 80%
+    MIXER: R: 80%
+
+That looks in the wminfo window like:
+
+    +---------+
+    |VOL: 14  |
+    |MIX: 80% |
+    |||||||||||
+    |L: 80%   |
+    |R: 80%   |
+    +---------+
+
+The VOL setting works with IMB/Lenovo ThinkPads only so do not use it if you
+owning the other machine.
+

@@ -4,14 +4,35 @@
 
 # command: wminfo -p ip.wmi -b#000000 -f#ff00ff
 
-interfaces="`/sbin/ifconfig | grep 'Link encap' | awk '{print $1}' | perl -pe 's/\n/ /'`"
+if [ "`/sbin/ifconfig | grep 'RX bytes:'`" != "" ]
+then
+    ifconfig=old
+else
+    ifconfig=new
+fi
 
-for interface in $interfaces
-do
-    ip=`/sbin/ifconfig | grep -A 1 "$interface " | grep "inet addr" | awk '{print $2}' | sed 's/addr://'`
-    if [ "$ip" != "" ]
-    then
-	echo "$interface $ip"
-    fi
-done
+if [ "$ifconfig" == "old" ]
+then
+    interfaces="`/sbin/ifconfig | grep 'Link encap' | awk '{print $1}' | perl -pe 's/\n/ /'`"
+
+    for interface in $interfaces
+    do
+	ip=`/sbin/ifconfig | grep -A 1 "$interface " | grep "inet addr" | awk '{print $2}' | sed 's/addr://'`
+	if [ "$ip" != "" ]
+	then
+	    echo "$interface $ip"
+	fi
+    done
+else
+    interfaces="`/sbin/ifconfig | grep 'flags' | awk '{print $1}' | perl -pe 's/:$//;s/\n/ /'`"
+
+    for interface in $interfaces
+    do
+	ip=`/sbin/ifconfig | grep -A 1 "$interface: " | grep "inet" | awk '{print $2}'`
+	if [ "$ip" != "" ]
+	then
+	    echo "$interface $ip"
+	fi
+    done
+fi
 

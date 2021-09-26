@@ -18,3 +18,24 @@ the processes number:
 * MEM: 11% -- memory usage in percents;
 * SWP: 0%  -- swap usage in percents;
 * PRC: 171 -- the number of the processes.
+
+                                      *
+                                    *   *
+
+If the values for the CPU usage showed by conky.sysmon.wmi on your system
+are invalid you can set in the configuration section of the plugin the right
+correction coefficient.  By default the correction is disabled:
+
+    export Correction="1.00"
+
+To check the median CPU usage use the command:
+
+    top -b -n 40 | grep '^Cpu' | sort -n
+
+To check the average CPU usage use the command:
+
+    mpstat 3 40
+
+In both cases add the values of the CPU usage for user and system in order
+to determine the total CPU usage.
+

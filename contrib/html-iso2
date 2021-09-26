@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# html-iso2: converts HTML to ISO-8859-2
+
+perl -pe 's|&nbsp;| |g;s|&#260;|¡|g;s|&#728;|¢|g;s|&#321;|£|g;s|&curren;|¤|g;s|&#317;|¥|g;s|&#346;|¦|g;s|&sect;|§|g;s|&uml;|¨|g;s|&Scaron;|©|g;s|&#350;|ª|g;s|&#356;|«|g;s|&#377;|¬|g;s|&#381;|®|g;s|&#379;|¯|g;s|&deg;|°|g;s|&#261;|±|g;s|&#731;|²|g;s|&#322;|³|g;s|&acute;|´|g;s|&#318;|µ|g;s|&#347;|¶|g;s|&#711;|·|g;s|&cedil;|¸|g;s|&scaron;|¹|g;s|&#351;|º|g;s|&#357;|»|g;s|&#378;|¼|g;s|&#733;|½|g;s|&#382;|¾|g;s|&#380;|¿|g;s|&#340;|À|g;s|&Aacute;|Á|g;s|&Acirc;|Â|g;s|&#258;|Ã|g;s|&Auml;|Ä|g;s|&#313;|Å|g;s|&#262;|Æ|g;s|&Ccedil;|Ç|g;s|&#268;|È|g;s|&Eacute;|É|g;s|&#280;|Ê|g;s|&Euml;|Ë|g;s|&#282;|Ì|g;s|&Iacute;|Í|g;s|&Icirc;|Î|g;s|&#270;|Ï|g;s|&#272;|Ð|g;s|&#323;|Ñ|g;s|&#327;|Ò|g;s|&Oacute;|Ó|g;s|&Ocirc;|Ô|g;s|&#336;|Õ|g;s|&Ouml;|Ö|g;s|&times;|×|g;s|&#344;|Ø|g;s|&#366;|Ù|g;s|&Uacute;|Ú|g;s|&#368;|Û|g;s|&Uuml;|Ü|g;s|&Yacute;|Ý|g;s|&#354;|Þ|g;s|&szlig;|ß|g;s|&#341;|à|g;s|&aacute;|á|g;s|&acirc;|â|g;s|&#259;|ã|g;s|&auml;|ä|g;s|&#314;|å|g;s|&#263;|æ|g;s|&ccedil;|ç|g;s|&#269;|è|g;s|&eacute;|é|g;s|&#281;|ê|g;s|&euml;|ë|g;s|&#283;|ì|g;s|&iacute;|í|g;s|&icirc;|î|g;s|&#271;|ï|g;s|&#273;|ð|g;s|&#324;|ñ|g;s|&#328;|ò|g;s|&oacute;|ó|g;s|&ocirc;|ô|g;s|&#337;|õ|g;s|&ouml;|ö|g;s|&divide;|÷|g;s|&#345;|ø|g;s|&#367;|ù|g;s|&uacute;|ú|g;s|&#369;|û|g;s|&uuml;|ü|g;s|&yacute;|ý|g;s|&#355;|þ|g;s|&#729;|ÿ|g;'
+

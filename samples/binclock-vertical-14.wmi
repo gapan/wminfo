@@ -1,0 +1,57 @@
+#!/bin/bash
+
+# wminfo plugin: binary clock (4-bits version by Cezary M. Kruk aka w1k0)
+
+# command: wminfo -p binclock-vertical-14.wmi -u 1 -b#000000 -f#ffff00
+
+# The script written by Cezary M. Kruk <c.kruk@bigfoot.com>
+# aka w1k0 from www.linuxquestions.org
+# (it uses rotate function designed by David the H. from www.linuxquestions.org)
+
+#
+# CONFIGURATION SECTION BEGINS HERE
+#
+
+Label="on"
+
+Separators="on"
+
+#
+# CONFIGURATION SECTION ENDS HERE
+#
+
+dectobin() {
+    for i in $*
+    do
+        echo "$i" | perl -e "printf(\"%04b\n\", <STDIN>)"
+    done
+}
+
+rotate()
+{
+    for (( i=0 ; i<${#1} ; i++ )); do
+        printf '%s%s%s%s%s%s\n' "${1:i:1}" "${2:i:1}" "${3:i:1}" "${4:i:1}" "${5:i:1}" "${6:i:1}"
+    done
+}
+
+string="$(date +" Hlr=%H Mlr=%M Slr=%S")"
+
+$(echo "$string" | sed -E "s/ / export /g;s/lr/l/g;s/=(.)./=\1/g")
+$(echo "$string" | sed -E "s/ / export /g;s/lr/r/g;s/=.(.)/=\1/g")
+
+if [ "$Label" == "on" ]
+then
+    echo "HH MM SS"
+else
+    echo "         "
+fi
+
+Separator=" "
+
+if [ "$Separators" == "on" ]
+then
+    Separator="|"
+fi
+
+rotate $(dectobin $(echo -e "$Hl\n$Hr\n$Ml\n$Mr\n$Sl\n$Sr")) | sed -E "s/0/ /g;s/1/*/g;s/(..)(..)(..)/\1$Separator\2$Separator\3$Separator/"
+

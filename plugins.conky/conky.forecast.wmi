@@ -1,0 +1,103 @@
+#!/bin/bash
+
+# wminfo plugin: displays weather forecasts for today and tomorrow
+
+# the script by Cezary M. Kruk and Peter Trenholme
+
+# command: wminfo -p 'conky.forecast.wmi WROCLAW, PL' -u 6s -i 1 -b#1c222e -f#ffffff
+# command: wminfo -p 'conky.forecast.wmi 10007 New York' -u 6s -i 1 -b#1c222e -f#ffffff
+# command: wminfo -p 'conky.forecast.wmi SYDNEY, AU' -u 6s -i 1 -b#1c222e -f#ffffff
+
+# The forecast entries in conky.conf file look like:
+# FORECAST: ${texeci 60 forecast 'EUR|PL|PL001|WROCLAW' today}
+# FORECAST: ${texeci 60 forecast 'EUR|PL|PL001|WROCLAW' tomorrow}
+# FORECAST: ${texeci 60 forecast '10007' today}
+# FORECAST: ${texeci 60 forecast '10007' tomorrow}
+# In the wminfo command use the labels such as WROCLAW, or WROCLAW, PL,
+# or 10007, or 10007 New York.
+
+if [ "$1" == "" ]
+then
+cat <<EOF
+conky.forecast.wmi: displays weather forecast for today and tomorrow
+command:
+    wminfo -p 'conky.forecast.wmi [CITY NAME]'
+    wminfo -p 'conky.forecast.wmi [CITY NAME, XY]'
+    wminfo -p 'conky.forecast.wmi [NNNNN]'
+    wminfo -p 'conky.forecast.wmi [NNNNN City Name]'
+
+for example:
+                                   Paris
+                                   Paris, FR
+                                   10007
+                                   10007 New York
+EOF
+exit
+fi
+
+if [ "`which forecast 2> /dev/null`" == "" ]
+then
+    echo "$0: put forecast script into PATH."
+    echo -e "         \n         \n         \n         \n"
+    exit
+fi
+
+location="${@^^}"
+
+if [ "${location}" != "${location%, ??}" ]
+then
+  city="${location%%, *}"
+  country="${location#*, }"
+  location="${city}.${country}"
+  translation="${city}"
+else
+  translation="${location#* }"
+fi
+
+if [ "${1#[0-9]}" != "" ] && [ "${1#[A-Za-z]}" == "${1}" ] && [ "${2}" != "" ]
+then
+    location="${1}"
+    shift
+    translation="${@^^}"
+fi
+
+datafile="$HOME/.wminfo/conky.tmp"
+counter="$HOME/.wminfo/.counter.forecast.$location.tmp"
+label="FORECAST"
+
+if [ ! -e ${counter} ]
+then
+    date=today
+    touch ${counter}
+else
+    date=tomorrow
+    rm -f ${counter}
+fi
+
+if [ -z "$(grep "^${label}: " ${datafile} | grep "$location")" ]
+then
+cat <<EOF
+$0: there's no ${location} location or there's no Internet connection.
+Check ~/.wminfo/conky.conf for a ${label} section for ${location}.
+         
+         
+         
+EOF
+exit
+fi
+
+nl='\n'
+forecast="$(grep "^${label}:" ${datafile} | grep "${location}" | grep "$date")"
+forecast="${forecast#${label}: }"
+forecast="${forecast/${location}/${translation}}"
+forecast="${forecast//: /${nl}}"
+forecast="${forecast/High /Hi: }"
+forecast="${forecast/Low/Lo: }"
+forecast="${forecast//: -/:-}"
+forecast="${forecast//:  -/:-}"
+
+forecast="$(echo $forecast | sed -E 's/ ([0-9]) /  \1 /g;s/(-[0-9]) / \1 /g;s/ ([0-9][0-9][0-9]) /\1 /g;')"
+
+echo -e "${forecast}"
+echo -e "         \n         \n         \n         \n         \n"
+

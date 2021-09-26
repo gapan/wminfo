@@ -5,6 +5,44 @@
 # to run it use the crontab task such as:
 # */6 * * * * if [ "`route | grep 'default'`" != "" ] ; then /usr/local/bin/online ; fi
 
+pid=$(ps ax | grep online | grep -v 'grep online' | grep -Ev '\-t|\-k' | awk '{print $1}' | perl -pe 's/\n/ /')
+
+runtime=$(ps axo pid,etime,command | grep online | grep -vE 'grep|-t|-k' | awk '{print $2}' | head -n 1)
+time=$runtime
+time=${time//:/}
+time=$(expr $time + 0)
+
+# the following procedure assumes that the online script
+# running shorter than six minutes works and running longer sleeps
+
+/sbin/route | grep default
+echo
+
+if [ "$pid" != "" ]
+then
+    if [ $time -ge 600 ]
+    then
+	if [ "$1" == "-t" ] || [ "$1" == "--test" ]
+	then
+	    echo "The online script sleeps for $runtime at $pid..."
+	fi
+	if [ "$1" == "-k" ] || [ "$1" == "--kill" ]
+	then
+	    echo "Killing online script at $pid..."
+	    kill $pid
+	fi
+    else
+	echo "The online script works for $runtime at $pid..."
+    fi
+else
+	echo "The online script does not work now..."
+fi
+
+if [ "$1" == "-t" ] || [ "$1" == "--test" ] || [ "$1" == "-k" ] || [ "$1" == "--kill" ]
+then
+    exit
+fi
+
 if [ -x /usr/local/bin/online.mbox ]
 then
     . /usr/local/bin/online.mbox
@@ -28,7 +66,7 @@ lynx --source http://www.bbc.co.uk/mundo/ > $DIRECTORY/bbc-mundo.html.tmp
 lynx --source http://www.billboard.com/charts/hot-100 > $DIRECTORY/billboard-top10.html.tmp
 lynx --source http://www.cnet.com/ > $DIRECTORY/cnet.html.tmp
 lynx --source http://www.commentcamarche.net/ > $DIRECTORY/commentcamarche.html.tmp
-lynx --source http://www.dockapps.org/ > $DIRECTORY/dockapps.html.tmp
+lynx --source http://dockapps.windowmaker.org/ > $DIRECTORY/dockapps.html.tmp
 lynx --source http://wyborcza.biz/Waluty/0,111138,8932151,,,Kursy_srednie_walut_NBP,A.html > $DIRECTORY/currencies-pl-avg.html.tmp
 lynx --source http://wyborcza.biz/Waluty/0,111138,8938582,,,Kursy_kupna_sprzedazy_walut_NBP,C.html > $DIRECTORY/currencies-pl-buy+sell.html.tmp
 lynx --source http://www.dpreview.com/ > $DIRECTORY/dpreview.html.tmp
@@ -38,16 +76,17 @@ lynx --source http://www.kernel.org/pub/linux/kernel/v2.6/ > $DIRECTORY/kernel-2
 lynx --source http://www.kernel.org/pub/linux/kernel/v3.x/ > $DIRECTORY/kernel-3.x.html.tmp
 lynx --source http://www.kommersant.ru/ > $DIRECTORY/kommersant.html.tmp
 lynx --source http://www.linuxquestions.org/questions/slackware-14/ > $DIRECTORY/linuxquestions-slackware.html.tmp
-lynx --source http://www.advfn.com/nasdaq/nasdaq.asp > $DIRECTORY/nasdaq.html.tmp
+lynx --source http://www.barchart.com/stocks/nasdaq100.php > $DIRECTORY/nasdaq.html.tmp
 lynx --source http://pitchfork.com/reviews/best/albums/ > $DIRECTORY/pitchfork.html.tmp
-links -source http://slashdot.org/ > $DIRECTORY/slashdot.html.tmp
+links -source -http-bugs.no-compression 1 http://slashdot.org/ > $DIRECTORY/slashdot.html.tmp
 lynx --source http://www.spiegel.de/ > $DIRECTORY/spiegel.html.tmp
 lynx --source http://www.tvn24.pl/ > $DIRECTORY/tvn24.html.tmp
+lynx --source http://www.twitter.com/CNN > $DIRECTORY/twitter-cnn.html.tmp
 lynx --source http://wyborcza.pl/0,0.html > $DIRECTORY/wyborcza.html.tmp
 
 for file in $DIRECTORY/*.tmp
 do
-    mv $file `echo $file | sed 's/\.tmp//'`
+    mv $file $(echo $file | sed 's/\.tmp//')
 done
 
 MIRROR="`cat /etc/slackpkg/mirrors | grep -v '^#'`"

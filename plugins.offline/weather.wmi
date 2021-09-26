@@ -2,7 +2,9 @@
 
 # wminfo plugin: displays weather conditions for the selected airport
 
-# command: wminfo -p "weather.wmi EPWR" -u 5 -s 0 -b#0199fe -f#ffffff
+# command: wminfo -p 'weather.wmi EPWR' -u 5s -b#0199fe -f#ffffff
+# command: wminfo -p 'weather.wmi KNYC' -u 5s -b#0199fe -f#ffffff
+# command: wminfo -p 'weather.wmi YSSY' -u 5s -b#0199fe -f#ffffff
 
 # Attention: EPWR in the command above is the ICAO code for Wroclaw, Poland;
 # before running weather.wmi plugin find your nearest airport ICAO code.
@@ -20,8 +22,8 @@ Pressure="hPa"		# "hPa" for hectoPascals
 			# "mmHg" for millimeters of Mercury
 			# "inHg" for inches of Mercury
 
-Wind_Speed="m/s"	# "m/s" for meters/seconds
-			# "km/h" for kilometers/hour
+Wind_Speed="km/h"	# "km/h" for kilometers/hour
+			# "m/s" for meters/seconds
 			# "mph" for miles per hour
 			# "kt" for knots
 
@@ -43,25 +45,35 @@ Wind_Speed="m/s"	# "m/s" for meters/seconds
 # EPWR Wroclaw Ii                              .         .
 # EPZG Zielona Gora (doesn't work)               . . . . .
 
-station="$1"
-
-datafile="$HOME/.weather.$station"
-tempfile="/tmp/.$USER.weather.$station.tmp"
-
 if [ "$1" == "" ]
 then
 cat <<EOF
 weather.wmi: displays weather conditions for the selected airport
+
 command:
-    wminfo -p "weather.wmi XXXX [options]"
+    wminfo -p 'weather.wmi XXXX [options]'
     XXXX: ICAO airport code (see: http://weather.noaa.gov/)
+
 options:
     -C or -F
     -hPa or -mmHg, or -inHg
-    -m/s or -km/h, or -mph, or -kt
+    -km/h, -m/s or or -mph, or -kt
 EOF
 exit
 fi
+
+station="$1"
+
+datafile="$HOME/.wminfo/.weather.$station"
+tempfile="$HOME/.wminfo/.weather.$station.tmp"
+counter="$HOME/.wminfo/.counter.weather.$station.tmp"
+
+if [ ! -s $counter ] || [ ! -e $counter ]
+then
+    echo "step=1" > $counter
+fi
+
+. $counter
 
 if [ "`echo $* | grep '\-C'`" != "" ]
 then
@@ -103,8 +115,8 @@ fi
 
 if [ ! -e $datafile ] || [ ! -s $datafile ] || [ "`find $datafile -mmin +3`" != "" ]
 then
-    ping -c1 weather.noaa.gov > /tmp/.$USER.weather.noaa.gov 2>&1
-    if [ "`cat /tmp/.$USER.weather.noaa.gov | grep 'unknown host'`" == "" ]
+    ping -c1 weather.noaa.gov > "$HOME/.wminfo/.weather.noaa.gov" 2>&1
+    if [ "`cat \"$HOME/.wminfo/.weather.noaa.gov\" | grep 'unknown host'`" == "" ]
     then
 	lynx --source http://weather.noaa.gov/pub/data/observations/metar/decoded/$station.TXT > $datafile
     fi
@@ -149,35 +161,22 @@ fi
 STATION="$station $time"
 
 function print_data {
-    if [ "`head -n 1 $tempfile`" == "1" ]
-    then
-	cat $tempfile | grep -E "$station|TMP:|PRS:|HUM:|WND1:" | sed 's/WND1/WND/'
-	echo "         "
-    elif [ "`head -n 1 $tempfile`" == "2" ]
-    then
-	cat $tempfile | grep -E "$station|DEW:|PRS:|HUM:|WND2:" | sed 's/WND2/WND/'
-	echo "         "
-    fi
-}
 
-function read_data {
-    TEMPERATURE="`grep "TMP" $tempfile`"
-    DEW_POINT="`grep "DEW" $tempfile`"
-    PRESSURE="`grep "PRS" $tempfile`"
-    HUMIDITY="`grep "HUM" $tempfile`"
-    WIND_SPEED="`grep "WND1" $tempfile`"
-    WIND_FROM="`grep "WND2" $tempfile`"
+    if [ "$step" == "1" ]
+    then
+	cat $tempfile | grep -E "^$station|TMP:|PRS:|HUM:|WND1:" | sed 's/WND1/WND/'
+	echo "         "
+	echo "step=2" > $counter
+    elif [ "$step" == "2" ]
+    then
+	cat $tempfile | grep -E "^$station|DEW:|PRS:|HUM:|WND2:" | sed 's/WND2/WND/'
+	echo "         "
+	echo "step=1" > $counter
+    fi
 }
 
 function write_data {
-    if [ "`head -n 1 $tempfile`" == "1" ]
-    then
-	echo "2" > $tempfile
-    elif [ "`head -n 1 $tempfile`" == "2" ]
-    then
-	echo "1" > $tempfile
-    fi
-    echo "$STATION" >> $tempfile
+    echo "$STATION" > $tempfile
     echo "$TEMPERATURE" >> $tempfile
     echo "$DEW_POINT" >> $tempfile
     echo "$PRESSURE" >> $tempfile
@@ -189,31 +188,29 @@ function write_data {
 if [ "$time" == "`grep "$station" $tempfile | sed 's/.... //'`" ]
 then
     print_data
-    read_data
-    write_data
     exit
 fi
 
 if [ "$Temperature" == "C" ]
 then
-    temperature="`cat $datafile | grep 'Temperature:' | perl -pe 's/.*?([0-9\-]+) C.*/$1/;'`"
-    dew_point="`cat $datafile | grep 'Dew Point:' | perl -pe 's/.*?([0-9\-]+) C.*/$1/;'`"
+    temperature="`cat $datafile | grep 'Temperature:' | perl -pe 's/.*?([0-9\-]+)(\.[0-9]+)? C.*/$1/;'`"
+    dew_point="`cat $datafile | grep 'Dew Point:' | perl -pe 's/.*?([0-9\-]+)(\.[0-9]+)? C.*/$1/;'`"
     TEMPERATURE="TMP: $temperature C"
     DEW_POINT="DEW: $dew_point C"
 elif [ "$Temperature" == "F" ]
 then
-    temperature="`cat $datafile | grep 'Temperature:' | perl -pe 's/.*?([0-9\-]+) F.*/$1/;'`"
-    dew_point="`cat $datafile | grep 'Dew Point:' | perl -pe 's/.*?([0-9\-]+) F.*/$1/;'`"
+    temperature="`cat $datafile | grep 'Temperature:' | perl -pe 's/.*?([0-9\-]+)(\.[0-9]+)? F.*/$1/;'`"
+    dew_point="`cat $datafile | grep 'Dew Point:' | perl -pe 's/.*?([0-9\-]+)(\.[0-9]+)? F.*/$1/;'`"
     TEMPERATURE="TMP: ${temperature}F"
     DEW_POINT="DEW: ${dew_point}F"
 fi
 
-if [ `echo $TEMPERATURE | awk '{print $2}'` -lt 0 ]
+if [ $temperature -lt 0 ]
 then
     TEMPERATURE="`echo $TEMPERATURE | sed 's/ //'`"
 fi
 
-if [ `echo $DEW_POINT | awk '{print $2}'` -lt 0 ]
+if [ $dew_point -lt 0 ]
 then
     DEW_POINT="`echo $DEW_POINT | sed 's/ //'`"
 fi
@@ -253,6 +250,8 @@ then
     wind_from="CALM"
     wind_speed="0"
 fi
+
+wind_speed=${wind_speed:-0}
 
 if [ "$Wind_Speed" == "m/s" ]
 then

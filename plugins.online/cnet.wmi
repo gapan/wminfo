@@ -12,4 +12,4 @@ lynx --source http://www.cnet.com/ | \
 	grep 'assetHed' | \
 	sed 's/<.*>//;' | \
 	punctuation
-
+echo

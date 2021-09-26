@@ -8,18 +8,13 @@ selected time zones.
 The default conky configuration for conky.timezone.wmi plugin looks like
 that:
 
-    TIMEZONE: LOCAL ${time %m-%d}
-    TIMEZONE: EST ${tztime America/New_York %H:%M %m-%d}
-    TIMEZONE: UTC ${tztime UTC %H:%M %m-%d}
-    TIMEZONE: CET ${tztime CET %H:%M %m-%d}
-    TIMEZONE: JST ${tztime Asia/Tokyo %H:%M %m-%d}
-    TIMEZONE: NZDT ${tztime Pacific/Auckland %H:%M %m-%d}
+    TIMEZONE: NY ${tztime America/New_York %H:%M %m-%d}
+    TIMEZONE: GH ${tztime Africa/Accra %H:%M %m-%d}
+    TIMEZONE: RU ${tztime Europe/Moscow %H:%M %m-%d}
+    TIMEZONE: IN ${tztime Asia/Kolkata %H:%M %m-%d}
+    TIMEZONE: AU ${tztime Australia/Sydney %H:%M %m-%d}
 
-The first entry labeled as LOCAL is necessary to distinguish the present
-dates (today) from the past dates (yesterday) and the future dates
-(tomorrow) so do not remove that entry from the conky configuration.
-
-As for the other entries they consist of the THE_LABEL and
+The consecutive entries consist of the THE_LABEL and
 THE_TIMEZONE_SPECIFICATION:
 
     TIMEZONE: THE_LABEL ${tztime THE_TIMEZONE_SPECIFICATION %H:%M %m-%d}
@@ -33,6 +28,9 @@ or:
 
     TIMEZONE: THE_LABEL ${tztime America/New_York %H:%M %m-%d}
 
+To get the right time zones names you can use tzselect program.  Just run it
+and reply the questions in the interactive way.
+
 The latter setting works better than the former.  The EST time zone
 abbreviation is used for both America/New_York and Australia/Sydney but it
 displays the correct times for New York only.  Moreover EST (Eastern
@@ -40,8 +38,8 @@ Standard Time) is used in New York during the winter while EDT (Eastern
 Daylight Time) is used from the spring to the autumn.  So the only universal
 setting for New York is America/New_York.
 
-THE_LABEL can be three letters time zone abbreviation or two letters ISO
-code:
+THE_LABEL can be three letters time zone name abbreviation or two letters
+ISO code:
 
     TIMEZONE: EST ${tztime THE_TIMEZONE_SPECIFICATION %H:%M %m-%d}
 
@@ -49,77 +47,119 @@ or:
 
     TIMEZONE: NY ${tztime THE_TIMEZONE_SPECIFICATION %H:%M %m-%d}
 
-The first works better when the conky.timezone.wmi plugin CompactFormat
-variable is set to "off" while the other works better when that variable is
-set to "on".
+By default the conky.timezone.wmi plugin displays the following information:
 
-By default CompactFormat is set to "on" and the conky.timezone.wmi plugin
-displays the following information:
+    NY 19:08- 12-01
+    GH 23:08- 12-01
+    RU 03:08  12-02
+    IN 04:38  12-02
+    AU 09:08  12-02
 
-    ES 18:08- 12-01
-    UT 23:08- 12-01
-    CE 00:08  12-02
-    JS 08:08  12-02
-    NZ 12:08  12-02
-
-that looks in the wminfo dockable application like that:
+It looks in the wminfo dockable application like that:
 
     +---------+
-    |ES 18:08-|
-    |UT 23:08-|
-    |CE 00:08 |
-    |JS 08:08 |
-    |NZ 12:08 |
+    |NY 19:08-|
+    |GH 23:08-|
+    |RU 03:08 |
+    |IN 04:38 |
+    |AU 09:08 |
     +---------+
 
-The time zones abbreviations truncated to two letters are ambiguous so if
-you prefer compact format it is better to use the ISO codes:
+It is possible to use instead of the ISO codes the time zones abbreviations
+in conky.conf:
 
-* EST  -- NY (for New York);
-* UTC  -- UK (for United Kingdom);
-* CET  -- FR (for France);
-* JST  -- JP (for Japan);
-* NZDT -- NZ (for New Zealand).
+    TIMEZONE: EDT ${tztime America/New_York %H:%M %m-%d}
+    TIMEZONE: GMT ${tztime Africa/Accra %H:%M %m-%d}
+    TIMEZONE: MSK ${tztime Europe/Moscow %H:%M %m-%d}
+    TIMEZONE: IST ${tztime Asia/Kolkata %H:%M %m-%d}
+    TIMEZONE: EST ${tztime Australia/Sydney %H:%M %m-%d}
 
-As a result the conky configuration file looks like that:
+In such a case the conky.timezone.wmi plugin displays the following
+information:
 
-    TIMEZONE: LOCAL ${time %m-%d}
-    TIMEZONE: NY ${tztime America/New_York %H:%M %m-%d}
-    TIMEZONE: UK ${tztime Europe/London %H:%M %m-%d}
-    TIMEZONE: FR ${tztime Europe/Paris %H:%M %m-%d}
-    TIMEZONE: JP ${tztime Asia/Tokyo %H:%M %m-%d}
-    TIMEZONE: NZ ${tztime Pacific/Auckland %H:%M %m-%d}
+    EDT 19:08- 12-01
+    GMT 23:08- 12-01
+    MSK 03:08  12-02
+    IST 04:38  12-02
+    EST 09:08  12-02
 
-and the wminfo dockable application window looks like that:
+(Four-letters or longer time zones abbreviations such as CEST or AZOST are
+truncated to the first three letters.)
 
-    +---------+
-    |NY 18:08-|
-    |UK 23:08-|
-    |FR 00:08 |
-    |JP 08:08 |
-    |NZ 12:08 |
-    +---------+
-
-When the time zones abbreviations are used and CompactFormat is set to "off"
-the conky.timezone.wmi plugin displays the following information:
-
-    EST 18:08 12-01
-    UTC 23:08 12-01
-    CET 00:08 12-02
-    JST 08:08 12-02
-    NZD 12:08 12-02
-
-that looks in the wminfo dockable application like that:
+It looks in the wminfo dockable application like that:
 
     +---------+
-    |EST 18:08|
-    |UTC 23:08|
-    |CET 00:08|
-    |JST 08:08|
-    |NZD 12:08|
+    |EDT 19:08|
+    |GMT 23:08|
+    |MSK 03:08|
+    |IST 04:38|
+    |EST 09:08|
     +---------+
 
-In all above cases the system time zone was set to CET (Europe/Paris).  When
-the conky.timezone.wmi plugin CompactFormat variable is set to "on" the
-plugin distinguishes the past and the future dates marking ones with the
-minus sign (-) and the others with the plus sign (+).
+In all above cases the system time zone was set to Europe/Paris (CET).  The
+conky.timezone.wmi plugin distinguishes the past and the future dates
+marking ones with the sign - and the others with the sign +.
+
+You will find time zone related information here:
+
+    http://www.timeanddate.com/library/abbreviations/timezones/
+
+                                      *
+                                    *   *
+
+If you live close to the International Date Line and you would like to know
+the time and the date on the opposite side of that line the date will differ
+from your local date by two days from 10:00 GMT to 10:59 GMT.
+
+Let us take into consideration three locations: Kiribati, Ghana, and Niue.
+Kiribati borders the International Date Line at its easternmost point --
+there the new day becomes.  Ghana uses GMT time.  Niue lies on the opposite
+side of the International Date Line than Kiribati.
+
+The timezone.cfg configuration file for these three locations is the
+following:
+
+    TIMEZONE: NU ${tztime Pacific/Niue %H:%M %m-%d}
+    TIMEZONE: GH ${tztime Africa/Accra %H:%M %m-%d}
+    TIMEZONE: KI ${tztime Pacific/Kiritimati %H:%M %m-%d}
+
+If it is 10:00 GMT and you live in Kiribati the timezone.wmi plugin displays
+the following data:
+
+    NU 23:00= 05-25
+    GH 10:00- 05-26
+    KI 00:00  05-27
+
+That looks in wminfo window like:
+
+    +---------+
+    |NU 23:00=|
+    |GH 10:00-|
+    |KI 00:00 |
+    |         |
+    |         |
+    +---------+
+
+If it is 10:00 GMT and you live in Niue the timezone.wmi plugin displays the
+following data:
+
+    NU 23:00  05-25
+    GH 10:00+ 05-26
+    KI 00:00# 05-27
+
+That looks in wminfo window like:
+
+    +---------+
+    |NU 23:00 |
+    |GH 10:00+|
+    |KI 00:00#|
+    |         |
+    |         |
+    +---------+
+
+As always the - sign marks yesterday dates and the + sign marks tomorrow
+dates.  As for = and # signs think about = as of two - signs: one above the
+other, and think about # as of two + signs: one intersecting the other.  So
+the = sign marks the day before yesterday dates and the # sign marks the day
+after tomorrow dates.
+

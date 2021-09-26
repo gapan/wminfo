@@ -1,0 +1,129 @@
+#!/bin/bash
+
+# wminfo plugin: CPU monitor
+
+# command: wminfo -p cpumon.wmi -u 3 -b#000000 -f#ff0000
+
+# Based on the script by Paul Colby (http://colby.id.au)
+
+#
+# CONFIGURATION SECTION BEGINS HERE
+#
+
+Correction="1.00"	# use the number with two digits after the point
+
+#
+# CONFIGURATION SECTION ENDS HERE
+#
+
+tempfile="$HOME/.wminfo/.cpumon.tmp"
+
+if [ ! -e $tempfile ]
+then
+    echo PREV_TOTAL=0 > $tempfile
+    echo PREV_IDLE=0 >> $tempfile
+    echo CPUTMP=\" 0 0 0 0 0 0 0 0 0\" >> $tempfile
+fi
+
+. $tempfile
+
+# Correction for a new cpumon counter format
+if [ ${#CPUTMP} -eq 2 ]
+then
+    CPUTMP=" 0 0 0 0 0 0 0 0 0"
+fi
+
+CPU=(`cat /proc/stat | grep '^cpu '`) # Get the total CPU statistics
+unset CPU[0]                          # Discard the "cpu" prefix
+IDLE=${CPU[4]}                        # Get the idle CPU time
+
+# Calculate the total CPU time
+TOTAL=0
+for VALUE in "${CPU[@]}"
+do
+    TOTAL=$(($TOTAL+$VALUE))
+done
+
+# Calculate the CPU usage since the last checking
+DIFF_IDLE=$(($IDLE-$PREV_IDLE))
+DIFF_TOTAL=$(($TOTAL-$PREV_TOTAL))
+DIFF_USAGE=$(((1000*($DIFF_TOTAL-$DIFF_IDLE)/$DIFF_TOTAL+5)/10))
+
+# The correction of the overestimated value
+if [ "$Correction" != "" ]
+then
+    Correction=${Correction/./}
+    DIFF_USAGE=$((100*$DIFF_USAGE/$Correction))
+fi
+
+DIFF_USAGE=$(($DIFF_USAGE+5))
+
+V=${DIFF_USAGE: -2:1}
+
+if [ $DIFF_USAGE -lt 10 ]
+then
+    V=0
+elif [ $DIFF_USAGE -ge 100 ]
+then
+    V=10
+fi
+
+if [ $V -lt 10 ]
+then
+    V=" $V"
+fi
+
+# Rotate the values
+for n in 1 2 3 4 5 6 7 8
+do
+    m=$(($n*2))
+    CPUTMP[$n]="${CPUTMP:$m:2}"
+done
+
+# Append the new value
+CPUTMP[9]="$V"
+
+CPUTMP=""
+
+for n in 1 2 3 4 5 6 7 8 9
+do
+    CPUTMP="$CPUTMP${CPUTMP[$n]}"
+done
+
+ STR[0]="     "
+ STR[1]="    ."
+ STR[2]="    :"
+ STR[3]="   .:"
+ STR[4]="   ::"
+ STR[5]="  .::"
+ STR[6]="  :::"
+ STR[7]=" .:::"
+ STR[8]=" ::::"
+ STR[9]=".::::"
+STR[10]=":::::"
+
+for n in 1 2 3 4 5 6 7 8 9
+do
+    CPUSTR="$CPUSTR${STR[${CPUTMP[$n]}]}"
+done
+
+print() {
+    L="$1"
+    L[1]="${L:0:1}${L:5:1}${L:10:1}${L:15:1}${L:20:1}${L:25:1}${L:30:1}${L:35:1}${L:40:1}"
+    L[2]="${L:1:1}${L:6:1}${L:11:1}${L:16:1}${L:21:1}${L:26:1}${L:31:1}${L:36:1}${L:41:1}"
+    L[3]="${L:2:1}${L:7:1}${L:12:1}${L:17:1}${L:22:1}${L:27:1}${L:32:1}${L:37:1}${L:42:1}"
+    L[4]="${L:3:1}${L:8:1}${L:13:1}${L:18:1}${L:23:1}${L:28:1}${L:33:1}${L:38:1}${L:43:1}"
+    L[5]="${L:4:1}${L:9:1}${L:14:1}${L:19:1}${L:24:1}${L:29:1}${L:34:1}${L:39:1}${L:44:1}"
+    for n in 1 2 3 4 5
+    do
+	echo "${L[$n]}"
+    done
+}
+
+print "$CPUSTR"
+
+# Remember the data for the next check
+echo PREV_TOTAL=$TOTAL > $tempfile
+echo PREV_IDLE=$IDLE >>$tempfile
+echo CPUTMP=\"$CPUTMP\" >> $tempfile
+

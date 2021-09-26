@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# wminfo plugin: displays large number of the hours
+
+# command: wminfo -p print-hours.wmi -u 1h -s 0 -b#000000 -f#ffff00
+
+print-number $(date +"%H")
+

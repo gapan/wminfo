@@ -9,10 +9,11 @@ lynx --source localhost/wminfo/dpreview.html | \
 	sed 's/class="title"><a href=/class="title" a href=/g' | \
 	sed 's/</\n</g' | \
 	grep 'class="title"' | \
-	up2low | \
 	tr -d '\r' | \
 	sed 's/just posted: //' | \
 	sed 's/<.*>//;' | \
 	grep -v '^$' | \
 	punctuation | \
 	head -n 25
+echo
+

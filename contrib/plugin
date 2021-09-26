@@ -1,26 +1,62 @@
 #!/bin/bash
 
-# plugin: displays the command running the selected wminfo plugin
+# plugin: displays the commands running the selected wminfo plugins
 
 # Attention: plugin script recognizes plugins ending with *.wmi only
 
+#
+# CONFIGURATION SECTION BEGINS HERE
+#
+
+directory="/usr/local/bin"
+
+#
+# CONFIGURATION SECTION ENDS HERE
+#
+
 if [ ! $1 ]
 then
-    echo "plugin [plugin]"
-    echo "plugins:"
-    for plugin in `ls /usr/local/bin/*.wmi | sed 's/\/usr\/local\/bin\///;s/.wmi//'`
+cat << EOF
+plugin: displays the commands running the selected wminfo plugins
+
+plugin [plugin | -a | --all | -h | --help]
+
+plugins:
+EOF
+    for plugin in `ls $directory/*.wmi | sed "s#$directory/##;s#.wmi##"`
     do
 	echo "    $plugin"
     done
     exit
 fi
 
-if [ -x /usr/local/bin/$1.wmi ]
+if [ "$1" == "-a" ] || [ "$1" == "--all" ]
 then
-    command=`cat /usr/local/bin/$1.wmi | grep '# command:' | sed 's/# command: //'`
-    echo $command
-else
-    echo "plugin: there is no $1.wmi plugin in the PATH"
+    for plugin in `ls $directory/*.wmi | sed "s#$directory/##;s#.wmi##"`
+    do
+	grep '# command:' $directory/$plugin.wmi | sed 's/.*# command: //'
+    done
+    exit
 fi
 
+if [ "$1" == "-h" ] || [ "$1" == "--help" ]
+then
+    for plugin in `ls $directory/*.wmi | sed "s#$directory/##;s#.wmi##"`
+    do
+	comment=`grep '# wminfo plugin:' $directory/$plugin.wmi | sed 's/.*# wminfo plugin: //'`
+	echo "$plugin.wmi: $comment"
+    done
+    exit
+fi
+
+for plugin in $@
+do
+    if [ -x $directory/$plugin.wmi ]
+    then
+	command=`grep '# command:' $directory/$plugin.wmi | sed -E 's/.*# command: /\n/g' | grep -v '^$'`
+	echo -e "$command"
+    else
+    echo "plugin: there is no $plugin.wmi plugin in the $directory directory"
+    fi
+done
 

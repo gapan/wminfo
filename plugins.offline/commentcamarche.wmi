@@ -12,6 +12,7 @@ lynx --source localhost/wminfo/commentcamarche.html | \
 	sed 's/</\n</g' | \
 	grep 'h2 a href' | \
 	sed 's/<.*>//;' | \
-	iso1-up2low | \
 	html-iso1 | \
 	punctuation
+echo
+

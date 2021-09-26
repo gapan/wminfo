@@ -1,0 +1,125 @@
+
+wminfo README.conky.xmms2.wmi
+
+
+The conky.xmms2.wmi plugin monitors XMMS2.  It displays the information such
+as:
+
+1. Artist name.
+2. Album title.
+3. Track title.
+4. Elapsed time.
+5. Bitrate.
+
+For example:
+
+    Julia Holter
+    Tragedy
+    Introduction
+    01:25
+    320 kb/s
+
+That looks in wminfo window like:
+
+    +---------+
+    |JULIA HOL|
+    |TRAGEDY  |
+    |INTRODUCT|
+    |01:25    |
+    |320 KB/S |
+    +---------+
+
+(For VBR encoded tracks it displays the average bitrate.)
+
+                                      *
+                                    *   *
+
+If the plugin displays the following data:
+
+    XMMS2: ${xmms2_artist}
+    XMMS2: ${xmms2_album}
+    XMMS2: ${xmms2_title}
+    XMMS2: ${xmms2_elapsed}
+    XMMS2: ${xmms2_bitrate}
+
+it means conky was compiled without XMMS2 support.  In such a case compile
+conky anew using the following command:
+
+    ./configure --enable-xmms2
+
+                                      *
+                                    *   *
+
+If the conky compilation breaks with the following error:
+
+    xmms2.c: In function ‘handle_playback_state_change’:
+    xmms2.c:226:58: error: ‘struct xmms2_s’ has no member named ‘percent’
+    make[2]: *** [conky-xmms2.o] Error 1
+    make[2]: Leaving directory `/tmp/SBo/conky-1.8.1/src'
+    make[1]: *** [all] Error 2
+    make[1]: Leaving directory `/tmp/SBo/conky-1.8.1/src'
+    make: *** [all-recursive] Error 1
+
+patch the source of the conky with conky-1.8.1.patch and compile and install
+that patched version:
+
+    tar xjf conky-1.8.1.tar.bz2
+    cp conky-1.8.1.patch conky-1.8.1
+    cd conky-1.8.1
+    ./configure
+    patch -p1 < conky-1.8.1.patch	# <-- patching the conky source
+    make
+    make install
+
+Slackware users can copy conky-1.8.1.patch into SlackBuild conky directory
+and insert the following line:
+
+    patch -p 1 -i $CWD/conky-1.8.1.patch
+
+into conky.SlackBuild script just above the make command.
+
+The above problem concerns conky 1.8.1 and it seems it is resolved in conky
+1.9.0 so the better idea than patch the older source is to install the
+program using the newer one.
+
+                                      *
+                                    *   *
+
+If you are new to XMMS2 after the installation of the program run XMMS2
+daemon launcher:
+
+    xmms2-launcher
+
+In order to add media to a playlist use the following command:
+
+    xmms2 add /home/johndoe/music/
+
+(That assumes your user name is ``johndoe'' and your music collection is in
+/home/johndoe/music/ directory.)
+
+It is possible to use XMMS2 from the command line but the easier method is
+to use it with some client.  You will find the information about the clients
+for XMMS2 here: http://xmms2.org/wiki/XMMS2_Clients.  Apart of the graphical
+clients such as Esperanza for QT4 and gxmms2 for GTK there are a few nice
+console clients.
+
+I tested two console clients: ccx2 (see: http://palbo.github.com/ccx2/) and
+kuechenstation (see: http://kuechenstation.sourceforge.net/) and I can
+recommend each of them.  The latter one requires figlet package (see:
+http://www.figlet.org/).
+
+                                      *
+                                    *   *
+
+That configuration works well when xmms2-launcher daemon works in the
+system.  Otherwise the following error message appears:
+
+    XMMS2 connection failed. xmms2d is not running.
+
+Because of that bug the conky xmms2 related settings stored in conky.conf
+file are commented.  If you would like to use them remember to start
+xmms2-launcher daemon before running conky.  You can use in your ~/.xinitrc
+the command such as:
+
+    if [ "`ps aux | grep "$USER" | grep xmms2-launcher | grep -v 'grep'`" == "" ] ; then xmms2-launcher; fi
+

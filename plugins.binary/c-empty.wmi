@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# wminfo plugin: C empty plugin
+
+# command: wminfo -p c-empty.bin
+
+# this is an empty script containg the command for the binary plugin
+

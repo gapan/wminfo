@@ -4,7 +4,74 @@
 
 # command: wminfo -p conky.sysmon.wmi -u 3 -b#000000 -f#ff0000
 
-datafile="/tmp/.$USER.conky.tmp"
+#
+# CONFIGURATION SECTION BEGINS HERE
+#
 
-grep '^SYSMON: ' $datafile | grep -v 'RUN: ' | sed 's/SYSMON: //;s/#/|/g;s/_/ /g'
+Correction="1.00"	# use the number with two digits after the point
+
+#
+# CONFIGURATION SECTION ENDS HERE
+#
+
+datafile="$HOME/.wminfo/conky.tmp"
+label="SYSMON"
+
+if [ -z "$(grep "^${label}: " "${datafile}")" ]
+then
+cat <<EOF
+$0: no "${label}" entries were found in ${datafile} file.
+         
+         
+         
+         
+EOF
+    exit
+fi
+
+cpu="100"
+
+`grep "^${label}: " $datafile | sed -E "s/${label}: //;s/\.[0-9]+([BKMGT])/\1/;s/%//;s/^/export /;s/: /=/;s/export ([#_])/export BAR=\1/;s/#/|/g;s/_/ /g"`
+
+CPU="${CPU:-0}"
+
+# The correction of the overestimated value
+if [ "$Correction" != "" ]
+then
+    Correction=${Correction/./}
+    CPU=$((100*$CPU/$Correction))
+    BAR="||||||||||"
+    length=$((($CPU+5)/10))
+    BAR=${BAR:0:$length}
+fi
+
+CPU="   ${CPU}"
+MEM="   ${MEM}"
+SWP="   ${SWP}"
+PRC="   ${PRC}"
+RUN="   ${RUN}"
+THR="   ${THR}"
+DSK="   ${DSK}"
+
+CPU=${CPU: -3:4}
+MEM=${MEM: -3:4}
+SWP=${SWP: -3:4}
+PRC=${PRC: -4:5}
+RUN=${RUN: -4:5}
+THR=${THR: -4:5}
+DSK=${DSK: -4:5}
+
+BAR="${BAR:-         }"
+
+echo "CPU: $CPU%"
+echo "$BAR"
+echo "MEM: $MEM%"
+echo "SWP: $SWP%"
+echo "PRC: $PRC"
+# echo "AVG: $AVG"
+# echo "RUN: $RUN"
+# echo "THR: $THR"
+# echo "DSK: $DSK"
+
+echo
 

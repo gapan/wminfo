@@ -40,7 +40,7 @@ needs.
 
 The first script is named mybiff:
 
-    ------------------------------------------------------------------------
+    #------------------------------------------------------------------------
     #!/bin/bash
     
     # mybiff: opens mailbox with mutt or downloads messages with testmail
@@ -51,16 +51,16 @@ The first script is named mybiff:
         exit
     fi
     
-    if [ -e $HOME/mbox-$1 ] && [ ! $2 ]
+    if [ -e "$HOME/mbox-$1" ] && [ ! $2 ]
     then
-        xterm -geometry 99x49+64+0 -fn 9x15 -name "mutt-$1" -e mutt -F $HOME/.muttrc-$1 -f $HOME/mbox-$1
-    elif [ -e $HOME/mbox-$1 ] && [ "$2" == "-" ]
+        xterm -geometry 99x49+64+0 -fn 9x15 -name "mutt-$1" -e mutt -F "$HOME/.muttrc-$1" -f "$HOME/mbox-$1" &
+    elif [ -e "$HOME/mbox-$1" ] && [ "$2" == "-" ]
     then
-        if [ "`ps ax | grep 'testmail .* $1' | grep -v 'grep'`" == "" ] ; then $HOME/bin/testmail --extdget - $1 ; fi
+        if [ "`ps ax | grep 'testmail .* $1' | grep -v 'grep'`" == "" ] ; then "$HOME/bin/testmail" --extdget - $1 ; fi
     else
         echo "mybiff: there is no \"$HOME/mbox-$1\" mailbox."
     fi
-    ------------------------------------------------------------------------
+    #------------------------------------------------------------------------
 
 Assuming you have two testmail mailboxes:
 
@@ -91,11 +91,11 @@ selected method (--extdget in the example above).
 
 To simplify that it is worth preparing the script named mybiff-to:
 
-    ------------------------------------------------------------------------
+    #------------------------------------------------------------------------
     #!/bin/bash
     
     /usr/local/bin/mybiff `basename $0` $*;
-    ------------------------------------------------------------------------
+    #------------------------------------------------------------------------
 
 Next you have to prepare two symbolic links:
 
@@ -126,19 +126,19 @@ to download the messages.
 The last step is to automate the e-mail messages downloading.  In order to
 achieve that you need the consecutive script named online.mbox:
 
-    ------------------------------------------------------------------------
+    #------------------------------------------------------------------------
     #!/bin/bash
     
     # online.mbox: downloads e-mail messages from selected mailboxes
     
     for mbox in gmail yahoo
     do
-        su -c "$mbox -" YOUR_LOGIN_HERE
+        su -c "$mbox -" YOUR_SYSTEM_USERNAME_HERE
     done
-    ------------------------------------------------------------------------
+    #------------------------------------------------------------------------
 
-In the example above you have to replace YOUR_LOGIN_HERE text with your
-login name.
+In the example above you have to replace YOUR_SYSTEM_USERNAME_HERE text with
+your username.
 
 To download the messages with online.mbox script it is enough to add to
 the crontab the following task:
@@ -150,3 +150,4 @@ online script found in the plugins.offline directory.  It runs online.mbox
 script using the following command:
 
     . /usr/local/bin/online.mbox
+

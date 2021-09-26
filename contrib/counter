@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# counter: resets all counters used by different plugins
+
+if [ "$1" == "" ]
+then
+cat <<EOF
+counter: resets all counters used by different plugins
+
+counter [-r | --reset]
+
+EOF
+    exit
+fi
+
+for counter in ~/.wminfo/.counter.*
+do
+    if [ "$1" == "-r" ] || [ "$1" == "--reset" ]
+    then
+	if [ -e $counter ]
+	then
+	    eval rm "$counter"
+	fi
+    fi
+done
+

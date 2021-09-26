@@ -1,0 +1,48 @@
+#!/bin/bash
+
+# wminfo plugin: binary clock (4-bits version by Peter Trenholme aka PTrenholme)
+
+# command: wminfo -p binclock-vertical-07.wmi -u 1 -b#000000 -f#ffff00
+
+# The script written by PTrenholme from www.linuxquestions.org
+
+#
+# CONFIGURATION SECTION BEGINS HERE
+#
+
+Label="on"
+
+Separators="on"
+
+#
+# CONFIGURATION SECTION ENDS HERE
+#
+
+declare -a B=("    " "   *" "  * " "  **" " *  " " * *" " ** " " ***" "*   " "*  *")
+D=$(date '+%H|%M|%S')
+Hl=${D:0:1}
+Hr=${D:1:1}
+Ml=${D:3:1}
+Mr=${D:4:1}
+Sl=${D:6:1}
+Sr=${D:7:1}
+
+if [ "$Label" == "on" ]
+then
+    echo "HH MM SS"
+else
+    echo "         "
+fi
+
+if [ "$Separators" == "on" ]
+then
+    Separator="|"
+else
+    Separator=" "
+fi
+
+echo " ${B[${Hr}]:0:1}$Separator ${B[${Mr}]:0:1}$Separator ${B[${Sr}]:0:1}$Separator"
+echo "${B[${Hl}]:1:1}${B[${Hr}]:1:1}$Separator${B[${Ml}]:1:1}${B[${Mr}]:1:1}$Separator${B[${Sl}]:1:1}${B[${Sr}]:1:1}$Separator"
+echo "${B[${Hl}]:2:1}${B[${Hr}]:2:1}$Separator${B[${Ml}]:2:1}${B[${Mr}]:2:1}$Separator${B[${Sl}]:2:1}${B[${Sr}]:2:1}$Separator"
+echo "${B[${Hl}]:3:1}${B[${Hr}]:3:1}$Separator${B[${Ml}]:3:1}${B[${Mr}]:3:1}$Separator${B[${Sl}]:3:1}${B[${Sr}]:3:1}$Separator"
+

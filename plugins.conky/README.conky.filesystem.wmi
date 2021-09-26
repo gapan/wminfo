@@ -1,0 +1,61 @@
+
+wminfo README.conky.filesystem.wmi
+
+
+The conky.filesystem1.wmi plugin displays the information about the
+filesystem which includes /root directory.
+
+The conky.conf settings look like:
+
+    FILESYSTEM1: ${fs_type /root}
+    FILESYSTEM1: USE ${fs_used /root}
+    FILESYSTEM1: ${fs_used_perc /root}%
+    FILESYSTEM1: FRE ${fs_free /root}
+    FILESYSTEM1: ${fs_free_perc /root}%
+
+The conky.filesystem.wmi plugin displays the information:
+
+    FILESYSTEM1: reiserfs
+    FILESYSTEM1: USE 7.79G
+    FILESYSTEM1: 83%
+    FILESYSTEM1: FRE 1.52G
+    FILESYSTEM1: 16%
+
+The wminfo program shows it as:
+
+    +---------+
+    |REISERFS |
+    |USE 7.79G|
+    |83%      |
+    |FRE 1.52G|
+    |16%      |
+    +---------+
+
+You can add more entries for the other filesystems and prepare
+conky.filesystem2.wmi, conky.filesystem3.wmi etc. plugins.
+
+To point the system use the name of the directory or file inside it, for
+example: /root, /home, /mnt/sda2 etc.  In order to distinguish the
+individual filesystems you can put their names in the first entry, for
+example:
+
+    FILESYSTEM1: SDA1/${fs_type /root}
+
+If all your filesystems are of the same type, for example ReiserFS, you can
+omit ${fs_type ...} field:
+
+    FILESYSTEM1: SDA1
+
+In order to save the workspace place you can bundle a few filesystems into
+one set, for example:
+
+    FILESYSTEM1: SDA1+SDA2
+    FILESYSTEM1: USE ${fs_used /root}
+    FILESYSTEM1: FRE ${fs_free /root}
+    FILESYSTEM1: USE ${fs_used /mnt/sda3}
+    FILESYSTEM1: FRE ${fs_free /mnt/sda3}
+
+The other method is to use the technique described in the main
+README.multi+wrapper file in order to combine in one plugin the monitors of
+a few disks.
+

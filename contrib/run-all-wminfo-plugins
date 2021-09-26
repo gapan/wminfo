@@ -1,0 +1,373 @@
+#!/bin/bash
+
+# run-all-wminfo-plugins: wminfo launcher -- runs all wminfo plugins
+#                         from the current directory
+
+# the script by Cezary M. Kruk and Peter Trenholme
+
+#
+# CONFIGURATION SECTION BEGINS HERE
+#
+
+Compact_Mode="off"
+Plugins_in_Row="15"
+Timeout_for_Answers="10"
+
+#
+# CONFIGURATION SECTION ENDS HERE
+#
+
+if [ "$1" == "-c" ] || [ "$1" == "--compact" ]
+then
+    if [ "$Compact_Mode" == "off" ]
+    then
+        Compact_Mode="on"
+    else
+        Compact_Mode="off"
+    fi
+fi
+
+yesno()
+{
+    local default
+    default="${2^*}Y"
+    default=${default/1/1}
+    read -p "${1} " -t $Timeout_for_Answers -i "${default}" -e ans
+    [ ${#ans} -eq 0 ] && ans=${default,*}
+    ans=${ans/1/1}
+    ans=${ans,*}
+}
+
+exit="no"
+
+if [ "$(which wminfo 2> /dev/null)" == "" ]
+then
+    echo
+    echo "The wminfo is not installed. To install it:"
+    echo "  - go to \"wminfo\" directory,"
+    echo "  - run \"./configure\" script,"
+    echo "  - run \"make\" command,"
+    echo "  - run \"make install\" command."
+    exit 2
+fi
+
+plugins_binary()
+{
+    if [ "$(ls *.bin)" == "" ]
+    then
+        echo "To try binary plugins run first make command."
+        exit 2
+    fi
+}
+
+plugins_conky()
+{
+    for program in conky curl
+    do
+        if [ "$(which $program 2> /dev/null)" == "" ]
+        then
+            echo
+            echo "No \"$program\" program was found in \$PATH. Please install it." >&2
+            exit="yes"
+        fi
+    done
+
+    if [ "${exit}" == "yes" ]
+    then
+        exit 2
+    fi
+
+    if [ ! -e ${HOME}/.wminfo/conky.conf ]
+    then
+        if [ -e conky.conf ]
+        then
+            echo
+            yesno "Should the conky.conf file be copied to ${HOME}/.wminfo/conky.conf?"
+            if [ "${ans}" == "y" ]
+            then
+                if [ ! -e ${HOME}/.wminfo/ ]
+                then
+                    mkdir ${HOME}/.wminfo/
+                    echo "Creating \"${HOME}/.wminfo/\" directory."
+                fi
+                if [ ! -e ${HOME}/.wminfo/ ]
+                then
+                    echo "Can not create \"${HOME}/.wminfo/\" directory."
+                    exit 1
+                fi
+                sed "s#HOME/#${HOME}/#" conky.conf > ${HOME}/.wminfo/conky.conf
+                echo
+                echo "The conky.conf file copied to ${HOME}/.wminfo/conky.conf."
+                echo "The \"HOME/.wminfo/conky.tmp\" was changed to \"${HOME}/.wminfo/conky.tmp\""
+                echo "    near the beginning of ${HOME}/.wminfo/conky.conf."
+                if [ ! -e $HOME/.wminfo/conky.tmp ]
+                then
+                    touch $HOME/.wminfo/conky.tmp
+                fi
+            else
+                echo
+                echo "Aborting." >&2
+                exit 2
+            fi
+        else
+            echo
+            echo "You need to copy \"conky.conf\" to ${HOME}/.wminfo/conky.conf and change it as needed." >&2
+            echo "Note: There is no \"conky.conf\" in ${PWD}." >&2
+            exit 1
+        fi
+    fi
+
+    if [ "$(grep 'HOME/.wminfo/conky.tmp' ${HOME}/.wminfo/conky.conf)" != "" ]
+    then
+        sed -i "s#HOME/#${HOME}/#" ${HOME}/.wminfo/conky.conf
+        echo
+        echo "The \"HOME/.wminfo/conky.tmp\" was changed to \"${HOME}/.wminfo/conky.tmp\""
+        echo "    near the beginning of ${HOME}/.wminfo/conky.conf."
+    fi
+
+    ping -c1 google.com &>/dev/null
+    if [ $? -ne 0 ]
+    then
+        echo
+        echo "Your Internet connection does not appear to be active." >&2
+        if [ "$(grep '^FORECAST:' ${HOME}/.wminfo/conky.conf)" != "" ]
+        then
+            sed -i /^FORECAST:/#FORECAST:/ ${HOME}/.wminfo/conky.conf
+        fi
+    fi
+
+    if [ "$(ps aux | grep 'conky' | grep -v 'grep')" == "" ]
+    then
+        echo
+        echo "The conky program need to be running in deamon mode." >&2
+        yesno "Should the conky daemon be started now?"
+        if [ "${ans}" == "y" ]
+        then
+            conky -c "$HOME/.wminfo/conky.conf" -d 2> "$HOME/.wminfo/conky.log" &
+            if [ $? -ne 0 ]
+            then
+                echo
+                echo "The conky daemon failed to start. Aborting." >&2
+                exit 5
+            else
+                echo
+                echo "The conky daemon is now running as process $!."
+            fi
+        else
+            echo
+            echo "Aborting." >&2
+            exit 4
+        fi
+    fi
+
+    for program in zsh
+    do
+        if [ "$(which $program 2> /dev/null)" == "" ]
+        then
+            echo
+            echo "No \"$program\" program was found in \$PATH." >&2
+            exit="yes"
+        fi
+    done
+
+    if [ "${exit}" == "yes" ]
+    then
+        echo
+        yesno "Would you like to ignore the plugins using these programs?"
+        if [ "${ans}" == "y" ]
+        then
+            echo
+            echo "The plugins using the lacking programs will be ignored."
+        else
+            echo
+            echo "Install the lacking programs.  Aborting." >&2
+            exit 2
+        fi
+    fi
+}
+
+plugins_offline()
+{
+    for program in curl lynx links
+    do
+        if [ "$(which $program 2> /dev/null)" == "" ]
+        then
+            echo
+            echo "No \"$program\" program was found in \$PATH. Please install it." >&2
+            exit="yes"
+        fi
+    done
+
+    for script in punctuation html-iso1 html-iso2 html-iso5 utf8-iso1 utf8-iso2 utf8-iso5
+    do
+        if [ "$(which $script 2> /dev/null)" == "" ]
+        then
+            echo
+            echo "Put \"$script\" script into \$PATH." >&2
+            exit="yes"
+        fi
+    done
+
+    if [ "${exit}" == "yes" ]
+    then
+        exit 2
+    fi
+
+    curl localhost/wminfo 2> $HOME/.wminfo/.localhost 1> /dev/null
+
+    if [ "$(cat $HOME/.wminfo/.localhost | grep 'connect to host')" != "" ]
+    then
+        echo
+        echo "There is no http://localhost/wminfo/ site."
+        exit 2
+    fi
+}
+
+plugins_online()
+{
+    for program in lynx links
+    do
+        if [ "$(which $program 2> /dev/null)" == "" ]
+        then
+            echo
+            echo "No \"$program\" program was found in \$PATH. Please install it." >&2
+            exit="yes"
+        fi
+    done
+
+    for script in punctuation html-iso1 html-iso2 html-iso5 utf8-iso1 utf8-iso2 utf8-iso5
+    do
+        if [ "$(which $script 2> /dev/null)" == "" ]
+        then
+            echo
+            echo "Put \"$script\" script into \$PATH." >&2
+            exit="yes"
+        fi
+    done
+
+    if [ "${exit}" == "yes" ]
+    then
+        exit 2
+    fi
+
+    ping -c1 google.com > $HOME/.wminfo/.google.com 2>&1
+    if [ "$(cat $HOME/.wminfo/.google.com | grep 'unknown host')" != "" ]
+    then
+        echo
+        echo "There is no Internet connection."
+        exit
+    fi
+}
+
+plugins_system()
+{
+    for program in lua gawk ruby
+    do
+        if [ "$(which $program 2> /dev/null)" == "" ]
+        then
+            echo
+            echo "No \"$program\" program was found in \$PATH." >&2
+            exit="yes"
+        fi
+    done
+
+    if [ "${exit}" == "yes" ]
+    then
+        echo
+        yesno "Would you like to ignore the plugins using these programs?"
+        if [ "${ans}" == "y" ]
+        then
+            echo
+            echo "The plugins using the lacking programs will be ignored."
+        else
+            echo
+            echo "Install the lacking programs.  Aborting." >&2
+            exit 2
+        fi
+    fi
+}
+
+if [ -x c-empty.wmi ]
+then
+    plugins_binary
+elif [ -e conky.conf ] && [ "$(ls conky.*.wmi)" != "" ]
+then
+    plugins_conky
+    plugins_conky="yes"
+elif [ -x "kernel-3.x.wmi" ] && [ "$(grep 'localhost/wminfo' kernel-3.x.wmi)" != "" ]
+then
+    plugins_offline
+    plugins_offline="yes"
+elif [ -x "kernel-3.x.wmi" ] && [ "$(grep 'www.kernel.org' kernel-3.x.wmi)" != "" ]
+then
+    plugins_online
+    plugins_online="yes"
+elif [ -x "date.wmi" ]
+then
+    plugins_system
+elif [ "$(ls *.wmi)" == "" ]
+then
+    echo "There are no *.wmi plugins in the current directory."
+    exit 2
+fi
+
+X=0
+Y=0
+
+W=66
+H=93
+
+if [ "$Compact_Mode" == "on" ]
+then
+    W=57
+    H=56
+fi
+
+R=$(($Plugins_in_Row*$W-$W))
+
+if [ "$(ps aux | grep $USER | grep 'wminfo' | grep -vE 'conky|run-all-wminfo-plugins|grep')" != "" ]
+then
+    killall wminfo
+fi
+
+sleep 1
+
+for plugin in $(ls *.wmi | grep -v 'README')
+do
+    command="$(grep '.*# command: wminfo' $plugin | sed -n "s/.*# command: wminfo -p \(.*\)/eval \"wminfo -p .\/\1 -- -geometry +${X}+${Y} \&\"; /pg")"
+    echo running: $command
+    eval "$command"
+    if [ $X -eq $R ]
+    then
+        X=-${W}
+        Y=$((Y+H))
+    fi
+    X=$((X+W))
+done
+
+if [ "`ps aux | grep $USER | grep wmaker | grep -v grep`" == "" ] && [ "$plugins_conky" == "yes" ]
+then
+    echo
+    echo "If you run wminfo in window manager other than Window Maker"
+    echo "    some wminfo instances can be hidden below the other windows"
+    echo "    check conky.forecast.wmi and conky.weather.wmi."
+fi
+
+if  [ "`ps aux | grep $USER | grep wmaker | grep -v grep`" == "" ]
+then
+    if [ "$plugins_offline" == "yes" ] || [ "$plugins_online" == "yes" ]
+    then
+        echo
+        echo "If you run wminfo in window manager other than Window Maker"
+        echo "    some wminfo instances can be hidden below the other windows"
+        echo "    check weather.wmi."
+    fi
+fi
+
+if [ "$plugins_conky" == "yes" ] && [ "$(grep '^WEATHER:' ${HOME}/.wminfo/conky.conf)" != "" ]
+then
+    echo
+    echo "A few running instances of conky.weather.wmi can kill conky daemon"
+    echo "    (see: BUGS or README.1st.plugins.conky files for the solution)."
+fi
+

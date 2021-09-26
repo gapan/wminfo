@@ -15,13 +15,33 @@ The raw data provided by conky looks like that:
 
 The plugin simplifies that information so it looks like that:
 
-    15 firefox         
-     4 X               
-     0 conky           
-     0 wminfo          
-     0 kworker/0:2     
+    15.5 firefox         
+     4.5 X               
+     0.3 conky           
+     0.1 wminfo          
+     0.1 kworker/0:2     
 
 That information looks in the wminfo dockable application window like that:
+
+    +---------+
+    |15.5 FIRE|
+    | 4.5 X   |
+    | 0.3 CONK|
+    | 0.1 WMIN|
+    | 0.1 KWOR|
+    +---------+
+
+I did not find the method of rounding the fractions up with conky so the
+conky.top.wmi plugin simply truncates the fractions.  As a result instead of
+rounding up the numbers such as 15.59 or 4.55 to 16 and 5 it truncates them
+to 15.5 and 4.5.
+
+If you would like to see longer descriptions set Round_Down variable in
+conky.top.wmi plugon to "on":
+
+    Round_Down="on"
+
+In such a case the information in the wminfo window looks like:
 
     +---------+
     |15 FIREFO|
@@ -31,7 +51,3 @@ That information looks in the wminfo dockable application window like that:
     | 0 KWORKE|
     +---------+
 
-I did not find the method of rounding the fractions up with conky so the
-conky.top.wmi plugin simply truncates the fractions.  As a result instead of
-rounding up the numbers such as 15.59 or 4.55 to 16 and 5 it truncates them
-to 15 and 4.

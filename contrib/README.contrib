@@ -4,19 +4,50 @@ wminfo README.contrib
 
 This directory contains the following scripts and plugins:
 
-plugin            displays the command running the selected wminfo plugin.
-suspend           suspends the system to RAM.
+run-all-wminfo-plugins  wminfo launcher: runs all wminfo plugins.
 
-iso?-utf8         convert from ISO-8859-[1,2,5] to UTF-8.
-utf8-iso?         convert from UTF-8 to ISO-8859-[1,2,5].
-*-up2low          convert uppercases to lowercases in different codepages.
-up2low            converts uppercases to lowercases.
-html-iso1         converts from HTML encoding to ISO-8859-1.
-punctuation       converts punctuation marks from HTML and UTF-8 encodings
-                    to ASCII.
-default.wmi       displays wminfo help when there is no plugin name in the
-                    command or there is no -p switch.
-empty.wmi         displays empty application window.
+accuweather             reads weather reports and forecasts from
+                          rss.accuweather.com
+counter                 resets all counters used by different plugins.
+plugin                  displays the commands running the selected wminfo
+                          plugins.
+print-number            displays large numbers from 00 to 99.
+suspend                 suspends the system to RAM.
+time+date               displays zone name, time, and date for the given time
+                          zone.
+timestring              tests the time string against the regex.
+weather-                displays the weather information using the
+                          /usr/local/bin/WeatherLocationDatabase.txt file (see:
+                          README.weather- file).
+weather-poland          weather reports for the cities in Poland.
+wminfo-benchmark        the benchmark testing wminfo plugins performance.
+wminfo-conky            starts the conky daemon using wminfo settings, or
+                          or restarts the daemon, or test if it works.
+
+conky-parser            function used by conky-related plugins.
+forecast                the script used by forecast.*.wmi and conky.forecast.wmi
+                          plugins as well as by weather script.
+netmon                  the script used by netmon.wmi plugin.
+sysmon                  the script used by sysmon.wmi plugin.
+traffic                 the script used by traffic.wmi plugin.
+
+format                  formats text data.
+
+dos-unix                converts CRLF ends of lines to LF ones.
+macos-unix              converts CR ends of lines to LF ones.
+html-iso?               convert from HTML encoding to ISO-8859-[1,2,5].
+punctuation             converts punctuation marks from HTML and UTF-8 encodings
+                          to ASCII.
+utf8-iso?               convert from UTF-8 to ISO-8859-[1,2,5].
+iso?-utf8               convert from ISO-8859-[1,2,5] to UTF-8.
+
+default.wmi             displays wminfo help when there is no plugin name in the
+                          command or there is no -p switch.
+bash-empty.wmi          displays empty application window.
+
+                                      *
+                                    *   *
 
 All these scripts and plugins are copied to the PATH during the installation
 of wminfo.
+

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# converts punctuation from HTML and UTF-8 to ASCII
+# punctuation: converts punctuation from HTML and UTF-8 to ASCII
 
 perl -pe "s/&quot;/\"/g;s/&amp;/&/g;s/&lt;/</g;s/&gt;/>/g;" | \
 perl -pe "s/¡/!/g;s/«/\"/g;s/»/\"/g;s/¿/?/g;s/–/-/g;s/—/-/g;s/‘/\`/g;s/’/'/g;s/„/\"/g;s/“/\"/g;s/”/\"/g;s/…/.../g;" | \

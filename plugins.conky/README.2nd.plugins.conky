@@ -1,0 +1,58 @@
+
+wminfo README.2nd.plugins.conky
+
+
+You can use conky-related configuration and plugins in a creative way.
+For example if you are interested in CPU, memory, and swap monitoring as
+well as in hard disk IOs for reads and writes monitoring but there is no
+enough place on the workspace to run at the same time conky.sysmon.wmi and
+conky.diskmon.wmi plugins you can replace the default configuration of
+SYSMON:
+
+    SYSMON: CPU: $cpu%
+    SYSMON: $cpubar
+    SYSMON: MEM: $memperc%
+    SYSMON: SWP: $swapperc%
+    SYSMON: PRC: $processes
+
+with the following settings:
+
+    SYSMON: CPU: $cpu%
+    SYSMON: $cpubar
+    SYSMON: MEM: $memperc%
+    SYSMON: SWP: $swapperc%
+    ## SYSMON: PRC: $processes
+    SYSMON: DSK: ${diskio sda}
+
+The difference is tiny -- instead of:
+
+    SYSMON: PRC: $processes
+
+you use:
+
+    SYSMON: DSK: ${diskio sda}
+
+derived from DISKMON configuration.
+
+The more distinct modification is to replace both:
+
+    SYSMON: SWP: $swapperc%
+    SYSMON: PRC: $processes
+
+or:
+
+    SYSMON: $cpubar
+    SYSMON: PRC: $processes
+
+with:
+
+    SYSMON: REA: ${diskio_read sda}
+    SYSMON: WRI: ${diskio_write sda}
+
+In all above cases you should implement the appropriate changes in the
+conky.sysmon.wmi plugin.
+
+Using that method you can combine any set of entries in one plugin.  The
+more sophisticated technique of combining different settings in multi screen
+plugin is described in the main README.multi+wrapper file.
+

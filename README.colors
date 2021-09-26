@@ -1,0 +1,126 @@
+
+wminfo README.colors
+
+
+By default wminfo plugins from plugins.conky and plugins.system directories
+use the primary colors from CMY (subtractive color model) and RGB (additive
+color model) schemes: cyan, magenta, yellow, red, green, and blue. 
+Different colors are joined with the different types of the plugins:
+
+    code       | color     | plugins
+    -----------+-----------+-------------------------------
+    #0000ff    | blue      | (unused)
+    #00ff00    | green     | related to the devices
+    #ff0000    | red       | related to the system
+    #ffff00    | yellow    | related to the time
+    #ff00ff    | magenta   | related to the network
+    #00ffff    | cyan      | the other ones
+
+The CMY and RGB color models are complementary and produce the full color
+circle together:
+
+         R
+
+    M         Y
+
+
+    B         G
+
+         C
+
+The plugins from plugins.online and plugins.offline directories that mirror
+some websites use as the background colors the colors derived from the
+respective logos.
+
+If you need more distinct colors to distinguish the different types of the
+plugins consider using the following twelve colors set:
+
+    code       | primary colors       | secondary colors
+    -----------+----------------------+--------------------
+    #ff00ff    | magenta (fuchsia)    |
+    #8000ff    |                      | violet
+    #0000ff    | blue                 |
+    #0080ff    |                      | ocean
+    #00ffff    | cyan    (aqua)       |
+    #00ff80    |                      | turquoise
+    #00ff00    | green   (lime)       |
+    #80ff00    |                      | spring green
+    #ffff00    | yellow               |
+    #ff8000    |                      | orange
+    #ff0000    | red                  |
+    #ff0080    |                      | raspberry
+
+The primary and the secondary colors above are derived from the Granger
+rainbow chart.  The entire set produces the full color circle.
+
+If you need even more distinct colors here is twenty four colors set:
+
+    code       | color                | type
+    -----------+----------------------+--------------------
+    #800080    | purple               |
+    #ff00ff    | magenta (fuchsia)    | primary
+    #ff80ff    | -                    |
+    #8000ff    | violet               |
+    #000080    | navy                 |
+    #0000ff    | blue                 | primary
+    #8080ff    | -                    |
+    #0080ff    | ocean                |
+    #008080    | teal                 |
+    #00ffff    | cyan (aqua)          | primary
+    #80ffff    | -                    |
+    #00ff80    | turquoise            |
+    #008000    | green                |
+    #00ff00    | green (lime)         | primary
+    #80ff80    | -                    |
+    #80ff00    | spring green         |
+    #808000    | olive                |
+    #ffff00    | yellow               | primary
+    #ffff80    | -                    |
+    #ff8000    | orange               |
+    #800000    | maroon               |
+    #ff0000    | red                  | primary
+    #ff8080    | -                    |
+    #ff0080    | raspberry            |
+
+Using the above 24 colors palette you can generate the subsets consisting of
+18, 15, etc. colors.
+
+If the purple, navy, teal, green, olive, and maroon colors are too dark for
+you consider using the lighter versions of these colors:
+
+    code       | color
+    -----------+-----------------------
+    #c000c0    | light purple
+    #0000c0    | light navy
+    #00c0c0    | light teal
+    #00c000    | light green
+    #c0c000    | light olive
+    #c00000    | light maroon
+
+Here are distinct nine neutral colors (grays):
+
+    code       | color
+    -----------+-----------------------
+    #000000    | black
+    #202020    | gray13
+    #404040    | gray25
+    #606060    | gray38
+    #808080    | gray
+    #a0a0a0    | gray63
+    #c0c0c0    | silver
+    #e0e0e0    | gray88
+    #ffffff    | white
+
+(To see all these colors use the colors.html file from the samples
+directory.)
+
+By default wminfo uses the following colors:
+
+               | code                 | color
+    -----------+----------------------+--------------------
+    background | #000000              | black
+    foreground | #c0c0c0              | silver
+
+Of course you can use any other colors as well.  You can choose from
+16,777,216 different colors from #000000 to #ffffff.
+

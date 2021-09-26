@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# wminfo plugin: color sample
+
+# command: wminfo -p gray-202020.wmi -b#202020 -f#ffffff
+
+echo "#202020"
+echo "gray13"
+

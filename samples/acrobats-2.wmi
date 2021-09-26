@@ -1,0 +1,168 @@
+#!/bin/bash
+
+# wminfo plugin: displays animated acrobats
+
+# command: wminfo -p acrobats-2.wmi -u 0 -t 4 -s 0 -b#000000 -f#00ffff
+
+# the acrobat ASCII art comes from Scarecrow's ASCII Art FAQ
+
+#   0    \0/   _ 0           _|     \ /      |_         0 _   \0/    0    
+#  /|\    |     /\    _\0     \0     |     0/    0/_    /\     |    /|\   
+#  / \   / \   / \   / \|     / \   /0\   / \    |/ \   / \   / \   / \   
+
+# I modified the acrobat a bit to meet my needs
+
+counter="$HOME/.wminfo/.counter.acrobats-2.tmp"
+
+if [ ! -e $counter ]
+then
+    step=0
+    echo step=$step > $counter
+fi
+
+. $counter
+
+A='
+ 0       
+/|\      
+/ \    0 
+      /|\
+      / \
+
+ 0       
+/|\      
+/ \    0 
+      /|\
+      / \
+
+ 0       
+/|\      
+/ \    0 
+      /|\
+      / \
+
+\0/      
+ |       
+/ \   \0/
+       | 
+      / \
+
+_ 0      
+ /\      
+/ \   _ 0
+       /\
+      / \
+
+         
+ _\0     
+/ \|     
+       _\
+      / \
+
+  _|     
+   \0    
+   / \  _
+         
+         
+
+   \ /   
+    |    
+   /0\   
+         
+         
+
+      |_ 
+    0/   
+|_  / \  
+         
+         
+
+         
+     0/_ 
+     |/ \
+/_       
+/ \      
+
+      0 _
+      /\ 
+0 _   / \
+/\       
+/ \      
+
+      \0/
+       | 
+\0/   / \
+ |       
+/ \      
+
+      _ 0
+       /\
+- 0   / \
+ /\      
+/ \      
+
+         
+       _\
+      / \
+ _\0     
+/ \|     
+
+        _
+         
+  _|     
+   \0    
+   / \   
+
+         
+         
+   \ /   
+    |    
+   /0\   
+
+|_       
+         
+      |_ 
+    0/   
+   / \   
+
+         
+/_       
+/ \      
+     0/_ 
+     |/ \
+
+0 _      
+/\       
+/ \   0 _
+      /\ 
+      / \
+
+\0/      
+ |       
+/ \   \0/
+       | 
+      / \
+
+'
+
+length=${#A}
+frames=$((($length-1)/51))   # 5 lines * 9 chars + 6 newlines = 51 chars per frame
+
+step=$(($step+1))
+
+if [ $step -gt $frames ]
+then
+    step=1
+fi
+
+echo step=$step > $counter
+
+for n in $(seq 1 $frames)
+do
+    m=$(($n-1))
+    m=$(($m*51))             # 5 lines * 9 chars + 6 newlines = 51 chars per frame
+    A[$n]="${A:$m:50}"
+done
+
+echo "${A[$step]}"
+

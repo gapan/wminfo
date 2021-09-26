@@ -1,0 +1,110 @@
+#!/bin/bash
+
+# forecast: the script used by forecast.*.wmi and conky.forecast.wmi
+#           plugins as well as by weather script
+
+# Based on the script by Michael Seiler (see: pastebin.com/kt22wXFe)
+
+#
+# CONFIGURATION SECTION BEGINS HERE
+#
+
+Metric=1		# 1 for C
+			# 0 for F
+
+#
+# CONFIGURATION SECTION ENDS HERE
+#
+
+if [ "$1" == "" ]
+then
+cat <<EOF
+forecast: the script used by forecast.*.wmi and conky.forecast.wmi
+          plugins as well as by weather script
+
+forecast ["locationcode"] [today|tomorrow]
+
+sample location's codes:
+          "EUR|FR|FR012|PARIS" for Paris
+          10007 for New York
+EOF
+    exit
+fi
+
+if [ "$2" == "" ]
+then
+cat <<EOF
+forecast: you omitted the flag "today" or "tomorrow"
+EOF
+    exit
+fi
+
+yesterday=`date --date="yesterday" +"%-m/%-d/%Y"`
+today=`date +"%-m/%-d/%Y"`
+tomorrow=`date --date="tomorrow" +"%-m/%-d/%Y"`
+the_day_after_tomorrow=`date --date="+2 days" +"%-m/%-d/%Y"`
+
+location="$1"
+
+if [ "`echo $1 | grep '[A-Z]'`" != "" ]
+then
+    city=`echo $location | sed 's/.*|//'`
+    country=`echo $location | perl -pe 's/.*?\|//;s/\|.*//'`
+    location="$city.$country"
+fi
+
+tempfile="$HOME/.wminfo/.forecast.$location.tmp"
+
+if [ ! -e "$tempfile" ] || [ ! -s "$tempfile" ] || [ "`find "$tempfile" -mmin +1`" != "" ]
+then
+    location=`echo $location | sed 's/ /%20/g'`
+    curl -s http://rss.accuweather.com/rss/liveweather_rss.asp\?metric\=$Metric\&locCode\=$location > "$tempfile"
+    location=`echo $location | sed 's/%20/ /g'`
+fi
+
+for day in $yesterday $today $tomorrow $the_day_after_tomorrow
+do
+    string=""
+    string=`cat "$tempfile" | grep -A 3 "$day" | grep -E "title|description" | \
+	perl -pe 's/\n//' | perl -pe 's/\s+//;s/<.*?>//g;s/Forecast\s+//;s/ &lt;.*//;s/High:/High/;s/Low:/Low/;s/ C / C: /g;s/ F / F: /g;s/$/      /'`
+    if [ "$string" != "" ]
+    then
+	if [ "$first" != "" ]
+	then
+	    second="$string"
+	    second_date=$day
+	else
+	    first="$string"
+	    first_date=$day
+	fi
+    fi
+done
+
+first_string=`echo $first | awk '{print $1}' | sed -E 's#^#/#;s#/([0-9])/#/0\1/#;s#/([0-9])/#/0\1/#' | awk -F\/ '{print $4$2$3}'`
+second_string=`echo $second | awk '{print $1}' | sed -E 's#^#/#;s#/([0-9])/#/0\1/#;s#/([0-9])/#/0\1/#' | awk -F\/ '{print $4$2$3}'`
+
+if [ "$first_string" == "" ] || [ "$second_string" == "" ]
+then
+    exit
+fi
+
+if [ "$first_string" -lt "$second_string" ]
+then
+    if [ "$2" == "today" ]
+    then
+	echo "$location: $first" | sed "s#$first_date#today:#"
+    elif [ "$2" == "tomorrow" ]
+    then
+	echo "$location: $second" | sed "s#$second_date#tomorrow:#"
+    fi
+elif [ "$first_string" -gt "$second_string" ]
+then
+    if [ "$2" == "today" ]
+    then
+	echo "$location: $second" | sed "s#$second_date#today:#"
+    elif [ "$2" == "tomorrow" ]
+    then
+	echo "$location: $first" | sed "s#$first_date#tomorrow:#"
+    fi
+fi
+

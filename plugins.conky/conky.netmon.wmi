@@ -4,7 +4,60 @@
 
 # command: wminfo -p conky.netmon.wmi -u 3 -b#000000 -f#ff00ff
 
-datafile="/tmp/.$USER.conky.tmp"
+#
+# CONFIGURATION SECTION BEGINS HERE
+#
 
-grep '^NETMON: ' $datafile | sed -E 's/NETMON: //;s/\.[0-9]+//'
+ETH=ETH0
+WLN=WLN0
 
+#
+# CONFIGURATION SECTION ENDS HERE
+#
+
+datafile="$HOME/.wminfo/conky.tmp"
+label="NETMON"
+
+if [ -z "$(grep "^${label}: " "${datafile}")" ]
+then
+cat <<EOF
+$0: no "${label}" entries were found in ${datafile} file.
+         
+         
+         
+         
+EOF
+    exit
+fi
+
+netmon=`grep "^${label}: " $datafile`
+
+netmon=${netmon//${label}: /${label}:}
+
+netmon=${netmon%% }
+netmon=${netmon/LO  /LO}
+netmon=${netmon// /=}
+netmon=${netmon//${label}:/ export }
+
+netmon="$(echo $netmon | sed -E 's/\.([0-9])[0-9]/.\1/g')"
+
+$netmon
+
+L="      "
+ED="    "
+EU="    "
+WD="    "
+WU="    "
+
+IFS=''
+
+L=${L: -$((7-${#LO})):5}
+ED=${ED: -$((5-${#ETHD})):3}
+EU=${EU: -$((5-${#ETHU})):3}
+WD=${WD: -$((5-${#WLND})):3}
+WU=${WU: -$((5-${#WLNU})):3}
+
+echo -e "LO${L}${LO}#$ETH${ED}${ETHD}#$ETH${EU}${ETHU}#$WLN${WD}${WLND}#$WLN${WU}${WLNU}" | \
+    sed -E 's/[0-9] //g;s/#/\n/g;s/ ([0-9])([BKMG])/ \1.0\2/g;s/ ([0-9][0-9])([BKMG])/ \1.0\2/g;s/\.([0-9])[0-9]([BKMG])/.\1\2/g;s/O  ([0-9]\.)/O    \1/g;s/([HN])([0-9]\.)/\1  \2/g;s/  ([0-9][0-9])/ \1/g;s/([0-9])[0-9][0-9]/  0.\1#/g;s/#B/K/g;s/#K/M/g;s/#M/G/g;s/#G/T/g;s/LO     ([0-9])\./LO   \1./;s/LO ([0-9][0-9])\./LO  \1./;'
+
+echo

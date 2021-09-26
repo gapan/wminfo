@@ -1,0 +1,40 @@
+#!/usr/bin/lua
+
+-- # wminfo plugin: binary clock (4-bits version by Peter Trenholme aka PTrenholme)
+
+-- # command: wminfo -p binclock-vertical-04.wmi -u 1 -b#000000 -f#ffff00
+
+-- The script written by PTrenholme from www.linuxquestions.org
+
+--
+-- CONFIGURATION SECTION BEGINS HERE
+--
+
+Label="1"
+
+Separators="1"
+
+--
+-- CONFIGURATION SECTION ENDS HERE
+--
+
+b=" "
+s="*"
+B={{b,b,b,b},{b,b,b,s},{b,b,s,b},{b,b,s,s},{b,s,b,b},{b,s,b,s},{b,s,s,b},{b,s,s,s},{s,b,b,b},{s,b,b,s}}
+D=os.date("+%H %M %S")
+z=string.byte("0")-1
+Hl=D:byte(2)-z
+Hr=D:byte(3)-z
+Ml=D:byte(5)-z
+Mr=D:byte(6)-z
+Sl=D:byte(8)-z
+Sr=D:byte(9)-z
+
+if Label == "1" then print("HH MM SS") else print("        ") end
+if Separators == "1" then separator="|" else separator=" " end
+
+print(" "      .. B[Hr][1] .. separator  .. " "      .. B[Mr][1] .. separator .. " "      .. B[Sr][1] .. separator)
+print(B[Hl][2] .. B[Hr][2] .. separator  .. B[Ml][2] .. B[Mr][2] .. separator .. B[Sl][2] .. B[Sr][2] .. separator)
+print(B[Hl][3] .. B[Hr][3] .. separator  .. B[Ml][3] .. B[Mr][3] .. separator .. B[Sl][3] .. B[Sr][3] .. separator)
+print(B[Hl][4] .. B[Hr][4] .. separator  .. B[Ml][4] .. B[Mr][4] .. separator .. B[Sl][4] .. B[Sr][4] .. separator)
+

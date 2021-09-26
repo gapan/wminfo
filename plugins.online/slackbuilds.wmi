@@ -8,15 +8,16 @@
 # CONFIGURATION SECTION BEGINS HERE
 #
 
-datafile="$HOME/.slackbuilds"
+datafile="$HOME/.wminfo/.slackbuilds.tmp"
 
-slackware_version=13.37
+slackware_version=14.0
 
 applications=" | \
     multimedia/flash-player-plugin | \
     network/ntop | \
     network/opera | \
     desktop/wminfo | \
+    desktop/wmpower | \
     "
 
 #
@@ -25,8 +26,8 @@ applications=" | \
 
 if [ ! -e $datafile ] || [ ! -s $datafile ] || [ "`find $datafile -mmin +3`" != "" ]
 then
-    ping -c1 slackbuilds.org > /tmp/.$USER.slackbuilds.org 2>&1
-    if [ "`cat /tmp/.$USER.slackbuilds.org | grep 'unknown host'`" == "" ]
+    ping -c1 slackbuilds.org > "$HOME/.wminfo/.slackbuilds.org" 2>&1
+    if [ "`cat \"$HOME/.wminfo/.slackbuilds.org\" | grep 'unknown host'`" == "" ]
     then
 	> $datafile
 	for application in $applications
@@ -39,4 +40,5 @@ then
 fi
 
 cat $datafile
-echo "         "; echo "         "; echo "         "; echo "         "; echo "         "
+echo -e "         \n         \n         \n         \n         "
+

@@ -2,6 +2,489 @@
 wminfo ChangeLog
 
 
+wminfo 4.1.2, 2014-01-02:
+----------------------------------------------------------------------------
+* Added beatclock.wmi plugin -- it displays Swatch Internet Time.
+* Added dice.wmi plugin -- it tosses a dice after you click the bottom right
+    corner of the application window.
+* Added print-hours.wmi, print-minutes.wmi, and print-seconds.wmi plugins --
+    they display the large numbers of the hours, minutes, and seconds (you
+    may use them as the eccentric clock working in three dockable
+    application windows).
+* Added print-number script which displays the large two-digit number passed
+    to the script as an argument -- it offers two types of the font: block
+    or smooth.
+* Added print-weekday.wmi plugin -- it displays the large name of the
+    weekday and offers two types of the font: block or smooth.
+* Added binclock-vertical-13.wmi plugin and old binclock-vertical-13.wmi
+    plugin renamed to binclock-vertical-14.wmi one -- the new plugin uses
+    the idea similar to binclock-vertical-07.wmi plugin by PTrenholme so
+    both these binary clocks have a similar performance.
+* Added binclock-horizontal-01.wmi plugin and old binclock-horizontal.wmi
+    plugin renamed to binclock-horizontal-02.wmi one -- the new plugin uses
+    just 2.70% of the CPU while the old one uses about 6.70% of the CPU.
+* Added clock.wmi plugin -- it displays semi-analog clock.
+* Added fuzzy-clock.wmi -- it writes the time in plain English.
+* Added animated acrobats-1.wmi and acrobats-2.wmi sample plugins (I
+    borrowed the acrobat from the Scarecrow's ASCII Art FAQ).  Both these
+    plugins display exactly the same animation but they use different
+    coding methods.  Version 2 uses more system resources than version 1
+    but it is easier to edit.
+* Added animated cyclist.wmi sample plugin (I borrowed the cyclist from the
+    static ASCII art by Peter E. Bergner).
+* Added animated golfer.wmi sample plugin (the golfer is inspired by the
+    static ASCII art by jgs).
+* Added animated ostrich.wmi sample plugin (I borrowed the ostrich from the
+    static ASCII art by Lisa O'Donnell).
+* Added animated welcome.wmi sample plugin.
+* Added -t, --test, -k, and --kill switches to the online script from
+    plugins.offline directory -- they allow to test if Internet connection
+    and online script work and kill the sleeping processes if they run
+    longer than six minutes.
+* Changed execi commands in conky.conf FORECAST entries to texeci ones --
+    reason: the execi command locks conky when there is no Internet
+    connection causing as a result an empty conky output.
+* Rewritten cpumon.wmi plugin uses two times more detailed scale and
+    monitors CPU two times more frequently.
+* Rewritten iching.wmi plugin -- to display a new hexagram click the bottom
+    right corner of the application window.
+* Updated conky.forecast.wmi plugin and README.conky.forecast.wmi file.
+* Updated conky.netmon.wmi plugin.
+* Updated billboard-top10.wmi, currencies-pl-buy.wmi,
+    currencies-pl-sell.wmi, kernel-2.4.wmi, kernel-2.6.wmi, spiegel.wmi,
+    and wyborcza.wmi plugins from plugins.offline and plugins.online
+    directories.
+* Updated dziadek.wmi plugin.
+* Modified timezone.wmi, forecast.*.wmi, weather.wmi, conky.forecast.wmi,
+    and conky.weather.wmi plugins -- aligned the times of the executions
+    using regular expressions.
+* Modified binclock-vertical-04.wmi plugin and updated some other
+    binclock-vertical-*.wmi plugins.
+* Modified plugin script -- the script used with -h or --help switch
+    displays plugins' descriptions.
+* Modified df.wmi plugin.
+* Modified README.1st file.
+* Updated README.conky.weather.wmi file.
+* Updated README.binclock-vertical-x.wmi files.
+* Updated README.iching.wmi file.
+* Updated README.timezone.wmi file.
+* Updated README.benchmarks file.
+* Updated the documentation.
+
+
+wminfo 4.1.1, 2013-04-15:
+----------------------------------------------------------------------------
+* Repaired conky.conf file (THINKPAD entries).
+* Updated conky.forecast.wmi, conky.weather.wmi, and conky.thinkpad.wmi
+    plugins.
+* Updated conky.thinkpad.wmi and thinkpad.wmi plugins (both of them sleep
+    now for 60 seconds after the resume from the suspend in order to allow
+    to charge the battery to at least 6% and avoid the recurrent suspends).
+* Updated conky.diskmon.wmi and conky.netmon.wmi plugins.
+* Modified counter script (now it accepts only -r and --reset switches).
+* Added dziadek.wmi sample plugin.
+* Updated mondays-child.wmi sample plugin and the timestring script.
+* Updated the documentation.
+
+
+wminfo 4.1.0, 2013-03-04:
+----------------------------------------------------------------------------
+* Solved the bugs concerning the missing X11/xpm.h or X11/extensions/shape.h
+    header files (see: BUGS file).
+* Added the possibility of determine the update period not only in seconds
+    but also using a regular expression that matches the time string -- in
+    order to switch the first day of the week from Monday to Sunday reset
+    the week_starts variable value in regex.c and wminfo.c from "Mon" to
+    "Sun" (see: README.regex).
+* Added messages.wmi, secure.wmi, and syslog.wmi plugins (they display the
+    last ten messages in a reverse order).
+* Added wrapper-logfiles.wmi plugin.
+* Added iching.wmi plugin, iching.cfg file, iching script, and
+    README.iching.wmi file (I Ching -- The Book of Changes).
+* Updated full-utf8.html, html.html, and quick-utf8.html files.
+* Added format script that formats the text files.
+* Added regex program that helps to test the time-related regular
+    expressions.
+* Added sample last-day.wmi plugin (it runs desired action the last day of
+    the month).
+* Added timestring script and sample timestring.wmi plugin using timestring
+    script.
+* Added sample mondays-child.wmi plugin using timestring script.
+* Added 24 color*-*.wmi live colors sample plugins and 10 gray-*.wmi neutral
+    (gray) colors sample plugins.
+* Added colors.html and colors.jpg files demonstrating different color
+    palettes.
+* Added conky-1.9.0.patch (that patch is useful for conky 1.9.0 used with
+    conky.thinkpad.wmi on ThinkPad T61 or a newer one -- see:
+    README.conky.thinkpad.wmi).
+* The old conky.patch file renamed to conky-1.8.1.patch (that patch is useful
+    for conky 1.8.1 used with conky.xmms2.wmi or conky.thinkpad.wmi plugins
+    -- see: README.conky.xmms2.wmi and README.conky.thinkpad.wmi).
+* Modified alarm, date-pl, date-us, days, pinboard, stopwatch, timer, and
+    timezone scripts.
+* Modified cpumon.wmi, sysmon.wmi and conky.sysmon.wmi plugins (they display
+    now the total CPU usage for user and system so the results displayed by
+    these plugins are 1.41 times higher now than before).
+* Modified date.wmi, df.wmi, cpumon.wmi, netmon.wi, sysmon.wmi, traffic.wmi,
+    uptime.wmi, and weather.wmi plugins (removed -s 0 switch).
+* Modified test.html file.
+* Modified test-00-50.wmi and test-50-00.wmi plugins and renamed to
+    test-01-50.wmi and test-50-01.wmi.
+* Modified the © and ® characters shapes.
+* Modified configure file.
+* Updated conky.conf file (updated DATE, NETMON, and THINKPAD entries -- for
+    the last change see: README.conky.thinkpad.wmi -- now it should work well
+    with ThinkPads T61 and the newer ones).
+* Updated conky.netmon.wmi and conky.thinkpad.wmi plugins.
+* Simplified and updated thinkpad.wmi plugin (see: README.thinkpad.wmi -- now
+    it should work well with ThinkPads T61 and the newer ones).
+* Updated billboard-top10.wmi plugin.
+* Updated netmon and traffic scripts.
+* Updated ip.wmi plugin.
+* Updated all conky.multi-*.wmi, conky.wrapper-*.wmi, and wrapper-*.wmi
+    plugins.
+* Updated stopwatch.wmi and traffic.wmi plugins.
+* Updated run-all-wminfo-plugins script.
+* Updated weather-poland script.
+* Added README.regex file.
+* Updated README.CPU.usage and README.benchmarks files using the current
+    version of wminfo with the updated and new plugins.
+* Updated README.colors file.
+* Updated the other documentation files.
+* The program tested in Slackware Linux 14.0 and Linux Mint 14 Nadia.
+
+
+wminfo 4.0.0, 2012-10-31:
+----------------------------------------------------------------------------
+* A MESSAGE
+* The wminfo 4.0.0 introduces a lot of the changes in the comparison to the
+    3.0.0 version.  If you are the old-timer read at least the top of the
+    current ChangeLog and install everything anew including the plugins and
+    ~/.wminfo/conky.conf.  If you are a newcomer follow the README.1st
+    document.
+* ENHANCED FEATURES
+* Modified wminfo program can run not only shell scripts but also Perl, AWK,
+    Ruby etc. scripts as well as binary programs it also do not use the
+    temporary file (both modifications by Noam Postavsky aka ntubski).
+* Improved program performance -- in the default settings wminfo uses now
+    significantly less of the CPU power than the previous version (see:
+    README.CPU.usage file from the main directory).
+* The -t switch (timing) added to wminfo allows the user to choose the level
+    of the responsiveness and the CPU demands of the program -- allowed
+    values are: 1, 2, 4, 8, or 16 (default is 4).
+* The directory for the conky configuration file and temporary files used by
+    wminfo and the plugins changed to ~/.wminfo/.
+* The conky configuration file renamed from .conkyrc to conky.conf.
+* The .conky.tmp and .conky.log files renamed to conky.tmp and conky.log.
+* Added the the possibility to rerun a plugin manually on demand (to rerun
+    any plugin click the lower right corner of the wminfo window).
+* The wminfo displays now up to 1023 lines of the text (the previous
+    versions displayed 127 lines only).
+* Implemented better handling of the invalid commands.
+* Implemented better error handling.
+* Tuned the colors of wminfo window and wminfo.xpm.
+* Added wminfo-conky script which starts the conky daemon using wminfo
+    settings or restarts the daemon.
+* Added multi-screen plugins: conky.multi-system1.wmi,
+    conky.multi-system2.wmi, conky.multi-time.wmi,
+    conky.wrapper-sun-moon-tz.wmi, conky.wrapper-weather.wmi,
+    wrapper-currencies-pl.wmi, wrapper-date-pinboard.wmi,
+    wrapper-date-tz.wmi, wrapper-df.wmi, wrapper-internet-allinone.wmi
+    wrapper-sun-moon-tz.wmi, and wrapper-weather.wmi.
+* Completely rewritten wminfo.xpm includes now all characters from the
+    ISO-8859-[1,2,5] encodings -- that change allowed to get rid of about
+    one third of the wminfo.c code (the improvement inspired by Peter
+    Trenholme aka PTrenholme).
+* New characters' table recognizes upper- and lowercases so the following
+    scripts were removed: cp1250-up2low, cp1251-up2low, iso1-up2low,
+    iso2-up2low, iso5-up2low, koi8r-up2low, up2low, and utf8-up2low, and the
+    following plugins from both plugins.offline and plugins.online
+    directories were changed: commentcamarche.wmi, dpreview.wmi,
+    kommersant.wmi, spiegel.wmi, tvn24.wmi, and wyborcza.wmi.
+* The rewritten conky.forecast.wmi, conky.netmon.wmi, conky.sysmon.wmi,
+    conky.thinkpad.wmi, conky.top.wmi (it uses zsh instead of bash),
+    conky.uptime.wmi, and conky.weather.wmi as well as biff.wmi,
+    date-pl.wmi, date-us.wmi, df.wmi, netmon.wmi, sysmon.wmi, timezone.wmi,
+    top.wmi, and uptime.wmi plugins use significantly less of the CPU power
+    than the previous versions.
+* Added binclock-horizontal.wmi, cpumon.wmi, hexclock.wmi, memory.wmi
+    and twitter.wmi plugins.
+* conky.audacious.wmi, conky.date.wmi, conky.diskmon.wmi, conky.entropy.wmi,
+    conky.filesystem1.wmi, conky.memory.wmi, conky.mixer.wmi, conky.moc.wmi,
+    conky.mpd.wmi, conky.swap.wmi, conky.toptime.wmi, conky.wireless.wmi,
+    and conky.xmms2.wmi use now conky-parser external function by Peter
+    Trenholme.
+* Updated conky.conf configuration file.
+* Updated weather.wmi plugin accepts METAR reports including temperatures
+    with fractional precise.
+* Updated weather.wmi and forecast.*.wmi plugins cope with a zero size
+    counters used by the conky equivalents.
+* Added accuweather and weather-poland scripts.
+* The weather script renamed to weather- because the expect package from Tcl
+    series uses the script named weather.
+* The following converters from the contrib directory were improved:
+    iso1-utf8, iso2-utf8, iso5-utf8, utf8-iso1, utf8-iso2, and utf8-iso5 --
+    now they convert the entire codepages.
+* Removed barely useful or duplicated converters: ISO1, ISO1-ASCII,
+    ISO1-UTF8, UTF8, and UTF8-ISO1.
+* Updated html-iso1 script and added html-iso2 and html-iso5 scripts convert
+    HTML entities to ISO-8859-[1,2,5] encodings.
+* Added html.html file using HTML entities and html-iso1.wmi, html-iso2.wmi,
+    and html-iso5.wmi plugins testing mentioned above converters.
+* Improved wminfo help.
+* Individual run-all-*-plugins scripts from all directories replaced by the
+    universal run-all-wminfo-plugins script and the symbolic links to it.
+* The following plugins are modified in order to work properly with the new
+    run-all-wminfo-plugins script: conky.forecast.wmi, conky.weather.wmi,
+    twitter.wmi, weather.wmi, and netmon.wmi.
+* Added wminfo-benchmark script and README.wminfo-benchmark file to the
+    contrib directory; the script checks the CPU usage of the any number of
+    wminfo plugins at the same time (co-author of the script -- Noam
+    Postavsky aka ntubski).
+* Added wminfo-benchmark-extensive script which tests 125 instances of the
+   given plugin -- do not test at the same time more than two plugins.
+* Added wminfo-benchmark-timings script which tests the allowed timing
+    periods.
+* Added the dummy check of the retured value that displays the vague
+    ``something bad happened here'' error message in order to eliminate the
+    compilation warning on some systems.
+* Improved the configure script.
+* Added plugins.binary directory including binary plugins.
+* Added binclock-vertical-01.c, binclock-vertical-02c, and
+    binclock-vertical-03.c to plugins.binary directory;
+    binclock-vertical-04.wmi, binclock-vertical-05.wmi,
+    binclock-vertical-06.wmi, binclock-vertical-07.wmi,
+    binclock-vertical-08.wmi, binclock-vertical-09.wmi,
+    binclock-vertical-10.wmi, binclock-vertical-11.wmi, and
+    binclock-vertical-12.wmi to plugins.system directory; as well as
+    binclock-vertical-13.wmi to plugins.sample directory.  All
+    binclock-vertical-??.wmi plugins do the same but each uses the different
+    algorithm.  Lua plugin number 04 requires Lua interpreter and gawk
+    plugin number 06 requires gawk 4.0.0 or newer.
+* Added binclock-vertical-01.wmi, binclock-vertical-02.wmi, and
+    binclock-vertical-03.wmi command containers for the plugins written in C
+    from the binary.plugins directory.
+* Added c-empty.c and c-empty.wmi plugins to plugins.binary directory.
+* Added Makefile to plugins.binary directory (it allows to compile
+    optionally the binary plugins locally prior to the installation of
+    wminfo).
+* Added sun-moon.wmi plugin that displays sunrise, sunset, moonrise, and
+    moonset times as well as the moonphase (the plugin requires solunar
+    program patched with the solunar.patch from the plugins.system
+    directory; see: http://kevinboone.net/README_solunar.html).
+* Added julian-date.wmi plugin (it displays Julian date, Modified Julian
+    date, Lilian date, Rata Die, and Mars Sol Date; the plugin requires the
+    mentioned above solunar program).
+* Added counter script which resets or removes the counters used by
+    different plugins.
+* Rewritten conky.sysmon.wmi plugin uses by default the correction of the
+    CPU usage.
+* Updated sysmon.wmi plugin allows to easily enable and disable the CPU
+    usage correction and displays the running processes number instead of
+    the average load (the average load is displayed by the uptime.wmi
+    plugin).
+* Updated nasdaq.wmi and slashdot.wmi plugins according to the changes on
+    the respective websites.
+* Updated slckbuilds.wmi plugin.
+* Updated default.wmi and bash-empty.wmi plugins.
+* Updated online script from plugins.offline directory.
+* Updated plugin script from contrib directory.
+* Modified date.wmi plugin.
+* Modified weather.wmi plugin displays by default the wind speed in km/h
+    instead of m/s.
+* Modified conky.thinkpad plugin.
+* Modified traffic.wmi plugin.
+* Modified pinboard.wmi plugin and pinboard script use now pinboard.cfg file
+    instead of .pinboard one.
+* The forecast.new_york.wmi plugin renamed to forecast.new-york.wmi one.
+* Added full-utf8.html file as well as full-utf8-iso1.wmi,
+   full-utf8-iso2.wmi, and full-utf8-iso5.wmi plugins to the samples
+   directory.
+* The test-01-50.wmi and test-50-01.wmi plugins renamed to test-00-50.wmi
+    and test-50-00.wmi, and updated.
+* Added a-1913-letter-plugin.wmi plugin which shows how wminfo manages with
+    the lines of the text longer than 1023 characters and
+    a-1050-line-plugin.wmi plugin which shows how wminfo manages with the
+    text longer than 1023 lines.
+* Updated and improved the other plugins not mentioned above.
+* UPDATED DOCUMENTATION
+* Updated most of the documents.
+* The seaparate README.CPU.conky.usage and README.CPU.usage files replaced by
+  the global README.CPU.usage file.
+* Added THANKS file.
+* Added README.multi+wrapper file.
+* Updated man wminfo.
+* Added README.1st.plugins.binary to plugins.binary directory.
+* Added README.binclock-vertical-x files to both plugins.binary and
+  plugins.system directories.
+* Added README.sun-moon.wmi file.
+* Removed README.Privacy -- now your files privacy is the same as the
+    privacy of your $HOME directory.
+* OTHER IMPROVEMENTS
+* The source file ``doc'' directory renamed to the ``man'' one.
+* The program tested in Slackware Linux 13.37 and Linux Mint 13 Maya.
+
+
+wminfo 3.0.0, 2012-06-24:
+----------------------------------------------------------------------------
+* QUICK START
+* Added README.1st file for the quick start.
+* Updated run-all-conky-plugins script offers the help when the conky is not
+    configured properly or conky daemon does not work.
+* SOLVED BUGS
+* Added the information how to avoid all encountered so far bugs (see: BUGS
+    file).
+* IMPROVED COMPATIBILITY
+* Updated wminfo runs now the plugins using bash instead of sh -- as a
+    result it works quietly with the systems which links /bin/sh to the
+    other shell than bash (for example Linux Mint links /bin/sh to dash).
+* The scripts forecast, netmon, sysmon, and traffic moved to the contrib
+    directory -- during the installation of wminfo they are copied to the
+    directory registered in the PATH variable in order to work well during
+    the tests of the plugins on the systems which do not include the current
+    directory in the PATH variable.
+* Updated conky.conf file works better on different machines using different
+    systems.  Some entries are commented by default because they work bad
+    when the appropriate daemon or program does not work in the system.
+    Among the commented entries are all related to IBM/Lenovo ThinkPads
+    because they abort the conky daemon on the machines other than
+    ThinkPads.
+* ENHANCED FEATURES
+* Added conky.audacious.wmi, conky.diskmon.wmi, conky.entropy.wmi,
+    conky.filesystem1.wmi, conky.forecast.wmi, conky.memory.wmi,
+    conky.mixer.wmi, conky.mpd.wmi, conky.swap.wmi, conky.topmem.wmi,
+    conky.toptime.wmi, and conky.xmms2.wmi plugins.
+* Entirely rewritten conky.weather.wmi plugin as well as the corresponding
+    conky.conf settings and README.conky.weather.wmi file -- now it is easy
+    to add to the configuration file a few weather entries for different
+    locations and use a few wminfo instances to monitor the weather in those
+    places (see also: BUGS file).
+* Updated conky.thinkpad.wmi and thinkpad.wmi plugins -- now they recognize
+    IBM/Lenovo ThinkPads.
+* Updated conky.timezone.wmi plugin recognizes properly the dates for the
+    locations near the International Date Line.
+* Updated all conky-related plugins work well even if conky does not provide
+    the data for a while.  (The conky 1.9.0 is less responsive than the conky
+    1.8.1.)
+* Updated most of the plugins from plugins.online and plugins.offline
+    directories to work stable when the Internet connection or the monitored
+    file are not accessible for a while.
+* Added forecast.new_york.wmi, forecast.sydney.wmi, and forecast.wroclaw.wmi
+    plugins as well as README.forecast.xxx.wmi file.
+* Added days.wmi plugin, days.cfg file, days script, and README.days.wmi
+    file -- the plugin counts the number of the days since the given date or
+    until the given date.
+* Modified timezone.wmi plugin (removed minutes backup because it worked bad
+    at the turn of an hour and added the correct date recognition for the
+    locations that lie near the International Date Line -- my kind regards
+    to all Linux users from Kiribati and Niue).
+* Updated biff.wmi plugin recognizes properly non-existing mailbox.
+* Updated netmon.wmi and traffic.wmi plugins check eth0, eth1, wlan0, and
+    wlan1 interfaces.
+* Updated alarm, date-pl, date-us, days, pinboard, stopwatch, timer, and
+    timezone scripts accept pico, elvis, and vi editors (the default order
+    of editors is: mcedit, nano, pico, elvis, vim, and vi).
+* Updated plugin script (now it accepts a few arguments and started with -a
+    or --all parameter displays the recommended default commands for all
+    plugins installed in /usr/local/bin directory).
+* Updated time+date script (now it displays by default just the data for the
+    given time zone -- to display the local time as well use at the end of
+    the command one of the following switches: -l or --local).
+* Added weather script that displays weather information using
+    /usr/local/bin/WeatherLocationDatabase.txt file (see the script for
+    the Internet location of the above file -- some of the locations stored
+    in that file are invalid so you have to correct them yourself).
+* Added ISO1, UTF8, ISO1-ASCII, ISO1-UTF8, UTF8-ISO1, dos-unix, and
+    macos-unix scripts.
+* BETTER DOCUMENTATION
+* Added README.2nd.plugins.conky, README.conky.diskmon.wmi,
+    README.conky.filesystem.wmi, README.conky.forecast.wmi,
+    README.conky.mixer.wmi, README.conky.mpd.wmi, and README.conky.xmms2.wmi
+    files.
+* Added README.plugin, README.time+date, and README.weather files to the
+    contrib directory.
+* Added README.Colors file discusses an useful color palette based on the
+    Granger rainbow chart.
+* Updated README.date.wmi, README.date-xx.wmi, README.netmon.wmi, and
+    README.sysmon.wmi files.
+* Updated README.timezone.wmi and README.conky.timezone.wmi files reflect
+    the changes made in timezone.wmi and conky.timezone.wmi plugins as well
+    as in the related configuration files.
+* Updated README.Privacy file.
+* Updated README.CPU.usage and README.CPU.conky.usage files.
+* Updated manual page man wminfo and the main README file.
+* Minor updates in the other documents.
+* OTHER CHANGES
+* The weather.wmi and the conky.weather.wmi plugins use the common counter
+    file.  The forecast.*.wmi and the conky.forecast.wmi plugins use the
+    common counter file too.  So do not run them at the same time or modify
+    them in order to use the separate counter files.
+* Modified biff.wmi, uptime.wmi, conky.moc.wmi, and conky.uptime.wmi plugins
+    as well as run-all-system-plugins and run-all-conky-plugins scripts
+    (changed the default color schemes).
+* Updated date.wmi, date-pl.wmi, and date-us.wmi plugins.
+* Updated slackware-patches.wmi plugin.
+* Updated tvn24.wmi plugin according to the changes on the respective site.
+* Updated all currencies-pl-*.wmi plugins according to the changes on the
+    respective site.
+* The script run-all-internet-plugins from plugins.offline directory renamed
+    to run-all-offline-plugins and the script run-all-internet-plugins from
+    plugins.online directory renamed to run-all-online-plugins.
+* Updated conky.patch file allows to compile conky with XMMS2 support.  The
+    patch is designed for conky 1.8.1 -- it seems conky 1.9.0 provides the
+    valid data for both conky.thinkpad.wmi and conky.xmms2.wmi plugins so
+    instead of patching the old conky version it is better to install the
+    new one without that patch.
+
+
+wminfo 2.6.0, 2012-05-23:
+----------------------------------------------------------------------------
+* The rewritten timezone.wmi plugin and timezone.cfg* configuration files
+    work much better than their predecessors.  Old plugins and the
+    accompanying configuration files were complicated and worked bad.
+    Before the update remove old timezone.wmi* plugins and timezone.cfg*
+    files.
+* The rewritten README.timezone.wmi describes the new plugin and the new
+    configuration files.
+* Added time+date script that displays zone name, time, and date for the
+    given time zone -- use it for the testing purposes.
+* Rewritten nasdaq.wmi plugin from plugins.offline and plugins.online
+    directories.
+* Updated slackbuilds.wmi plugin and dockapps.wmi plugin from plugins.online
+    directory -- the last one uses now the new website's address:
+    http://dockapps.windowmaker.org/.
+* Updated run-all-internet-plugins scripts from plugins.offline and
+    plugins.online directories as well as run-all-system-plugins script from
+    plugins.system directory.
+* Updated online script from plugins.offline directory.
+* Modified conky configuration file -- now the entries for conky.moc.wmi
+    plugin are disabled by default (see: BUGS file).
+* Updated verbose switch of wminfo.
+* Added BUGS file covering three different bugs (two of them are in fact
+    conky bugs and the third one is shared by some other dockable
+    applications too).
+
+
+wminfo 2.5.3, 2012-05-15:
+----------------------------------------------------------------------------
+* Modified date-us.wmi and date-pl.wmi plugins as well as date-pl.cfg file
+    -- the new date-pl.wmi plugin uses about 1.2% less of the CPU power than
+    the previous version.
+* Modified weather.wmi plugin uses 1% less of the CPU power than the
+    previous version (new median 3.0%; old median 4.0%) but still 1.7% more
+    of the CPU power than conky.weather.wmi plugin (median 1.3%).
+* Modified conky.weather.wmi and the corresponding README file.
+* Modified sysmon script -- now sysmon.wmi plugin rounds the percentages up
+    in order to display the proper CPU usage bar.
+* Updated wyborcza.wmi, spiegel.wmi, pitchfork.wmi, currencies-pl-avg.wmi,
+    currencies-pl-buy.wmi, and currencies-pl-sell.wmi plugins.
+* Added verbose switch to wminfo (by default the program is now silent).
+* Updated README.CPU.conky.usage, README.weather.wmi, and the other
+    documentation files.
+* The dockapps.wmi plugin does not work temporarily because
+    http://www.dockapps.org site is off-line now.
+
+
 wminfo 2.5.2, 2012-01-14:
 ----------------------------------------------------------------------------
 * Modified arch-patches.wmi plugin (now the plugin displays the last
@@ -50,7 +533,7 @@ wminfo 2.5.0, 2011-12-19:
     conky.thinkpad.wmi, conky.timezone.wmi, conky.top.wmi, conky.uptime.wmi,
     conky.weather.wmi, and conky.wireless.wmi plugins (the conky dependent
     plugins are more economical in the CPU usage than their regular
-    counterparts).
+    equivalents).
 * Added the conky.conf configuration file customized to the work with the
     conky dependent wminfo plugins.
 * Added the conky.patch file by Tiago Marques Vale that improves the way
@@ -219,3 +702,4 @@ wmSvt 1.02:
 wmSvt 1.0a:
 ----------------------------------------------------------------------------
 * Initial release.
+

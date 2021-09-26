@@ -1,0 +1,232 @@
+
+wminfo README.weather-
+
+
+To monitor the weather and the weather forecasts for some places all the
+time you can use conky.weather.wmi and conky.forecast.wmi or weather.wmi and
+forecast.*.wmi plugins -- conky-related plugins use less system resources
+than their bash equivalents.  On the other hand if you would like to check
+some weather conditions occasionally these plugins are not convenient.  In
+such a cases use insted of them the weather- script.
+
+The weather- script displays the current weather and the weather forecast
+for the given city.  It uses /usr/local/bin/WeatherLocationDatabase.txt
+file.  You will find that file there:
+
+    http://www.radoslavdimov.com/jquery-plugins/jquery-plugin-digiclock/WeatherLocationDatabase.txt
+
+In order to use it with the weather- script put it to /usr/local/bin
+directory.
+
+The sample entry in the above file looks like:
+
+    City Name = "Wroclaw, PL" Location = "EUR|PL|PL001|WROCLAW" Country = "Poland"
+
+The commands such as:
+
+    weather- Wroclaw
+
+or:
+
+    weather- Wroclaw, PL
+
+display the information such as:
+
+    EUR|PL|PL001|WROCLAW
+    Currently in Wroclaw, PL: 33 C and Sunny
+    Today: High 32 C: Low 17 C: Mostly sunny and warmer
+    Tomorrow: High 27 C: Low 14 C: Partly sunny with a shower
+
+The command:
+
+    weather- Poland
+
+displays the available entries for all the locations in Poland.
+
+                                      *
+                                    *   *
+
+Unfortunately some entries in the WeatherLocationDatabase.txt file are
+invalid, for example:
+
+    City Name = "Calcutta, IN" Location = "ASI|IN|IN036|CALCUTTA" Country = "India"
+    City Name = "Moscow, RU" Location = "ASI|RU|RS052|MOSKVA" Country = "Russia"
+
+As a result the commands such as:
+
+    weather- Calcutta
+
+or:
+
+    weather- Moscow
+
+display the error messages:
+
+    ASI|IN|IN036|CALCUTTA
+    weather-: invalid location.
+
+or:
+
+    ASI|RU|RS052|MOSKVA
+    weather-: invalid location.
+
+In order to set the valid location codes you have to customize the settings
+for those cities:
+
+    City Name = "Kolkata, IN" Location = "ASI|IN|IN036|KOLKATA" Country = "India"
+    City Name = "Moscow, RU" Location = "ASI|RU|RS052|MOSCOW" Country = "Russia"
+
+                                      *
+                                    *   *
+
+Some other entries does not work for some reason though the location codes
+seem to be correct.  For example the command:
+
+    weather- New York
+
+causes the same error message:
+
+    NAM|US|NY|NEW YORK
+    weather-: invalid location.
+
+though "NAM|US|NY|NEW YORK" should work well.
+
+In fact almost all locations in United States work bad.
+
+In such a case you should use the zip code.  There are a lot of ways to find
+it.  For example you can go to the http://www.accuweather.com website and
+enter in ``AccuWeather.com for'' field the value ``New York, NY''.  Then
+look at the address bar:
+
+    http://www.accuweather.com/en/us/new-york-ny/10007/weather-forecast/349727
+
+The number 10007 in that example is the zip code for New York.
+
+The other method is to go to http://www.zip-codes.com website, enter the
+town or the city name and choose the appropriate zip code.
+
+As a result the command:
+
+    weather- 10007
+
+displays the valid weather information:
+
+    10007
+    Currently in New York, NY: 26 C and Sunny
+    Today: High 26 C: Low 16 C: Mostly sunny and nice
+    Tomorrow: High 23 C: Low 14 C: Partly sunny
+
+You can customize the entry in /usr/local/bin/WeatherLocationDatabase.txt
+file as well.  Instead of:
+
+    City Name = "New York, NY, US" Location = "NAM|US|NY|NEW YORK" Country = "United States"
+
+put there:
+
+    City Name = "New York, NY, US" Location = "10007" Country = "United States"
+
+As a result you can use the city name instead of the zip code so the
+command:
+
+    weather- New York
+
+displays the result:
+
+    10007
+    Currently in New York, NY: 26 C and Sunny
+    Today: High 26 C: Low 16 C: Mostly sunny and nice
+    Tomorrow: High 23 C: Low 14 C: Partly sunny
+
+                                      *
+                                    *   *
+
+Some cities names are ambiguous.  For example the command:
+
+    weather- Ede
+
+displays the result:
+
+    EUR|NL|NL004|EDE AFR|NG|NI000|EDE AFR|CM|CM005|EDÃ‰A AFR|ZA|SF003|EDENBURG
+    weather-: invalid location.
+
+In that case there are four cities names starting from ``Ede'':
+
+    Ede, NL
+    Ede, NG
+    Edea
+    Edenburg
+
+To avoid the ambiguity use the following commands:
+
+    weather- Ede, NL
+
+    EUR|NL|NL004|EDE
+    Currently in Ede, NL: 15 C and Cloudy
+    Today: High 17 C: Low 10 C: A few showers
+    Tomorrow: High 19 C: Low 11 C: Cloudy with a passing shower
+
+    weather- Ede, NG
+
+    AFR|NG|NI000|EDE
+    weather-: invalid location.
+
+    weather- Edea
+
+    AFR|CM|CM005|EDÃ‰A
+    Currently in EdÃ©a, CM: 24 C and Intermittent Clouds
+    Today: High 30 C: Low 22 C: A thunderstorm or two
+    Tomorrow: High 29 C: Low 22 C: A thunderstorm or two
+
+    weather- Edenburg
+
+    AFR|ZA|SF003|EDENBURG
+    Currently in Edenburg, ZA: 6 C and Mostly Cloudy W/ T-Storms
+    Today: High 13 C: Low -1 C: Variable clouds with t-storms
+    Tomorrow: High 9 C: Low -2 C: Partly sunny and chilly
+
+                                      *
+                                    *   *
+
+Some location codes use diacritical characters encoded in ISO-8859-1.  The
+weather plugin translates them to UTF-8 encoding in order to display them
+properly on the modern consoles.  For example the valid location code for
+Zurich is "EUR|CH|SZ026|ZÜRICH".
+
+The command:
+
+    weather- Zurich
+
+displays the following information:
+
+    EUR|CH|SZ026|ZÃœRICH
+    Currently in ZÃ¼rich, CH: 23 C and Partly Sunny
+    Today: High 23 C: Low 12 C: Partly sunny and beautiful
+    Tomorrow: High 25 C: Low 14 C: Rather cloudy
+
+You can not use the "EUR|CH|SZ026|ZÃœRICH" code in conky.conf file or
+forecast.zurich.wmi plugin because the valid code is "EUR|CH|SZ026|ZÜRICH".
+To set such a code copy it from the WeatherLocationDatabase.txt file and
+paste it into conky.conf file or forecast.zurich.wmi plugin.
+
+The other method is to use the weather- script output and the appropriate
+filter.  The following commands append the valid location codes for Zurich
+to the configuration file and the plugin:
+
+    echo "EUR|CH|SZ026|ZÃœRICH" | utf8-iso1 >> conky.conf
+
+or:
+
+    echo "EUR|CH|SZ026|ZÃœRICH" | utf8-iso1 >> forecast.zurich.wmi
+
+You should move these codes to the appropriate place inside the
+configuration file or the plugin and add to these codes the valid context.
+
+For conky.conf it is:
+
+    FORECAST: ${execi 60 forecast "EUR|CH|SZ026|ZÜRICH" today}
+    FORECAST: ${execi 60 forecast "EUR|CH|SZ026|ZÜRICH" tomorrow}
+
+and for forecast.zurich.wmi plugin it is:
+
+    Location="EUR|CH|SZ026|ZÜRICH"
+

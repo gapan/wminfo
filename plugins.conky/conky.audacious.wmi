@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# wminfo plugin: Audacious status
+
+# command: wminfo -p conky.audacious.wmi -u 3 -i 1 -b#000000 -f#00ffff
+
+# the plugin uses conky-parser function by Peter Trenholme
+
+if [ "`which conky-parser 2> /dev/null`" == "" ]
+then
+    echo "$0: put conky-parser script into PATH."
+    echo -e "         \n         \n         \n         \n"
+    exit
+fi
+
+. conky-parser AUDACIOUS uft8-iso1

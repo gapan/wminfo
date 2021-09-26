@@ -5,10 +5,14 @@
 # command: wminfo -p tvn24.wmi -i 2 -b#0076db -f#ffffff
 
 lynx --source localhost/wminfo/tvn24.html | \
-    sed 's/\n/ /g;s/</\n</g' | \
-    grep 'blink2' | \
-    sed 's/<.*>//;' | \
-    punctuation | \
-    iso2-up2low | \
-    sed 's/^ //' | \
-    sed 's/"//g;'
+    perl -pe 's/\n/ /g;s/<h1 class/\n<h1 class/g;s/<\/h1>/\n<\/h1>/g' | \
+    grep '<h1 class' | \
+    grep 'title=' | \
+    sed 's/</\n</g;s/>/>\n/g' | \
+    sed -E 's/^\s+//' | \
+    grep -vE '<|^$' | \
+    perl -pe 'BEGIN {undef $/} s/^REKLAMA.*//sm' | \
+    utf8-iso2 | \
+    punctuation
+echo
+

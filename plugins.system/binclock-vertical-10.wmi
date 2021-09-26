@@ -1,0 +1,41 @@
+#!/bin/bash
+
+# wminfo plugin: binary clock (4-bits version by Noam Postavsky aka ntubski)
+
+# command: wminfo -p binclock-vertical-10.wmi -u 1 -b#000000 -f#ffff00
+
+# The script written by Noam Postavsky <wminfo.npostavs@spamgourmet.com>
+# aka ntubski from www.linuxquestions.org
+
+#
+# CONFIGURATION SECTION BEGINS HERE
+#
+
+Label="on"
+
+Separators="on"
+
+#
+# CONFIGURATION SECTION ENDS HERE
+#
+
+if [ "$Label" == "on" ]
+then
+    echo "HH MM SS"
+else
+    echo "         "
+fi
+
+if [ "$Separators" == "on" ]
+then
+    Separator="|"
+else
+    Separator=" "
+fi
+
+date "+%H$Separator%M$Separator%S$Separator" | gawk -vFS= '
+{for (bit = 8; bit >= 1; bit = bit/2) {
+    for (i=1; i <= NF; i++)
+        printf($i=="|"?$i: and($i,bit)?"*":" ");
+    print("")}}'
+

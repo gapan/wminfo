@@ -1,0 +1,69 @@
+#!/bin/bash
+
+# print-number: displays large numbers from 00 to 99
+
+#
+# CONFIGURATION SECTION BEGINS HERE
+#
+
+SIGN="X"	# any sign you like
+
+Block="on"	# "on" or "off"
+
+#
+# CONFIGURATION SECTION ENDS HERE
+#
+
+number="$1"
+
+if [ "$Block" == "on" ]
+then
+    R="   $SIGN"
+    L="$SIGN   "
+    B="$SIGN  $SIGN"
+    A="$SIGN$SIGN$SIGN$SIGN"
+
+    N[0]=$A$B$B$B$A
+    N[1]=$R$R$R$R$R
+    N[2]=$A$R$A$L$A
+    N[3]=$A$R$A$R$A
+    N[4]=$B$B$A$R$R
+    N[5]=$A$L$A$R$A
+    N[6]=$A$L$A$B$A
+    N[7]=$A$R$R$R$R
+    N[8]=$A$B$A$B$A
+    N[9]=$A$B$A$R$A
+else
+    N[0]=" $SIGN$SIGN $SIGN  $SIGN$SIGN  $SIGN$SIGN  $SIGN $SIGN$SIGN "
+    N[1]="   $SIGN $SIGN$SIGN$SIGN   $SIGN   $SIGN   $SIGN"
+    N[2]="$SIGN$SIGN$SIGN    $SIGN $SIGN$SIGN $SIGN   $SIGN$SIGN$SIGN$SIGN"
+    N[3]="$SIGN$SIGN$SIGN    $SIGN $SIGN$SIGN    $SIGN$SIGN$SIGN$SIGN "
+    N[4]="  $SIGN$SIGN $SIGN $SIGN$SIGN$SIGN$SIGN$SIGN   $SIGN   $SIGN"
+    N[5]="$SIGN$SIGN$SIGN$SIGN$SIGN    $SIGN$SIGN    $SIGN$SIGN$SIGN$SIGN "
+    N[6]=" $SIGN$SIGN $SIGN   $SIGN$SIGN$SIGN $SIGN  $SIGN $SIGN$SIGN "
+    N[7]="$SIGN$SIGN$SIGN$SIGN   $SIGN  $SIGN  $SIGN   $SIGN  "
+    N[8]=" $SIGN$SIGN $SIGN  $SIGN $SIGN$SIGN $SIGN  $SIGN $SIGN$SIGN "
+    N[9]=" $SIGN$SIGN $SIGN  $SIGN $SIGN$SIGN$SIGN   $SIGN $SIGN$SIGN "
+fi
+
+LEFT=${number::1}
+RIGHT=${number:1}
+
+if [ "$RIGHT" == "" ]
+then
+    RIGHT=$LEFT
+    LEFT=0
+fi
+
+matrix="${N[$LEFT]}${N[$RIGHT]}"
+matrix[1]="${matrix:0:4} ${matrix:20:4}"
+matrix[2]="${matrix:4:4} ${matrix:24:4}"
+matrix[3]="${matrix:8:4} ${matrix:28:4}"
+matrix[4]="${matrix:12:4} ${matrix:32:4}"
+matrix[5]="${matrix:16:4} ${matrix:36:4}"
+
+for line in 1 2 3 4 5
+do
+    echo "${matrix[line]}"
+done
+

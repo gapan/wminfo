@@ -11,5 +11,6 @@ lynx --source localhost/wminfo/kommersant.html | \
 	grep 'class="title"' | \
 	sed 's/<.*>//;' | \
 	punctuation | \
-	cp1251-up2low | \
 	piconv -f CP-1251 -t ISO-8859-5
+echo
+

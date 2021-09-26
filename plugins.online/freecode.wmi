@@ -10,3 +10,4 @@ lynx --source http://freecode.com/ | \
 	head -n 25 | \
 	sed 's/<.*>//;' | \
 	punctuation
+echo

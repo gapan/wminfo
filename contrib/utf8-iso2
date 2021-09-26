@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# converts UTF-8 upper- and lowercases to ISO-8859-2 lowercases
-# recognizes Polish letters
+# utf8-iso2: converts UTF-8 to ISO-8859-2
 
-perl -pe "tr/A-Z/a-z/;s/Ä„/±/g;s/Ä†/æ/g;s/Ä˜/ê/g;s/Å/³/g;s/Åƒ/ñ/g;s/Ã“/ó/g;s/Åš/¶/g;s/Å¹/¼/g;s/Å»/¿/g;s/Ä…/±/g;s/Ä‡/æ/g;s/Ä™/ê/g;s/Å‚/³/g;s/Å„/ñ/g;s/Ã³/ó/g;s/Å›/¶/g;s/Åº/¼/g;s/Å¼/¿/g;"
+piconv -f UTF-8 -t ISO-8859-2
+

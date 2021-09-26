@@ -1,0 +1,56 @@
+
+wminfo README.1st.plugins.binary
+
+
+This directory contains the binary plugins for wminfo.
+
+To use some of these plugins system-wide copy them manually to the PATH.
+The recommended directory is /usr/local/bin.
+
+run-all-wminfo-plugins   wminfo launcher: runs all wminfo plugins.
+
+Makefile                 makefile for the manual compilation and
+                           installation of the binary plugins (not necessary
+                           if you use the main configure script to generate
+                           Makefile).
+
+c-empty.c                C empty plugin source code.
+binclock-vertical-01.c   binary clock source code (binary 4-bits version by
+                           Peter Trenholme aka PTrenholme).
+binclock-vertical-02.c   binary clock source code (binary 4-bits version by
+                           Peter Trenholme aka PTrenholme).
+binclock-vertical-03.c   binary clock source code (binary 4-bits version by
+                           H_TeXMeX_H).
+
+c-empty.wmi              command container for the C empty plugin.
+binclock-vertical-01.wmi command container for the binary clock by Peter
+                           Trenholme aka PTrenholme.
+binclock-vertical-02.wmi command container for the binary clock by Peter
+                           Trenholme aka PTrenholme.
+binclock-vertical-03.wmi command container for the binary clock by
+                           H_TeXMeX_H.
+
+c-empty.bin              C empty plugin.
+binclock-vertical-01.bin binary clock (binary 4-bits version by Peter
+                           Trenholme aka PTrenholme).
+binclock-vertical-02.bin binary clock (binary 4-bits version by Peter
+                           Trenholme aka PTrenholme).
+binclock-vertical-03.bin binary clock (binary 4-bits version by H_TeXMeX_H).
+
+                                      *
+                                    *   *
+
+The binary plugins use significantly less of the CPU power than their
+equivalents written as scripts.
+
+To try all binary plugins use the command:
+
+    run-all-wminfo-plugins
+
+
+                                      *
+                                    *   *
+
+The current directory is copied to the system doc directory during the
+installation of wminfo.
+

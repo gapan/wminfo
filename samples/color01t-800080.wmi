@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# wminfo plugin: color sample
+
+# command: wminfo -p color01t-800080.wmi -b#800080 -f#ffffff
+
+echo "#800080"
+echo "purple"
+

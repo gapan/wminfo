@@ -1,0 +1,119 @@
+#!/bin/bash
+
+# weather-: displays the weather information using
+#           the /usr/local/bin/WeatherLocationDatabase.txt file
+
+# see: http://www.radoslavdimov.com/jquery-plugins/jquery-plugin-digiclock/WeatherLocationDatabase.txt
+
+#
+# CONFIGURATION SECTION BEGINS HERE
+#
+
+locations="/usr/local/bin/WeatherLocationDatabase.txt"
+
+#
+# CONFIGURATION SECTION ENDS HERE
+#
+
+if [ ! -s "$locations" ]
+then
+cat <<EOF
+weather-: there is no $locations file.
+
+Download it from:
+    http://www.radoslavdimov.com/jquery-plugins/jquery-plugin-digiclock/WeatherLocationDatabase.txt
+
+or from:
+    http://linux-bsd-unix.strefa.pl/WeatherLocationDatabase.txt
+
+Read README.weather- file in order to avoid the typical problems.
+EOF
+    exit
+fi
+
+if [ "`which forecast 2> /dev/null`" == "" ]
+then
+    echo "weather-: put forecast script into PATH."
+    exit
+fi
+
+if [ "$1" == "" ]
+then
+cat <<EOF
+weather-: displays the weather information using
+          the $locations file
+
+weather- [City Name]
+weather- [City Name, XY]
+weather- [Country]
+
+for example:
+          Wroclaw
+          Wroclaw, PL
+          Poland
+
+Read README.weather- file in order to avoid the typical problems.
+EOF
+    exit
+fi
+
+parameter="$1"
+string="$*"
+
+if [ "`echo $parameter | grep '[0-9]'`" != "" ] && [ "`echo $parameter | grep '[A-Za-z]'`" == "" ]
+then
+    location="$parameter"
+    code="$parameter"
+else
+    location=`grep "City Name = \"$string" $locations | sed 's/.* Location = //;s/ Country = .*//;s/"//g'`
+    if [ "`echo $location | grep '[A-Za-z]'`" == "" ]
+    then
+	code="$location"
+    else
+	city=`echo $location | sed 's/.*|//'`
+	country=`echo $location | perl -pe 's/.*?\|//;s/\|.*//'`
+	code="$city.$country"
+    fi
+fi
+
+if [ "$parameter" == "Evora" ]
+then
+    city="Évora"
+    country="PT"
+    code="ÉVORA.PT"
+    location="EUR|PT|PO008|ÉVORA"
+fi
+
+echo $location | iso1-utf8
+
+if [ "$location" != "" ]
+then
+    TODAY="`forecast \"$location\" today`"
+    TOMORROW="`forecast \"$location\" tomorrow`"
+    NOW=`cat "$HOME/.wminfo/.forecast.$code.tmp" | grep "<description>Currently in " | \
+	perl -pe 's/^\s+//;s/<description>//;s/&#176;//' | dos-unix | iso1-utf8`
+
+    test_location=`grep "<description>Invalid Location</description>" "$HOME/.wminfo/.forecast.$code.tmp"`
+    if [ "$test_location" != "" ]
+    then
+	echo "weather-: invalid location."
+	exit
+    fi
+else
+    country=`grep "Country = \"$string\"" $locations`
+    if [ "$country" != "" ]
+    then
+	echo "$country"
+    else
+	echo "weather-: invalid city or country name."
+    fi
+    exit
+fi
+
+TODAY="`echo $TODAY | perl -pe 's/.*today/Today/'`"
+TOMORROW="`echo $TOMORROW | perl -pe 's/.*tomorrow/Tomorrow/'`"
+
+echo $NOW
+echo $TODAY
+echo $TOMORROW
+

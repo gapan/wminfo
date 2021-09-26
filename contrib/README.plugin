@@ -1,0 +1,62 @@
+
+wminfo README.plugin
+
+
+The plugin script used without the switch display the names of all plugins
+stored in /usr/local/bin directory (without .wmi extension):
+
+    plugin [plugin | -a | --all]
+    plugins:
+        alarm
+        arch-patches
+        bbc-mundo
+        .
+        .
+        .
+        uptime
+        weather
+        wyborcza
+
+The same script used with the name of the plugin without .wmi extension
+displays the recommended command for that plugin, for example the command:
+
+    plugin weather
+
+displays the following command:
+
+    wminfo -p 'weather.wmi EPWR' -u 5 -s 0 -b#0199fe -f#ffffff
+
+It is possible to use that script with -a or --all switch:
+
+    plugin -a
+
+As a result the plugin script displays the recommended commands for all
+available plugins:
+
+    wminfo -p alarm.wmi -u 60 -c -i 2 -b#000000 -f#ffff00
+    wminfo -p arch-patches.wmi -b#1793d1 -f#ffffff
+    wminfo -p bbc-mundo.wmi -i 1 -b#5c0000 -f#ffffff
+    .
+    .
+    .
+    wminfo -p uptime.wmi -u 15 -s 0 -b#000000 -f#ff0000
+    wminfo -p 'weather.wmi EPWR' -u 5 -s 0 -b#0199fe -f#ffffff
+    wminfo -p wyborcza.wmi -i 2 -b#c2052c -f#ffffff
+
+To display the descriptions of the plugins use -h or --help switch:
+
+    plugin -h
+
+As a result the plugin script displays the descriptions of all available
+plugins:
+
+    alarm.wmi: alerts when the given date and time comes
+    arch-patches.wmi: Arch Linux patches from Community repository
+    bbc-mundo.wmi: headlines from Spanish service bbc.co.uk/mundo/
+    .
+    .
+    .
+    uptime.wmi: uptime, users, and load averages
+    weather.wmi: displays weather conditions for the selected airport
+    wyborcza.wmi: headlines from Polish service wyborcza.pl
+

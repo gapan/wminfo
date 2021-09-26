@@ -1,0 +1,263 @@
+
+wminfo BUGS
+
+
+BUGS list by Cezary M. Kruk <c.kruk@bigfoot.com>       (Dec 16, 2012):
+
+There are ten bugs related to wminfo:
+
+1) the messages such as ``X11/xpm.h: No such file or directory'' or
+   ``X11/extensions/shape.h: No such file or directory'' appearing during
+   the compilation of the wminfo.
+
+2) conky daemon breakdowns when a few weather stations are registered in
+   the ~/.wminfo/conky.conf file;
+
+3) CPU overload when conky monitors moc (Music on Console);
+
+4) endless ``FATAL_ERROR The server is not running'' messages when conky
+   monitors moc (Music on Console);
+
+5) conky daemon breakdowns and ``Conky: unable to establish dbus
+   connection'' message when conky monitors audacious;
+
+6) endless ``Conky: MPD error: problems getting a response from "127.0.0.1"
+   on port 6600 : Connection refused'' messages when conky monitors mpd;
+
+7) endless ``XMMS2 connection failed. xmms2d is not running.'' messages when
+   conky monitors XMMS2;
+
+8) color artifacts in X Window session in the systems using radeon driver.
+
+9) Perl ``perl: warning: Setting locale failed.'' messages after running
+   date-pl.wmi plugin in the systems related to Ubuntu.
+
+10)the line of the text displayed in the wminfo window is splitted into two
+   or more lines or some lines do not appear in the wminfo window.
+
+                                      *
+                                    *   *
+
+1) Errors during the compilation
+
+   When there are no the necessary libraries in the system the
+   compilation of wminfo aborts with the messages such as:
+
+    wminfo.c:60:21: fatal error: X11/xpm.h: No such file or directory
+    compilation terminated.
+    make: *** [wminfo.o] Error 1
+
+   or:
+
+    wminfo.c:61:34: fatal error: X11/extensions/shape.h: No such file or directory
+    compilation terminated.
+    make: *** [wminfo.o] Error 1
+
+   In order to perform the compilation it is necessary to install the
+   packages such as libXpm or libxpm-dev in the first case and libXext
+   or libxext-dev in the other case.
+
+
+2) Random conky daemon breakdowns
+
+   In a normal situation conky daemon runs the commands stored in
+   ~/.wminfo/conky.conf file and wminfo uses different plugins to display
+   the information gathered by conky.  Unfortunately the configuration file
+   that uses two or more ``WEATHER: '' entries causes random conky daemon
+   breakdowns after a couple of minutes or hours.  The daemon aborts without
+   any error message and as a result the conky-related wminfo plugins stop
+   to update the displayed information.
+
+   There are two solutions of that problem.  Either you limit the monitored
+   locations to the single ``WEATHER: '' entry in the configuration file or
+   you implement the mechanism that monitors the conky daemon work and
+   restarts the daemon after the breakdown.
+
+   In order to implement such a mechanism run the crontab -e command and put
+   there the following entry:
+
+    */1 * * * * if [ "`ps aux | grep "$USER" | grep conky | grep -vE 'grep|wminfo -p'`" == "" ] ; then conky -c "$HOME/.wminfo/conky.conf" -d 2> "$HOME/.wminfo/conky.log"; fi
+
+   (You should define the above crontab entry as the user that uses
+   ~/.wminfo/conky.conf file monitoring a few weather stations.  Do not put
+   that in the system-wide root crontab configuration because that cannot
+   help.)
+
+   You can also monitor the conky daemon work tracing ~/.wminfo/conky.log
+   file's time and date as well as stored in that file PID.
+
+
+3, 4) CPU overload and unstable conky work when conky monitors moc
+
+   The conky can monitor moc (Music on Console) using the configuration
+   entries such as:
+
+    MOC: $moc_artist
+    MOC: $moc_album
+    MOC: $moc_song
+    MOC: $moc_curtime
+    MOC: $moc_bitrate
+
+   Unfortunately that causes two problems.
+
+   The first problem is the CPU overload.  When conky uses these settings
+   the CPU usage is very high -- in the extreme situations it reaches 100%
+   as reported by the conky.sysmon.wmi plugin.
+
+   The other problem is the unstable work of conky.  When conky uses the
+   mentioned settings after exiting X Window conky locks the console
+   displaying endlessly the message:
+
+    FATAL_ERROR The server is not running
+
+   Because of these bugs the conky moc related settings stored in conky.conf
+   file are commented.  To get rid of that last error it is necessary to run
+   mocp -S server prior to running the conky daemon.  You can use the
+   command such as:
+
+    if [ "`ps aux | grep "$USER" | grep mocp | grep -v 'grep'`" == "" ] ; then mocp -S; fi
+
+
+5) The conky daemon breakdowns when conky monitors audacious
+
+   The conky uses the following entries to monitor audacious:
+
+    AUDACIOUS: $audacious_status
+    AUDACIOUS: ${if_running audacious}${audacious_title 1024}${endif}
+    AUDACIOUS: $audacious_bar
+    AUDACIOUS: $audacious_position
+    AUDACIOUS: $audacious_bitrate
+
+   That configuration works well when audacious player works.  Otherwise the
+   following error message appears:
+
+    Conky: unable to establish dbus connection
+
+   As a result conky daemon breaks down.  Because of that bug the conky
+   audacious-related settings stored in conky.conf file are commented.
+
+   It seems conky has problems with these settings so it is a good idea to
+   avoid to monitor audacious with conky.
+
+
+6) Unstable conky work when conky monitors mpd
+
+   The conky uses the following entries to monitor mpd:
+
+    MPD: $mpd_artist
+    MPD: $mpd_album
+    MPD: $mpd_title
+    MPD: $mpd_elapsed
+    MPD: $mpd_bitrate kb/s
+
+   That configuration works well when mpd daemon works in the system. 
+   Otherwise the following error messages appear:
+
+    Conky: MPD error: problems getting a response from "127.0.0.1" on port 6600 : Connection refused
+
+   Because of that bug the conky mpd related settings stored in
+   ~/.wminfo/conky.conf file are commented.  If you would like to use them
+   remember to start mpd daemon before running conky.  You can use the
+   command such as:
+
+    if [ "`ps aux | grep "$USER" | grep mpd | grep -vE 'grep|wminfo'`" == "" ] ; then mpd; fi
+
+
+7) Unstable conky work when conky monitors xmms2
+
+   The conky uses the following entries to monitor xmms2:
+
+    XMMS2: $xmms2_artist
+    XMMS2: $xmms2_album
+    XMMS2: $xmms2_title
+    XMMS2: $xmms2_elapsed
+    XMMS2: $xmms2_bitrate kb/s
+
+   That configuration works well when xmms2-launcher daemon works in the
+   system.  Otherwise the following error messages appear:
+
+    XMMS2 connection failed. xmms2d is not running.
+
+   Because of that bug the conky xmms2 related settings stored in
+   ~/.wminfo/conky.conf file are commented.  If you would like to use them
+   remember to start xmms2-launcher daemon before running conky.  You can
+   use the command such as:
+
+    if [ "`ps aux | grep "$USER" | grep xmms2-launcher | grep -v 'grep'`" == "" ] ; then xmms2-launcher; fi
+
+
+8) Color artifacts appearing in X Window caused by radeon driver
+
+   If you did not observe color artifacts during the regular work with the
+   system you have no reason to perform the below tests.  If you observed
+   them that description can help you to force that bug to appear faster.
+
+   The color artifacts appear in very specific situations.  To reproduce
+   them it is necessary at least to:
+
+   1. Login in the system as the first user and run X Window with 'startx'
+      command.
+
+   2. Login in the system as the second user and run X Window with 'startx
+      -- :1' command.
+
+   3. Run as the second user the program such as BitTorrent or aMule and
+      start to download some large file or a few files.
+
+   4. Run as the first user a few wminfo instances using different plugins
+      that change the displayed information frequently (for example:
+      date.wmi).
+
+   5. Wait a few minutes working in the first user's session until the color
+      artifacts will appear.
+
+   I observed the same bug running instead of wminfo the following dockable
+   applications: wmsm.app, wmtop, wmbiff, and wmweather as well as
+   wmCalClock.  First four dockable applications use the same wmgeneral.h
+   and wmgeneral.c library by Martijn Pieterse which is used by wmnifo so I
+   suppose that bug is somehow related to that library.  The last
+   application significantly accelerates the appearance of the color
+   artifacts.
+
+   To avoid that bug it is enough to remove /etc/X11/xorg.conf file and
+   disable EXAPixmaps option in /etc/X11/xorg.conf.d/20-radeon.conf file:
+
+    Section "Device"
+        Identifier "Radeon"
+        Driver "radeon"
+        Option "EXAPixmaps" "off"
+    EndSection
+
+
+9) Perl errors during the execution of date-pl.wmi plugin in Ubuntu-related
+   Linux distributions
+
+   After running wminfo with date-pl.wmi plugin the Perl interpreter
+   displays the following messages in Ubuntu-related distributions that use
+   the setting such as LANG="en_US.UTF-8":
+
+    perl: warning: Setting locale failed.
+    perl: warning: Please check that your locale settings:
+    LANGUAGE = (unset),
+    LC_ALL = (unset),
+    LANG = "pl_PL.UTF-8"
+        are supported and installed on your system.
+    perl: warning: Falling back to the standard locale ("C").
+
+   To avoid them it is enough to run the two following commands:
+
+    locale-gen pl_PL.UTF-8
+    dpkg-reconfigure locales
+
+
+10)The wminfo program can display the lines of the text up to 1023
+   characters in a line and no more than 1023 lines of the text.  When the
+   number of the characters in some line is bigger wminfo splits that line
+   after each consecutive 1023 character and it displays just first 1023
+   lines of the text.
+
+   To check the lengths and the number of the lines it is enough to redirect
+   wminfo plugin output to a file:
+
+    plugin.wmi > file.tmp
+

@@ -1,0 +1,66 @@
+#!/bin/bash
+
+# wminfo plugin: Julian Date, Modified JD, Lilian Date, Rata Die, Mars Sol Date
+#                it uses solunar program from http://kevinboone.net/README_solunar.html
+
+# command: wminfo -p julian-date.wmi -u 5 -b#000000 -f#ffff00
+
+#
+# CONFIGURATION SECTION BEGINS HERE
+#
+
+Labels="on"
+
+#
+# CONFIGURATION SECTION ENDS HERE
+#
+
+if [ "`which solunar`" == "" ]
+then
+    echo "julian-date.wmi: install solunar program."
+    exit
+fi
+
+shopt -s expand_aliases
+alias c='perl -e '\''$_="@ARGV";s/\^/**/g;y/x/*/;print eval $_, "\n"'\'''
+
+if [ "$Labels" == "on" ]
+then
+    counter="$HOME/.wminfo/.counter.julian-date.tmp"
+
+    if [ ! -e ${counter} ]
+    then
+	step=1
+	touch ${counter}
+    else
+	step=2
+	rm -f ${counter}
+    fi
+else
+    step=2
+fi
+
+Julian_date=`solunar -f 2> /dev/null | grep -E 'Julian'`
+Modified_Julian_date=${Julian_date/*Modified Julian date: /}
+Julian_date=${Julian_date/ Modified*/}
+Julian_date=${Julian_date/Julian date: /}
+
+Lilian_date=`c int \($Julian_date - 2299160.5\)`
+Rata_Die=`c int \($Julian_date - 1721424.5\)`
+Mars_Sol_Date=`c \($Julian_date - 2405522\)/1.02749`
+
+if [ "$step" == "1" ]
+then
+    echo "Julian D."
+    echo "Mod. J.D."
+    echo "Lilian D."
+    echo "Rata Die "
+    echo "Mars S.D."
+else
+    echo $Julian_date
+    echo $Modified_Julian_date
+    echo $Lilian_date
+    echo $Rata_Die
+    echo $Mars_Sol_Date
+fi
+

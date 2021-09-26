@@ -1,0 +1,52 @@
+#!/bin/bash
+
+# wminfo plugin: displays animated welcome
+
+# command: wminfo -p welcome.wmi -u 0 -t 16 -s 0 -b#000000 -f#00ffff
+
+counter="$HOME/.wminfo/.counter.welcome.tmp"
+
+if [ ! -e $counter ]
+then
+    step=0
+    echo step=$step > $counter
+fi
+
+. $counter
+
+year=$(date +"%Y")
+
+L[0]="         "
+L[1]=" welcome "
+L[2]="in wminfo"
+L[3]="         "
+L[4]=" (c) cmk "
+L[5]="2011-$year"
+
+P[1]="0 0 0 0 0"
+P[2]="0 0 0 0 1"
+P[3]="0 0 0 1 2"
+P[4]="0 0 1 2 3"
+P[5]="0 1 2 3 4"
+P[6]="1 2 3 4 5"
+P[7]="2 3 4 5 0"
+P[8]="3 4 5 0 0"
+P[9]="4 5 0 0 0"
+P[10]="5 0 0 0 0"
+P[11]="0 0 0 0 0"
+P[12]="0 0 0 0 0"
+
+step=$(($step+1))
+
+if [ $step -gt 12 ]
+then
+    step=1
+fi
+
+echo step=$step > $counter
+
+for n in ${P[$step]}
+do
+    echo "${L[$n]}"
+done
+

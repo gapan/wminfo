@@ -1,0 +1,50 @@
+#!/bin/bash
+
+# wminfo plugin: hexadecimal clock and calendar
+
+# command: wminfo -p hexclock.wmi -u 1 -b#000000 -f#ffff00
+
+#
+# CONFIGURATION SECTION BEGINS HERE
+#
+
+Year="off"
+
+#
+# CONFIGURATION SECTION ENDS HERE
+#
+
+dectohex() {
+    echo $1 | awk '{printf "%02X\n", $0}'
+}
+
+date=$(date "+%H%M%S%m%d%Y%a")
+H=${date:0:2}
+M=${date:2:2}
+S=${date:4:2}
+m=${date:6:2}
+d=${date:8:2}
+Y=${date:10:4}
+a=${date:14:2}
+
+H=`dectohex $H`
+M=`dectohex $M`
+S=`dectohex $S`
+m=`dectohex $m`
+d=`dectohex $d`
+Y=`dectohex $Y`
+
+echo "   $H"
+echo "   $M"
+echo "   $S"
+
+if [ "$Year" == "on" ]
+then
+    echo "$m/$d/$Y"
+elif [ "$Year" == "off" ]
+then
+    echo " $m  $d"
+fi
+
+echo "   $a"
+

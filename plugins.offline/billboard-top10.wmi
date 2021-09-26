@@ -5,13 +5,16 @@
 # command: wminfo -p billboard-top10.wmi -b#d70377 -f#ffffff
 
 lynx --source localhost/wminfo/billboard-top10.html | \
+	dos-unix | \
 	sed 's/\n/ /g;s/</\n</g' | \
-	grep -E 'item-title|item-artist' | \
-	grep -v 'artistId' | \
-	perl -pe 's/\n//g' | \
-	sed 's/<div class="item-artist" style="display:none;">/ - /g' | \
+	grep -E "<h1>|<a href=\"/artist/" | \
+	grep -Ev "<h1><a href=|Browse the Hot 100 Archives" | \
+	sed -E 's/<a href="\/artist\/.*?>/- /g' | \
+	perl -pe 's/\n/ /g;' | \
 	sed 's/</\n</g' | \
-	sed 's/<.*>//;' | \
-	grep -v '^$' | \
+	sed 's/<.*>//' | \
+	perl -pe 's/ +/ /g' | \
+	grep -Ev '^ $|\- \- \-' | \
 	punctuation
 echo
+

@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# wminfo plugin: disk IO -- total, read, and write
+
+# command: wminfo -p conky.diskmon.wmi -u 3 -b#000000 -f#00ff00
+
+# the plugin uses conky-parser function by Peter Trenholme
+
+if [ "`which conky-parser 2> /dev/null`" == "" ]
+then
+    echo "$0: put conky-parser script into PATH."
+    echo -e "         \n         \n         \n         \n"
+    exit
+fi
+
+. conky-parser DISKMON | sed -E 's/ 0([BKMG])/  0.0\1/;s/([0-9])[0-9][0-9]/ 0.\1#/;s/([0-9].[0-9])[0-9]/ \1/;s/#B/K/;s/#K/M/;s/#M/G/;s/#G/T/'

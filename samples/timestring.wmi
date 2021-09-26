@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# wminfo plugin: runs the action depending on the current time
+#                (it uses timestring script)
+
+# command: wminfo -p 'timestring.wmi "Sun"' -u "00:00:00" -b#000000 -f#ffff00
+
+if [ "$*" == "" ]
+then
+    echo "$0 [<regular_expression>]"
+    exit
+fi
+
+export process="$PPID"
+export datafile="$HOME/.wminfo/.timestring.tmp"
+timestring "$*"
+. $datafile
+
+if [ "${timestring[$process]}" == "" ]
+then
+    echo "$0: Failed time string."
+else
+    echo "$0: Matched time string: \"${timestring[$process]}\"."
+fi
+

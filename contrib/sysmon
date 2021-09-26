@@ -1,0 +1,63 @@
+#!/bin/bash
+
+# sysmon: the script used by sysmon.wmi plugin.
+
+# Based on the script by Paul Colby (http://colby.id.au)
+
+tempfile="$HOME/.wminfo/.sysmon.tmp"
+
+if [ ! -e $tempfile ]
+then
+    echo "PREV_TOTAL=0" > $tempfile
+    echo "PREV_IDLE=0" >> $tempfile
+fi
+
+. $tempfile
+
+CPU=(`cat /proc/stat | grep '^cpu '`) # Get the total CPU statistics.
+unset CPU[0]                          # Discard the "cpu" prefix.
+IDLE=${CPU[4]}                        # Get the idle CPU time.
+
+# Calculate the total CPU time.
+TOTAL=0
+for VALUE in "${CPU[@]}"; do
+  let "TOTAL=$TOTAL+$VALUE"
+done
+
+# Calculate the CPU usage since we last checked.
+let "DIFF_IDLE=$IDLE-$PREV_IDLE"
+let "DIFF_TOTAL=$TOTAL-$PREV_TOTAL"
+let "DIFF_USAGE=(1000*($DIFF_TOTAL-$DIFF_IDLE)/$DIFF_TOTAL+5)/10"
+
+# The correction of the overestimated value.
+if [ "$Correction" != "" ]
+then
+    Correction=`echo $Correction | sed 's/\.//'`
+    let "DIFF_USAGE=(100*$DIFF_USAGE/$Correction)"
+fi
+
+length=${#DIFF_USAGE}
+length=$((3-$length))
+
+DIFF_USAGE="  $DIFF_USAGE"
+DIFF_USAGE=${DIFF_USAGE: -3:5}
+
+echo "CPU: $DIFF_USAGE%"
+
+let "count=(($DIFF_USAGE+5)/10)"
+for n in `seq 1 $count`
+do
+    GRAPH="$GRAPH|"
+done
+
+if [ "$GRAPH" == "" ]
+then
+    GRAPH="         "
+fi
+
+echo "$GRAPH"
+
+# Remember the total and idle CPU times for the next check.
+echo PREV_TOTAL=\"$TOTAL\" > $tempfile
+echo PREV_IDLE=\"$IDLE\" >>$tempfile
+

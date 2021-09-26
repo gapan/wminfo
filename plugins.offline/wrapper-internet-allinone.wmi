@@ -1,0 +1,90 @@
+#!/bin/bash
+
+# wminfo plugin: monitors Slackware Linux patches
+#                and Polish zloty buy/sell currency exchange rates
+
+# command: wminfo -p wrapper-internet-allinone.wmi -u 15 -b#000000 -f#00ffff
+
+# the script based on an idea by Peter Trenholme
+
+#
+# CONFIGURATION SECTION BEGINS HERE
+#
+
+command[1]="slackware-patches.wmi"
+command[2]="currencies-pl-buy.wmi"
+command[3]="currencies-pl-sell.wmi"
+Currencies="AUD|CHF|EUR|GBP|USD"
+Steps="3"
+Manual_Mode="off"
+
+#
+# CONFIGURATION SECTION ENDS HERE
+#
+
+datafile="$HOME/.wminfo/conky.tmp"
+name=${0//*\//}
+name=${name/.wmi/}
+tempfile="$HOME/.wminfo/.counter.$name.tmp"
+plugin="$0"
+
+exit="no"
+
+for n in `seq 1 $Steps`
+do
+    if [ "`which ${command[$n]} 2> /dev/null`" == "" ]
+    then
+	echo "${plugin}: put ${command[$n]} plugin into PATH."
+	exit="yes"
+    fi
+done
+
+if [ "$exit" == "yes" ]
+then
+    echo -e "         \n         \n         \n         \n"
+    exit
+fi
+
+plugin=".${plugin//*\/}"
+
+if [ ! -e $tempfile ]
+then
+    step=0
+    echo step=$step > $tempfile
+fi
+
+. $tempfile
+
+if [ "$Manual_Mode" == "off" ] || [ -e "$HOME/.wminfo/$plugin" ]
+then
+    if [ $step -ge $Steps ]
+    then
+	step=0
+	echo step=$step > $tempfile
+    fi
+
+    step=$((step + 1))
+    echo step=$step > $tempfile
+
+    if [ -e "$HOME/.wminfo/$plugin" ]
+    then
+	rm "$HOME/.wminfo/$plugin"
+    fi
+elif [ "$Manual_Mode" == "on" ]
+then
+    if [ $step -eq 0 ]
+    then
+	step=1
+	echo step=$step > $tempfile
+    fi
+fi
+
+if [ $step -eq 1 ]
+then
+    ${command[$step]}
+else
+    ${command[$step]} | grep -E "$Currencies"
+fi
+
+echo "         "
+

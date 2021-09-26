@@ -10,3 +10,4 @@ lynx --source localhost/wminfo/freecode.html | \
 	head -n 25 | \
 	sed 's/<.*>//;' | \
 	punctuation
+echo

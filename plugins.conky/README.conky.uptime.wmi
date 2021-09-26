@@ -3,8 +3,8 @@ wminfo README.conky.uptime.wmi
 
 
 The conky.uptime.wmi plugin displays the information about the uptime, the
-number of the users, and the average loads during last one minute, five
-minutes, and fifteen minutes:
+number of the users, and the average loads during the last one, five, and
+fifteen minutes:
 
     +---------+
     |1D 19H   |
@@ -16,6 +16,7 @@ minutes, and fifteen minutes:
 
 * 1D 19H    -- uptime in days and hours;
 * USR: 5    -- the number of the users;
-* 01M: 0.01 -- the average load during last minute;
-* 05M: 0.02 -- the average load during last five minutes;
-* 15M: 0.36 -- the average load during last fifteen minutes.
+* 01M: 0.01 -- the average load during the last minute;
+* 05M: 0.02 -- the average load during the last five minutes;
+* 15M: 0.36 -- the average load during the last fifteen minutes.
+

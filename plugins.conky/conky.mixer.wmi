@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# wminfo plugin: sound mixer settings
+
+# command: wminfo -p conky.mixer.wmi -u 3 -b#000000 -f#00ffff
+
+# the plugin uses conky-parser function by Peter Trenholme
+
+if [ "`which conky-parser 2> /dev/null`" == "" ]
+then
+    echo "$0: put conky-parser script into PATH."
+    echo -e "         \n         \n         \n         \n"
+    exit
+fi
+
+. conky-parser MIXER

@@ -1,0 +1,401 @@
+
+wminfo README.CPU.usage
+
+
+To perform benchmark for any set of the plugins use wminfo-benchmark script. 
+In order to preserve the same conditions during each test reset all
+counters before starting the benchmark:
+
+    counter -r ; wminfo-benchmark
+
+By default wminfo-benchmark runs wminfo with all *.wmi plugins from the
+current directory for 180 seconds and at the end displays the results such
+as:
+
+    wminfo-benchmark: running benchmark for 180 seconds...
+
+    biff-cezary.wmi          : 179.99 real, 2.78 user, 0.81 sys, 1.99% CPU
+    conky.netmon.wmi         : 179.98 real, 1.78 user, 0.47 sys, 1.25% CPU
+    conky.sysmon.wmi         : 179.94 real, 2.05 user, 0.51 sys, 1.43% CPU
+    conky.thinkpad.wmi       : 179.89 real, 1.40 user, 0.35 sys, 0.97% CPU
+    conky.top.wmi            : 179.82 real, 1.64 user, 0.48 sys, 1.18% CPU
+    conky.uptime.wmi         : 179.75 real, 0.88 user, 0.24 sys, 0.62% CPU
+    conky.wrapper-sun-moon-tz: 179.68 real, 2.92 user, 0.72 sys, 2.02% CPU
+    conky.wrapper-weather.wmi: 179.60 real, 1.98 user, 0.54 sys, 1.41% CPU
+    date-pl.wmi              : 179.54 real, 5.91 user, 1.59 sys, 4.17% CPU
+    df.wmi                   : 179.49 real, 1.03 user, 0.26 sys, 0.72% CPU
+    wrapper-internet-allinone: 179.45 real, 1.29 user, 0.41 sys, 0.95% CPU
+
+The data from two last columns show the CPU usage by the respective plugins.
+
+                                      *
+                                    *   *
+
+There are three factors that influence the CPU usage of the regular bash
+plugins:
+
+1. The first factor is the frequency of the updates.  The more often wminfo
+   refreshes the information the higher the CPU usage is.
+
+2. The second factor is the complication of the plugin.  More complicated
+   plugins require more CPU power.
+
+3. The third factor takes place in the case of biff.wmi plugin.  The CPU
+   usage increases when biff.wmi plugin checks more mailboxes regardless of
+   the size of these mailboxes.
+
+The conky-dependent versions of some plugins use less of the CPU power than
+their bash equivalents so it is worth considering to use them instead of
+those ``classical plugins''.  As for the conky-dependent plugins there are
+four factors that influence the usage of the CPU:
+
+1. The frequency of the updates of the information determined in the wminfo
+   command -- the more frequently wminfo runs the plugin the more CPU power
+   it uses.
+
+2. The complication of the plugin -- more complicated plugins use more CPU
+   power.
+
+3. The frequency of the conky updates -- the more frequently conky updates
+   the information the more CPU power it uses.  In the default conky
+   configuration provided with the wminfo dockable application conky updates
+   the information every three seconds.
+
+4. The number of the conky entries -- the more factors conky monitors the
+   more CPU power it uses.  It is recommended to comment in the conky
+   configuration file all unused entries.
+
+I performed the benchmarks using wminfo-benchmark script for eight useful
+bash plugins compared to their conky-dependent equivalents:
+
+    bash plugins         |   CPU% | conky plugins        |   CPU%
+    ---------------------+--------+----------------------+--------
+    forecast.wroclaw.wmi |   6.76 | conky.forecast.wmi   |   1.12
+    netmon.wmi           |   4.99 | conky.netmon.wmi     |   1.20
+    sysmon.wmi           |   2.13 | conky.sysmon.wmi     |   1.44
+    thinkpad.wmi         |   3.75 | conky.thinkpad.wmi   |   0.98
+    timezone.wmi         |   1.53 | conky.timezone.wmi   |   1.18
+    top.wmi              |   1.12 | conky.top.wmi        |   1.17
+    uptime.wmi           |   0.62 | conky.uptime.wmi     |   0.61
+    weather.wmi          |   3.70 | conky.weather.wmi    |   1.08
+    ---------------------+--------+----------------------+--------
+    total                |  24.60 |                      |   8.78
+
+(In the case of weather.wmi, conky.forecast.wmi, and conky.weather.wmi
+plugins the additional commands strored in the headers were removed in order
+to test the plugin monitoring just one station.)
+
+The above test is not fair because bash plugins and conky plugins use
+different update times.
+
+The following table compares the performance of the bash plugins started
+with the default update times to the performance of the same plugins started
+with the update times scaled to level with the conky-dependent plugins
+update times:
+
+    bash plugins         | update |   CPU% | update |   CPU%
+    ---------------------+--------+--------+--------+--------
+    forecast.wroclaw.wmi |  5     |   6.76 |  6     |   5.66
+    netmon.wmi           |  5     |   4.99 |  3     |   7.05
+    sysmon.wmi           |  5     |   2.13 |  3     |   3.49
+    thinkpad.wmi         |  5     |   3.75 |  6     |   3.10
+    timezone.wmi         | 15     |   1.53 | 15     |   1.55
+    top.wmi              |  5     |   1.12 |  3     |   1.87
+    uptime.wmi           | 15     |   0.62 |  6     |   1.40
+    weather.wmi          |  5     |   3.70 |  6     |   3.12
+    ---------------------+--------+--------+--------+--------
+    total                |        |  24.60 |        |  27.24
+
+The conky-dependent plugins using 8.78% of the CPU power are over three
+times more economical in the comparison to their bash equivalents using
+27.24% of the CPU power.
+
+The following table compares eleven bash plugins to the set combined from
+four bash plugins and seven conky-dependent plugins (I use that set of the
+plugins all the time):
+
+    bash plugins                  |   CPU% | conky plugins                 |   CPU%
+    ------------------------------+--------+-------------------------------+--------
+    biff-cezary.wmi               |   2.05 | biff-cezary.wmi               |   2.04
+    date-pl.wmi                   |   4.20 | date-pl.wmi                   |   4.12
+    df.wmi                        |   0.76 | df.wmi                        |   0.73
+    netmon.wmi                    |   5.16 | conky.netmon.wmi              |   1.22
+    sysmon.wmi                    |   2.16 | conky.sysmon.wmi              |   1.45
+    thinkpad.wmi                  |   3.72 | conky.thinkpad.wmi            |   1.01
+    top.wmi                       |   1.19 | conky.top.wmi                 |   1.21
+    uptime.wmi                    |   0.62 | conky.uptime.wmi              |   0.63
+    wrapper-internet-allinone.wmi |   0.96 | wrapper-internet-allinone.wmi |   0.95
+    wrapper-sun-moon-tz.wmi       |   2.07 | conky.wrapper-sun-moon-tz.wmi |   2.02
+    wrapper-weather.wmi           |   3.36 | conky.wrapper-weather.wmi     |   1.42
+    ------------------------------+--------+-------------------------------+--------
+    total                         |  26.25 |                               |  16.80
+
+(During the above tests all wrapper-* and conky.wrapper-* plugins were set
+to the Manual_Mode equal "on".)
+
+The above test is not fair because bash plugins and conky plugins use
+different update times.
+
+The following table compares the performance of the bash plugins started
+with the default update times to the performance of the same plugins started
+with the update times scaled to level with the conky-dependent plugins
+update times:
+
+    bash plugins                  | update |   CPU% | update |   CPU%
+    ------------------------------+--------+--------+--------+--------
+    biff-cezary.wmi               |  5     |   2.05 |  5     |   2.00
+    date-pl.wmi                   |  1     |   4.20 |  1     |   4.11
+    df.wmi                        |  5     |   0.76 |  5     |   0.72
+    netmon.wmi                    |  5     |   5.16 |  3     |   6.73
+    sysmon.wmi                    |  5     |   2.16 |  3     |   3.49
+    thinkpad.wmi                  |  5     |   3.72 |  6     |   3.12
+    top.wmi                       |  5     |   1.19 |  3     |   1.89
+    uptime.wmi                    | 15     |   0.62 |  6     |   1.38
+    wrapper-internet-allinone.wmi | 15     |   0.96 | 15     |   0.96
+    wrapper-sun-moon-tz.wmi       | 15     |   2.07 | 15     |   2.05
+    wrapper-weather.wmi           |  6     |   3.36 |  6     |   3.41
+    ------------------------------+--------+--------+--------+--------
+    total                         |        |  26.25 |        |  29.86
+
+The set consisting of the conky-dependent plugins uses 16.80% of the CPU
+power and is over 1.75 times more economical in the comparison to the set
+consisting of the bash plugins only which use 29.86% of the CPU power.
+
+                                      *
+                                    *   *
+
+If you use Internet related wminfo plugins from plugins.online or
+plugins.offline directories except for the forecast.*.wmi, weather.wmi, and
+wrapper-* ones you do not have to worry about the CPU usage.  The wminfo
+alone and plugins that refresh the information every one-three minutes do
+not consume a lot of the power.
+
+The plugins from plugins.system directory use more CPU power so you can
+consider to use instead of them the conky dependent plugins from
+plugins.conky directory.
+
+In order to optimize the wminfo CPU usage I implemented the timing option --
+it determines the time of the idle states between the consecutive
+application window refreshings.  Allowed timing coefficient values are: 1,
+2, 4, 8, or 16.  These numbers are the multipliers of the 1/32 of a second
+(31250 microseconds) so the first is for 1/32 of a second and the last is
+for 1/2 of a second.  The lower timing coefficient values are for the faster
+responsiveness and the higher CPU usage; the higher timing coefficient
+values are for the slower responsiveness and the lower CPU usage.  The
+default timing is equal 4 which means the idle time equal 1/8 of a second:
+it combines a good responsiveness and a good performance.
+
+The following table compares the CPU usages of the wminfo sessions with the
+empty plugins and different timing coefficients:
+
+    timing | c-empty.wmi      | bash-empty.wmi
+    -------+------------------+------------------
+     1     | 0.17             | 0.18
+     2     | 0.09             | 0.11
+    -------+------------------+------------------
+     4     | 0.05             | 0.07
+    -------+------------------+------------------
+     8     | 0.03             | 0.05
+    16     | 0.02             | 0.03
+
+The complete results of the benchmarks performed on all plugins in the
+default settings are stored in the main README.benchmarks file.
+
+                                      *
+                                    *   *
+
+The other case are multi and wrapper plugins described in the main
+README.multi+wrapper file.  They combine a few sets of conky.conf entries
+(multi plugins) or a few regular plugins (wrapper plugins).
+
+Each multi or wrapper plugin has Manual_Mode variable set by default to
+"off":
+
+    Manual_Mode="off"
+
+When you switch it to:
+
+    Manual_Mode="on"
+
+the wminfo displays the first screen of the multi plugin only or it runs the
+first plugin only.  To see the consecutive screens or run the consecutive
+plugins you have to click the bottom right corner of the wminfo window.
+
+The following tables compare multi and wrapper plugins used in Manual_Mode
+set to "off" and "on":
+
+    multi plugins                 |  off  |  on
+    ------------------------------+-------+-------
+    conky.multi-system1.wmi       |  1.69 |  1.65
+    conky.multi-system2.wmi       |  1.70 |  1.65
+    conky.multi-time.wmi          |  1.70 |  1.64
+    ------------------------------+-------+-------
+
+    wrapper plugins               |  off  |  on
+    ------------------------------+-------+-------
+    conky.wrapper-sun-moon-tz.wmi |  1.65 |  2.01
+    conky.wrapper-weather.wmi     |  1.43 |  1.42
+    wrapper-currencies-pl.wmi     |  2.47 |  2.45
+    wrapper-date-pinboard.wmi     |  4.66 |  2.17
+    wrapper-date-tz.wmi           |  6.52 |  2.19
+    wrapper-df.wmi                |  1.26 |  1.20
+    wrapper-internet-allinone.wmi |  1.03 |  0.95
+    wrapper-logfiles.wmi          |  1.49 |  1.47
+    wrapper-sun-moon-tz.wmi       |  1.85 |  2.02
+    wrapper-weather.wmi           |  6.06 |  6.13
+    ------------------------------+-------+-------
+
+The results of the benchmarks for the same wrapper plugins when the
+Manual_Mode is set to "off" compared to the results when the Manual_Mode is
+set to "on" can be similar, lower, or higher.  That depends on the plugin
+which is set as the first in the configuration section of the wrapper.  If
+it uses as much of the CPU power as the other plugins registered in the
+wrapper the results are similar.  If it uses less or more of the CPU power
+than the other plugins the results of the tests performed when the
+Manual_Mode is set to "on" are respectively better or worse than the results
+of the tests when the Manual_Mode is set to "off".
+
+                                      *
+                                    *   *
+
+The following table lists the plugins which I use all the time together with
+their dockapp replacements:
+
+    wminfo plugins                | dockapps
+    ------------------------------+------------------------------
+    biff-cezary.wmi               | wmbiff
+    date-pl.wmi                   | wmCalClock
+    df.wmi                        | pywmhdmon
+    conky.netmon.wmi              | wmnet
+    conky.sysmon.wmi              | wmsm.app
+    conky.thinkpad.wmi            | wmpower+
+    conky.top.wmi                 | wmtop
+    conky.uptime.wmi              | wmsm.app
+    wrapper-internet-allinone.wmi | -
+    conky.wrapper-sun-moon-tz.wmi | wmSun, wmMoonClock, wmtz
+    conky.wrapper-weather.wmi     | wmweather+
+
+Of course the above wminfo plugins and the dockable applications are not the
+exact equivalents.  Most wminfo plugins provide more information than their
+replacements but they do not offer a graphical representation of the
+displayed data except for the simple progress bars.
+
+The date-pl.wmi plugin is the localized version of the date-us.wmi plugin
+customized to the needs of the Polish-language users.  The date.wmi plugin
+uses less of the CPU power than either of the mentioned plugins and it is
+closer equivalent of the wmCalClock dockapp.
+
+The bash wrapper wrapper-internet-allinone.wmi plugin combines three
+plugins: slackware-patches.wmi, currencies-pl-buy.wmi, and
+currencies-pl-sell.wmi.  Both conky wrappers combine two plugins.  The
+conky.wrapper-sun-moon-tz.wmi plugin combines sun-moon.wmi and
+conky.timezone.wmi plugins.  The conky.wrapper-weather.wmi plugin combines
+conky.weather.wmi and conky.forecast.wmi plugins.
+
+I use all these wrappers with Manual_Mode set to "on" so the first displays
+by default incoming Slackware Linux patches, the second displays sun and
+moon rise and set times, and the third displays the weather report.
+
+In order to switch the first plugin to display the currencies exchange rates
+of Polish zloty, the second to display the time in the selected time zones,
+or the third to display the weather forecast it is enough to click the
+bottom right corner of the wminfo window.
+
+I tested both these sets of the dockable applications using the command:
+
+    top -b -n 40 | grep '^Cpu' | sort -n
+
+Here are the minimal, median and maximal values of the CPU usage recorded
+during these tests (the values in the table are the sums of the CPU usage
+for user and system):
+
+           | wminfo plugins        | dockapps
+           +-------+-------+-------+-------+-------+-------
+    timing |  min  |  med  |  max  |  min  |  med  |  max
+    -------+-------+-------+-------+-------+-------+-------
+     1     | 13.8  | 15.6  | 19.9  |       |       |
+     2     |  9.0  | 11.5  | 14.9  |       |       |
+    -------+-------+-------+-------+       |       |
+     4     |  7.1  |  9.5  | 13.1  |  2.8  |  3.2  |  3.7
+    -------+-------+-------+-------+       |       |
+     8     |  6.4  |  8.3  | 12.3  |       |       |
+    16     |  5.7  |  8.2  | 13.5  |       |       |
+
+Before the above tests I killed DHCP connection and stopped wicd daemon in
+order to disable the CPU power consuming applications such as online script
+or testmail.  During the tests I used date.wmi plugin instead of date-pl.wmi
+because the former one is a closer equivalent of wmCalClock, and I do not
+started wrapper-internet-allinone.wmi plugin because he has not a dockapp
+equivalent.  I do not started also wmtz dockapp because
+conky.wrapper-sun-moon-tz.wmi plugin displayed the sun and moon data only
+(the first screen) and I used wmweather instead of wmweather+ because
+conky.wrapper-weather.wmi plugin displayed the weather report only (first
+two screens).
+
+Attention: when you test the wminfo plugins which consume more of the CPU
+power with the different timings the results for the high timings such as 8
+and 16 can be similar because these plugins use so much of the CPU power
+that the savings caused by the higher timings become unnoticeable.
+
+Here are the results of the benchmark performed for my eleven plugins with
+the wminfo-benchmark:
+
+    my plugins                    |   CPU%
+    ------------------------------+--------
+    biff-cezary.wmi               |   1.99 *
+    date-pl.wmi                   |   4.17
+    df.wmi                        |   0.72
+    conky.netmon.wmi              |   1.25
+    conky.sysmon.wmi              |   1.43
+    conky.thinkpad.wmi            |   0.97
+    conky.top.wmi                 |   1.18
+    conky.uptime.wmi              |   0.62
+    wrapper-internet-allinone.wmi |   0.95
+    conky.wrapper-sun-moon-tz.wmi |   2.02
+    conky.wrapper-weather.wmi     |   1.41
+    ------------------------------+--------
+    total                         |  16.71
+
+* biff-cezary.wmi monitors five mailboxes.
+
+I performed also the benchmark for the default timing 4 with the
+wminfo-benchmark using the same set of ten plugins which I used before to
+determine the minimal, median, and maximal values of the CPU usage (I
+replaced date-pl.wmi plugin by date.wmi one and I omitted the
+wrapper-internet-allinone.wmi plugin):
+
+    my plugins                    |   CPU%
+    ------------------------------+--------
+    total                         |  14.38
+
+The result of that last test (14.38%) is close to the maximal value of the
+first test described in that section (13.10% for the timing equal 4).  So
+the results of the tests performed with the wminfo-benchmark show the
+maximal values of the CPU usage while the median value is significantly
+lower (9.50% in the case of the timing equal 4).  Therefore we can use
+wminfo-benchmark to compare different plugins or the sets of the plugins but
+it can not help us to draw the conclusions about the actual CPU usage
+specific to the tested plugins.
+
+To check the median CPU usage use the command:
+
+    top -b -n 40 | grep '^Cpu' | sort -n
+
+To check the average CPU usage use the command:
+
+    mpstat 3 40
+
+In both cases add the values of the CPU usage for user and system in order
+to determine the total CPU usage.
+
+These tests show the reliable results but the disadvantage of that method is
+that you have to switch the system to the idle state running just Window
+Maker, a terminal, and the tested plugins in order to avoid the overstated
+results caused by the other running programs.
+
+                                      *
+                                    *   *
+
+All the above tests were performed on IBM/Lenovo ThinkPad X60s using
+Intel(R) Core(TM) Duo CPU T2400 @ 1.66GHz.
+

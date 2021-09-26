@@ -1,0 +1,25 @@
+
+wminfo README.conky.diskmon.wmi
+
+
+The conky.diskmon.wmi plugin displays the following information:
+
+1. The name of the monitored disk.
+2. The ioscheduler used for the given disk and disk protection status.
+3. The current disk IO (reads plus writes).
+4. The current disk IO for reads.
+5. The current disk IO for writes.
+
+In wminfo window it looks like:
+
+    +---------+
+    |SDA      |
+    |CFQ/FREE |
+    |IO: 14.0K|
+    |RD: 4.67K|
+    |WR: 9.33K|
+    +---------+
+
+Using the technique described in the main README.multi+wrapper file you can
+combine in one plugin the monitors of a few disks.
+

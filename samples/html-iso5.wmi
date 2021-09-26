@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# wminfo plugin: tests HTML entities conversion to ISO-8859-5
+# command: wminfo -p html-iso5.wmi -i 5
+
+links -source html.html | \
+    perl -pe 's/\n/ /g;s/</\n</g' | \
+    grep 'CLASS' | sed 's/<.*>//;' | \
+    html-iso5

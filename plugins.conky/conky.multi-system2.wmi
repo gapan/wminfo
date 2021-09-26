@@ -1,0 +1,90 @@
+#!/bin/bash
+
+# wminfo plugin: displays MULTI-SYSTEM2 information set in multi-screen mode
+
+# command: wminfo -p conky.multi-system2.wmi -u 3 -b#000000 -f#ff0000
+
+# the script based on an idea by Peter Trenholme
+
+#
+# CONFIGURATION SECTION BEGINS HERE
+#
+
+Plugins_Suite="MULTI-SYSTEM2"
+Steps="2"
+Round_Down="off"
+Manual_Mode="off"
+
+#
+# CONFIGURATION SECTION ENDS HERE
+#
+
+datafile="$HOME/.wminfo/conky.tmp"
+name=${0//*\//}
+name=${name/.wmi/}
+tempfile="$HOME/.wminfo/.counter.$name.tmp"
+plugin="$0"
+
+if [ -z "$(grep "^${Plugins_Suite}: " "${datafile}")" ]
+then
+cat <<EOF
+$plugin: no "${Plugins_Suite}" entries were found in ${datafile} file.
+         
+         
+         
+         
+EOF
+    exit
+fi
+
+plugin=".${plugin//*\/}"
+
+if [ ! -e $tempfile ]
+then
+    step=0
+    echo step=$step > $tempfile
+fi
+
+. $tempfile
+
+if [ "$Round_Down" = "on" ]
+then
+    replace="s/\.[0-9]+//;"
+else
+    replace="s/\.[0-9]([BKMGT])/\1/g;s/\.([0-9])[0-9]/.\1/;"
+fi
+
+if [ "$Manual_Mode" == "off" ] || [ -e "$HOME/.wminfo/$plugin" ]
+then
+    if [ $step -ge $Steps ]
+    then
+	step=0
+	echo step=$step > $tempfile
+    fi
+
+    step=$((step + 1))
+    echo step=$step > $tempfile
+
+    if [ -e "$HOME/.wminfo/$plugin" ]
+    then
+	rm "$HOME/.wminfo/$plugin"
+    fi
+elif [ "$Manual_Mode" == "on" ]
+then
+    if [ $step -eq 0 ]
+    then
+	step=1
+	echo step=$step > $tempfile
+    fi
+fi
+
+first=$((($step-1)*5+1))
+last=$(($step*5))
+the_next=$(($step*5+1))
+
+string="${first},${last}p;${the_next}q"
+
+grep "^${Plugins_Suite}: " $datafile | sed -n "$string" | sed -E "${replace}s/^${Plugins_Suite}: //;s/_/ /g;s/#/|/g"
+
+echo "         "
+

@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# wminfo plugin: binary clock (4-bits version by H_TeXMeX_H)
+
+# command: wminfo -p binclock-vertical-03.bin -u 1 -b#000000 -f#ffff00
+
+# this is an empty script containg the command for the binary plugin
+

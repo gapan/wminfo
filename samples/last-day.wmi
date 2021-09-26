@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# wminfo plugin: runs the action the last day of the month
+
+# command: wminfo -p last-day.wmi -u 00:00:00 -b#000000 -f#ffff00
+
+today=`date +%d`
+tomorrow=`date +%d -d "1 day"`
+
+if [ $tomorrow -lt $today ]
+then
+    echo "$0: Last day of the month."
+else
+    echo "$0: Any but the last day of the month."
+fi
+

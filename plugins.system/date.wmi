@@ -2,11 +2,36 @@
 
 # wminfo plugin: clock and calendar
 
-# Attention: %V switch assumes the week begins in Monday
-#            for week beginning in Sunday use %U switch;
-#            if you prefer the hour in AM/PM format use
-#            instead of: %H:%M:%S the string: %I:%M:%S%p
+# command: wminfo -p date.wmi -u 1 -b#000000 -f#ffff00
 
-# command: wminfo -p date.wmi -u 1 -s 0 -b#000000 -f#ffff00
+#
+# CONFIGURATION SECTION BEGINS HERE
+#
 
-date +"%H:%M:%S %n%A%n%b  %d%nweek %V%nyear %Y"
+Week_Starts="Monday"	# "Monday" or "Sunday"
+
+AM_PM="off"
+
+#
+# CONFIGURATION SECTION ENDS HERE
+#
+
+if [ "$Week_Starts" == "Monday" ]
+then
+    Week="%W"
+elif [ "$Week_Starts" == "Sunday" ]
+then
+    Week="%U"
+else
+    echo "date.wmi: invalid Week_Starts variable."
+fi
+
+if [ "$AM_PM" == "on" ]
+then
+    date +"%I:%M:%S%p %n%A%n%b  %d%nweek $Week%nyear %Y"
+else
+    date +"%H:%M:%S %n%A%n%b  %d%nweek $Week%nyear %Y"
+fi
+
+echo "         "
+

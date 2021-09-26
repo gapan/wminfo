@@ -1,0 +1,73 @@
+#!/bin/bash
+
+# wminfo plugin: displays weather forecasts for today and tomorrow
+
+# command: wminfo -p forecast.wroclaw.wmi -u 5s -i 1 -b#1d2c4b -f#ffffff
+
+#
+# CONFIGURATION SECTION BEGINS HERE
+#
+
+## Location="10007" ; Translation="New York"
+## Location="AFR|GH|GH000|ACCRA"
+Location="EUR|PL|PL001|WROCLAW"
+## Location="ASI|RU|RS052|MOSCOW"
+## Location="ASI|IN|IN036|KOLKATA"
+## Location="OCN|AU|NSW|SYDNEY"
+
+#
+# CONFIGURATION SECTION ENDS HERE
+#
+
+if [ "`which forecast 2> /dev/null`" == "" ]
+then
+    echo "$0: put forecast script into PATH."
+    echo -e "         \n         \n         \n         \n"
+    exit
+fi
+
+if [ "`echo $Location | grep '[A-Z]'`" != "" ]
+then
+    city="`echo $Location | perl -pe 's/.*\|//'`"
+    country=`echo $Location | perl -pe 's/.*?\|//;s/\|.*//'`
+    location="$city.$country"
+else
+    location="$Location"
+fi
+
+counter="$HOME/.wminfo/.counter.forecast.$location.tmp"
+
+if [ ! -s $counter ] || [ ! -e "$counter" ]
+then
+    echo "step=1" > "$counter"
+fi
+
+. "$counter"
+
+if [ "$step" == "1" ]
+then
+    date=today
+    echo "step=2" > "$counter"
+elif [ "$step" == "2" ]
+then
+    date=tomorrow
+    echo "step=1" > "$counter"
+fi
+
+FORECAST="`forecast "$Location" $date`"
+
+if [ "$Translation" != "" ]
+then
+    FORECAST="`echo $FORECAST | sed "s/$Location/$Translation/"`"
+fi
+
+if [ "$FORECAST" == "" ]
+then
+    echo "$0: there's no given location or there's no Internet connection."
+    echo -e "         \n         \n         \n         "
+    exit
+fi
+
+echo "$FORECAST" | perl -pe "s#$city\.$country#$city       $country#;s#: #       : #;s#: #\n#g;s#High #Hi: #;s#Low #Lo: #;s#: -#:-#g"
+echo -e "         \n         \n         \n         \n         "
+

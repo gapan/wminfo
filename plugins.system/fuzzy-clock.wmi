@@ -1,0 +1,104 @@
+#!/bin/bash
+
+# wminfo plugin: clock writing the time in plain English
+
+# command: wminfo -p fuzzy-clock.wmi -u 1m -s 0 -k -b#000000 -f#ffff00
+
+time=$(date +"%_I%_M%p")
+
+hour=${time:0:2}
+minute=${time:2:2}
+tens=${minute:0:1}
+units=${minute:1:1}
+meridiem=${time:4:2}
+
+ hour[1]="one"
+ hour[2]="two"
+ hour[3]="three"
+ hour[4]="four"
+ hour[5]="five"
+ hour[6]="six"
+ hour[7]="seven"
+ hour[8]="eight"
+ hour[9]="nine"
+hour[10]="ten"
+hour[11]="eleven"
+hour[12]="twelve"
+HOUR=${hour[$hour]}
+
+if [ $hour -eq 12 ] && [ $minute -gt 0 ] && [ "$meridiem" == "AM" ]
+then
+    HOUR="zero"
+fi
+
+if [ $minute -eq 0 ]
+then
+    MINUTE=" \n "
+elif [ $minute -gt 0 ] && [ $minute -le 19 ]
+then
+     minute[1]="oh one"
+     minute[2]="oh two"
+     minute[3]="oh three"
+     minute[4]="oh four"
+     minute[5]="oh five"
+     minute[6]="oh six"
+     minute[7]="oh seven"
+     minute[8]="oh eight"
+     minute[9]="oh nine"
+    minute[10]="ten"
+    minute[11]="eleven"
+    minute[12]="twelve"
+    minute[13]="thirteen"
+    minute[14]="fourteen"
+    minute[15]="fifteen"
+    minute[16]="sixteen"
+    minute[17]="seventeen"
+    minute[18]="eighteen"
+    minute[19]="nineteen"
+    MINUTE="${minute[$minute]}\n "
+else
+    tens[2]="twenty"
+    tens[3]="thirty"
+    tens[4]="forty"
+    tens[5]="fifty"
+    if [ $units -gt 0 ]
+    then
+	units[1]="one"
+	units[2]="two"
+	units[3]="three"
+	units[4]="four"
+	units[5]="five"
+	units[6]="six"
+	units[7]="seven"
+	units[8]="eight"
+	units[9]="nine"
+    else
+	   units=" "
+    fi
+    MINUTE="${tens[$tens]}\n${units[$units]}"
+fi
+
+if [ "$meridiem" == "AM" ]
+then
+    MERIDIEM="\na.m."
+elif [ "$meridiem" == "PM" ]
+then
+    MERIDIEM="\np.m."
+fi
+
+if [ $hour -eq 12 ] && [ $minute -eq 0 ]
+then
+    if [ "$meridiem" == "AM" ]
+    then
+	MINUTE="midnight\n "
+    elif [ "$meridiem" == "PM" ]
+    then
+	MINUTE="noon\n "
+    fi
+    MERIDIEM="\n "
+fi
+
+TIME="$HOUR\n$MINUTE\n$MERIDIEM"
+
+echo -e "$TIME"
+

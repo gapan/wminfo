@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# wminfo plugin: Swatch Internet Time
+
+# command: wminfo -p beatclock.wmi -u 1 -b#000000 -f#ffff00
+
+time=$(TZ="GMT-1" date +"%H %M %S")
+
+HH=${time%% *}
+HH=${HH/#0}
+HH=$(($HH*3600))
+
+MM=${time#* }
+MM=${MM% *}
+MM=${MM/#0}
+MM=$(($MM*60))
+
+SS=${time##* }
+SS=${SS/#0}
+
+seconds=$(($HH+$MM+$SS))
+
+centibeats=000$(($seconds*11574074%1000000000+5000000))
+correction=${centibeats: -10:1}
+centibeats=${centibeats: -9:2}
+
+beats=00$(($seconds*11574074/1000000000+$correction))
+beats=${beats: -3}
+
+echo -e "         \n         \n @$beats.$centibeats"
+

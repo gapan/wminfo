@@ -2,9 +2,7 @@
 
 # wminfo plugin: displays time in different time zones
 
-# Attention: this is universal version of the plugin for all regions
-
-# command: wminfo -p timezone.wmi -u 60 -b#000000 -f#ffff00
+# command: wminfo -p timezone.wmi -u 60s -b#000000 -f#ffff00
 
 #
 # CONFIGURATION SECTION BEGINS HERE
@@ -15,8 +13,6 @@ DateFormat="MM-DD"	# MM-DD for "month-day"
 			# DD MM for "day month"
 			# etc.
 
-CompactFormat="off"	# "on" or "off"
-
 #
 # CONFIGURATION SECTION ENDS HERE
 #
@@ -24,7 +20,7 @@ CompactFormat="off"	# "on" or "off"
 if [ -e timezone.cfg ]
 then
     timezonefile="timezone.cfg"
-elif [ -e $HOME/bin/timezone.cfg ]
+elif [ -e "$HOME/bin/timezone.cfg" ]
 then
     timezonefile="$HOME/bin/timezone.cfg"
 elif [ -e /usr/local/bin/timezone.cfg ]
@@ -35,196 +31,68 @@ else
     exit
 fi
 
-dateseparator=`echo $DateFormat | sed -E 's/..(.)../\1/'`
-DateFormat=`echo $DateFormat | sed -E 's/(..).(..)/\1.\2/'`
+dateseparator=${DateFormat: -3:1}
+DateFormat=${DateFormat: -5:2}${DateFormat:3}
 
-utchour=`date -u +"%_H"`
-if [ $utchour -eq 0 ]
-then
-    utchour=24
-fi
+the_day_before_yesterday=`date --date="-2 days" +"%m-%d"`
+yesterday=`date --date="yesterday" +"%m-%d"`
+today=`date +"%m-%d"`
+tomorrow=`date --date="tomorrow" +"%m-%d"`
+the_day_after_tomorrow=`date --date="+2 days" +"%m-%d"`
 
-localhour=`date +"%_H"`
-localminute=`date +"%M"`
+function compactformat {
+    if [ "$date" == "$the_day_before_yesterday" ]
+    then
+	time=$time=
+    elif [ "$date" == "$yesterday" ]
+    then
+	time=$time-
+    elif [ "$date" == "$today" ]
+    then
+	time="$time "
+    elif [ "$date" == "$tomorrow" ]
+    then
+	time=$time+
+    elif [ "$date" == "$the_day_after_tomorrow" ]
+    then
+	time=$time#
+    fi
+}
 
-timezone="`date +"%z" | sed -E 's/(.)(..)(..)/\1\2/;s/(.)0(.)/\1\2/'`"
-if [ $timezone -eq 14 ]
-then
-    timezone=-10
-fi
+function dateformat {
+    if [ "$DateFormat" == "DDMM" ]
+    then
+	date=${date:3}${dateseparator}${date: -5:2}
+    fi
+}
 
-dateline=`date -d NZDT +"%H:%M"`
-
-datelinehour=`echo $dateline | cut -d ":" -f 1`
-datelineminute=`echo $dateline | cut -d ":" -f 2`
-if [ $datelinehour -eq 0 ]
-then
-    datelinehour=24
-fi
-
-today=`date +"%m%d"`
-
-backupminute=`date +"%M"`
-
-for tz in `cat $timezonefile | grep -v '^#' | awk '{print $1}'`
+for tz in `cat $timezonefile | awk '!/^#/{print $1}'`
 do
-    minute="$backupminute"
-
-    if [ "`echo $tz | grep 'GMT'`" != "" ]
+    if [ "`echo $tz | grep '^GMT'`" != "" ]
     then
-	timediff=`date -d $tz +"%H%M"`
-	tzhour=`echo $timediff | sed -E 's/(..)../\1/'`
-	tzminute=`echo $timediff | sed -E 's/..(..)/\1/'`
-	tz=`cat $timezonefile | grep -v '^#' | grep "^$tz[[:space:]]" | awk '{print $2}'`
-    elif [ "`echo $tz | grep -E '[A-Z]'`" != "" ]
-    then
-	timediff=`date -d $tz +"%H%M"`
-	tzhour=`echo $timediff | sed -E 's/(..)../\1/'`
-	tzminute=`echo $timediff | sed -E 's/..(..)/\1/'`
-    elif [ "`echo $tz | grep ':'`" != "" ]
-    then
-	timediff=`echo $tz | sed 's/://'`
-	tzhour=`echo $timediff | sed -E 's/(.?.)../\1/'`
-	tzminute=`echo $timediff | sed -E 's/.?.(..)/\1/'`
-	tz=`cat $timezonefile | grep -v '^#' | grep -E "^$tzhour:$tzminute[[:space:]]" | awk '{print $2}'`
+	timestring=`TZ="$tz" date +"%H:%M %m-%d"`
+	time=${timestring: -11:5}
+	date=${timestring: -5:5}
+	compactformat
+	dateformat
+	zone=`grep $tz $timezonefile | awk '{print $2}'`
+	if [ "$zone" == "" ]
+	then
+	    zone=`echo $tz | sed 's/GMT//'`
+	fi
     else
-	timediff="${tz}00"
-	tzhour="$tz"
-	tzminute="00"
-	tz=`cat $timezonefile | grep -v '^#' | grep -E "^$tzhour[[:space:]]" | awk '{print $2}'`
-    fi
-
-    if [ $tzhour -eq 0 ]
-    then
-	tzhour=24
-    fi
-
-    if [ "$CompactFormat" == "on" ]
-    then
-	tz=`echo $tz | sed -E 's/(..).*/\1/'`
-    else
-	tz=`echo $tz | sed -E 's/(...).*/\1/'`
-    fi
-
-    tzhour=`echo $tzhour | sed -E 's/^0(.)/\1/'`
-    let "hour=$utchour-$tzhour+$timezone"
-
-    if [ $hour -ge 24 ]
-    then
-	let "hour=$hour-24"
-    fi
-
-    while [ $hour -lt 0 ]
-    do
-	let "hour=$hour+24"
-    done
-
-    if [ $hour -lt 10 ]
-    then
-	hour=0$hour
-    fi
-
-    testhour=$hour
-    testminute=$minute
-
-    if [ $testhour -eq 0 ]
-    then
-	testhour=24
-    fi
-
-    if [ $tzminute -eq 0 ]
-    then
-	if [ $localhour$localminute -ge $tzhour$tzminute ] && [ $tzhour$tzminute -ge $datelinehour$datelineminute ]
+	timestring=`TZ="$tz" date +"%Z %H:%M %m-%d"`
+	time=${timestring: -11:5}
+	date=${timestring: -5:5}
+	compactformat
+	dateformat
+	zone=`grep $tz $timezonefile | awk '{print $2}'`
+	if [ "$zone" == "" ]
 	then
-	    date=`date -d tomorrow +"%m.%d"`
-	elif [ $localhour$localminute -lt $tzhour$tzminute ] && [ $localhour$localminute -lt $testhour$testminute ] && [ $tzhour$tzminute -lt $datelinehour$datelineminute ]
-	then
-	    date=`date -d yesterday +"%m.%d"`
-	else
-	    date=`date +"%m.%d"`
-	fi
-	
-	time="$hour:$minute"
-	
-	if  [ $datelineminute -eq 30 ]&& [ $minute -ge 30 ]
-	then
-	    time=`date -d "$hour$minute" +"%H:%M"`
-	elif [ $datelineminute -eq 30 ]
-	then
-	    time=`date -d "$hour$minute +60 minutes" +"%H:%M"`
-	fi
-	hour=`echo $time | cut -d ":" -f 1`
-	minute=`echo $time | cut -d ":" -f 2`
-    elif [ $tzminute -eq 30 ]
-    then
-	date=`date -d "$hour$minute -30 minutes" +"%m.%d"`
-
-	if [ $localhour$localminute -ge $tzhour$tzminute ] && [ $tzhour$tzminute -ge $datelinehour$datelineminute ]
-	then
-	    date=`date -d "$hour$minute tomorrow" +"%m.%d"`
-	elif [ $localhour$localminute -lt $tzhour$tzminute ] && [ $localhour$localminute -lt $testhour$testminute ] && [ $tzhour$tzminute -lt $datelinehour$datelineminute ]
-	then
-	    date=`date -d "$hour$minute yesterday" +"%m.%d"`
-	elif [ $hour$minute -lt 30 ] || [ $datelineminute -eq 30 ]
-	then
-	    date=`date -d "$hour$minute today" +"%m.%d"`
-	fi
-
-	time=`date -d "$hour$minute -30 minutes" +"%H:%M"`
-
-	if [ $datelineminute -eq 30 ] && [ $minute -ge 30 ]
-	then
-	    time=`date -d "$hour$minute -30 minutes" +"%H:%M"`
-	elif [ $datelineminute -eq 30 ]
-	then
-	    time=`date -d "$hour$minute +30 minutes" +"%H:%M"`
-	fi
-	hour=`echo $time | cut -d ":" -f 1`
-	minute=`echo $time | cut -d ":" -f 2`
-
-	if [ $datelineminute -eq 30 ] && [ $hour$minute -ge 2330 ] && [ $hour$minute -gt $localhour$localminute ] && [ $tzhour$tzminute -eq 2430 ]
-	then
-	    date=`date -d "$hour$minute yesterday" +"%m.%d"`
+	    zone=${timestring:0:3}
 	fi
     fi
-
-	sometime=`echo $date | sed -E 's/(..)\.(..)/\1\2/'`
-
-	if [[ $today -eq 1231 && $sometime -eq 0101 ]]
-	then
-	    datecorrection="+"
-	elif [ $today -gt $sometime ] || [[ $today -eq 0101 && $sometime -eq 1231 ]]
-	then
-	    datecorrection="-"
-	elif [ $today -lt $sometime ]
-	then
-	    datecorrection="+"
-	else
-	    datecorrection=" "
-	fi
-
-    if [ $hour -lt 0 ]
-    then
-	let "hour=$hour+24"
-    fi
-
-    if [ "$DateFormat" == "DD.MM" ]
-    then
-	date=`echo $date | sed -E 's/(..)\.(..)/\2.\1/'`
-    fi
-
-    time="$hour:$minute"
-
-    left=`echo $date | sed -E 's/(..).../\1/'`
-    right=`echo $date | sed -E 's/...(..)/\1/'`
-    date="${left}${dateseparator}${right}"
-
-    if [ "$CompactFormat" == "on" ]
-    then
-	echo "$tz ${time}${datecorrection} $date"
-    else
-	echo "$tz $time $date"
-    fi
+    echo "$zone $time $date"
 done
 
 echo

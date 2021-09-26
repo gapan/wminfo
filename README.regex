@@ -1,0 +1,615 @@
+
+wminfo README.regex
+
+
+The wminfo update switch recognizes three types of the parameters:
+
+1) update frequencies in seconds (they rerun the plugin after the given
+   period of the time),
+
+2) time related regular expressions (they rerun the plugin at the given
+   time),
+
+3) the codes associated with the predefined frequently used regular
+   expressions.
+
+If you would like to run the plugin at a given time but you do not want to
+bother with the regular expressions use instead the predefined codes:
+
+    code | regex
+    -----+--------------------------------------------------------------------
+      1s | "it is an alias for the update interval equal 1 second"
+      2s | ":..:.[02468]"
+      3s | ":..:([03][0369]|[14][258]|[25][147])"
+      4s | ":..:([024][048]|[135][26])"
+      5s | ":..:.[05]"
+      6s | ":..:([03][06]|[14][28]|[25]4)"
+      8s | ":.([02468]:([04][08]|[15]6|24|32)|[13579]:([04]4|[15]2|2[08]|36))"
+     10s | ":..:.0"
+     12s | ":..:(00|12|24|36|48)"
+     15s | ":..:([03]0|[14]5)"
+     20s | ":..:[024]0"
+     30s | ":..:[03]0"
+     60s | ":..:00"
+      1m | ":..:00"
+      2m | ":.[02468]:00"
+      3m | ":([03][0369]|[14][258]|[25][147]):00"
+      4m | ":([024][048]|[135][26]):00"
+      5m | ":.[05]:00"
+      6m | ":([03][06]|[14][28]|[25]4):00"
+     10m | ":.0:00"
+     12m | ":(00|12|24|36|48):00"
+     15m | ":([03]0|[14]5):00"
+     20m | ":[024]0:00"
+     30m | ":[03]0:00"
+     60m | ":00:00"
+      1h | ":00:00"
+      2h | ".[02468]:00:00"
+      3h | "(0[0369]|1[258]|21):00:00"
+      4h | "(0[048]|1[26]|20):00:00"
+      6h | "(0[06]|1[28]):00:00"
+      8h | "(0[08]|16):00:00"
+     12h | "(00|12):00:00"
+     24h | "00:00:00"
+      1d | "00:00:00"
+
+(The periods longer than one day used as the update intervals are not too
+practical.  If you need them use the combination of a regular expression
+passed to the wminfo with a regular expression passed to the plugin -- see:
+the timestring script description below.)
+
+To display the above codes use the command:
+
+    wminfo -u "?"
+
+The command using the update frequency:
+
+    wminfo -p sysmon.wmi -u 5
+
+reruns the plugin every 5 seconds while the command using the code:
+
+    wminfo -p sysmon.wmi -u 5s
+
+reruns it when the number of the seconds is divisible by 5.
+
+The same result gives the command using the regular expression:
+
+    wminfo -p sysmon.wmi -u ":..:.[05]"
+
+To learn more about the regular expressions read the entire present document.
+
+                                      *
+                                    *   *
+
+Depending on its format the update parameter is interpreted as the number of
+the seconds or as a regular expression related to the time string.
+
+For example the command:
+
+    wminfo -u 2 date.wmi
+
+forces wminfo to rerun the plugin every two seconds and the command:
+
+    wminfo -p iching.wmi -u 86400 -i 1
+
+forces it to rerun the plugin every 24 hours (86,400 seconds).
+
+The above commands use the update frequencies in seconds.
+
+For the comparison the command:
+
+    wminfo -u ":..:.[02468]" date.wmi
+
+forces wminfo to rerun the plugin when the number of the seconds is
+divisible by 2 and the command:
+
+    wminfo -p iching.wmi -u "00:00:00" -i 1
+
+forces it to rerun the plugin at midnight.
+
+The difference between the two types of the update arguments becomes crucial
+when you try to rerun the plugin clicking the lower right corner of the
+wminfo window.  The iching.wmi plugin started with 86400 update parameter
+refreshes the window immediately and starts to count the new 86,400 seconds
+long period from that very moment while the same plugin started with
+00:00:00 update parameter waits with the refreshing of the screen till the
+midnight.
+
+The regular expressions accepted by wminfo are related to the time string
+such as:
+
+    Wed 01-23 18:04:15 2013 03 023
+
+so the format of the time string is:
+
+    weekday month-day hours:minutes:seconds year week_number day_of_the_year
+
+By default the programs assumes that the week starts on Monday.  In order to
+switch the beginning of the week to Sunday change in the code of the regex.c
+and wminfo.c:
+
+    char *week_starts = {"Mon"};
+
+to:
+
+    char *week_starts = {"Sun"};
+
+As a result the program uses instead of:
+
+    %a %m-%d %H:%M:%S %Y %W %j
+
+the string:
+
+    %a %m-%d %H:%M:%S %Y %U %j
+
+The wminfo recognizes the accepted regular expressions when it finds in the
+update parameter the colon, the space, the dash, or the weekday name
+abbreviation:
+
+    [SMTWF: -]
+
+So the command such as:
+
+    wminfo -u 2013 plugin.wmi
+
+reruns the plugin every 2013 seconds, while the command such as:
+
+    wminfo -u " 2013" plugin.wmi
+
+reruns the plugin just once in year 2013.
+
+To check the regular expressions with the plugin you can use date.wmi one. 
+The following command reruns date.wmi plugin every 5 seconds:
+
+    wminfo -p date.wmi -u ":..:.[05]"
+
+Valid regular expressions samples:
+
+    regex                 | reruns the plugin periodically
+    ----------------------+---------------------------------------------------
+    :..:.[05]             | every 5 seconds
+    :..:.0                | every 10 seconds
+    ":..:([03]0|[14]5)"   | every 15 seconds
+    :..:[03]0             | every 30 seconds
+    :..:00                | every minute
+    :.[05]:00             | every 5 minutes
+    :.0:00                | every 10 minutes
+    ":([03]0|[14]5):00"   | every 15 minutes
+    :[03]0:00             | every 30 minutes
+    :00:00                | every hour
+    .[02468]:00:00        | every 2 hours
+    00:00:00              | everyday
+
+The program:
+
+1) seeks for the regular expression in the time string,
+
+2) reruns the plugin when it finds it,
+
+3) waits until the regular expression will stop to match,
+
+4) seeks for the regular expression in the time string anew.
+
+The feature implemented in the third step prevents the program from matching
+the regular expression and rerun the plugin continuously.  As a result some
+regular expressions do not work as expected.
+
+Invalid regular expressions samples:
+
+    regex                 | reruns the plugin just once
+    ----------------------+---------------------------------------------------
+    :..:..                | that regex matches always so can not be reset
+    :..:                  | similar as above
+    :[0-9]+:              | the same as above
+    ..:..:                | similar as above
+    -..                   | similar as above
+    ..-                   | similar as above
+    [0-9]{4}              | similar as above
+    [MoTuWeThFr]          | that regex matches continuously without the reset
+    "Sat|Sun"             | similar as above
+
+So you have to use in the regular expression at least one unambigious sign
+because you can not cover the entire range of the numbers or characters in
+all the fields and you can not set the continuous periods such as "Sat|Sun".
+
+    instead of            | use              | in order to rerun the plugin
+    ----------------------+------------------+--------------------------------
+    :..:..                | 1                | every second (it is not regex)
+    :..:                  | :..:00           | once a minute
+    :[0-9]+:              | :..:00           | once a minute
+    ..:..:                | :00:00           | once an hour
+    -..                   | 00:00:00         | once a day
+    ..-                   | -01.*00:00:00    | once a month
+    [0-9]{4}              | 01-01.*00:00:00  | once a year
+    [MoTuWeThFr]          | [MTWF].*00:00:00 | every weekday (Monday-Friday)
+    "Sat|Sun"             | S.*00:00:00      | every Saturday and Sunday
+
+(Instead of the four last regular expressions it is better to use the
+combination of a regular expression passed to the wminfo with a regular
+expression passed to the plugin -- see: the timestring script description
+below.)
+
+Some regular expressions are the mutual equvalents.
+
+For example:
+
+    ":..:00"
+
+and:
+
+    ":00 "
+
+work exactly the same -- rerun the plugin at the beginning of each minute.
+
+Similarly both:
+
+    "01-01.*00:00:00"
+
+and:
+
+    "01-01"
+
+do the same: rerun the plugin the first day of the year.
+
+Most of the regular expressions stored in the above tables include some
+redundant content -- they are designed to be comprehensible and unamibiguous
+rather than optimal.
+
+When you use the regular expression or the code to rerun the plugin at a
+given time it affects the plugin responsiveness to the mouse rerun actions
+-- wminfo recognizes the action but restarts the plugin with a delay: at the
+given time.  To observe that it is enough to switch some wrapper plugin such
+as wrapper-date-tz.wmi one from:
+
+    Manual_Mode="off"
+
+to:
+
+    Manual_Mode="on"
+
+and run it with the command such as:
+
+    wminfo -p wrapper-date-tz.wmi -u 6s
+
+In such a case wminfo switches the screen every six seconds.  If it displays
+the first screen (the date) and you click the lower right corner of the
+application window in order to switch it to the second screen (the time
+zone) the program reacts to the mouse action with a delay: it switches the
+screen when the number of the seconds is divisible by 6.
+
+                                      *
+                                    *   *
+
+Apart of using the regular expressions in order to rerun the plugins at a
+given time you can use them to align the time at which the consecutive
+plugins rerun.  For example wminfo uses by default the following command to
+run the sysmon.wmi plugin:
+
+    wminfo -p sysmon.wmi -u 5
+
+As a result wminfo reruns it every 5 seconds but not necessary at the same
+time as the other plugins.  In order to align the rerun time you can use the
+following command:
+
+    wminfo -p sysmon.wmi -u 5s
+
+The other case are conky-related plugins such as conky.sysmon.wmi:
+
+    wminfo -p conky.sysmon.wmi -u 3
+
+By default conky uses three seconds long update interval:
+
+    update_interval 3.0
+
+As a result the conky-related plugins should rerun in periods which are the
+multiples of 3 such as: 3, 6, 12, 15, 30, or 60 seconds.  Some of them
+require slightly complicated regular expressions but you can use the
+predefined codes as well:
+
+    code | regex
+    -----+--------------------------------------------------------------------
+      3s | ":..:([03][0369]|[14][258]|[25][147])"
+      6s | ":..:([03][06]|[14][28]|[25]4)"
+     12s | ":..:(00|12|24|36|48)"
+     15s | ":..:([03]0|[14]5)"
+     30s | ":..:[03]0"
+     60s | ":..:00"
+
+If you shortened or lenghtened the default conky update interval from:
+
+    update_interval 3.0
+
+to:
+
+    update_interval 2.0
+
+or:
+
+    update_interval 5.0
+
+depending on your machine efficiency you should align appropriately the
+update periods for all conky-related plugins.
+
+The multiples of 2 are the following:
+
+    code | regex
+    -----+--------------------------------------------------------------------
+      2s | ":..:.[02468]"
+      4s | ":..:([024][048]|[135][26])"
+      6s | ":..:([03][06]|[14][28]|[25]4)"
+      8s | ":.([02468]:([04][08]|[15]6|24|32)|[13579]:([04]4|[15]2|2[08]|36))"
+     10s | ":..:.0"
+     12s | ":..:(00|12|24|36|48)"
+     20s | ":..:[024]0"
+     30s | ":..:[03]0"
+     60s | ":..:00"
+
+The multiples of 5 are the following:
+
+    code | regex
+    -----+--------------------------------------------------------------------
+      5s | ":..:.[05]"
+     10s | ":..:.0"
+     15s | ":..:([03]0|[14]5)"
+     20s | ":..:[024]0"
+     30s | ":..:[03]0"
+     60s | ":..:00"
+
+                                      *
+                                    *   *
+
+In some specific situations the valid regular expression would be
+unreasonable complicated.  In such cases the cooperation between the regular
+expression and the plugin may help.
+
+Let us assume than we would like to force the plugin to run some action the
+last day of the month only.  In order to achieve that the appropriate
+procedure can be implemented in the plugin last-day.wmi:
+
+    #------------------------------------------------------------------------
+    #!/bin/bash
+
+    # wminfo plugin: runs the action the last day of the month
+
+    # command: wminfo -p last-day.wmi -u 00:00:00 -b#000000 -f#ffff00
+
+    today=`date +%d`
+    tomorrow=`date +%d -d "1 day"`
+
+    if [ $tomorrow -lt $today ]
+    then
+        echo "Last day of the month."
+    else
+        echo "Any but the last day of the month."
+    fi
+    #------------------------------------------------------------------------
+
+To run the above plugin use the command:
+
+    wminfo -p last-day.wmi -u 00:00:00
+
+As a result the regular expression reruns the plugin everyday at midnight
+and the plugin decides which action to perform depending on the date.
+
+For the comparison the regular expression which reruns the plugin the last
+day of the month looks like:
+
+    "(0[13578]|1[02])-31|(0[469]|11)-30|02-29.*[0-9]{2}([02468][048]|[13579][26])|02-28.*[0-9]{2}([0-9][13579]|[02468][26]|[13579][048])"
+
+                                      *
+                                    *   *
+
+The wminfo started with any regular expression runs the plugin once at the
+beginning and reruns it when the regular expression will match.  As a result
+when the update periods are longer wminfo may display the same content all
+the time or at least most of the time.  In order to distinguish the initial
+run from the rerun caused by the regular expression and in order to split
+the reruns into matched and failed you can combine the regular expression
+passed to wminfo with the regular expression passed to the plugin.
+
+To make it easier use the timestring script.  It checks the regular
+expression given as the parameter against the current time string and
+returns the timestring[process] variable equal the time string when matched
+or empty when failed.
+
+The sample timestring.wmi plugin uses timestring script to check whether the
+parameter "Sun" matches the current date.
+
+    #------------------------------------------------------------------------
+    #!/bin/bash
+
+    # wminfo plugin: runs the action depending on the current time
+
+    # command: wminfo -p 'timestring.wmi "Sun"' -u "00:00:00" -b#000000 -f#ffff00
+
+    if [ "$*" == "" ]
+    then
+        echo "$0 [<regular_expression>]"
+        exit
+    fi
+
+    export process="$PPID"
+    export datafile="$HOME/.wminfo/.timestring.tmp"
+    timestring "$*"
+    . $datafile
+
+    if [ "${timestring[$process]}" == "" ]
+    then
+        echo "Failed time string."
+    else
+        echo "Matched time string: \"${timestring[$process]}\"."
+    fi
+    #------------------------------------------------------------------------
+
+Let us assume that we run the above plugin for the first time on Sunday.
+
+That plugin started with the default command:
+
+    wminfo -p 'timestring.wmi "Sun"' -u "00:00:00"
+
+1) at the beginning runs the action for the matched time string (see the
+   regex passed to the plugin),
+
+2) runs the action for the failed time string each day from Monday to
+   Saturday at 00:00:00 (see the regex passed to the plugin and to wminfo),
+
+3) runs the action for the matched time string each Sunday at 00:00:00 (see
+   the regex passed to the plugin and to wminfo).
+
+Such a behavior of the program is consistent with the user's expectations.
+
+For the comparison the following command:
+
+    wminfo -p 'timestring.wmi ".*"' -u "Sun.*00:00:00"
+
+works as any other command that do not use the timestring script because the
+regular expression ".*" matches always.  So that command reruns the plugin
+every Sunday at midnight only and -- as a result -- it displays the same
+content all the week.
+
+The command using the timestring script in order to split reruns into
+matched and failed works better: it displays the other content all the week
+and the other every Sunday.
+
+You can use the mentioned mechanics to rerun the plugin using different
+other periods.
+
+Sample commands using timestring script:
+
+every weekday (from Monday to Friday):
+
+    wminfo -p 'timestring.wmi "[MTWF]"' -u "00:00:00"
+
+two times during the weekend (Saturday and Sunday):
+
+    wminfo -p 'timestring.wmi "S"' -u "00:00:00"
+
+every two days:
+
+    wminfo -p 'timestring.wmi " [0-3][0-9][02468]$"' -u "00:00:00"
+
+or:
+
+    wminfo -p 'timestring.wmi " [0-3][0-9][13579]$"' -u "00:00:00"
+
+every week:
+
+    wminfo -p 'timestring.wmi "Mon"' -u "00:00:00"
+
+every two weeks:
+
+    wminfo -p 'timestring.wmi "Mon.* [0-5][02468] "' -u "00:00:00"
+
+or:
+
+    wminfo -p 'timestring.wmi "Mon.* [0-5][13579] "' -u "00:00:00"
+
+twice a month:
+
+    wminfo -p 'timestring.wmi "(-01|-15)"' -u "00:00:00"
+
+every four weeks:
+
+    wminfo -p 'timestring.wmi "Mon.* ([024][048]|[135][26]) "' -u "00:00:00"
+
+once a month:
+
+    wminfo -p 'timestring.wmi "\-01"' -u "00:00:00"
+
+every two months:
+
+    wminfo -p 'timestring.wmi "[01][02468]-01"' -u "00:00:00"
+
+or:
+
+    wminfo -p 'timestring.wmi "[01][13579]-01"' -u "00:00:00"
+
+every Friday the 13th:
+
+    wminfo -p 'timestring.wmi "Fri ..-13"' -u "00:00:00"
+
+The timestring.wmi plugin sets the process and datafile variables and passes
+them to the timestring script.  The script uses datafile file to store
+matched or failed time string in timestring[process] variable.  The plugin
+reads datafile file and uses timestring[process] variable to perform the
+appropriate action.  Thanks to that feature different plugins can use the
+same timestring script and datafile file.
+
+As a result if you run a lot of the plugins using timestring script or you
+restart such a plugin many times the datafile file becomes bigger and bigger
+because it keeps all previously stored variables.  In order to get rid of
+the obsolete variables put into your ~/.xinitrc file the command:
+
+    rm "$HOME/.wminfo/.timestring.tmp"
+
+The timestring script can count the weeks starting from Monday or Sunday. 
+If you switched the week_starts variable in regex.c and wminfo.c source
+files from "Mon" to "Sun" then switch also the Week_Starts variable in the
+timestring script from "Monday" to "Sunday".
+
+                                      *
+                                    *   *
+
+In order to test the regular expressions before you use them with wminfo try
+the regex program.  Sample session with regex looks like:
+
+    $ regex -u :..:3
+
+    Recognized regex ":..:3"
+    Seeking regex ":..:3"
+    Wed 01-23 00:57:26 2013 03 023
+    Wed 01-23 00:57:27 2013 03 023
+    Wed 01-23 00:57:28 2013 03 023
+    Wed 01-23 00:57:29 2013 03 023
+    Wed 01-23 00:57:30 2013 03 023
+    Found regex ":..:3" in the string "Wed 01-23 00:57:30 2013 03 023"
+    REGEX MATCHED -- WAITING UNITL IT STOPS TO MATCH.
+    Wed 01-23 00:57:31 2013 03 023
+    Wed 01-23 00:57:32 2013 03 023
+    Wed 01-23 00:57:33 2013 03 023
+    Wed 01-23 00:57:34 2013 03 023
+    Wed 01-23 00:57:35 2013 03 023
+    Wed 01-23 00:57:36 2013 03 023
+    Wed 01-23 00:57:37 2013 03 023
+    Wed 01-23 00:57:38 2013 03 023
+    Wed 01-23 00:57:39 2013 03 023
+    Wed 01-23 00:57:40 2013 03 023
+    REGEX STOPPED TO MATCH -- SEEKING THE REGEX.
+    Seeking regex ":..:3"
+    Wed 01-23 00:57:41 2013 03 023
+    Wed 01-23 00:57:42 2013 03 023
+    Wed 01-23 00:57:43 2013 03 023
+    Wed 01-23 00:57:44 2013 03 023
+    Wed 01-23 00:57:45 2013 03 023
+
+Some regular expressions can cause the problems.  To be sure that your regex
+works well you can check it with egrep.
+
+For example the following regular expression matches at 18:04:15 because it
+is wrongly designed:
+
+    $ echo "Wed 01-23 18:04:15 2013 03 023" | egrep "0[048]|1[26]|20:..:"
+
+    Wed 01-23 18:04:15 2013 03 023   <-- it matches at 18:04:15
+
+In fact it matches in the above case 04 minutes instead of try to match the
+hours when they are divisible by 4.
+
+In order to force it to match every 4 hours only you should put the hours
+into the parenthesis:
+
+    $ echo "Wed 01-23 18:04:15 2013 03 023" | egrep "(0[048]|1[26]|20):..:"
+
+                                     <-- it does not match at 18:04:15
+
+    $ echo "Wed 01-23 16:04:15 2013 03 023" | egrep "(0[048]|1[26]|20):..:"
+
+    Wed 01-23 16:04:15 2013 03 023   <-- though it matches at 16:04:15
+
+    $ echo "Wed 01-23 20:04:15 2013 03 023" | egrep "(0[048]|1[26]|20):..:"
+
+    Wed 01-23 20:04:15 2013 03 023   <-- and it matches at 20:04:15
+
+The bottom line is: is you used the alternative in some part of the regular
+expression then put that part into the parenthesis.
+

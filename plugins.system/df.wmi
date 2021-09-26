@@ -2,7 +2,11 @@
 
 # wminfo plugin: df -lh command output
 
-# command: wminfo -p df.wmi -u 5 -s 0 -b#000000 -f#00ff00
+# command: wminfo -p df.wmi -u 5 -b#000000 -f#00ff00
 
-df -lh | grep '^/dev' | sed 's/\/dev\///' | awk '{print $1,$4}'
-echo "         "; echo "         "; echo "         "; echo "         "; echo "         "
+df=`df -lh | awk '/^\/dev/{print $1,$4}' | sed -E 's/ ([0-9][0-9][BKMGTPEZY])/  \1/'`
+df=${df//\/dev\//\\n}
+
+echo -e "$df"
+echo -e "         \n         \n         \n         \n         \n"
+

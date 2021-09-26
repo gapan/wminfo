@@ -2,9 +2,28 @@
 
 # wminfo plugin: uptime, users, and load average
 
-# command: wminfo -p conky.uptime.wmi -u 6 -b#000000 -f#ffff00
+# command: wminfo -p conky.uptime.wmi -u 6 -b#000000 -f#ff0000
 
-datafile="/tmp/.$USER.conky.tmp"
+datafile="$HOME/.wminfo/conky.tmp"
+label="UPTIME"
 
-grep '^UPTIME: ' $datafile | sed -E 's/UPTIME: //;s/UPT: //;s/: ([0-9][0-9]\.)/:\1/'
+if [ -z "$(grep "^${label}: " "${datafile}")" ]
+then
+cat <<EOF
+$0: no "${label}" entries were found in ${datafile} file.
+         
+         
+         
+         
+EOF
+    exit
+fi
+
+uptime=`grep "^${label}: " $datafile`
+
+uptime=${uptime//${label}: /\\n}
+uptime=${uptime/UPT: /}
+
+echo -e $uptime
+echo
 

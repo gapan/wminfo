@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# wminfo plugin: color sample
+
+# command: wminfo -p color02p-ff00ff.wmi -b#ff00ff -f#000000
+
+echo "#ff00ff"
+echo "magenta (fuchsia)"
+

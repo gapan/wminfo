@@ -2,485 +2,187 @@
 wminfo README.timezone.wmi
 
 
-The timezone.wmi plugin is very complicated and despite of that it cannot
-display proper times and dates in all cases.  So it is worth to consider to
-use more accurate conky.timezone.wmi plugin instead.
-
 The timezone.wmi plugin displays the times and the dates in different time
-zones.  To use it you have to set your hardware clock to UTC and choose the
-valid time zone for your location.  The time zones expected to display are
-stored in the timezone.cfg configuration file.  The simplest configuration
-file looks like that:
+zones stored in timezone.cfg configuration file.  There are four types of
+the configuration files accepted by timezone.wmi.  All of them display the
+other data:
 
-    EST
-    UTC
-    CET
-    JST
-    NZDT
+    +---------+     +---------+     +---------+     +---------+
+    |EDT 20:50|     |NY 20:50-|     |+02 22:50|     |O 22:50- |
+    |GMT 00:50|     |GH 00:50 |     |+01 23:50|     |N 23:50- |
+    |MSK 04:50| or: |RU 04:50 | or: |+00 00:50| or: |Z 00:50  |
+    |IST 06:20|     |IN 06:20 |     |-01 01:50|     |A 01:50  |
+    |EST 10:50|     |AU 10:50 |     |-02 02:50|     |B 02:50  |
+    +---------+     +---------+     +---------+     +---------+
 
-The above abbreviations mean: Eastern Standard Time, Coordinated Universal
-Time (Greenwich Mean Time), Central European Time, Japan Standard Time, and
-New Zealand Daylight Time.
+Depending on your needs you can read below about one of these four
+configuration types.
 
-The default timezone.cfg file provided with the timezone.wmi plugin looks
-like that:
+There is one rule: the names of the time zones used in the timezone.cfg
+configuration file have to be compatible with the data stored in
+/usr/share/zoneinfo directory (for example: Poland, or Europe/Warsaw, or
+CET, or GMT-02).  To get the right time zone name you can use tzselect
+program.  Just run it and reply the questions in the interactive way.
 
-    # time zones: ALL
-    
-    # use that configuration file with the plugin CompactFormat variable set to "off"
-    
-    HAST		Pacific/Honolulu (HAST)
-    AKST		America/Anchorage (AKST)
-    PST			America/Los_Angeles (PST)
-    MST			America/Edmonton (MST)
-    CST			America/Guatemala (CST)
-    EST			America/New_York (EST)
-    AST			Atlantic/Bermuda (AST)
-    ART			America/Buenos_Aires (ART)
-    BRST		America/Sao_Paulo (BRST)
-    GMT-1	+01	Etc/GMT+1 (GMT+1) *
-    UTC			UTC (UTC); GMT (GMT)
-    CET			CET (CET)
-    EET			EET (EET)
-    EAT			Africa/Khartoum (EAT)
-    GMT+4	-04	Etc/GMT-4 (GMT-4) *
-    GMT+5	-05	Etc/GMT-5 (GMT-5) *
-    GMT+6	-06	Etc/GMT-6 (GMT-6) *
-    GMT+7	-07	Etc/GMT-7 (GMT-7) *
-    SGT			Asia/Singapore (SGT)
-    JST			Asia/Tokyo (JST)
-    GMT+10	-10	Etc/GMT-10 (GMT-10) *
-    GMT+11	-11	Etc/GMT-11 (GMT-11) *
-    GMT+12	-12	Etc/GMT-12 (GMT-12) *
-    NZDT		Pacific/Auckland (NZDT)
-    
-    # * I could not find valid time zones definitions for these regions so I used GMT offsets
 
-That file covers 24 time zones.  In fact there are 27 time zones from
-UTC-12:00 through UTC+-00:00 to UTC+14:00.  The timezone.wmi plugin knows
-only 24 time zones from UTC-13:00 through UTC+-00:00 to UTC+10:00.  It uses
-formally illegal time zone UTC-13:00 to count the time and the date in New
-Zealand.  I put the New Zealand Daylight Time at the bottom because the new
-day begins in that time zone so I was forced to use the illegal time zone
-qualification to get the proper result.
+1. The simple configuration file uses time zones descriptions, for example:
 
-The first column contains the time zones abbreviations or the GMT offsets
-used when the abbreviations do not work.  The plugin uses these
-abbreviations and offsets to count the times and the dates in the
-consecutive time zones.  The second column contains the labels used when the
-label derived from the first column is unusable.  The rest is the comment.
-In the above example these comments include the time zones system settings
-and time zones abbreviations.
+        America/New_York
+        Africa/Accra
+        Europe/Moscow
+        Asia/Kolkata
+        Australia/Sydney
 
-In most cases I used time zones abbreviations.  The plugin reads these
-abbreviations, uses them to calculate the times and the dates, and displays
-these times and dates using as a label the three first letters of the time
-zones abbreviations -- for example HAS for Honolulu, Hawaii or NZD for
-Auckland, New Zealand.
+   In such a case timezone.wmi plugin displays the following data:
 
-The timezone.wmi plugin that uses the time zones abbreviations displays
-valid times and dates when is used properly.  Unfortunately some time zones
-abbreviations do not work.  The date command used with the time zones
-abbreviations such as: GAMT, AMT, AZOT, PKT, ALMT, ICT, HKT, or PGT
-complains about invalid dates.  The same command used with the time zones
-abbreviations such as: GST (used for South Georgia, Atlantic), AST (used for
-Baghdad, Asia), GST (used for Muscat, Asia), or EST/EDT (used for Sydney,
-Australia) displays invalid times.
+        EDT 20:50- 05-21
+        GMT 00:50  05-22
+        MSK 04:50  05-22
+        IST 06:20  05-22
+        EST 10:50  05-22
 
-I was not able to find the proper time zones abbreviations for eight regions
-so I used in the default timezone.cfg file the GMT offsets instead.  Time
-zones abbreviations work well all the time.  GMT offsets use hardcoded
-values so they ignore daylight saving time.  Moreover in some regions two
-time zones abbreviations are used.  For example in New York EST (Eastern
-Standard Time) is used during the winter while EDT (Eastern Daylight Time)
-is used from the spring to the autumn.
+   That looks in wminfo window like:
 
-Note that the abbreviations for the GMT offsets from the first column use
-the reverse sign than the abbreviations used by the system.  As for the GMT
-time zone you can use in the first column the following abbreviations: GMT,
-GMT+0, or GMT-0.
+        +---------+
+        |EDT 20:50|
+        |GMT 00:50|
+        |MSK 04:50|
+        |IST 06:20|
+        |EST 10:50|
+        +---------+
 
-Let us assume you live in the region that is omitted in the default
-configuration or you would like to display the time for such a region with
-the timezone.wmi plugin.  In such a case you have to test that region time
-zone abbreviation.  If your abbreviation is XXX use the command:
+   The abbreviations from the first column are the time zones abbreviations
+   shortened to the first three letters.
 
-    date -d XXX
+   You will find the sample configuration file in that format in
+   timezone.cfg.Reg-Cty.zones file.  To use it copy it to timezone.cfg file
+   and store it in /usr/local/bin directory or ~/bin directory.
 
-It should display something like that:
+2. The more complicated configuration file uses the same time zones
+   descriptions as above with ISO codes in the second column (the third
+   column is ignored by the plugin), for example:
 
-    Wed Nov 19 06:00:00 XXX 2011
+        America/New_York	NY	(New York)
+        Africa/Accra		GH	(Ghana)
+        Europe/Moscow		RU	(Russian Federation)
+        Asia/Kolkata		IN	(India)
+        Australia/Sydney	AU	(Australia)
 
-In the above example XXX is the time zone abbreviation and 06:00 is the
-offset in hours and minutes of that region from the time zone you live in.
+   (You will find ISO codes of different countries, states, or islands in
+   http://en.wikipedia.org.)
 
-When XXX is the region you live in and you set the time zone in your system
-properly the above command displays something like that:
+   In such a case timezone.wmi displays the following data:
 
-    Wed Nov 19 00:00:00 XXX 2011
+        NY 20:50- 05-21
+        GH 00:50  05-22
+        RU 04:50  05-22
+        IN 06:20  05-22
+        AU 10:50  05-22
 
-In that case the offset is equal 00:00.
+   That looks in wminfo window like:
 
-If the date -d XXX command displays the date and the time you can use XXX
-abbreviation in your configuration file.  Remember that not all
-abbreviations work well.  For example New York and Sydney use the same
-abbreviation -- EST.  That abbreviation used with the date command displays
-the valid offset for New York but it displays an invalid offset for Sydney.
+        +---------+
+        |NY 20:50-|
+        |GH 00:50 |
+        |RU 04:50 |
+        |IN 06:20 |
+        |AU 10:50 |
+        +---------+
 
-After including a new setting in the timezone.cfg file test it using the
-following site:
+   The abbreviations from the first column are the same as the labels from
+   the second column of the timezone.cfg file.  The - sign marks the past
+   dates and the + sign marks the future days (referenced to your time
+   zone).
 
-    http://www.timeanddate.com/library/abbreviations/timezones/
+   You will find the sample configuration file in that format in
+   timezone.cfg.Reg-Cty.ISOs file.  To use it copy it to timezone.cfg file
+   and store it in /usr/local/bin directory or ~/bin directory.
 
-If the new setting works well you can use it.  If it does not work well you
-have to find another abbreviation or use the GMT offset.
+3. The other type of the configuration file uses the GMT offsets, for
+   example:
 
-You do not have to keep all 24 time zones definitions in your timezone.cfg
-file.  To save the CPU power put the comment mark at the beginnings of the
-lines you are not interested in.
+        GMT+02
+        GMT+01
+        GMT+00
+        GMT-01
+        GMT-02
 
-If you would like to know more read the entire present document.
+   In such a case timezone.wmi displays the following data:
+
+        +02 22:50- 05-21
+        +01 23:50- 05-21
+        +00 00:50  05-22
+        -01 01:50  05-22
+        -02 02:50  05-22
+
+   That looks in wminfo window like:
+
+        +---------+
+        |+02 22:50|
+        |+01 23:50|
+        |+00 00:50|
+        |-01 01:50|
+        |-02 02:50|
+        +---------+
+
+   The abbreviations from the first column are equal the GMT offsets.
+
+   You will find the configuration file in that format in
+   timezone.cfg.GMT.offsets file.  To use it copy it to timezone.cfg file
+   and store it in /usr/local/bin directory or ~/bin directory.
+
+4. The more complicated configuration file uses the same GMT offsets with
+   the military zones names abbreviations in the second column (the third
+   column is ignored by the plugin), for example:
+
+        GMT+02		O	Oscar Time Zone (Fernando de Noronha, Pernambuco, Brazil)
+        GMT+01		N	November Time Zone (Praia, Cape Verde)
+        GMT+00		Z	Zulu Time Zone (Reykjavik, Iceland)
+        GMT-01		A	Alpha Time Zone (Algiers, Algeria)
+        GMT-02		B	Bravo Time Zone
+
+   In such a case timezone.wmi displays the following data:
+
+        O 22:50- 05-21
+        N 23:50- 05-21
+        Z 00:50  05-22
+        A 01:50  05-22
+        B 02:50  05-22
+
+   That looks in wminfo window like:
+
+        +---------+
+        |O 22:50- |
+        |N 23:50- |
+        |Z 00:50  |
+        |A 01:50  |
+        |B 02:50  |
+        +---------+
+
+   The abbreviations from the first column are the same as the labels from
+   the second column of timezone.cfg file -- they correspond to the military
+   zone names such as: Oscar, November, Zulu, Alpha, and Bravo.  The - sign
+   marks the past dates and the + sign marks the future days (referenced to
+   your time zone).
+
+   You will find the configuration file in that format in
+   timezone.cfg.GMT.CODES file.  To use it copy it to timezone.cfg file and
+   store it in /usr/local/bin directory or ~/bin directory.
 
                                       *
                                     *   *
 
-The time zones are offset from Coordinated Universal Time (UTC) by some
-number of hours and minutes.  In most cases the offset is the whole number
-of hours but some time zones are offset by a few hours plus 30 or 45
-minutes. The timezone.wmi plugin can be used in the regions that use the
-whole hour offsets or one half an hour offsets -- it ignores very rare 45
-minutes offsets.
-
-If you live in the region in which the offset is the whole number of hours
-you can use instead of the default timezone.wmi plugin the timezone.wmi.00
-plugin.  Just overwrite the first with the other.  If you live in the region
-that uses 30 minutes offset you can use the timezone.wmi.30 plugin.  Both
-these plugins are less complicated than the default one but are not
-universal.
-
-A sample region that uses one half an hour offset is India.  In order to
-display the date and the time in India you have to add to the default
-timezone.cfg file the following entry:
-
-
-    GMT+5	-05	Etc/GMT-5 (GMT-5) *
-    IST			Asia/Kolkata (IST)	<-- India
-    GMT+6	-06	Etc/GMT-6 (GMT-6) *
-
-As I stated above not all time zones abbreviations work as they should.
-Fortunately the plugin accepts slightly more complicated configuration file
-that should help when the abbreviations do not work:
-
-    8		PST
-    5		AMT
-    0		CET
-    17		HKT
-    14		EST
-
-In such a case the plugin reads the designators from one column and the
-abbreviations from the other column.  It uses designators to calculate the
-times and the dates and it uses the abbreviations to label the displayed
-data.
-
-The abbreviations used in the first column have the great advantage over the
-numbers because when you use them the plugin automatically switches to the
-daylight saving time when necessary.  In the case of the numbers you have to
-switch them manually.  You can mix two above styles of the entries in the
-same configuration file.
-
-The plugin is provided with the sample timezone.cfg configuration file:
-
-    GMT-1	+01	Etc/GMT+1 (GMT+1) *
-    UTC			UTC (UTC); GMT (GMT)
-    CET			CET (CET)
-    EET			EET (EET)
-    EAT			Africa/Khartoum (EAT)
-
-That configuration uses the time zones abbreviations as well as the GMT
-offsets and it is designed to work with the plugin that uses CompactFormat
-variable set to "off".
-
-If you live in the Central Europe you can modify it in the following manner:
-
-    2		AZ	Azores Time (Azores, Portugal) **
-    1		UT	Coordinated Universal Time (Greenwich Mean Time, London) ***
-    0		CE	Central European Time (Madrid) ***
-    23		EE	Eastern European Time (Athens) ***
-    22		IQ	Arabia Standard Time (Baghdad, Iraq)
-
-Note that 0 value is in such a case attributed to the Central Europe.  The
-designators increase from 0 to the top of the configuration and from the
-bottom of the configuration to 23 just below 0.
-
-That configuration uses numerical values and ISO codes for the consecutive
-regions and is designed to work with the plugin that uses CompactFormat
-variable set to "on".
-
-The difference between these two configurations is: the first can be used in
-any time zone and the other is designed to work in the Central Europe (0
-value is set for the Central European Time).  So if you live outside the
-Central Europe you have to change the numerical values used in the second
-configuration.
-
-Five additional configuration files provided together with the plugin --
-timezone.cfg.+0500.EST, timezone.cfg.-0100.CET, timezone.cfg.-0530.IST,
-timezone.cfg.-0900.JST, and timezone.cfg.GMT  -- illustrate the allowed
-styles of the configuration file.
-
-The timezone.cfg.-0900.JST file looks like that:
-
-    # time zone: Asia/Tokyo (JST)
-    
-    # use that configuration file with the plugin CompactFormat variable set to "off"
-    
-    19		HAST	Pacific/Honolulu (HAST)
-    18		GAMT	Pacific/Gambier (GAMT)
-    17		AKST	America/Anchorage (AKST)
-    16		PST	America/Los_Angeles (PST)
-    15		CST	America/Guatemala (CST)
-    14		EST	America/New_York (EST)
-    13		AMT	America/Manaus (AMT)
-    12		ART	America/Buenos_Aires (ART)
-    11		GST	Atlantic/South_Georgia (GST)
-    10		AZOT	Atlantic/Azores (AZOT)
-    UTC			UTC (UTC); GMT (GMT)
-    CET			CET (CET)
-    EET			EET (EET)
-    6		AST	Asia/Baghdad (AST)
-    5		GST	Asia/Muscat (GST)
-    4		PKT	Asia/Karachi (PKT)
-    3		ALMT	Asia/Almaty (ALMT)
-    2		ICT	Asia/Bangkok (ICT)
-    1		HKT	Asia/Hong_Kong (HKT)
-    0		JST	Asia/Tokyo (JST)
-    23		PGT	Pacific/Port_Moresby (PGT)
-    22		EST	Australia/Sydney (EST)
-    21		-12	Etc/GMT-12 (GMT-12) *
-    20		NZDT	Pacific/Auckland (NZDT)
-
-    # * Asia/Kamchatka (PETT) setting causes problems so I used Etc/GMT-12 (GMT-12)
-
-To use timezone.cfg.-0900.JST file instead of the default timezone.cfg one
-just overwrite the second file with the first.  The descriptions in the
-above configuration file reflect the system settings for the consecutive
-time zones.  The above file uses the legal time zones abbreviations as the
-labels.  To display them properly with the timezone.wmi plugin switch the
-CompactFormat variable in the configuration section of the plugin to "off".
-In the case of four-letters abbreviations the plugin displays just the first
-three letters.
-
-The above configuration file is for the users that live in Japan.  If you
-live somewhere else you have to customize that file.  It is easy.  Your time
-zone designator is equal 0.  So if you live in, say Central Europe, put 0
-for CET, 1 for UTC, ..., 11 for HAST, 12 for NZDT, ..., and 23 for EET.  So
-you start from your time zone with 0.  Then you go up to the top increasing
-the numbers.  Next you continue to go up from the bottom still increasing
-the numbers.  Finally you end just below your time zone with the value 23.
-
-If you are interested in the times and the dates in such a countries as:
-Iran, Afghanistan, India, or Burma you have to add the special entries
-because the time zones denominators for these countries are not one hour
-smaller or bigger than the other denominators but one half an hour smaller
-or bigger:
-
-    6		AST	Asia/Baghdad (AST)
-    5:30	IRST	Asia/Tehran (IRST)	<-- Iran
-    5		GST	Asia/Muscat (GST)
-    4:30	AFT	Asia/Kabul (AFT)	<-- Afghanistan
-    4		PKT	Asia/Karachi (PKT)
-    3:30	IST	Asia/Kolkata (IST)	<-- India
-    3		ALMT	Asia/Almaty (ALMT)
-    2:30	MMT	Asia/Rangoon (MMT)	<-- Burma
-    2		ICT	Asia/Bangkok (ICT)
-
-If you prefer more consistent configuration file instead of the time zones
-abbreviations:
-
-    10		AZOT	Atlantic/Azores (AZOT)
-    UTC			UTC (UTC); GMT (GMT)
-    CET			CET (CET)
-    EET			EET (EET)
-    6		AST	Asia/Baghdad (AST)
-
-you can use the numbered entries in all cases:
-
-    10		AZOT	Atlantic/Azores (AZOT)
-    9		UTC	UTC (UTC); GMT (GMT)
-    8		CET	CET (CET)
-    7		EET	EET (EET)
-    6		AST	Asia/Baghdad (AST)
-
-You can also precede the numbers smaller than 10 with 0s:
-
-    10		AZOT	Atlantic/Azores (AZOT)
-    09		UTC	UTC (UTC); GMT (GMT)
-    08		CET	CET (CET)
-    07		EET	EET (EET)
-    06		AST	Asia/Baghdad (AST)
-
-or even use HH:MM format:
-
-    10:00	AZOT	Atlantic/Azores (AZOT)
-    09:00	UTC	UTC (UTC); GMT (GMT)
-    08:00	CET	CET (CET)
-    07:00	EET	EET (EET)
-    06:00	AST	Asia/Baghdad (AST)
-
-The timezone.wmi plugin accepts all above formats.
-
-The plugin used with that configuration file displays the data as follows:
-
-    ICT 22:38 11-06
-    HKT 23:38 11-06
-    JST 00:38 11-07
-    PGT 01:38 11-07
-    EST 02:38 11-07
-
-or:
-
-    ICT 10:14 11-07
-    HKT 11:14 11-07
-    JST 12:14 11-07
-    PGT 13:14 11-07
-    EST 14:14 11-07
-
-or:
-
-    ICT 21:43 11-07
-    HKT 22:43 11-07
-    JST 23:43 11-07
-    PGT 00:43 11-08
-    EST 01:43 11-08
-
-On the wminfo dockable application window that information looks like that:
-
-    +---------+     +---------+     +---------+
-    |ICT 22:38|     |ICT 10:14|     |ICT 21:43|
-    |HKT 23:38|     |HKT 11:14|     |HKT 22:43|
-    |JST 00:38| or: |JST 12:14| or: |JST 23:43|
-    |PGT 01:38|     |PGT 13:14|     |PGT 00:43|
-    |EST 02:38|     |EST 14:14|     |EST 01:43|
-    +---------+     +---------+     +---------+
-
-You cannot see on the above dockable application windows the dates but if
-you know you are in the JST time zone you can guess that the first two hours
-on the first window are from yesterday and that the last two hours on the
-third window are from tomorrow from your point of view.  To guess that you
-have to analyze carefully the information.  Alternatively you can scroll the
-selected lines to check the dates.
-
-The timezone.cfg.-0100.CET file looks like that:
-
-    # time zone: CET (CET)
-    
-    # use that configuration file with the plugin CompactFormat variable set to "on"
-    
-    11	HI	Hawaii-Aleutian Standard Time (Honolulu, Hawaii, United States)
-    10	PF	Gambier Time (Gambier Islands, French Polynesia)
-    9	AK	Alaska Standard Time (Anchorage, Alaska, United States)
-    8	CA	Pacific Standard Time (Los Angeles, California, United States)
-    7	GT	Central Standard Time (Guatemala, Guatemala)
-    6	NY	Eastern Standard Time (New York, New York, United States)
-    5	BR	Amazon Time (Manaus, Amazonas, Brazil)
-    4	AR	Argentina Time (Buenos Aires, Argentina)
-    3	GS	King Edward Point, South Georgia and the South Sandwich Islands *
-    2	AZ	Azores Time (Azores, Portugal) **
-    UTC		Coordinated Universal Time (Greenwich Mean Time, London) ***
-    CET		Central European Time (Madrid) ***
-    EET		Eastern European Time (Athens) ***
-    22	IQ	Arabia Standard Time (Baghdad, Iraq)
-    21	OM	Gulf Standard Time (Muscat, Oman)
-    20	PK	Pakistan Standard Time (Karachi, Pakistan)
-    19	KZ	Alma-Ata Time (Astana, Kazakhstan)
-    18	TH	Indochina Time (Bangkok, Thailand)
-    17	HK	Hong Kong Time (Hong Kong, Hong Kong Special Administrative Region)
-    16	JP	Japan Standard Time (Tokyo, Japan)
-    15	PG	Papua New Guinea Time (Port Moresby, Papua New Guinea)
-    14	AU	Eastern Daylight Time (Sydney, New South Wales, Australia)
-    13	KC	Kamchatka Time (Petropavlovsk-Kamchatsky, Russia) **
-    12	NZ	New Zealand Daylight Time (Auckland, New Zealand)
-
-    # *   that region does not have ISO code so the code for the selected island is used
-    # **  these regions do not have ISO codes so the custom abbreviations are used
-    # *** these regions do not have ISO codes so the plugin uses two letter abbreviations
-
-To use timezone.cfg.-0100.CET file instead of the default timezone.cfg one
-just overwrites the second file with the first.  The above configuration
-file uses for the labels the ISO codes of the countries instead of the time
-zone abbreviations.  ISO codes are one character shorter so you can display
-more compact information.  To achieve that with the timezone.wmi plugin
-switch the CompactFormat variable in the configuration section of the plugin
-to "on".
-
-The above configuration file is for the users that live in the Central
-Europe.  If you live somewhere else you have to customize that file keeping
-in mind that your time zone designator is equal 0.
-
-The descriptions of the time zones in the example above are taken from the
-following site:
+After including a new setting in the timezone.cfg file you can test it using
+the following site:
 
     http://www.timeanddate.com/library/abbreviations/timezones/
 
-That site is great when you test the timezone.cfg configuration file and the
-timezone.wmi plugin because you can always check the validity of the times
-and the dates counted by the plugin.
-
-If you are interested in times in such a countries as: Iran, Afghanistan,
-India, or Burma add the suitable entries, for example:
-
-    22		IQ	Arabia Standard Time (Baghdad, Iraq)
-    21:30	IR	Iran Standard Time (Tehran, Iran)			<-- Iran
-    21		OM	Gulf Standard Time (Muscat, Oman)
-    20:30	AF	Afghanistan Time (Kabul, Afghanistan)			<-- Afghanistan
-    20		PK	Pakistan Standard Time (Karachi, Pakistan)
-    19:30	IN	India Standard Time (Kolkata, West Bengal, India)	<-- India
-    19		KZ	Alma-Ata Time (Astana, Kazakhstan)
-    18:30	MM	Myanmar Time (Yangon, Myanmar)				<-- Burma
-    18		TH	Indochina Time (Bangkok, Thailand)
-
-The plugin used with that configuration file displays the data as follows:
-
-    AZ 22:24- 11-06
-    UT 23:24- 11-06
-    CE 00:24  11-07
-    EE 01:24  11-07
-    IQ 02:24  11-07
-
-or:
-
-    AZ 10:17  11-07
-    UT 11:17  11-07
-    CE 12:17  11-07
-    EE 13:17  11-07
-    IQ 14:17  11-07
-
-or:
-
-    AZ 21:56  11-07
-    UT 22:56  11-07
-    CE 23:56  11-07
-    EE 00:56+ 11-08
-    IQ 01:56+ 11-08
-
-As you see the plugin started in compact mode displays UT, CE, and EE
-abbreviations instead of UTC, CET, and EET ones that are stored in the
-configuration file.
-
-On the wminfo dockable application window that information looks like that:
-
-    +---------+     +---------+     +---------+
-    |AZ 22:24-|     |AZ 10:17 |     |AZ 21:56 |
-    |UT 23:24-|     |UT 11:17 |     |UT 22:56 |
-    |CE 00:24 | or: |CE 12:17 | or: |CE 23:56 |
-    |EE 01:24 |     |EE 13:17 |     |EE 00:56+|
-    |IQ 02:24 |     |IQ 14:17 |     |IQ 01:56+|
-    +---------+     +---------+     +---------+
-
-The compact mode presentation of the data is laconic in the case of the time
-zones names but it displays minus and plus signs to mark the hours from
-yesterday and tomorrow.  So you do not have to analyze the information or to
-scroll the text in order to know the dates assuming you know the date in
-your time zone.
+The configuration files using two-letters ISO codes or military zone names
+result in a compact mode of the presentation of the data that is laconic in
+the case of the time zones names but it displays - and + signs to mark the
+hours from yesterday and tomorrow. So you do not have to analyze the
+information or to scroll the text in order to know the dates assuming you
+know the date in your time zone.
 
 As for the date representation you can use different formats such as
 "MM-DD", "DD.MM", "DD MM" etc. after setting the DateFormat variable in the
@@ -488,10 +190,11 @@ configuration section of the plugin.  The valid setting consists of MM for
 month, DD for day, and the separator between MM and DD.  The separator is
 the single character such as dash, dot, space etc.
 
-When you use the timezone.wmi plugin with wminfo you do not need usually all
-24 time zones stored in the timezone.cfg configuration file.  To save the
-CPU power comment the unnecessary entries.  To ignore the entry you have to
-put the comment mark at the beginning of the line.
+When you use the timezone.wmi plugin with wminfo you do not need usually
+more than five time zones stored in the timezone.cfg configuration file.  To
+save the CPU power comment the unnecessary entries or remove them.  To
+ignore the entry you have to put the comment mark at the beginning of the
+line.
 
 The timezone script edits timezone.cfg configuration file.  Instead of
 putting the timezone.cfg configuration file in /usr/local/bin directory it
@@ -499,67 +202,65 @@ is more convenient to put it in ~/bin directory.  In such a case you can
 edit that file without root privileges and you can store in that file the
 time zones you are interested in.
 
-Take into consideration that the time zones that are offset by 30 minutes
-require the other format of the configuration file than the time zones that
-are offset by the whole number of hours.
+The timezone.cfg.GMT.* configuration files are useful when you are
+interested in the military or nautical time zones.
 
-The timezone.cfg.-0530.IST file looks like that:
+                                      *
+                                    *   *
 
-    # time zone: Asia/Kolkata (IST)
-    
-    # that is the configuration for countries such as: Iran, Afghanistan, India, or Burma
-    
-    # use that configuration file with the plugin CompactFormat variable set to "off"
-    
-    15:30	HAST	Pacific/Honolulu (HAST)
-    14:30	GAMT	Pacific/Gambier (GAMT)
-    13:30	AKST	America/Anchorage (AKST)
-    12:30	PST	America/Los_Angeles (PST)
-    11:30	CST	America/Guatemala (CST)
-    10:30	EST	America/New_York (EST)
-    9:30	AMT	America/Manaus (AMT)
-    8:30	ART	America/Buenos_Aires (ART)
-    7:30	GST	Atlantic/South_Georgia (GST)
-    6:30	AZOT	Atlantic/Azores (AZOT)
-    5:30	UTC	UTC (UTC); GMT (GMT)
-    4:30	CET	CET (CET)
-    3:30	EET	EET (EET)
-    2:30	AST	Asia/Baghdad (AST)
-    1:30	GST	Asia/Muscat (GST)
-    0:30	PKT	Asia/Karachi (PKT)
-    0		IST	Asia/Kolkata (IST)
-    23:30	ALMT	Asia/Almaty (ALMT)
-    22:30	ICT	Asia/Bangkok (ICT)
-    21:30	HKT	Asia/Hong_Kong (HKT)
-    20:30	JST	Asia/Tokyo (JST)
-    19:30	PGT	Pacific/Port_Moresby (PGT)
-    18:30	EST	Australia/Sydney (EST)
-    17:30	-12	Etc/GMT-12 (GMT-12) *
-    16:30	NZDT	Pacific/Auckland (NZDT)
+If you live close to the International Date Line and you would like to know
+the time and the date on the opposite side of that line the date will differ
+from your local date by two days from 10:00 GMT to 10:59 GMT.
 
-    # * Asia/Kamchatka (PETT) setting causes problems so I used Etc/GMT-12 (GMT-12)
+Let us take into consideration three locations: Kiribati, Ghana, and Niue.
+Kiribati borders the International Date Line at its easternmost point --
+there the new day becomes.  Ghana uses GMT time.  Niue lies on the opposite
+side of the International Date Line than Kiribati.
 
-That is the configuration file for Kolkata (Calcutta).  If you live in India
-just use it.  If you live in another country in which the time zone
-difference between your country and UTC (GMT) is not represented by the
-integer number of hours add the entry for your country and customize the
-other entries.  Remember that your time zone denominator is 0 and that the
-denominators for the other time zones in such a case are not full hours as
-in the above configuration file.
+The timezone.cfg configuration file for these three locations is the
+following:
 
-Of course the differences between your time zone and the time zones in the
-countries such as Iran, Afghanistan, or Burma are the integer numbers:
+    Pacific/Niue            NU      (Niue)
+    Africa/Accra            GH      (Ghana)
+    Pacific/Kiritimati      KI      (Kiribati -- International Date Line)
 
-    2:30	AST	Asia/Baghdad (AST)
-    2		IRST	Asia/Tehran (IRST)	<-- Iran
-    1:30	GST	Asia/Muscat (GST)
-    1		AFT	Asia/Kabul (AFT)	<-- Afghanistan
-    0:30	PKT	Asia/Karachi (PKT)
-    0		IST	Asia/Kolkata (IST)	<-- India
-    23:30	ALMT	Asia/Almaty (ALMT)
-    23		MMT	Asia/Rangoon (MMT)	<-- Burma
-    22:30	ICT	Asia/Bangkok (ICT)
+If it is 10:00 GMT and you live in Kiribati the timezone.wmi plugin displays
+the following data:
 
-The timezone.cfg.GMT configuration file is useful when you are interested in
-the nautical time zones.  It covers just 24 time zones because the
-timezone.wmi plugin counts invalid dates for X-ray and Yankee time zones.
+    NU 23:00= 05-25
+    GH 10:00- 05-26
+    KI 00:00  05-27
+
+That looks in wminfo window like:
+
+    +---------+
+    |NU 23:00=|
+    |GH 10:00-|
+    |KI 00:00 |
+    |         |
+    |         |
+    +---------+
+
+If it is 10:00 GMT and you live in Niue the timezone.wmi plugin displays the
+following data:
+
+    NU 23:00  05-25
+    GH 10:00+ 05-26
+    KI 00:00# 05-27
+
+That looks in wminfo window like:
+
+    +---------+
+    |NU 23:00 |
+    |GH 10:00+|
+    |KI 00:00#|
+    |         |
+    |         |
+    +---------+
+
+As always the - sign marks yesterday dates and the + sign marks tomorrow
+dates.  As for = and # signs think about = as of two - signs: one above the
+other, and think about # as of two + signs: one intersecting the other.  So
+the = sign marks the day before yesterday dates and the # sign marks the day
+after tomorrow dates.
+

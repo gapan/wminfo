@@ -1,0 +1,50 @@
+#!/usr/bin/gawk -f
+
+# wminfo plugin: binary clock (4-bits version by Peter Trenholme aka PTrenholme)
+
+# command: wminfo -p binclock-vertical-06.wmi -u 1 -b#000000 -f#ffff00
+
+# The script written by PTrenholme from www.linuxquestions.org
+
+BEGIN {
+
+#
+# CONFIGURATION SECTION BEGINS HERE
+#
+
+Label="1"
+
+Separators="1"
+
+#
+# CONFIGURATION SECTION ENDS HERE
+#
+
+  if (Label == 1) Label="HH MM SS"
+    else Label="         "
+  if (Separators == 1) Separator="|"
+    else Separator=" "
+  a="*"
+  b=" "
+  bin[0][1]=b;bin[0][2]=b;bin[0][3]=b;bin[0][4]=b
+  bin[1][1]=b;bin[1][2]=b;bin[1][3]=b;bin[1][4]=a
+  bin[2][1]=b;bin[2][2]=b;bin[2][3]=a;bin[2][4]=b
+  bin[3][1]=b;bin[3][2]=b;bin[3][3]=a;bin[3][4]=a
+  bin[4][1]=b;bin[4][2]=a;bin[4][3]=b;bin[4][4]=b
+  bin[5][1]=b;bin[5][2]=a;bin[5][3]=b;bin[5][4]=a
+  bin[6][1]=b;bin[6][2]=a;bin[6][3]=a;bin[6][4]=b
+  bin[7][1]=b;bin[7][2]=a;bin[7][3]=a;bin[7][4]=a
+  bin[8][1]=a;bin[8][2]=b;bin[8][3]=b;bin[8][4]=b
+  bin[9][1]=a;bin[9][2]=b;bin[9][3]=b;bin[9][4]=a
+    print Label
+    date=strftime("%H%M%S")
+    split(date,digit,"")
+    for (i=1;i<=4;++i) {
+      for (j=1;j<=6;++j) {
+        printf("%1s", bin[digit[j]][i])
+        if (j%2==0 && j < 8) printf(Separator)
+      }
+      print ""
+    }
+}
+

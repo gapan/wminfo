@@ -55,57 +55,151 @@ ThinkPads.
 * GPU: 68 C     -- the GPU (graphics processing unit) temperature;
 * FAN: 3535     -- fan speed.
 
-If the conky.thinkpad.wmi plugin displays the message UNKNOWN instead of the
-loading or the draining times it means conky does not work as it should.  In
-such a situation you have to patch the source of the conky with conky.patch
-and compile and install that patched version:
+The conky.thinkpad.wmi plugin is less responsive than the bash thinkpad.wmi
+plugin but it uses significantly less of the CPU power (see:
+README.CPU.usage).
 
-    tar xjf conky-1.8.1.tar.bz2
-    cp conky.patch conky-1.8.1
-    cd conky-1.8.1
+                                      *
+                                    *   *
+
+The conky.conf file using the following setting:
+
+    THINKPAD: $battery_bar
+
+results in the error messages displayed endlessly by conky:
+
+    Conky: can't open /sys/class/power_supply/BAT0/uevent: No such file or directory
+
+when the battery is absent.
+
+In order to avoid that the conky.conf file uses the conditional loop:
+
+    THINKPAD: ${if_existing /sys/class/power_supply/BAT0/uevent}$battery_bar${else}..........$endif
+
+
+                                      *
+                                    *   *
+
+The thinkpad.wmi plugin can suspend the system to RAM when the battery
+percentage falls below the defined value.  To take the advantage of that
+feature you have to register /usr/local/bin/suspend or /usr/bin/suspend
+script in /etc/sudoers file and set Suspend variable to "on" value:
+
+    Suspend="on"
+
+The default value of the battery percentage causing suspend to RAM is 5% or
+less.  If you prefer the other level change the value of the Low_Battery
+variable:
+
+    Low_Battery="5"
+
+When the machine is in the suspend mode because of the low battery level you
+have to plug in the power supply before you resume it.  In the other case
+the thinkpad.wmi plugin will suspend the machine anew immediately after the
+resume.
+
+After the resume from the suspend conky.thinkpad.wmi plugin sleeps for 60
+seconds in order to allow to charge the battery to at least 6% and avoid
+the recurrent suspends.
+
+                                      *
+                                    *   *
+
+If the conky.thinkpad.wmi plugin displays the value -128 or -198 for the GPU
+instead of the valid temperature or it displays all the time the same
+temperature for CPU and GPU it means you use ThinkPad T61 or the newer one. 
+In such a situation you have to patch the source of the conky with
+conky-1.9.0.patch and compile and install that patched version:
+
+    tar xjf conky-1.9.0.tar.bz2
+    cp conky-1.9.0.patch conky-1.9.0
+    cd conky-1.9.0
     ./configure
-    patch -p1 < conky.patch	# <-- patching the conky source
+    patch -p1 < conky-1.9.0.patch	# <-- patching the conky source
     make
     make install
 
-Slackware users can copy conky.patch into SlackBuild conky directory and
+Slackware users can copy conky-1.9.0.patch into SlackBuild conky directory and
 insert the following line:
 
-    patch -p 1 -i $CWD/conky.patch
+    patch -p 1 -i $CWD/conky-1.9.0.patch
 
 into conky.SlackBuild script just above the make command.
 
-The conky.thinkpad.wmi plugin can suspend the system when the battery is
-low.  By default it is customized to suspend the system when the battery
-percentage is less than 5% though the suspending is disabled by default:
+The above problem concerns only ThinkPads T61 and the newer ones.
 
-    if [ $value -lt 5 ]
-    then
-        echo sudo /usr/bin/suspend
-    fi
+The /proc/acpi/ibm/thermal file on ThinkPad X60s (older machine) reports the
+following temperatures:
 
-To enable the suspending register /usr/bin/suspend script in /etc/sudoers
-configuration file and remove the echo command that precedes above the sudo
-/usr/bin/suspend command.
+    temperatures:	51 51 -128 48 -128 -128 -128 -128 44 43 -128 -128 -128 -128 -128 -128
 
-The conky.thinkpad.wmi plugin uses Celsius degrees by default.  If you
-prefer Fahrenheit degrees modify conky configuration file changing the
-following entry:
+The same file on T61 (newer machine) reports the following temperatures:
 
-    temperature_unit celsius
+    temperatures:	44 37 34 -128 -128 -128 -128 -128 38 39 38 -128 -128 -128 -128 -128
 
-to:
+The fourth value in the latter case is -128 so it is not the GPU
+temperature.  The GPU temperature is probably the ninth value while the
+third value is probably the HDD smart temperature (see:
+http://www.thinkwiki.org/wiki/Thermal_Sensors#ThinkPad_T500).
 
-    temperature_unit fahrenheit
+The conky 1.9.0 allows to use the ibm_temps values from the range 0–7. 
+The conky-1.9.0.patch allows to use the values from the range 0–10
+(including 8 for GPU).
 
-and modify conky.thinkpad.wmi plugin changing:
+The conky.conf file includes two entries for the GPU/HDD temperature sensors:
 
-    TempUnit=" C"
+    ## UNPATCHED CONKY (0 to 7 SENSORS)   #THINKPAD: ${if_match "${ibm_temps 3}" == "-128"}HDD: ${ibm_temps 2}${else}${if_match "${ibm_temps 3}" == "-198"}GPU: ${ibm_temps 8}${endif}${else}GPU: ${ibm_temps 3}${endif}
+    ## PATCHED CONKY   (0 to 10 SENSORS)  #THINKPAD: ${if_match "${ibm_temps 3}" == "-128"}GPU: ${ibm_temps 8}${else}${if_match "${ibm_temps 3}" == "-198"}GPU: ${ibm_temps 8}${endif}${else}GPU: ${ibm_temps 3}${endif}${endif}
 
-to:
+Use UNPATCHED CONKY entry with unpatched conky 1.9.0 or PATCHED CONKY entry
+with patched conky 1.9.0.
 
-    TempUnit="F"
+The wminfo running the conky.thinkpad.wmi plugin on ThinkPad T61 or the
+newer one machine with an unpatched conky displays the following
+information:
 
-The conky.thinkpad.wmi plugin is less responsive than the regular
-thinkpad.wmi plugin.  For example it displays non empty battery bar for a
-long time after disconnecting the battery from the machine.
+    +---------+
+    |0%  --:--|
+    |.........|
+    |CPU: 44 C|
+    |HDD: 34 C|
+    |FAN: 3044|
+    +---------+
+
+and with the patched conky displays the following information:
+
+    +---------+
+    |0%  --:--|
+    |.........|
+    |CPU: 44 C|
+    |GPU: 38 C|
+    |FAN: 3044|
+    +---------+
+
+                                      *
+                                    *   *
+
+If the conky.thinkpad.wmi plugin displays the message UNKNOWN instead of the
+loading or the draining times it means conky does not work as it should.  In
+such a situation you have to patch the source of the conky with
+conky-1.8.1.patch and compile and install that patched version:
+
+    tar xjf conky-1.8.1.tar.bz2
+    cp conky-1.8.1.patch conky-1.8.1
+    cd conky-1.8.1
+    ./configure
+    patch -p1 < conky-1.8.1.patch	# <-- patching the conky source
+    make
+    make install
+
+Slackware users can copy conky-1.8.1.patch into SlackBuild conky directory and
+insert the following line:
+
+    patch -p 1 -i $CWD/conky-1.8.1.patch
+
+into conky.SlackBuild script just above the make command.
+
+The above problem concerns conky 1.8.1 and it seems it is resolved in conky
+1.9.0 so the better idea than patch the older source is to install the
+program using the newer one.
+

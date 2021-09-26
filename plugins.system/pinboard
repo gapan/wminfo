@@ -1,15 +1,31 @@
 #!/bin/bash
 
-# pinboard: edits ~/.pinboard
+# pinboard: edits pinboard.cfg
 
-FILE="~/.pinboard"
-
-if [ -x `which mcedit` ]
+if [ -e pinboard.cfg ]
 then
-    mcedit $FILE
-elif [ -x `which nano` ]
+    FILE="pinboard.cfg"
+elif [ -e $HOME/bin/pinboard.cfg ]
 then
-    nano $FILE
+    FILE="$HOME/bin/pinboard.cfg"
+elif [ -e /usr/local/bin/pinboard.cfg ]
+then
+    FILE="/usr/local/bin/pinboard.cfg"
 else
-    vim $FILE
+    if [ ! -d $HOME/bin ]
+    then
+	mkdir $HOME/bin
+    fi
+    FILE="$HOME/bin/pinboard.cfg"
+    echo "pinboard.wmi: empty $FILE text database created." > $FILE
 fi
+
+for EDITOR in mcedit nano pico elvis vim vi
+do
+    if [ -x `which $EDITOR` ]
+    then
+	break
+    fi
+done
+
+$EDITOR $FILE

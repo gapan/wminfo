@@ -1,0 +1,91 @@
+#!/bin/bash
+
+# wminfo-benchmark-extensive: the benchmark testing wminfo plugins in extensive mode
+
+# written by Cezary M. Kruk (w1k0) and Noam Postavsky (ntubski)
+
+# the benchmark runs 25 instances of each plugin for 5 times
+# each plugin-duration combination gave 125 results
+# the total test lasts for 45 minutes
+# (do not run at the same time more than two plugins)
+
+#
+# CONFIGURATION SECTION BEGINS HERE
+#
+
+duration="060 180 300"
+instances="25"
+times="5"
+
+#
+# CONFIGURATION SECTION ENDS HERE
+#
+
+time=${duration// /, }
+
+echo "wminfo-benchmark-extensive: running benchmark $times times"
+echo "                            for $instances plugins instances"
+echo "                            for $time seconds..."
+echo
+
+if [ "$1" != "" ]
+then
+    directory="$1"
+fi
+
+if [ "$directory" == "" ]
+then
+    directory="./"
+fi
+
+cd $directory
+
+if [ "`ps aux | grep $USER | grep 'wminfo' | grep -vE 'conky|wminfo-benchmark|grep'`" != "" ]
+then
+    killall wminfo
+fi
+
+wrapper() {
+for plugin in *.wmi
+do
+    if [ "`echo $plugin | grep 'README'`" != "" ]
+    then
+        continue
+    fi
+    TIMEFORMAT=$(printf '%-24.24s: %s' "$plugin" '%2R real, %2U user, %2S sys, %P%% CPU')
+    command=$(sed -n 's/.*# command: wminfo -p \(.*\)/wminfo -p .\/\1/p' "$plugin")
+    command=${command%% -b*}
+    # eval will correctly handle quotes
+    # or any shell construct in the command
+    if [ "$command" != "" ]
+    then
+        eval time "$command" &
+    fi
+done
+}
+
+timer() {
+    # both the time reports and Terminated messages go on stderr
+    wrapper 2>&1 | grep -v Terminated | sort -k1,1 >> $time-$step &
+
+    sleep $time
+    killall wminfo
+
+    # wait for all the reports to be printed before exiting
+    wait
+}
+
+for time in $duration
+do
+    for step in $(seq 1 $times)
+    do
+	for instance in $(seq -w 1 $instances)
+	do
+	    timer &
+	done
+	wait
+	cat $time-$step | sed 's/:/ :/' | sort -n -k9 > $time-${step}s
+    done
+    cat $time-1s $time-2s $time-3s $time-4s $time-5s | sort -n -k9 > $time-t-5s
+done
+

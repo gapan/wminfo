@@ -4,7 +4,13 @@
 
 # command: wminfo -p conky.date.wmi -u 1 -b#000000 -f#ffff00
 
-datafile="/tmp/.$USER.conky.tmp"
+# the plugin uses conky-parser function by Peter Trenholme
 
-grep '^DATE: ' $datafile | sed 's/DATE: //'
+if [ "`which conky-parser 2> /dev/null`" == "" ]
+then
+    echo "$0: put conky-parser script into PATH."
+    echo -e "         \n         \n         \n         \n"
+    exit
+fi
 
+. conky-parser DATE

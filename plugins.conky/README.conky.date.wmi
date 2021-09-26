@@ -12,6 +12,18 @@ The conky.date.wmi plugin displays the following information:
     |YEAR 2011|
     +---------+
 
+If you use the localized system and the conky.date.wmi plugin displays
+the text ignoring diacritic characters try to run wminfo using the
+appropriate encoding and filter the plugin output.  For example the
+valid command for the Polish-language system is:
+
+    wminfo -p conky.date.wmi -u 1 -i 2 -b#000000 -f#ffff00
+
+and the valid plugin code looks like:
+
+    #!/bin/bash
+    . conky-parser DATE utf8-iso2
+
 That plugin started in the default conky configuration provided with the
 wminfo dockable application updates the displayed time every three seconds
 because in the default configuration conky updates the information every
@@ -40,10 +52,11 @@ If you prefer the hours in AM/PM format use the following setting:
 
 In the default conky configuration the setting for the week looks like that:
 
-    DATE: ${time week %V}
+    DATE: ${time week %W}
 
 It assumes the week begins on Monday.
 
 For the week beginning on Sunday use the following setting:
 
     DATE: ${time week %U}
+

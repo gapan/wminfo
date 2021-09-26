@@ -4,42 +4,48 @@
 
 # command: wminfo -p conky.timezone.wmi -u 15 -b#000000 -f#ffff00
 
-#
-# CONFIGURATION SECTION BEGINS HERE
-#
+datafile="$HOME/.wminfo/conky.tmp"
+label="TIMEZONE"
 
-CompactFormat="on"     # "on" or "off"
-
-#
-# CONFIGURATION SECTION ENDS HERE
-#
-
-datafile="/tmp/.$USER.conky.tmp"
-
-if [ "$CompactFormat" != "on" ]
+if [ -z "$(grep "^${label}: " "${datafile}")" ]
 then
-    grep '^TIMEZONE: ' $datafile | grep -v 'LOCAL' | sed -E 's/TIMEZONE: //;s/^(...)[A-Z]+/\1/'
-else
-    tempfile="/tmp/.$USER.timezone.tmp"
-    grep '^TIMEZONE: ' $datafile | sed 's/TIMEZONE: //' | sed -E 's/ /="/;s/$/"/' > $tempfile
-    . $tempfile
-    LOCAL=`echo $LOCAL | sed 's/.* //;s/-//'`
-    grep '^TIMEZONE: ' $datafile | grep -v 'LOCAL' | sed -E 's/TIMEZONE: //;s/ /_/g' | \
-    while read timezone junk
-    do
-	TMP=`echo $timezone | sed 's/.*_//;s/-//'`
-	if [[ $LOCAL -eq 1231 && $TMP -eq 0101 ]]
-	then
-	    echo "$timezone" | sed -E 's/^(..)[A-Z]+/\1/;s/([0-9])_/\1+_/;s/_/ /g'
-	elif [ $LOCAL -gt $TMP ] || [[ $LOCAL -eq 0101 && $TMP -eq 1231 ]]
-	then
-	    echo "$timezone" | sed -E 's/^(..)[A-Z]+/\1/;s/([0-9])_/\1-_/;s/_/ /g'
-	elif [ $LOCAL -lt $TMP ]
-	then
-	    echo "$timezone" | sed -E 's/^(..)[A-Z]+/\1/;s/([0-9])_/\1+_/;s/_/ /g'
-	else
-	    echo "$timezone" | sed -E 's/^(..)[A-Z]+/\1/;s/([0-9])_/\1__/;s/_/ /g'
-	fi
-    done
+cat <<EOF
+$0: no "${label}" entries were found in ${datafile} file.
+         
+         
+         
+         
+EOF
+    exit
 fi
+
+the_day_before_yesterday=`date --date="-2 days" +"%m-%d"`
+yesterday=`date --date="yesterday" +"%m-%d"`
+today=`date +"%m-%d"`
+tomorrow=`date --date="tomorrow" +"%m-%d"`
+the_day_after_tomorrow=`date --date="+2 days" +"%m-%d"`
+
+grep "^${label}: " $datafile | sed -E "s/${label}: //;s/ /_/g" | \
+while read timezone junk
+do
+    date=`echo $timezone | sed 's/.*_//'`
+    if [ "$date" == "$the_day_before_yesterday" ]
+    then
+	echo "$timezone" | sed -E 's/^([A-Z][A-Z][A-Z])[A-Z]+./\1_/;s/([0-9])_/\1=_/;s/([A-Z])__/\1_/;s/_/ /g'
+    elif [ "$date" == "$yesterday" ]
+    then
+	echo "$timezone" | sed -E 's/^([A-Z][A-Z][A-Z])[A-Z]+./\1_/;s/([0-9])_/\1-_/;s/([A-Z])__/\1_/;s/_/ /g'
+    elif [ "$date" == "$today" ]
+    then
+	echo "$timezone" | sed -E 's/^([A-Z][A-Z][A-Z])[A-Z]+./\1_/;s/([0-9])_/\1__/;s/([A-Z])__/\1_/;s/_/ /g'
+    elif [ "$date" == "$tomorrow" ]
+    then
+	echo "$timezone" | sed -E 's/^([A-Z][A-Z][A-Z])[A-Z]+./\1_/;s/([0-9])_/\1+_/;s/([A-Z])__/\1_/;s/_/ /g'
+    elif [ "$date" == "$the_day_after_tomorrow" ]
+    then
+	echo "$timezone" | sed -E 's/^([A-Z][A-Z][A-Z])[A-Z]+./\1_/;s/([0-9])_/\1#_/;s/([A-Z])__/\1_/;s/_/ /g'
+    fi
+done
+
+echo
 

@@ -1,0 +1,53 @@
+#!/usr/bin/gawk -f
+
+# wminfo plugin: binary clock (4-bits version by Peter Trenholme aka PTrenholme)
+
+# command: wminfo -p binclock-vertical-05.wmi -u 1 -b#000000 -f#ffff00
+
+# The script written by PTrenholme from www.linuxquestions.org
+
+BEGIN {
+
+#
+# CONFIGURATION SECTION BEGINS HERE
+#
+
+Label="1"
+
+Separators="1"
+
+#
+# CONFIGURATION SECTION ENDS HERE
+#
+
+  if (Label == 1) Label="HH MM SS"
+    else Label="         "
+  if (Separators == 1) Separator="|"
+    else Separator=" "
+  a="*"
+  b=" "
+  d=SUBSEP
+  bin[0]=b d b d b d b
+  bin[1]=b d b d b d a
+  bin[2]=b d b d a d b
+  bin[3]=b d b d a d a
+  bin[4]=b d a d b d b
+  bin[5]=b d a d b d a
+  bin[6]=b d a d a d b
+  bin[7]=b d a d a d a
+  bin[8]=a d b d b d b
+  bin[9]=a d b d b d a
+    date=strftime("%H%M%S")
+    split(date,digit,"")
+    print Label
+    split(bin[digit[1]],Hl,d)
+    split(bin[digit[2]],Hr,d)
+    split(bin[digit[3]],Ml,d)
+    split(bin[digit[4]],Mr,d)
+    split(bin[digit[5]],Sl,d)
+    split(bin[digit[6]],Sr,d)
+    for (i=1;i<=4;++i) {
+      print Hl[i] Hr[i] Separator Ml[i] Mr[i] Separator Sl[i] Sr[i] Separator
+    }
+}
+

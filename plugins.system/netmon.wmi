@@ -2,10 +2,17 @@
 
 # wminfo plugin: displays RX and TX parameters for different interfaces
 
+# command: wminfo -p 'netmon.wmi 5' -u 5 -b#000000 -f#ff00ff
+
 # Attention: netmon.wmi plugin uses netmon script
 #            the number in quotation marks should be equal the value of -u switch
 
-# command: wminfo -p "netmon.wmi 5" -u 5 -s 0 -b#000000 -f#ff00ff
+if [ "`which netmon 2> /dev/null`" == "" ]
+then
+    echo "$0: put netmon script into PATH."
+    echo -e "         \n         \n         \n         \n"
+    exit
+fi
 
 if [ "$1" == "" ]
 then
@@ -15,27 +22,55 @@ else
 fi
 
 LO=`netmon lo $scalefactor`
-ETH0=`netmon eth0 $scalefactor`
-WLN0=`netmon wlan0 $scalefactor`
+
+for interface in eth0 eth1
+do
+    LOGFILE="$HOME/.wminfo/.interface.$interface.log"
+    /sbin/ifconfig $interface &> $LOGFILE
+    if [ "`grep 'Device not found' $LOGFILE`" == "" ]
+    then
+	ETH=`netmon $interface $scalefactor`
+    fi
+done
+
+for interface in wlan0 wlan1
+do
+    LOGFILE="$HOME/.wminfo/.interface.$interface.log"
+    /sbin/ifconfig $interface &> $LOGFILE
+    sleep 1
+    if [ "`grep 'Device not found' $LOGFILE`" == "" ]
+    then
+	WLN=`netmon $interface $scalefactor`
+    fi
+done
 
 LO_RX="`echo $LO | awk '{print $4}'`"
-LO_TX="`echo $LO | awk '{print $7}'`"
-ETH0_RX="`echo $ETH0 | awk '{print $4}'`"
-ETH0_TX="`echo $ETH0 | awk '{print $7}'`"
-WLN0_RX="`echo $WLN0 | awk '{print $4}'`"
-WLN0_TX="`echo $WLN0 | awk '{print $7}'`"
+# LO_TX="`echo $LO | awk '{print $7}'`"
+ETH_RX="`echo $ETH | awk '{print $4}'`"
+ETH_TX="`echo $ETH | awk '{print $7}'`"
+WLN_RX="`echo $WLN | awk '{print $4}'`"
+WLN_TX="`echo $WLN | awk '{print $7}'`"
 
-if [ `echo $LO_RX | sed 's/[BKMGT]//'` -gt `echo $LO_TX | sed 's/[BKMGT]//'` ]
-then
-    echo "LO   $LO_RX"
-else
-    echo "LO   $LO_TX"
-fi
+LR="      "
+# LT="      "
+ER="    "
+ET="    "
+WR="    "
+WT="    "
 
-echo "ETH0 $ETH0_RX"
-echo "ETH0 $ETH0_TX"
-echo "WLN0 $WLN0_RX"
-echo "WLN0 $WLN0_TX"
+LR=${LR: -$((7-${#LO_RX})):5}
+# LT=${LT: -$((7-${#LO_TX})):5}
+ER=${ER: -$((5-${#ETH_RX})):3}
+ET=${ET: -$((5-${#ETH_TX})):3}
+WR=${WR: -$((5-${#WLN_RX})):3}
+WT=${WT: -$((5-${#WLN_TX})):3}
 
-echo "         "; echo "         "; echo "         "; echo "         "; echo "         "; 
+echo "LO$LR$LO_RX"
+# echo "LO$LT$LO_TX"
+echo "ETH:$ER$ETH_RX"
+echo "ETH:$ET$ETH_TX"
+echo "WLN:$WR$WLN_RX"
+echo "WLN:$WT$WLN_TX"
+
+echo -e "         \n         \n         \n         \n         \n"
 

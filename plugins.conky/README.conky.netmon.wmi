@@ -33,3 +33,4 @@ I did not find the method of rounding the fractions up with conky so the
 conky.netmon.wmi plugin simply truncates the fractions.  As a result instead
 of rounding up the numbers such as 23.9 or 32.5 to 24 and 33 it truncates
 them to 23 and 32.
+

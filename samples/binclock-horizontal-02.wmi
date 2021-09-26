@@ -1,0 +1,68 @@
+#!/bin/bash
+
+# wminfo plugin: binary clock and calendar (6-bits version)
+
+# command: wminfo -p binclock-horizontal-02.wmi -u 1 -b#000000 -f#ffff00
+
+# the script uses modified dectobin function written by Peter Trenholme
+
+#
+# CONFIGURATION SECTION BEGINS HERE
+#
+
+Labels="on"
+
+Separators="on"
+
+#
+# CONFIGURATION SECTION ENDS HERE
+#
+
+date=$(date "+%_H%_M%_S%_m%_d")
+H=${date:0:2}
+M=${date:2:2}
+S=${date:4:2}
+m=${date:6:2}
+d=${date:8:2}
+
+dectobin() {
+  local dec bin i
+  for i in $*
+  do
+    dec=$((${i} + 0))
+    bin=""
+    n=0
+    while [ ${dec} -gt 0 ]
+    do
+      n=$(($n+1))
+      digit=$((dec % 2))
+      dec=$((dec / 2))
+      bin=${digit}${bin}
+    done
+    n=$((6-$n))
+    for j in $(seq 1 $n)
+    do
+      bin="0${bin}"
+    done
+    printf -v ${i} "%s" ${bin}
+  done
+}
+
+dectobin H M S m d
+
+if [ "$Separators" == "on" ]
+then
+    v="|"
+    h="_"
+else
+    v=" "
+    h=" "
+fi
+
+if [ "$Labels" == "on" ]
+then
+    echo -e "H $v$H\nM $v$M\nS$h$v$S\nM $v$m\nD $v$d" | sed 's/0/ /g;s/1/*/g'
+else
+    echo -e "  $v$H\n  $v$M\n$h$h$v$S\n  $v$m\n  $v$d" | sed 's/0/ /g;s/1/*/g'
+fi
+

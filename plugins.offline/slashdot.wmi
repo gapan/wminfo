@@ -4,9 +4,10 @@
 
 # command: wminfo -p slashdot.wmi -b#005e5e -f#ffffff
 
-lynx --source localhost/wminfo/slashdot.html | \
+links -source -http-bugs.no-compression 1 http://localhost/wminfo/slashdot.html | \
     sed 's/\n/ /g;s/</\n</g' | \
     grep '/story/' | grep 'onclick' | \
     sed 's/<.*>//;' | \
     grep -v '^Watch$' | \
     punctuation
+echo

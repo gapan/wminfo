@@ -13,7 +13,7 @@ The thinkpad.wmi plugin can be in one of five states:
     |3%       |
     |.........|
     |CPU: 66 C|
-    |VID: 61 C|
+    |GPU: 61 C|
     |FAN: 3480|
     +---------+
 
@@ -26,7 +26,7 @@ The thinkpad.wmi plugin can be in one of five states:
     |50%-01:20|
     |!!!!!....|
     |CPU: 66 C|
-    |VID: 62 C|
+    |GPU: 62 C|
     |FAN: 3490|
     +---------+
 
@@ -37,7 +37,7 @@ The thinkpad.wmi plugin can be in one of five states:
     |100%00:00|
     |!!!!!!!!!|
     |CPU: 65 C|
-    |VID: 61 C|
+    |GPU: 61 C|
     |FAN: 3478|
     +---------+
 
@@ -50,7 +50,7 @@ The thinkpad.wmi plugin can be in one of five states:
     |50%+02:00|
     |!!!!!....|
     |CPU: 66 C|
-    |VID: 61 C|
+    |GPU: 61 C|
     |FAN: 3484|
     +---------+
 
@@ -61,132 +61,71 @@ The thinkpad.wmi plugin can be in one of five states:
     |0%  --:--|
     |.........|
     |CPU: 65 C|
-    |VID: 61 C|
+    |GPU: 61 C|
     |FAN: 3472|
     +---------+
 
+                                      *
+                                    *   *
+
 The thinkpad.wmi plugin can suspend the system to RAM when the battery
 percentage falls below the defined value.  To take the advantage of that
-feature you have to register /usr/bin/suspend script in /etc/sudoers file
-and remove echo command preceding the command:
+feature you have to register /usr/local/bin/suspend or /usr/bin/suspend
+script in /etc/sudoers file and set Suspend variable to "on" value:
 
-    sudo /usr/bin/suspend
+    Suspend="on"
 
-near the end of the thinkpad.wmi plugin.
+The default value of the battery percentage causing suspend to RAM is 5% or
+less.  If you prefer the other level change the value of the Low_Battery
+variable:
 
-The default value of the battery percentage causing suspend to RAM is below
-5%.
+    Low_Battery="5"
 
-When the machine is in the suspend mode you have to plug in the power supply
-before you resume it.  In the other case the thinkpad.wmi plugin will
-suspend the machine anew immediately after the resume.
+When the machine is in the suspend mode because of the low battery level you
+have to plug in the power supply before you resume it.  In the other case
+the thinkpad.wmi plugin will suspend the machine anew immediately after the
+resume.
+
+After the resume from the suspend thinkpad.wmi plugin sleeps for 60 seconds
+in order to allow to charge the battery to at least 6% and avoid the
+recurrent suspends.
+
+                                      *
+                                    *   *
 
 The thinkpad.wmi plugin can display temperature values in Celsius or
 Fahrenheit degrees.  Celsius degrees are default.  To use Fahrenheit degrees
 modify the configuration section of the plugin or use the command:
 
-    wminfo -p "thinkpad.wmi -F" -u 5
+    wminfo -p 'thinkpad.wmi -F' -u 5
 
-The battery loading and draining is not linear so the thinkpad.wmi plugin
-estimations of the loading and draining times are not exact.  The plugin
-offers two advanced features that allow to minimize these deviations.
+                                      *
+                                    *   *
 
-When the Monitor variable from the configuration section of the plugin is
-set to "on" the plugin stores in the temporary file the information about
-the loading or the draining respectively.  Loading data is stored in
-/tmp/.$USER.thinkpad-.tmp.tmp file and draining data is stored in
-/tmp/.$USER.thinkpad+.tmp.tmp file.  Minus and plus signs in the names of
-these files correspond to the signs displayed by the plugin during the
-loading and the draining of the battery.
+On ThinkPad T61 and the newer ones Lenovo changed the entry for the GPU
+thermal sensor.
 
-The loading data looks like that:
+The /proc/acpi/ibm/thermal file on ThinkPad X60s (older machine) reports the
+following temperatures:
 
-0	4	0
-1	4	96
-2	4	192
-2	5	95
-.
-.
-.
-78	49	86
-78	50	82
-79	50	84
-79	51	80
-.
-.
-.
-200	98	4
-201	98	4
-202	98	4
-202	100	0
+    temperatures:	51 51 -128 48 -128 -128 -128 -128 44 43 -128 -128 -128 -128 -128 -128
 
-In the above example the first column describes the elapsed time of the
-loading, the second column describes the battery percentage, and the third
-column describes the estimated time.  The battery was loaded for 202
-minutes.
+The same file on T61 (newer machine) reports the following temperatures:
 
-In the perfect world the sums of the elapsed and the estimated times in the
-consecutive rows would be equal to the real loading time.  So the equation:
+    temperatures:	44 37 34 -128 -128 -128 -128 -128 38 39 38 -128 -128 -128 -128 -128
 
-    loading time / (elapsed time + estimated time)
+The fourth value in the latter case is -128 so it is not the GPU
+temperature.  The GPU temperature is probably the ninth value (see:
+http://www.thinkwiki.org/wiki/Thermal_Sensors#ThinkPad_T500).
 
-would be equal 1 in each case.
+If the thinkpad.wmi plugin recognizes the fourth value as equal -128 it uses
+instead the ninth value.
 
-In practice it is usually bigger than 1 so the loading time is
-underestimated.
+                                      *
+                                    *   *
 
-The draining data looks like that:
-
-0	99	144
-0	99	168
-0	99	180
-0	99	190
-.
-.
-.
-136	50	139
-136	50	148
-137	50	138
-137	50	139
-.
-.
-.
-264	2	7
-264	2	6
-265	2	6
-265	1	6
-
-The battery was drained for 265 minutes.
-
-The values of the equation:
-
-    draining time / (elapsed time + estimated time)
-
-oscillate around 1.
-
-After sorting these sets of data and after removing duplicated lines it is
-possible to calculate the correction coefficients.  I did it for the battery
-I use.  In the case of other batteries these coefficients can differ.  To
-switch the correction on it is enough to set the Correction variable from
-the configuration section of the thinkpad.wmi plugin to "on".
-
-In order to drain the battery completely during the tests of the draining
-it is enough to change the battery percentage causing the system suspend
-from:
-
-    if [ $BATTERY_PERCENTAGE -lt 5 ] ...
-
-to:
-
-    if [ $BATTERY_PERCENTAGE -lt 2 ] ...
-
-or:
-
-    if [ $BATTERY_PERCENTAGE -eq 1 ] ...
-
-By default both Monitor and Correction variables are set to "off".
-
-It is possible to use the thinkpad.wmi plugin with other laptops than
+It is possible to use the thinkpad.wmi plugin with the other laptops than
 IBM/Lenovo ThinkPads.  In such a case the plugin displays the battery usage
 but refuses to display the temperatures and the fan speed.  In order to get
 such information some customization of the plugin is required.
+

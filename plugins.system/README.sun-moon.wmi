@@ -1,0 +1,174 @@
+
+wminfo README.sun-moon.wmi
+
+
+The sun-moon.wmi plugin displays the sunrise, sunset, moon rise, and moon
+set times, as well as the moon phase.  It uses solunar program by Kevin
+Boone to determine these times.  You will find the solunar program on the
+following site: http://kevinboone.net/README_solunar.html.  In order to
+install it use the following procedure:
+
+    tar xzf solunar.tar.gz
+    cp solunar.patch solunar-0.1.0
+    cd solunar-0.1.0
+    patch -p0 < solunar.patch
+    make
+    make install
+
+You will find the solunar.patch used in the second and the fourth steps of
+the installation in the plugins.system directory of the wminfo package.  The
+unpatched program displays the information such as:
+
+       Sunrise: 05:23
+        Sunset: 18:10
+    Moon phase: 0.88 waning crescent
+       Moonset: 02:00
+       Moonset: 17:07
+
+The patched program labels properly the moonrise time:
+
+      Moonrise: 02:00
+       Moonset: 17:07
+
+The solunar.patch repair a few other solunar inconsistencies as well.
+
+                                      *
+                                    *   *
+
+To display the information using the solunar program you have to use the
+city name or the latitude and the longitude of the desired location.  Both
+following commands give the same results:
+
+    solunar -c Europe/Warsaw
+
+and:
+
+    solunar -l +52.23,+21.00
+
+According to the Polish Wikipedia Warsaw coordinates are: 52°13′56″N
+and 21°00′30″E.  In order to change the minutes and the seconds to the
+decimal fractions use the following calculations:
+
+    52 + 13/60 + 56/3600 = 52.2322222222222
+    21 + 00/60 + 30/3600 = 21.0083333333333
+
+Northern latitudes and eastern longitudes have in solunar positive values. 
+So Warsaw coordinates are: +52.23 and +21.00.
+
+To display the city names known to the solunar program use the command:
+
+    solunar --cities
+
+To search the given city use the command such as:
+
+    solunar --cities | grep Warsaw
+
+If your city is not known to solunar use the name of the nearest city or use
+the latitude and the longitude as in the example above.
+
+                                      *
+                                    *   *
+
+You can define the city or the coordinates of the location in the
+configuration section of the sun-moon.wmi plugin:
+
+    City=""
+
+    Latitude="+51.11"
+    Longitude="+17.02"
+
+    Correction="on"
+    Summer="+1 hour"
+    Winter="+1 hour"
+
+The above settings are default.  The city is not defined.  The coordinates
+correspond to Wroclaw, Poland location.  The plus signs are for the northern
+latitudes and the eastern longitudes.  For the southern latitudes and the
+western longitudes use the minus signs.  If the city is defined it prevails
+the latitude and the longitude settings.
+
+The time correction is enabled.  Both corrections are set to +1 hour.  The
+solunar program displays the invalid sunrise and sunset times for some
+locations.  The mentioned corrections restore the valid times.  The separate
+correction values for the summer and the winter may be necessary in some
+cases.  If you do not need the corrections for your location set the
+Correction variable to "off".
+
+                                      *
+                                    *   *
+
+The sun-moon.wmi plugin displays the information such as:
+
+    06:23
+    19:10
+    88%
+    02:00
+    17:07
+
+It looks in the wminfo window as follows:
+
+    +---------+
+    |06:23    |
+    |19:10    |
+    |88%      |
+    |02:00    |
+    |17:07    |
+    +---------+
+
+  * The first and the second times are the sunrise and the sunset times.
+
+  * The percentage such as 88% is the geometric fraction of the way through
+    the current lunar cycle: 0% is for the new moon, 25% is for the 1st
+    quarter, 50% is for the full moon, and 75% is for the 3rd quarter.
+
+  * The two following times are the moonrise and the moonset times.  If the
+    moonrise or the moonset is not visible the program displays --:--
+    patterns instead of the time values.
+
+The above times of sunrise, sunset, moonrise, and moonset differ slightly
+from the values diplayed by the wmSun and wmMoonClock dockable applications.
+For example September 12, 2012 at 18:00 wmSun displays the following times:
+
+    06:22
+    19:12
+
+and wmMoonClock displays the following times:
+
+    02.01
+    17:06
+
+The differences are not greater than two minutes plus or minus and are
+caused by the different algorithms used by the mentioned programs.
+
+You can display sun and moon rise and set times using the following site:
+http://aa.usno.navy.mil/data/docs/RS_OneYear.php.
+
+
+                                      *
+                                    *   *
+
+The new moon, the 1st quarter, the full moon, and the 3rd quarter are marked
+with the special symbols put before the percentage fraction:
+
+    08.17 18:00     08.24 18:00     08.31 18:00     09.08 12:00
+    new moon        1st quarter     full moon       3rd quarter
+
+    +---------+     +---------+     +---------+     +---------+
+    |05:42    |     |05:53    |     |06:04    |     |06:16    |
+    |20:07    |     |19:52    |     |19:37    |     |19:19    |
+    |   0%    | or: | ) 25%   | or: | O 50%   | or: | ( 75%   |
+    |05:30    |     |14:23    |     |19:06    |     |23:00    |
+    |19:33    |     |23:02    |     |05:57    |     |14:34    |
+    +---------+     +---------+     +---------+     +---------+
+
+In the above examples empty space preceding the percentage fraction signs
+the new moon, the ) mark signs the 1st quarter, the O mark signs the full
+moon, and the ( mark signs the 3rd quarter.  (If you live on the southern
+hemisphere and the latitude value is negative the 1st quarter is marked by
+the ( sign and the 3rd quarter is marked by the ) sign.)
+
+According to the definition the exact values such as 0%, 25%, 50%, and 75%
+correspond to the new moon, the 1st quarter, the full moon, and the 3rd
+quarter.  In practice some tolerances are taken into consideration.  The
+solunar program uses 5% tolerances below and above the mentioned values.
+

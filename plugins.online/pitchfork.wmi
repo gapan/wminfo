@@ -5,11 +5,13 @@
 # command: wminfo -p pitchfork.wmi -b#ef4135 -f#ffffff
 
 lynx --source http://pitchfork.com/reviews/best/albums/ | \
+	grep 'score bnm score' | \
 	perl -pe 's/\n/ /g' | \
-	perl -pe 's/\s+/ /g' | \
-	sed 's/</\n</g' | \
-	grep -E '/reviews/albums' | \
-	sed 's/<.*>//' | \
-	grep -Ev '^Tweet$|^Reviews$|^Albums$|^$|^ $' | \
-	perl -pe 's/^ (.*)\n/$1- /'
+	perl -pe 's/<h1> More/\n<h1> More/g;s/<\/span>/<\/span>\n/g' | \
+	grep '<h1> More' | \
+	perl -pe 's/<h1>/\n<h1>/g' | \
+	grep 'score bnm score' | \
+	perl -pe 's/<h4>.*<\/h4>//' | \
+	perl -pe 's/<\/h1> <h2>/ - /;s/<span.*?> /(/;s/ <\/span>/)/' | \
+	perl -pe 's/<.*?>//g;s/ +/ /g'
 echo

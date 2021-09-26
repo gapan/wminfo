@@ -2,24 +2,30 @@
 wminfo TODO
 
 
-TODO list by Robert Kling   <robkli-8@student.luth.se> (Jul 27, 2000):
+TODO list by Cezary M. Kruk <c.kruk@bigfoot.com>       (Oct 22, 2012):
 
-* Different (smaller) font support.
-
-
-TODO list by Cezary M. Kruk <c.kruk@bigfoot.com>       (Sep 21, 2011):
-
-* Add more diacritics to the existing encodings -- especially ISO-8859-2 --
-  and add new ISO encodings.  To do that I need your help.  If you want
-  wminfo to accept diacritics or letters specific for your language send me
-  the sentence encoded in UTF-8 that contain all these letters.  I do not
-  expect you to invent such a sentence but to find the already existing
-  sentence for your language.  You can send it to Markus Kuhn too.  Here is
-  the list of the sentences collected by him:
-
-      http://www.cl.cam.ac.uk/~mgk25/ucs/examples/quickbrown.txt
+  Add more ISO encodings -- to do that I need your encouragement and your
+  cooperation in the case of the languages which use the alphabets other
+  than Latin, Cyrillic, or Greek.  The designing of the characters is time
+  consuming so I would like to know that at least one person will use the
+  results of my work.
 
   The wminfo program can interpret the texts encoded in ISO encodings that
   is characters fitting the ASCII range from 32 to 255.  So I can implement
   the characters specific for your language if there exist the suitable ISO
   encoding.
+
+  If you want to see the sample of text in your language put into
+  quick-utf8.html file from samples directory send me the sentence encoded
+  in UTF-8 that contain all diacritics and special letters specific for your
+  language.  I do not expect you to invent such a sentence but to find the
+  already existing sentence for your language.  You can send it to Markus
+  Kuhn too.  Here is the list of the sentences collected by him:
+
+      http://www.cl.cam.ac.uk/~mgk25/ucs/examples/quickbrown.txt
+
+
+TODO list by Robert Kling                              (Jul 27, 2000):
+
+  Different (smaller) font support.
+

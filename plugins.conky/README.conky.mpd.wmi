@@ -1,0 +1,79 @@
+
+wminfo README.conky.mpd.wmi
+
+
+The conky.mpd.wmi plugin monitors MPD.  It displays the information such as:
+
+1. Artist name.
+2. Album title.
+3. Track title.
+4. Elapsed time.
+5. Bitrate.
+
+For example:
+
+    Julia Holter
+    Tragedy
+    Introduction
+    1:25
+    320 kb/s
+
+That looks in wminfo window like:
+
+    +---------+
+    |JULIA HOL|
+    |TRAGEDY  |
+    |INTRODUCT|
+    |1:25     |
+    |320 KB/S |
+    +---------+
+
+                                      *
+                                    *   *
+
+To use MPD install: mpd (Music Player Daemon), mpc (MPD client), and ncmpc
+(MPD curses client).
+
+After the installation of MPD edit /etc/mpd.conf file and uncomment required
+options.
+
+Before running MPD for the first time make the following directory:
+
+    mkdir -p ~/.mpd/playlists
+
+Otherwise MPD displays the message:
+
+    log: problem opening log file "/home/johndoe/.mpd/log" (config line 37) for writing
+
+Now you can start MPD with the following command:
+
+    mpd
+
+The message:
+
+    Failed to load database: Failed to open database file "/home/johndoe/.mpd/database": No such file or directory
+
+is harmless.
+
+In order to scan the files from the music directory run the command such as:
+
+    mpc update /home/johndoe/music
+
+To use MDP in the interactive mode run the command:
+
+    ncmpc
+
+                                      *
+                                    *   *
+
+That configuration works well when mpd daemon works in the system. 
+Otherwise the following error message appears:
+
+    Conky: MPD error: problems getting a response from "127.0.0.1" on port 6600 : Connection refused
+
+Because of that bug the conky mpd related settings stored in conky.conf file
+are commented.  If you would like to use them remember to start mpd daemon
+before running conky.  You can use in your ~/.xinitrc the command such as:
+
+    if [ "`ps aux | grep "$USER" | grep mpd | grep -vE 'grep|wminfo'`" == "" ] ; then mpd; fi
+

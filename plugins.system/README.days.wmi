@@ -1,0 +1,63 @@
+
+wminfo README.days.wmi
+
+
+The days.wmi plugin reads days.cfg file and displays the number of the days
+since the given date or until the given date.
+
+Let us assume it is May 31, 2012 and the configuration file looks like:
+
+    1940-12-21 Frank Zappa (* 1940)
+    1993-12-04 Frank Zappa (+ 1993)
+    2012-05-30
+    2012-06-01
+    2012-12-21 The End Of The World
+
+In such a case the days.wmi plugin displays the following data:
+
+    26094 Frank Zappa (* 1940)
+    6752 Frank Zappa (+ 1993)
+    1 2012-05-30
+    -1 2012-06-01
+    -204 The End Of The World
+
+That looks in wminfo window like:
+
+    +---------+
+    |26094 FRA|
+    |6752 FRAN|
+    |1 2012-05|
+    |-1 2012-0|
+    |-204 THE |
+    +---------+
+
+Positive numbers are for the numbers of the days passed since the given date
+and negative numbers are for the numbers of the days lacking to the given
+date.  The days.wmi plugin sorts the events stored in the days.cfg file from
+the earliest in the past to the latest in the future.  If the given entry
+has a comment the plugin displays it just after the number of the days --
+otherwise it displays the date of the reference instead.  If you would like
+to get rid of the comment in the plugin output put two consecutive spaces at
+the end of the date, for example:
+
+    2012-05-30  
+    2012-06-01  
+
+In such a case the days.wmi plugin displays the following data:
+
+    1
+    -1
+
+That looks in wminfo window like:
+
+    +---------+
+    |1        |
+    |-1       |
+    |         |
+    |         |
+    |         |
+    +---------+
+
+You can put days.cfg file in /usr/local/bin directory or ~/bin directory.
+The days script allow to edit the respective text database.
+

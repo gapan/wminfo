@@ -1,0 +1,46 @@
+#!/bin/bash
+
+# wminfo plugin: Monday's Child -- nursery rhyme
+#                (it uses timestring script)
+
+# command: wminfo -p 'mondays-child.wmi "[MTWFS]"' -u "00:00:00" -b#000000 -f#00ffff
+
+if [ "$*" == "" ]
+then
+    echo "$0 [MTWFS]"
+    exit
+fi
+
+export process="$PPID"
+export datafile="$HOME/.wminfo/.timestring.tmp"
+timestring "$*"
+. $datafile
+
+LANG=en_US.UTF-8
+
+day=`echo ${timestring[$process]} | sed -E 's/(...).*/\1/'`
+
+case "$day" in
+    "Mon" )
+    echo "Monday's child is fair of face"
+    ;;
+    "Tue" )
+    echo "Tuesday's child is full of grace"
+    ;;
+    "Wed" )
+    echo "Wednesday's child is full of woe"
+    ;;
+    "Thu" )
+    echo "Thursday's child has far to go"
+    ;;
+    "Fri" )
+    echo "Friday's child is loving and giving"
+    ;;
+    "Sat" )
+    echo "Saturday's child works hard for a living"
+    ;;
+    "Sun" )
+    echo "But the child who is born on the Sabbath Day is bonny and blithe and good and gay"
+    ;;
+esac
+

@@ -1,0 +1,294 @@
+
+wminfo README.conky.forecast.wmi
+
+
+In order to use the conky.forecast.wmi plugin install in the system curl
+package.
+
+The conky.forecast.wmi plugin displays the weather forecast for today and
+tomorrow.  The conky.conf configuration entries for that plugin use the
+forecast script.
+
+The entries in conky.conf look like:
+
+    FORECAST: ${texeci 60 forecast "EUR|PL|PL001|WROCLAW" today}
+    FORECAST: ${texeci 60 forecast "EUR|PL|PL001|WROCLAW" tomorrow}
+
+They write to ~/.wminfo/conky.tmp file the information such as:
+
+    FORECAST: WROCLAW.PL: today: High 17 C: Low 9 C: Cloudy with a few showers      
+    FORECAST: WROCLAW.PL: tomorrow: High 19 C: Low 7 C: Mostly cloudy, rain ending      
+
+The commands such as:
+
+    conky.forecast.wmi WROCLAW
+
+or:
+
+    conky.forecast.wmi WROCLAW, PL
+
+display alternatively the forecast for today:
+
+    WROCLAW
+    today
+    Hi: 17 C
+    Lo: 9 C
+    Cloudy with a few showers
+
+or tomorrow:
+
+    WROCLAW
+    tomorrow
+    Hi: 19 C
+    Lo: 7 C
+    Mostly cloudy, rain ending
+
+The commands to run wminfo with that plugin are the following:
+
+    wminfo -p 'conky.forecast.wmi WROCLAW' -u 6 -i 1
+
+or:
+
+    wminfo -p 'conky.forecast.wmi WROCLAW, PL' -u 6 -i 1
+
+As a result wminfo shows the information such as:
+
+    +---------+     +---------+
+    |WROCLAW  |     |WROCLAW  |
+    |TODAY    |     |TOMORROW |
+    |HI: 17 C | or: |HI: 19 C |
+    |LO: 9 C  |     |LO: 7 C  |
+    |CLOUDY WI|     |MOSTLY CL|
+    +---------+     +---------+
+
+Attention: do not use execi commands in the conky.conf FORECAST entries
+instead of texeci ones because the execi command locks conky when there is
+no Internet connection causing as a result an empty conky output.
+
+                                      *
+                                    *   *
+
+The forecast.*.wmi and the conky.forecast.wmi plugins use the common counter
+file.  So do not run them at the same time or modify them in order to use
+the separate counter files.
+
+                                      *
+                                    *   *
+
+You can set Celsius or Fahrenheit degrees in the forecast script.  It is
+copied during the installation to /usr/local/bin or /usr/bin directory
+depending on the type of the installation.
+
+The forecast script translates the dates in the distant time zones to
+``today'' or ``tomorrow'' strings in order to provide the valid data for the
+conky.forecast.wmi plugin.  As a result the today's and tomorrow's weather
+forecasts are recognized correctly regardless of the local date in the
+different time zones.
+
+The forecast script stores temporary data in a file that uses the city name
+from the location code.  For location code "EUR|PL|PL001|WROCLAW" it is
+~/.wminfo/.forecast.WROCLAW.tmp temporary file.
+
+You will find the location codes such as "EUR|PL|PL001|WROCLAW" here:
+
+    http://www.radoslavdimov.com/jquery-plugins/jquery-plugin-digiclock/WeatherLocationDatabase.txt
+
+                                      *
+                                    *   *
+
+Unfortunately some entries in the WeatherLocationDatabase.txt file are
+invalid, for example: "ASI|RU|RS052|MOSKVA" or "ASI|IN|IN036|CALCUTTA".
+
+As a result the following configuration:
+
+    FORECAST: ${texeci 60 forecast "ASI|RU|RS052|MOSKVA" today}
+    FORECAST: ${texeci 60 forecast "ASI|RU|RS052|MOSKVA" tomorrow}
+    FORECAST: ${texeci 60 forecast "ASI|IN|IN036|CALCUTTA" today}
+    FORECAST: ${texeci 60 forecast "ASI|IN|IN036|CALCUTTA" tomorrow}
+
+writes to ~/.wminfo/conky.tmp file the empty forecasts:
+
+    FORECAST: 
+    FORECAST: 
+    FORECAST: 
+    FORECAST: 
+
+The valid location codes for Moscow and Kolkata are: "ASI|RU|RS052|MOSCOW"
+and "ASI|IN|IN036|KOLKATA".
+
+The following configuration:
+
+    FORECAST: ${texeci 60 forecast "ASI|RU|RS052|MOSCOW" today}
+    FORECAST: ${texeci 60 forecast "ASI|RU|RS052|MOSCOW" tomorrow}
+    FORECAST: ${texeci 60 forecast "ASI|IN|IN036|KOLKATA" today}
+    FORECAST: ${texeci 60 forecast "ASI|IN|IN036|KOLKATA" tomorrow}
+
+writes to ~/.wminfo/conky.tmp file the correct weather forecasts:
+
+    FORECAST: MOSCOW.RU: today: High 17 C: Low 7 C: Warmer with thickening clouds
+    FORECAST: MOSCOW.RU: tomorrow: High 20 C: Low 11 C: Low clouds
+    FORECAST: KOLKATA.IN: today: High 41 C: Low 31 C: Partly sunny and very hot
+    FORECAST: KOLKATA.IN: tomorrow: High 42 C: Low 30 C: Very hot; a p.m. t-storm
+
+                                      *
+                                    *   *
+
+Some other entries does not work for some reason though the location codes
+seem to be correct.  For example the following settings:
+
+    FORECAST: ${texeci 60 forecast "NAM|US|NY|NEW YORK" today}
+    FORECAST: ${texeci 60 forecast "NAM|US|NY|NEW YORK" tomorrow}
+
+write to ~/.wminfo/conky.tmp file the empty forecasts:
+
+    FORECAST: 
+    FORECAST: 
+
+In fact almost all locations in United States work bad.
+
+In such a case you should use the zip code.  There are a lot of ways to find
+it.  For example you can go to the http://www.accuweather.com/ website and
+enter in ``AccuWeather.com for'' field the value ``New York, NY''.  Then
+look at the address bar:
+
+    http://www.accuweather.com/en/us/new-york-ny/10007/weather-forecast/349727
+
+The number 10007 in that example is the zip code of New York.
+
+The other method is to go to http://www.zip-codes.com website, enter the
+town or the city name and choose the appropriate zip code.
+
+As a result the configuration:
+
+    FORECAST: ${texeci 60 forecast "10007" today}
+    FORECAST: ${texeci 60 forecast "10007" tomorrow}
+
+writes to ~/.wminfo/conky.tmp file the valid forecasts:
+
+    FORECAST: 10007: today: High 26 C: Low 16 C: Mostly sunny and nice      
+    FORECAST: 10007: tomorrow: High 23 C: Low 14 C: Partly sunny      
+
+The wminfo started with the following command:
+
+    wminfo -p 'conky.forecast.wmi 10007' -u 6 -i 1
+
+displays the information such as:
+
+    +---------+     +---------+
+    |10007    |     |10007    |
+    |TODAY    |     |TOMORROW |
+    |HI: 26 C | or: |HI: 23 C |
+    |LO: 16 C |     |LO: 14 C |
+    |MOSTLY SU|     |PARTLY SU|
+    +---------+     +---------+
+
+In order to get the meaningful label instead of the numerical one it is
+possible to use the command:
+
+    wminfo -p 'conky.forecast.wmi 10007 New York' -u 6 -i 1
+
+In the above example ``10007'' is the zip code and ``New York'' is the
+translation.  As a result wminfo displays the information such as:
+
+    +---------+     +---------+
+    |NEW YORK |     |NEW YORK |
+    |TODAY    |     |TOMORROW |
+    |HI: 26 C | or: |HI: 23 C |
+    |LO: 16 C |     |LO: 14 C |
+    |MOSTLY SU|     |PARTLY SU|
+    +---------+     +---------+
+
+                                      *
+                                    *   *
+
+Some location codes use diacritic characters from ISO-8859-1 encoding.  For
+example the code for ZÃ¼rich is "EUR|CH|SZ026|ZÜRICH".  In such a case the
+valid entries in conky.conf look like:
+
+    FORECAST: ${texeci 60 forecast "EUR|CH|SZ026|ZÜRICH" today}
+    FORECAST: ${texeci 60 forecast "EUR|CH|SZ026|ZÜRICH" tomorrow}
+
+They write to ~/.wminfo/conky.tmp file the information such as:
+
+    FORECAST: ZURICH.CH: today: High 23 C: Low 12 C: Sunshine and pleasant      
+    FORECAST: ZURICH.CH: tomorrow: High 25 C: Low 14 C: Sun through high clouds      
+
+The conky.forecast.wmi started with the commands:
+
+    conky.forecast.wmi Zurich
+
+or:
+
+    conky.forecast.wmi Zurich, CH
+
+displays the information such as:
+
+    ZURICH
+    today
+    Hi: 23 C
+    Lo: 12 C
+    Sunshine and pleasant      
+
+or:
+
+    ZURICH
+    tomorrow
+    Hi: 25 C
+    Lo: 14 C
+    Sun through high clouds      
+
+The wminfo started with the commands:
+
+    wminfo -p 'conky.forecast.wmi Zurich' -u 6 -i 1
+
+or:
+
+    wminfo -p 'conky.forecast.wmi Zurich, CH' -u 6 -i 1
+
+displays the following information:
+
+    +---------+     +---------+
+    |ZURICH   |     |ZURICH   |
+    |TODAY    |     |TOMORROW |
+    |HI: 23 C | or: |HI: 25 C |
+    |LO: 12 C |     |LO: 14 C |
+    |SUNSHINE |     |SUN THROU|
+    +---------+     +---------+
+
+                                      *
+                                    *   *
+
+The other method to find the location codes is the following:
+
+1. Go to http://netweather.accuweather.com.
+2. Press GET MY NETWEATHER.
+3. Choose Location: [Wroclaw, PL].
+4. Press Search.
+5. Press NEXT.
+6. Press NEXT.
+7. Mark [x] I agree to these terms and conditions.
+8. Look at Web Page Code.
+
+Here is the sample web page code for Wroclaw, PL:
+
+    <div style='width: 240px; height: 420px; background-image: url( http://vortex.accuweather.com/adcbin/netweather_v2/backgrounds/spring1_240x420_bg.jpg ); background-repeat: no-repeat; background-color: #607041;' ><div id='NetweatherContainer' style='height: 405px;' ><script src='http://netweather.accuweather.com/adcbin/netweather_v2/netweatherV2ex.asp?partner=netweather&tStyle=normal&logo=1&zipcode=EUR|PL|PL001|WROCLAW|&lang=eng&size=12&theme=spring1&metric=0&target=_self'></script></div><div style='text-align: center; font-family: arial, helvetica, verdana, sans-serif; font-size: 10px; line-height: 15px; color: #FDEA11;' ><a style='color: #FDEA11' href='http://www.accuweather.com/world-index-forecast.asp?partner=netweather&locCode=EUR|PL|PL001|WROCLAW|&metric=1' >Weather Forecast</a> | <a style='color: #FDEA11' href='http://www.accuweather.com/maps-satellite.asp' >Weather Maps</a> | <a style='color: #FDEA11' href='http://www.accuweather.com/index-radar.asp?partner=accuweather&zipcode=EUR|PL|PL001|WROCLAW|' >Weather Radar</a></div></div>
+
+The location code in the above example is: EUR|PL|PL001|WROCLAW.
+
+Unfortunately the location codes reported by netweather.accuweather.com site
+are not correct in all cases.
+
+                                      *
+                                    *   *
+
+To test the location code use the following command:
+
+    curl -s http://rss.accuweather.com/rss/liveweather_rss.asp\?metric\=1\&locCode\="EUR|PL|PL001|WROCLAW"
+
+If you prefer Fahrenheit degrees instead of metric\=1 setting above use
+metric\=0 one.
+
+In the case of the location names that use the space such as
+"SAM|BR|BR017|RIO DE JANEIRO" replace the spaces with the %20 sequences, for
+example: "SAM|BR|BR017|RIO%20DE%20JANEIRO".
+

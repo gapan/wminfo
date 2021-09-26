@@ -2,120 +2,97 @@
 wminfo README
 
 
-Authors
-----------------------------------------------------------------------------
-Robert Kling   <robkli-8@student.luth.se>
-Cezary M. Kruk <c.kruk@bigfoot.com>
-
-
 Description
 ----------------------------------------------------------------------------
 wminfo is a dockapp that displays text-format information using the plugin.
-The standard plugin is a shell script.  The plugin writes the information to
-stdout and wminfo captures the output and displays it row by row.  Using the
-appropriate plugins wminfo can display different information got from the
-system or from Internet.
 
-
-Usage
-----------------------------------------------------------------------------
-To display help run the command:
-
-    wminfo -h
-
-To use the plugin run the command:
-
-    wminfo -p plugin.wmi
-
-A lot of plugins are included in the tarball plugins.* and samples
-directories.
-
-Note that the plugins do not need to have the extension wmi and need not to
-be the shell scripts.
-
-On the other hand it is easier to write and test shell scripts without
-running wminfo and it is convenient to use wmi extension to distiguish
-wminfo plugins from the other scripts.
-
-    +---------+
-    |DOWN^ ALL|
-    |    ^    |
-    |   ONE   |
-    |    v    |
-    |UP  v    |
-    +---------+
-
-To activate or deactivate the scrolling of the line of the text click that
-line in the middle (position ONE).
-
-To activate or deactivate the scrolling of all lines click the upper right
-corner of the application window (positon ALL).
-
-To rewind the text down or up click the upper (DOWN) or the lower (UP) left
-corner of the application window.  Rewinding of the text is also possible
-with the mouse scroll wheel.
-
-The wminfo program can display the lines of the text up to 1037 characters
-in a line.
-
-When the number of the characters is bigger than 1037 and smaller than or
-equal 1048 wminfo displays empty application window.
-
-When the number of the characters is equal to 1049 wminfo displays the
-message:
-
-    ERROR: plugin out-file () not found.
-
-When the number of the characters is equal to or bigger than 1050 wminfo
-displays the message:
-
-    Segmentation fault
-
-To check the lengths of the lines it is enough to redirect wminfo plugin
-output:
-
-    plugin.wmi > file.tmp
-
-Each wminfo instance uses most of the time 0.06% of CPU and X Window running
-wminfo uses 0.14% of CPU per instance (that is the average for Intel(R)
-Core(TM) Duo CPU L2400 @ 1.66GHz).  The CPU usage increases when wminfo
-updates the information or scrolls the text.
+For the quick start read first the README.1st document.
 
 
 Files
 ----------------------------------------------------------------------------
-COPYING         GNU General Public License Version 3
-ChangeLog       description of the changes
-INSTALL         installation instructions
-Plugins-HOWTO   plugin writer's basic help
-README          this file
-README.Privacy  how to preserve the privacy
-TODO            things to implement
+BUGS                  found bugs -- all of them are solved.
+COPYING               GNU General Public License Version 3.
+ChangeLog             description of the changes.
+INSTALL               installation instructions.
+Plugins-HOWTO         plugin writer's basic help.
+README                this file.
+README.1st            quick start.
+README.CPU.usage      the benchmarks of the selected plugins.
+README.benchmarks     the complete benchmarks of all wminfo plugins.
+README.colors         color scheme based on the Granger rainbow chart.
+README.multi+wrapper  new classes of plugins: multi and wrapper.
+README.regex          regular expressions as the update periods.
+THANKS                thanks to the co-authors of wminfo and plugins.
+TODO                  things to implement.
+
+
+Directories
+----------------------------------------------------------------------------
+contrib               the tools copied to the PATH during the installation
+                        of the wminfo and used by the plugins.
+man                   wminfo manual page.
+plugins.binary        plugins designed to compile them as binary programs.
+plugins.conky         plugins using conky (more efficient than their system
+                        equivalents).
+plugins.offline       plugins using websites mirrors stored by the online
+                        script in http://localhost/wminfo/.
+plugins.online        plugins using websites code get on-the-fly.
+plugins.system        plugins monitoring the system and the other
+                        miscellaneous plugins.
+samples               plugins designed for the testing purposes.
+
+wmgeneral             the routines and the headers used by wminfo.
+wminfo                configure script and wminfo program including
+                        wminfo.xpm.
 
 
 Bugs
 ----------------------------------------------------------------------------
+Ten bugs encountered so far are described and solved in BUGS file.
+
 If you discover any bugs in this software, please send a bugreport to
 c.kruk@bigfoot.com and describe the problem in as a detailed way as you can.
-The address robkli-8@student.luth.se of the original program author is no
-longer valid.
 
 
-Copyright
+License
 ----------------------------------------------------------------------------
-wmInfo (C) 2000 by Robert Kling
-wminfo (C) 2011 by Cezary M. Kruk
-
 wminfo is provided on the terms of the GNU General Public License v. 3.
 Read the COPYING file for the complete text of the license.
+
+
+Authors
+----------------------------------------------------------------------------
+wminfo (C) 2011-2014 by Cezary M. Kruk  <c.kruk@bigfoot.com>
+       (C)      2012 by Peter Trenholme
+       (C)      2012 by Noam Postavsky
+wmInfo (C)      2000 by Robert Kling
 
 
 Window Maker dockapps
 ----------------------------------------------------------------------------
 For more Window Maker dockapps see:
 
-    http://dockapps.org/
+    http://dockapps.windowmaker.org/
 
 and:
 
     http://web.cs.mun.ca/~gstarkes/wmaker/dockapps/
+
+
+Window Maker
+----------------------------------------------------------------------------
+The current versions of Window Maker are available at:
+
+    http://repo.or.cz/w/wmaker-crm.git
+    (the fork maintained by Carlos R. Mafra)
+
+and:
+
+    http://git.altlinux.org/people/raorn/packages/WindowMaker.git
+    (the fork maintained by Alexey I. Froloff).
+
+The Window Maker site is available at:
+
+    http://windowmaker.org/.
+

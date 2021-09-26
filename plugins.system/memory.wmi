@@ -1,0 +1,39 @@
+#!/bin/bash
+
+# wminfo plugin: memory -- used, free, buffered, cached
+
+# command: wminfo -p memory.wmi -u 5 -b#000000 -f#ff0000
+
+memory="`free -m | grep 'Mem:'`"
+
+tot="`echo $memory | awk '{print $2}'`"
+mem="`echo $memory | awk '{print $3}'`"
+fre="`echo $memory | awk '{print $4}'`"
+buf="`echo $memory | awk '{print $6}'`"
+chd="`echo $memory | awk '{print $7}'`"
+
+usd=`echo "$mem-$buf-$chd" | bc`
+
+count=`echo "10 * ($usd)/$tot + 0.5" | bc`
+
+for n in `seq 1 $count`
+do
+    GRAPH="$GRAPH|"
+done
+
+if [ "$GRAPH" == "" ]
+then
+    GRAPH="         "
+fi
+
+usd=`echo "scale=2 ; x=$usd / 1000; if (x<10) print \" \"; if (x<1) print 0; x" | bc`
+fre=`echo "scale=2 ; x=$fre / 1000; if (x<10) print \" \"; if (x<1) print 0; x" | bc`
+buf=`echo "scale=2 ; x=$buf / 1000; if (x<10) print \" \"; if (x<1) print 0; x" | bc`
+chd=`echo "scale=2 ; x=$chd / 1000; if (x<10) print \" \"; if (x<1) print 0; x" | bc`
+
+echo "USD $usd"
+echo "$GRAPH"
+echo "FRE $fre"
+echo "BUF $buf"
+echo "CHD $chd"
+

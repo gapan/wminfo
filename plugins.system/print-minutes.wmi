@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# wminfo plugin: displays large number of the minutes
+
+# command: wminfo -p print-minutes.wmi -u 1m -s 0 -b#000000 -f#ffff00
+
+print-number $(date +"%M")
+

@@ -1,0 +1,75 @@
+
+wminfo README.wminfo-benchmark
+
+
+The wminfo-benchmark is the script testing the CPU usage of wminfo running
+the plugins.  By default wminfo-benchmark tests all *.wmi plugins from the
+current directory running them with wminfo for 180 seconds.  You can run
+wminfo-benchmark using as an argument the path to the directory including
+the plugins.  It is possible to test any number of running instances of
+wminfo.  It is not necessary to switch the system to the idle state before
+the tests because the time function used in the benchmark includes only the
+CPU usage of the child processes.  The sample output of the wminfo-benchmark
+looks like:
+
+    binclock-vertical-01.wmi : 179.98 real, 1.61 user, 0.56 sys, 1.21% CPU
+    binclock-vertical-02.wmi : 179.95 real, 1.60 user, 0.58 sys, 1.21% CPU
+    binclock-vertical-03.wmi : 179.94 real, 1.59 user, 0.62 sys, 1.23% CPU
+    binclock-vertical-04.wmi : 179.73 real, 1.44 user, 0.54 sys, 1.10% CPU
+    binclock-vertical-05.wmi : 179.69 real, 2.28 user, 0.60 sys, 1.60% CPU
+    binclock-vertical-06.wmi : 179.65 real, 2.33 user, 0.56 sys, 1.61% CPU
+    binclock-vertical-07.wmi : 179.60 real, 3.73 user, 0.95 sys, 2.61% CPU
+    binclock-vertical-08.wmi : 179.55 real, 4.19 user, 0.97 sys, 2.87% CPU
+    binclock-vertical-09.wmi : 179.50 real, 4.45 user, 0.96 sys, 3.01% CPU
+    binclock-vertical-10.wmi : 179.45 real, 4.59 user, 1.17 sys, 3.21% CPU
+    binclock-vertical-11.wmi : 179.40 real, 7.50 user, 1.50 sys, 5.02% CPU
+    binclock-vertical-12.wmi : 179.36 real, 7.48 user, 1.53 sys, 5.02% CPU
+    binclock-vertical-13.wmi : 179.32 real, 3.78 user, 0.93 sys, 2.63% CPU
+    binclock-vertical-14.wmi : 179.83 real, 12.98 user, 4.86 sys, 9.92% CPU
+
+All above plugins were tested at the same time for 180 seconds.  The last
+two columns show the CPU usage of the respective plugins.
+
+                                      *
+                                    *   *
+
+I tested the benchmark tolerances using wminfo-benchmark-extensive script. 
+To count the tolerances I referred the minimal and maximal observed values
+to the median ones.  The mentioned script runs for 5 times 25 instances of
+each plugin from the current directory testing them for 60, 180, and 300
+seconds.  The rule of thumb is simple: the more CPU power the plugin uses
+the bigger tolerances are observed during the test and the longer benchmark
+runs the plugins the lower tolerances occur.  For the default test lasting
+for 180 seconds the tolerances were not bigger than ±0.50% and in most
+cases they fitted ±0.10% range.  The bottom line is: to establish the
+tolerances for the given plugin you have to test it with the
+wminfo-benchmark-extensive script.
+
+                                      *
+                                    *   *
+
+According to the tests described in the main README.CPU.usage file the
+wminfo-benchmark shows the maximal values of the CPU usage while the median
+values are significantly lower.  Therefore one can use wminfo-benchmark to
+compare different plugins or the sets of the plugins but that benchmark can
+not help to draw the conclusions about the actual CPU usage specific to the
+tested plugins.
+
+On the other hand the tests performed with the following command:
+
+    top -b -n 40 | grep '^Cpu' | sort -n
+
+show the more reliable results but the disadvantage of that method is that
+before the test one has to switch the system to the idle state in order to
+avoid the false results caused by the other running programs.
+
+                                      *
+                                    *   *
+
+The additional wminfo-benchmark-extensive script runs for 5 times 25
+instances of each plugin from the current directory testing them for 60,
+180, and 300 seconds -- the total test lasts for 45 minutes.  The additional
+wminfo-benchmark-timings script runs for 180 seconds all *.wmi plugins from
+the current directory testing them with all allowed timing coefficients: 1,
+2, 4, 8, and 16 -- the test lasts for 15 minutes.
+

@@ -11,3 +11,4 @@ lynx --source http://www.linuxquestions.org/questions/slackware-14/ | \
     sed 's/<.*>//;' | \
     tail -n 50 | \
     punctuation
+echo

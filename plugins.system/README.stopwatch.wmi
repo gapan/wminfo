@@ -5,7 +5,7 @@ wminfo README.stopwatch.wmi
 The stopwatch.wmi plugin counts the time elapsed since it was started or
 reset and alerts you when the given time comes.  It accepts up to four
 different alarms.  By default it displays a message and plays a sound but it
-can perform other actions such as suspending the system.
+can perform the other actions such as suspending the system.
 
 The times of the alarms and the actions are defined in stopwatch.cfg file,
 for example:
@@ -62,5 +62,6 @@ wminfo window.
 
 The stopwatch script edits stopwatch.cfg configuration file.  In order to be
 able to modify it as non-root user and to store in that file your own alarms
-it is better to copy stopwatch.cfg file to your ~/bin directory instead of
-/usr/local/bin one.
+it is better to copy the stopwatch.cfg file to your ~/bin directory instead
+of /usr/local/bin one.
+

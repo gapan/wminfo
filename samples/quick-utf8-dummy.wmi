@@ -3,5 +3,4 @@
 # wminfo plugin: tests UTF-8 to dummy conversion
 # command: wminfo -p quick-utf8-dummy.wmi
 
-links -width 512 -dump quick-utf8.html | \
-	perl -pe 's/^\s+//'
+links -width 512 -html-margin 0 -dump quick-utf8.html

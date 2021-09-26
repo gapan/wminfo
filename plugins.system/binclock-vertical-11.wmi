@@ -1,0 +1,55 @@
+#!/usr/bin/env ruby
+
+# wminfo plugin: binary clock (4-bits version by grail)
+
+# command: wminfo -p binclock-vertical-11.wmi -u 1 -b#000000 -f#ffff00
+
+# The script written by grail from www.linuxquestions.org
+
+#
+# CONFIGURATION SECTION BEGINS HERE
+#
+
+Label = "1"
+
+Separators = "1"
+
+#
+# CONFIGURATION SECTION ENDS HERE
+#
+
+cnt = 0
+array = Array.new(6) { Array.new(4) }
+t = Time.now.strftime("%H%M%S")
+
+if Label == "1"
+	puts "HH MM SS"
+else
+	puts "         "
+end
+
+if Separators == "1"
+	separator = '|'
+else
+	separator = ' '
+end
+
+t.each_char do |c|
+		0.upto(3) do |n|
+				array[cnt][n] = c.to_i[n]
+		end
+
+		array[cnt].reverse!
+		cnt+=1
+end
+
+transpose_array = array.transpose
+
+transpose_array.each{ |x| x.map!{ |y| y == 0 ? ' ' : '*' } }
+
+
+transpose_array.each do |x|
+	6.step(2, -2) { |n| x.insert(n, separator) }
+	print "#{x.join}\n"
+end
+

@@ -2,20 +2,57 @@
 wminfo README.sysmon.wmi
 
 
-The sysmon.wmi plugin displays CPU usage using sysmon script as well as
-memory and swap usages and the average load for the last minute.
-
-I tested Window Maker running eleven plugins and a few applications I use
-all the time.  As a result I observed that sysmon.wmi reports the CPU usage
-higher 1.42 times than the real CPU usage.  So I corrected that using the
-following line in the sysmon script:
-
-    # The correction of the overestimated value.
-    let "DIFF_USAGE=(100*$DIFF_USAGE/142)"
-
-If the values showed by sysmon.wmi on your system are invalid first remove
-the above line from the sysmon script and then try to implement the
-correction proper for your system.
+The sysmon.wmi plugin displays the CPU usage using sysmon script as well as
+memory and swap usages and the number of the running processes.
 
 As for free memory report the sysmon.wmi plugin informs about used memory
-only -- without buffered and cached memory.
+only -- it ignores buffered and cached memories.
+
+The sysmon.wmi plugin looks in the wminfo window like:
+
+    +---------+
+    |CPU: 19% |
+    |||       |
+    |MEM: 18% |
+    |SWP: 0%  |
+    |PRC: 2   |
+    +---------+
+
+The present sysmon.wmi plugin version displays the information about the
+active processes number instead of the information about the average load
+because the average load is reported by the uptime.wmi plugin.  If you
+prefer to display the average load as well switch the CPU_Bar to "off"
+value:
+
+    CPU_Bar="off"
+
+As a result the information in the wminfo window looks like:
+
+    +---------+
+    |CPU: 19% |
+    |MEM: 18% |
+    |SWP: 0%  |
+    |AVG: 0.05|
+    |PRC: 2   |
+    +---------+
+
+                                      *
+                                    *   *
+
+If the values for the CPU usage showed by sysmon.wmi on your system are
+invalid you can set in the configuration section of the plugin the right
+correction coefficient.  By default the correction is disabled:
+
+    export Correction="1.00"
+
+To check the median CPU usage use the command:
+
+    top -b -n 40 | grep '^Cpu' | sort -n
+
+To check the average CPU usage use the command:
+
+    mpstat 3 40
+
+In both cases add the values of the CPU usage for user and system in order
+to determine the total CPU usage.
+

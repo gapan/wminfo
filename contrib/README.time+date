@@ -1,0 +1,29 @@
+
+wminfo README.time+date
+
+
+The time+date script displays time and date for the given time zone.  You
+can use as an option the abbreviations such as: CET; or the coutry names
+such as: Poland; or the region/city names such as: Europe/Warsaw; or the GMT
+offsets such as: GMT-02.
+
+The three first commands display the information such as:
+
+    CEST 17:41 06-16
+
+The last command displays the information such as:
+
+    GMT 17:41 06-16
+
+In order to display the local time and date use -l or --local switch at the
+end of the command.  For example the command:
+
+    time+date Europe/Moscow -l
+
+displays the information such as:
+
+    CEST 17:41 06-16
+    MSK 19:41 06-16
+
+where CEST is the local time zone.
+

@@ -4,8 +4,14 @@
 
 # command: wminfo -p conky.wireless.wmi -u 3 -b#000000 -f#ff00ff
 
-datafile="/tmp/.$USER.conky.tmp"
+# the plugin uses conky-parser function by Peter Trenholme
 
-grep 'WIRELESS: ' $datafile | \
-    sed -E "s/WIRELESS: //;s/#/|/g;s/_/ /g"
+if [ "`which conky-parser 2> /dev/null`" == "" ]
+then
+    echo "$0: put conky-parser script into PATH."
+    echo -e "         \n         \n         \n         \n"
+    exit
+fi
+
+. conky-parser WIRELESS
 

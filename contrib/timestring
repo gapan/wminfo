@@ -1,0 +1,46 @@
+#!/bin/bash
+
+# timestring: tests the time string against the regex
+
+#
+# CONFIGURATION SECTION BEGINS HERE
+#
+
+Week_Starts="Monday"	# "Monday" or "Sunday"
+
+#
+# CONFIGURATION SECTION ENDS HERE
+#
+
+if [ "$process" == "" ] || [ "$datafile" == "" ] || [ "$*" == "" ]
+then
+    echo "timestring: use timestring.wmi plugin to run timestring script"
+    exit
+fi
+
+if [ "$Week_Starts" == "Monday" ]
+then
+    Week="%W"
+elif [ "$Week_Starts" == "Sunday" ]
+then
+    Week="%U"
+else
+    echo "timestring: invalid Week_Starts variable."
+fi
+
+LANG=en_US.UTF-8
+
+string=`date +"%a %m-%d %H:%M:%S %Y $Week %j"`
+
+if [ ! -e $datafile ] || [ "`grep "timestring\[$process\]=" $datafile`" == "" ]
+then
+    echo "timestring[$process]=" >> "$datafile"
+else
+    sed -i "s/timestring\[$process\]=.*/timestring[$process]=/" "$datafile"
+fi
+
+if [ "$string" == "`echo "$string" | egrep "$*"`" ]
+then
+    sed -i "s/timestring\[$process\]=.*/timestring[$process]=\"$string\"/" "$datafile"
+fi
+

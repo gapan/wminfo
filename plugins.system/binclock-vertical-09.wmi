@@ -1,0 +1,89 @@
+#!/bin/bash
+
+# wminfo plugin: binary clock (4-bits version by Peter Trenholme aka PTrenholme)
+
+# command: wminfo -p binclock-vertical-09.wmi -u 1 -b#000000 -f#ffff00
+
+# The script written by PTrenholme from www.linuxquestions.org
+
+#
+# CONFIGURATION SECTION BEGINS HERE
+#
+
+Label="on"
+
+Separators="on"
+
+#
+# CONFIGURATION SECTION ENDS HERE
+#
+
+date=$(date "+%H|%M|%S")
+Hl=${date:0:1}
+Hr=${date:1:1}
+Ml=${date:3:1}
+Mr=${date:4:1}
+Sl=${date:6:1}
+Sr=${date:7:1}
+
+dectobin() {
+  local dec bin i
+  for i in $*
+  do
+    dec=$((${i} + 0))
+    bin=""
+    while [ ${dec} -gt 0 ]
+    do
+      digit=$((dec % 2))
+      dec=$((dec / 2))
+      bin=${digit}${bin}
+    done
+    bin="0000${bin}"
+    bin=${bin: -4}
+    printf -v ${i} "%s" ${bin}
+  done
+}
+
+rotate()
+{
+  local i j k max
+  max=0
+  for i in $*
+  do
+    [ ${max} -lt ${#i} ] && max=${#i}
+  done
+  for (( i=0 ; i<${max} ; i++ ))
+  do
+    k=0
+    for j in $*
+    do
+      if [ ${j:${i}:1} == "1" ]
+      then
+        printf '*'
+      else
+        printf ' '
+      fi
+      [ $((k++ % 2)) -eq 1 ] && printf "$Separator"
+    done
+    printf '\n'
+  done
+}
+
+dectobin Hl Hr Ml Mr Sl Sr
+
+if [ "$Label" == "on" ]
+then
+    echo "HH MM SS"
+else
+    echo "         "
+fi
+
+if [ "$Separators" == "on" ]
+then
+    Separator="|"
+else
+    Separator=" "
+fi
+
+rotate $Hl $Hr $Ml $Mr $Sl $Sr
+

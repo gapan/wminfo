@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# wminfo plugin: color sample
+
+# command: wminfo -p color18p-ffff00.wmi -b#ffff00 -f#000000
+
+echo "#ffff00"
+echo "yellow"
+

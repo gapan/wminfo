@@ -1,0 +1,54 @@
+#!/bin/bash
+
+# wminfo plugin: displays large name of the weekday
+
+# command: wminfo -p print-weekday.wmi -u 1d -s 0 -b#000000 -f#ffff00
+
+#
+# CONFIGURATION SECTION BEGINS HERE
+#
+
+SIGN="X"	# any sign you like
+
+Block="on"	# "on" or "off"
+
+#
+# CONFIGURATION SECTION ENDS HERE
+#
+
+D=$(date +"%u")
+
+S=$SIGN
+
+if [ "$Block" == "on" ]
+then
+    D[1]="$S$S$S$S$S    $S $S $S $S$S$S$S $S $S $S $S$S   $S $S $S$S   $S $S$S$S"
+    D[2]="$S$S$S$S      $S   $S $S  $S   $S $S  $S   $S $S  $S   $S$S$S "
+    D[3]="$S   $S    $S   $S $S$S$S$S $S $S $S$S$S$S $S $S $S  $S$S$S$S$S $S$S$S"
+    D[4]="$S$S$S$S $S    $S   $S$S$S  $S   $S $S  $S   $S $S  $S   $S $S "
+    D[5]="$S$S$S$S     $S    $S$S$S $S$S$S  $S   $S    $S   $S    $S   "
+    D[6]="$S$S$S$S     $S    $S$S$S $S$S$S$S   $S    $S $S$S$S $S$S$S$S $S$S$S "
+    D[7]="$S$S$S$S     $S    $S $S $S$S$S$S $S $S    $S $S $S $S$S$S$S $S$S$S "
+else
+    D[1]="$S   $S    $S$S $S$S $S$S$S$S $S $S $S $S$S   $S $S $S$S   $S $S$S$S"
+    D[2]="$S$S$S$S      $S   $S $S  $S   $S $S  $S   $S $S  $S   $S$S$S "
+    D[3]="$S   $S    $S   $S $S$S$S$S $S $S $S$S$S$S $S $S $S   $S $S  $S$S$S"
+    D[4]="$S$S$S$S $S    $S   $S$S$S  $S   $S $S  $S   $S $S  $S   $S $S "
+    D[5]="$S$S$S$S     $S    $S$S$S $S$S$S  $S   $S    $S   $S    $S   "
+    D[6]=" $S$S$S     $S    $S$S$S  $S$S    $S    $S $S$S$S $S$S$S  $S$S$S "
+    D[7]=" $S$S$S     $S    $S $S  $S$S  $S $S    $S $S $S $S$S$S  $S$S$S "
+fi
+
+D=${D[$D]}
+
+L[1]=${D:0:9}
+L[2]=${D:9:9}
+L[3]=${D:18:9}
+L[4]=${D:27:9}
+L[5]=${D:36:9}
+
+for n in 1 2 3 4 5
+do
+    echo "${L[$n]}"
+done
+

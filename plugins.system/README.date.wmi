@@ -1,0 +1,45 @@
+
+wminfo README.date.wmi
+
+
+The date.wmi plugin displays the current time and date.
+
+If you use the localized system and the conky.date.wmi plugin displays
+the text ignoring diacritic characters try to run wminfo using the
+appropriate encoding and filter the plugin output.  For example the
+valid command for the Polish-language system is:
+
+    wminfo -p date.wmi -u 1 -i 2
+
+and the valid plugin looks like:
+
+    date +"%H:%M:%S %n%A%n%b  %d%nweek %W%nyear %Y" | utf8-iso2
+
+The date.wmi plugin looks in the wminfo window like:
+
+    +---------+
+    |23:39:34 |
+    |MONDAY   |
+    |JUN  18  |
+    |WEEK 25  |
+    |YEAR 2012|
+    +---------+
+
+If you prefer the hour in AM/PM format change in the configuration section
+of the date.wmi plugin the variable:
+
+    AM_PM="off"
+
+to:
+
+    AM_PM="on"
+
+If you prefer the week number for week starting in Sunday change in the
+configuration section of the date.wmi plugin the variable:
+
+    Week_Starts="Monday"
+
+to:
+
+    Week_Starts="Sunday"
+

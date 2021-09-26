@@ -1,0 +1,224 @@
+
+wminfo README.forecast.xxx.wmi
+
+
+The forecast.*.wmi plugin displays the weather forecast for today and
+tomorrow using the forecast script.  For example the forecast.wroclaw.wmi
+plugin displays the following forecasts:
+
+    WROCLAW
+    today
+    Hi: 23 C
+    Lo: 11 C
+    Partly sunny      
+
+or:
+
+    WROCLAW
+    tomorrow
+    Hi: 21 C
+    Lo: 10 C
+    A few afternoon showers      
+
+that looks in wminfo window like:
+
+    +---------+     +---------+
+    |WROCLAW  |     |WROCLAW  |
+    |TODAY    |     |TOMORROW |
+    |HI: 23 C | or: |HI: 21 C |
+    |LO: 11 C |     |LO: 10 C |
+    |PARTLY SU|     |A FEW AFT|
+    +---------+     +---------+
+
+                                      *
+                                    *   *
+
+The uncommented entry in the configuration section of the plugin sets the
+location:
+
+    ## Location="10007" ; Translation="New York"
+    ## Location="AFR|GH|GH000|ACCRA"
+    Location="EUR|PL|PL001|WROCLAW"
+    ## Location="ASI|RU|RS052|MOSCOW"
+    ## Location="ASI|IN|IN036|KOLKATA"
+    ## Location="OCN|AU|NSW|SYDNEY"
+
+The above settings are valid for the forecast.wroclaw.wmi plugin because the
+uncommented setting concerns Wroclaw.
+
+The setting for New York is more complicated and consists of two variables:
+Location and Translation.  See below for the explanation.
+
+                                      *
+                                    *   *
+
+The forecast.*.wmi and the conky.forecast.wmi plugins use the common counter
+file.  So do not run them at the same time or modify them in order to use
+the separate counter files.
+
+                                      *
+                                    *   *
+
+You can set Celsius or Fahrenheit degrees in the forecast script.  It is
+copied during the installation to /usr/local/bin or /usr/bin directory
+depending on the type of the installation.
+
+                                      *
+                                    *   *
+
+The forecast script stores temporary data in a file that uses the city name
+from the location code.  For location code "EUR|PL|PL001|WROCLAW" it is
+~/.wminfo/.forecast.WROCLAW.tmp temporary file.
+
+You will find the location codes such as "EUR|PL|PL001|WROCLAW" here:
+
+    http://www.radoslavdimov.com/jquery-plugins/jquery-plugin-digiclock/WeatherLocationDatabase.txt
+
+                                      *
+                                    *   *
+
+Unfortunately some entries in the WeatherLocationDatabase.txt file are
+invalid, for example: "ASI|RU|RS052|MOSKVA" or "ASI|IN|IN036|CALCUTTA".
+
+As a result the plugins using the configurations such as:
+
+    Location="ASI|RU|RS052|MOSKVA"
+
+or:
+
+    Location="ASI|IN|IN036|CALCUTTA"
+
+display error messages.
+
+The valid location codes for Moscow and Kolkata are: "ASI|RU|RS052|MOSCOW"
+and "ASI|IN|IN036|KOLKATA".
+
+The plugins using the following configurations:
+
+    Location="ASI|RU|RS052|MOSCOW"
+
+or:
+
+    Location="ASI|IN|IN036|KOLKATA"
+
+display the correct weather forecasts.
+
+                                      *
+                                    *   *
+
+Some other entries does not work for some reason though the location codes
+seem to be correct.  For example the plugin using the following
+configuration:
+
+    Location="NAM|US|NY|NEW YORK"
+
+display error message.
+
+In fact almost all locations in United States work bad.
+
+In such a case you should use the zip code.  There are a lot of ways to find
+it.  For example you can to the http://www.accuweather.com/ website and
+enter in ``AccuWeather.com for'' field the value ``New York, NY''.  Then
+look at the address bar:
+
+    http://www.accuweather.com/en/us/new-york-ny/10007/weather-forecast/349727
+
+The number 10007 in that example is the zip code of New York.
+
+The other method is to go to http://www.zip-codes.com website, enter the
+town or the city name and choose the appropriate zip code.
+
+As a result the plugin using the configuration:
+
+    Location="10007"
+
+displays the valid forecasts labeled as ``10007''.
+
+In order to get the meaningful label instead of the numerical one it is
+enough to use the configuration with two corresponding variables -- Location
+and Translation:
+
+    Location="10007" ; Translation="New York"
+
+As a result wminfo displays the information such as:
+
+    +---------+     +---------+
+    |NEW YORK |     |NEW YORK |
+    |TODAY    |     |TOMORROW |
+    |HI: 26 C | or: |HI: 23 C |
+    |LO: 16 C |     |LO: 14 C |
+    |MOSTLY SU|     |PARTLY SU|
+    +---------+     +---------+
+
+                                      *
+                                    *   *
+
+Some location codes use diacritic characters from ISO-8859-1 encoding.  For
+example the code for ZÃ¼rich is "EUR|CH|SZ026|ZÜRICH".  In such a case the
+valid setting in the configuration section of the plugin looks like:
+
+    Location="EUR|CH|SZ026|ZÜRICH"
+
+The plugin displays the information such as:
+
+    ZURICH
+    today
+    Hi: 23 C
+    Lo: 12 C
+    Sunshine and pleasant      
+
+or:
+
+    ZURICH
+    tomorrow
+    Hi: 25 C
+    Lo: 14 C
+    Sun through high clouds      
+
+In the wminfo window it looks like:
+
+    +---------+     +---------+
+    |ZURICH   |     |ZURICH   |
+    |TODAY    |     |TOMORROW |
+    |HI: 23 C | or: |HI: 25 C |
+    |LO: 12 C |     |LO: 14 C |
+    |SUNSHINE |     |SUN THROU|
+    +---------+     +---------+
+
+                                      *
+                                    *   *
+
+The other method to find the location codes is the following:
+
+1. Go to http://netweather.accuweather.com.
+2. Press GET MY NETWEATHER.
+3. Choose Location: [Wroclaw, PL].
+4. Press Search.
+5. Press NEXT.
+6. Press NEXT.
+7. Mark [x] I agree to these terms and conditions.
+8. Look at Web Page Code.
+
+Here is the sample web page code for Wroclaw, PL:
+
+    <div style='width: 240px; height: 420px; background-image: url( http://vortex.accuweather.com/adcbin/netweather_v2/backgrounds/spring1_240x420_bg.jpg ); background-repeat: no-repeat; background-color: #607041;' ><div id='NetweatherContainer' style='height: 405px;' ><script src='http://netweather.accuweather.com/adcbin/netweather_v2/netweatherV2ex.asp?partner=netweather&tStyle=normal&logo=1&zipcode=EUR|PL|PL001|WROCLAW|&lang=eng&size=12&theme=spring1&metric=0&target=_self'></script></div><div style='text-align: center; font-family: arial, helvetica, verdana, sans-serif; font-size: 10px; line-height: 15px; color: #FDEA11;' ><a style='color: #FDEA11' href='http://www.accuweather.com/world-index-forecast.asp?partner=netweather&locCode=EUR|PL|PL001|WROCLAW|&metric=1' >Weather Forecast</a> | <a style='color: #FDEA11' href='http://www.accuweather.com/maps-satellite.asp' >Weather Maps</a> | <a style='color: #FDEA11' href='http://www.accuweather.com/index-radar.asp?partner=accuweather&zipcode=EUR|PL|PL001|WROCLAW|' >Weather Radar</a></div></div>
+
+The location code in the above example is: EUR|PL|PL001|WROCLAW.
+
+Unfortunately the location codes reported by netweather.accuweather.com site
+are not correct in all cases.
+
+                                      *
+                                    *   *
+
+To test the location code use the following command:
+
+    curl -s http://rss.accuweather.com/rss/liveweather_rss.asp\?metric\=1\&locCode\="EUR|PL|PL001|WROCLAW"
+
+If you prefer Fahrenheit degrees instead of metric\=1 setting above use
+metric\=0 one.
+
+In the case of the location names that use the space such as
+"SAM|BR|BR017|RIO DE JANEIRO" replace the spaces with the %20 sequences, for
+example: "SAM|BR|BR017|RIO%20DE%20JANEIRO".
+

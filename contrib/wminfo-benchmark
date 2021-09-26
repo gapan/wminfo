@@ -1,0 +1,68 @@
+#!/bin/bash
+
+# wminfo-benchmark: the benchmark testing wminfo plugins performance
+
+# written by Cezary M. Kruk (w1k0) and Noam Postavsky (ntubski)
+
+#
+# CONFIGURATION SECTION BEGINS HERE
+#
+
+time=180
+
+#
+# CONFIGURATION SECTION ENDS HERE
+#
+
+echo "wminfo-benchmark: running benchmark for $time seconds..."
+echo
+
+if [ "$1" != "" ]
+then
+    directory="$1"
+fi
+
+if [ "$directory" == "" ]
+then
+    directory="./"
+fi
+
+cd $directory
+
+if [ "`ps aux | grep $USER | grep 'wminfo' | grep -vE 'conky|wminfo-benchmark|grep'`" != "" ]
+then
+    killall wminfo
+fi
+
+wrapper() {
+for plugin in *.wmi
+do
+    if [ "`echo $plugin | grep 'README'`" != "" ]
+    then
+        continue
+    fi
+    TIMEFORMAT=$(printf '%-25.25s: %s' "$plugin" '%2R real, %2U user, %2S sys, %P%% CPU')
+    command=$(sed -n 's/.*# command: wminfo -p \(.*\)/wminfo -p .\/\1/p' "$plugin")
+    command=${command%% -b*}
+    # eval will correctly handle quotes
+    # or any shell construct in the command
+    if [ "$command" != "" ]
+    then
+        eval time "$command" &
+    fi
+done
+}
+
+timer() {
+    # both the time reports and Terminated messages go on stderr
+    wrapper 2>&1 | grep -v Terminated | sort -k1,1 &
+
+    sleep $time
+    killall wminfo
+
+    # wait for all the reports to be printed before exiting
+    wait
+}
+
+timer
+

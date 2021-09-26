@@ -1,0 +1,79 @@
+#!/bin/bash
+
+# wminfo-benchmark-timings: the benchmark testing wminfo plugins in timings test mode
+
+# written by Cezary M. Kruk (w1k0) and Noam Postavsky (ntubski)
+
+# the benchmark runs the plugins using allowed timings: 1, 2, 4, 8, and 16
+
+#
+# CONFIGURATION SECTION BEGINS HERE
+#
+
+timing="01 02 04 08 16"
+
+time="180"
+
+#
+# CONFIGURATION SECTION ENDS HERE
+#
+
+echo "wminfo-benchmark-timings: running benchmark for $timing timings"
+echo "                          for $time seconds each..."
+echo
+
+if [ "$1" != "" ]
+then
+    directory="$1"
+fi
+
+if [ "$directory" == "" ]
+then
+    directory="./"
+fi
+
+cd $directory
+
+if [ "`ps aux | grep $USER | grep 'wminfo' | grep -vE 'conky|wminfo-benchmark|grep'`" != "" ]
+then
+    killall wminfo
+fi
+
+wrapper() {
+for plugin in *.wmi
+do
+    if [ "`echo $plugin | grep 'README'`" != "" ]
+    then
+        continue
+    fi
+    TIMEFORMAT=$(printf '%-24.24s: %s' "$plugin" '%2R real, %2U user, %2S sys, %P%% CPU')
+    command=$(sed -n 's/.*# command: wminfo -p \(.*\)/wminfo -p .\/\1 -t $1/p' "$plugin")
+    command=${command%% -b*}
+    # eval will correctly handle quotes
+    # or any shell construct in the command
+    if [ "$command" != "" ]
+    then
+        eval time "$command" &
+    fi
+done
+}
+
+timer() {
+    # both the time reports and Terminated messages go on stderr
+    wrapper $1 2>&1 | grep -v Terminated | sort -k1,1 >> $time-$coefficient &
+
+    sleep $time
+    killall wminfo
+
+    # wait for all the reports to be printed before exiting
+    wait
+}
+
+for coefficient in $timing
+do
+    > $time-$coefficient
+    timer $coefficient &
+done
+
+wait
+

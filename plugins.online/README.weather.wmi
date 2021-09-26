@@ -17,12 +17,12 @@ appropriate commands for this code are:
 
 or:
 
-    wminfo -p "weather.wmi EPWR" -u 5
+    wminfo -p 'weather.wmi EPWR' -u 5
 
 The first command displays the weather conditions for EPWR.  The other runs
 wminfo dockapp and updates the weather conditions for EPWR every five
 seconds.  These updates concern displayed information.  In order to lower
-network traffic weather.wmi connects to the weather server every three
+the network traffic weather.wmi connects to the weather server every three
 minutes.  That period is hardcoded in the plugin.
 
 Note that plugin name and ICAO code are in common quotation marks.  The
@@ -60,6 +60,9 @@ data means:
 * WND: 1    -- wind speed is 1 m/s;
 * WND: NW   -- wind blows from Northwest.
 
+                                      *
+                                    *   *
+
 Instead of Celsius degrees the plugin can use Fahrenheit degrees.  Instead
 of hectoPascals the plugin can use millimeters of Mercury or inches of
 Mercury.  Instead of meters/seconds the plugin can use kilometers/hour,
@@ -67,24 +70,33 @@ miles per hour, or knots.
 
 In order to change the default units permanently you have to edit the
 configuration section of weather.wmi.  In order to use the different units
-than default ones you can use the appropriate switches such as: -C or -F for
-temperature, -hPa, -mmHg, or -inHg for pressure, and -m/s, -km/h, -mph, or
--kt for wind speed.  In such a case the valid command can look like that:
+than default ones you can use also the appropriate switches such as: -C or
+-F for temperature, -hPa, -mmHg, or -inHg for pressure, and -m/s, -km/h,
+-mph, or -kt for wind speed.  In such a case the valid command can look like
+that:
 
-    wminfo -p "weather.wmi EPWR -C -hPa -m/s" -u 5
+    wminfo -p 'weather.wmi EPWR -C -hPa -m/s' -u 5
+
+                                      *
+                                    *   *
 
 The weather.wmi plugin downloads the weather report each three minutes and
-stores it in ~/.weatherrc.XXXX file where XXXX is the ICAO airport code.  If
-there is no Internet connection weather.wmi uses old ~/.weatherrc.XXXX file.
-In such a case the plugin performs the consecutive steps less frequently and
-in some situations blanks the dockapp window for a while.
+stores it in ~/.wminfo/.weatherrc.XXXX file where XXXX is the ICAO airport
+code.  If there is no Internet connection weather.wmi uses old
+~/.wminfo/.weatherrc.XXXX file. In such a case the plugin performs the
+consecutive steps less frequently and in some situations blanks the dockapp
+window for a while.
 
 If the system was off-line for more than 24 hours and weather.wmi could not
-update ~/.weatherrc.XXXX file the wminfo program displays the following
-information instead of the time:
+update ~/.wminfo/.weatherrc.XXXX file the wminfo program displays the
+following information instead of the time:
 
 * EPWR >24H
 
-Attention: if you used conky.weather.wmi plugin before and you would like to
-run weather.wmi plugin now remove weather temporary file from /tmp
-directory.
+                                      *
+                                    *   *
+
+The weather.wmi and the conky.weather.wmi plugins use the common counter
+file.  So do not run them at the same time or modify them in order to use
+the separate counter files.
+

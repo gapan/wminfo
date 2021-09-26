@@ -6,6 +6,5 @@
 links -source quick-koi8r.html | \
     perl -pe 's/\n/ /g;s/</\n</g' | \
     grep 'CLASS' | sed 's/<.*>//;' | \
-    koi8r-up2low | \
     punctuation | \
     piconv -f KOI8-R -t ISO-8859-5

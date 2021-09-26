@@ -1,0 +1,93 @@
+#!/bin/bash
+
+# conky-parser: function used by conky-related plugins
+
+# the script written by Peter Trenholme
+
+# Conky helper function to:
+# 1) If $2 doesn't start with a -, verify that the user has configured
+#    $1 in ~/conkyrc and return if it's not configured, otherwise skip $2
+# 2) Discard any lines in $HOME/.wminfo/conky.tmp not starting with "$1: "
+# 3) Remove the "$1: " from the start of each line so labeled in
+#    $HOME/.wminfo/conky.tmp
+# 4) Replace any _ characters in the remaining line by blanks
+# 5) Replace any # characters in the line by | characters
+# 6) If any other arguments are present, pipe the result of steps 2-5 to them.
+
+#
+# CONFIGURATION SECTION BEGINS HERE
+#
+
+conffile="$HOME/.wminfo/conky.conf"
+datafile="$HOME/.wminfo/conky.tmp"
+
+#
+# CONFIGURATION SECTION ENDS HERE
+#
+
+if [ "`which conky 2> /dev/null`" == "" ]
+then
+    echo "conky-parser: install conky before running the plugins."
+    exit
+fi
+
+exit="no"
+
+for file in $conffile $datafile
+do
+    if [ ! -f $file ]
+    then
+	echo "conky-parser: there is no $file file."
+	exit="yes"
+    fi
+done
+
+if [ "$exit" == "yes" ]
+then
+    exit
+fi
+
+function conky-parser()
+{
+  local label
+  # Quit now if we have no arguments
+  if [ $# -lt 1 ]
+  then
+      return
+  fi
+  # Pop the first argument from the argument list into ${label}
+  label=${1}
+  shift
+  # Confirm that ${label} is configured unless there is an argument left
+  # and the top argument starts with a dash
+  if [ $# -eq 0 -o "${1:1:1}" != "-" ]
+  then
+    if [ -z "$(sed -n "/^${label}: /p" "${conffile}")" ]
+    then
+        cat <<EOF
+$0: no uncommented "${label}" entries were found in ${conffile} file.
+         
+         
+         
+         
+EOF
+          return
+    fi
+  fi
+    # If we did the test because the top argument started with a dash
+    # remove that argument from the argument stack
+    [ "${1:1:1}" == "-" ] && shift
+  # Is there anything left in the argument stack?
+  if [ $# -gt 0 ]
+  then
+      # Yes, so pipe the output into them
+      sed -nr "/^${label}: /{s/${label}: //;s/_/ /g;s/#/|/g;p}" "${datafile}" | $*
+  else
+      # No, so just print the output
+      sed -nr "/^${label}: /{s/${label}: //;s/_/ /g;s/#/|/g;p}" "${datafile}"
+  fi
+  echo
+}
+
+# Run the function on the arguments passed
+conky-parser "$@"

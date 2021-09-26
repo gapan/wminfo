@@ -1,5 +1,0 @@
-#!/bin/bash
-
-# converts CP-1250 Polish uppercases to lowercases
-
-perl -pe 'tr/A-Z/a-z/;tr/¥ÆÊ£ÑÓŒ¯/¹æê³ñóœŸ¿/;'

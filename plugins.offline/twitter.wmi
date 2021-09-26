@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# wminfo plugin: tweets from twitter.com
+
+# command: wminfo -p 'twitter.wmi @CNN' -b#00bbf5 -f#ffffff
+
+if [ "$1" == "" ]
+then
+    echo 'twitter [@User]'
+    exit
+fi
+
+user="`echo $1 | sed 's/@//' | tr A-Z a-z`"
+
+lynx --source localhost/wminfo/twitter-$user.html | \
+    perl -pe 's/\n/ /g;s/<p class=/\n<p class=/g;s/<\/p>/<\/p>\n/g' | \
+    grep 'js-tweet-text' | \
+    perl -pe 's/<.*?>//g;s/^\s+//' | \
+    punctuation | \
+    sed 's/&nbsp;/ /g'
+echo

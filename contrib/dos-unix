@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# dos-unix: converts CRLF ends of lines to LF ones
+
+tr -d '\r'
+

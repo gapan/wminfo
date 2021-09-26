@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# wminfo plugin: the plugin displaying the maximal number of the lines
+# command: wminfo -p a-1050-line-plugin.wmi
+
+for n in `seq 1 1050`
+do
+    echo $n
+done
+

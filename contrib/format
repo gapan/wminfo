@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# formats text data
+
+perl -pe "s/^/.ll 76\n.na\n.nh\n/;s/\n/\n\n/" | nroff | cat -s

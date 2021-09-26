@@ -1,0 +1,34 @@
+#!/bin/bash
+
+# time+date: displays zone name, time, and date for the given time zone
+
+# use abbreviations such as:    CET or CEST
+# or coutry names such as:      Poland
+# or region/city names such as: Europe/Warsaw
+# or GMT offsets such as:       GMT-02
+
+if [ "$1" == "" ]
+then
+cat <<EOF
+time+date: displays zone name, time, and date for the given time zone
+
+time+date [ZONE | Country | Region/City | GMT±n] [-l | --local]
+          (see: /usr/share/zoneinfo directory)
+
+for example:
+           CET or CEST
+           Poland
+           Europe/Warsaw
+           GMT-02
+EOF
+    exit
+fi
+
+if [ "$2" == "-l" ] || [ "$2" == "--local" ]
+then
+    NOW=`date +"%Z %H:%M %m-%d"`
+    echo $NOW
+fi
+
+TIME=`TZ="$1" date +"%Z %H:%M %m-%d"`
+echo $TIME

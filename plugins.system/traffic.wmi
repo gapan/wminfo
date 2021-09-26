@@ -2,21 +2,48 @@
 
 # wminfo plugin: total incoming and outgoing traffic for selected interfaces
 
+# command: wminfo -p traffic.wmi -u 5 -b#000000 -f#ff00ff
+
 # Attention: traffic.wmi plugin uses traffic script
 #            the command traffic.wmi -reset resets the traffic counters
 #            the plugin resets the traffic counters after 999h 59m 59s
 
-# command: wminfo -p traffic.wmi -u 5 -s 0 -b#000000 -f#ff00ff
+if [ "`which traffic 2> /dev/null`" == "" ]
+then
+    echo "$0: put traffic script into PATH."
+    echo -e "         \n         \n         \n         \n"
+    exit
+fi
 
-ETH0=`traffic eth0 $1`
-WLN0=`traffic wlan0 $1`
+for interface in eth0 eth1
+do
+    LOGFILE="$HOME/.wminfo/.interface.$interface.log"
+    /sbin/ifconfig $interface &> $LOGFILE
+    if [ "`grep 'Device not found' $LOGFILE`" == "" ]
+    then
+	ETH=`traffic $interface $1`
+	ETH_INT=$interface
+    fi
+done
 
-ETH0_RX="`echo $ETH0 | awk '{print $4}'`"
-ETH0_TX="`echo $ETH0 | awk '{print $7}'`"
-WLN0_RX="`echo $WLN0 | awk '{print $4}'`"
-WLN0_TX="`echo $WLN0 | awk '{print $7}'`"
+for interface in wlan0 wlan1
+do
+    LOGFILE="$HOME/.wminfo/.interface.$interface.log"
+    /sbin/ifconfig $interface &> $LOGFILE
+    sleep 1
+    if [ "`grep 'Device not found' $LOGFILE`" == "" ]
+    then
+	WLN=`traffic $interface $1`
+	WLN_INT=$interface
+    fi
+done
 
-datafile="$HOME/.traffic"
+ETH_RX="`echo $ETH | awk '{print $4}' | sed -E 's/([0-9]+)\.([0-9]).?(.)/\1.\2\3/'`"
+ETH_TX="`echo $ETH | awk '{print $7}' | sed -E 's/([0-9]+)\.([0-9]).?(.)/\1.\2\3/'`"
+WLN_RX="`echo $WLN | awk '{print $4}' | sed -E 's/([0-9]+)\.([0-9]).?(.)/\1.\2\3/'`"
+WLN_TX="`echo $WLN | awk '{print $7}' | sed -E 's/([0-9]+)\.([0-9]).?(.)/\1.\2\3/'`"
+
+datafile="$HOME/.wminfo/.traffic.old"
 
 if [ "$1" == "-reset" ]
 then
@@ -59,16 +86,16 @@ then
     echo "$hours:$minutes:$seconds"
 else
     > $datafile
-    traffic eth0 -reset 1>/dev/null
-    traffic wlan0 -reset 1>/dev/null
-    echo "         "; echo "         "; echo "         "; echo "         "; echo "         "
+    traffic $ETH_INT -reset 1>/dev/null
+    traffic $WLN_INT -reset 1>/dev/null
+    echo -e "         \n         \n         \n         \n         "
     exit
 fi
 
-echo "E0 $ETH0_RX"
-echo "E0 $ETH0_TX"
-echo "W0 $WLN0_RX"
-echo "W0 $WLN0_TX"
+echo "ETH $ETH_RX"
+echo "ETH $ETH_TX"
+echo "WLN $WLN_RX"
+echo "WLN $WLN_TX"
 
-echo "         "; echo "         "; echo "         "; echo "         "; echo "         "; 
+echo -e "         \n         \n         \n         \n         "; 
 

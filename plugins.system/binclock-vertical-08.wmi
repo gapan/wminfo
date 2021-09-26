@@ -1,0 +1,59 @@
+#!/bin/bash
+
+# wminfo plugin: binary clock (4-bits version by grail)
+
+# command: wminfo -p binclock-vertical-08.wmi -u 1 -b#000000 -f#ffff00
+
+# The script written by grail from www.linuxquestions.org
+
+#
+# CONFIGURATION SECTION BEGINS HERE
+#
+
+Label="on"
+
+Separators="on"
+
+#
+# CONFIGURATION SECTION ENDS HERE
+#
+
+if [ "$Separators" == "on" ]
+then
+    Separator="|"
+else
+    Separator=" "
+fi
+
+current_time=$(date "+%H$Separator%M$Separator%S$Separator")
+
+if [ "$Label" == "on" ]
+then
+    echo "HH MM SS"
+else
+    echo "         "
+fi
+
+for (( bin = 8; bin >= 1; bin/=2 ))
+do
+    for (( cnt=0; cnt < ${#current_time}; cnt++ ))
+    do
+        num=${current_time:cnt:1}
+
+        if [[ $num == '|' ]]
+        then
+            echo -n $num
+            continue
+        fi
+
+        if (( num & bin ))
+        then
+            echo -n '*'
+        else
+            echo -n ' '
+        fi
+
+    done
+    echo
+done
+

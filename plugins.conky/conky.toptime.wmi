@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# wminfo plugin: top CPU time related command output
+
+# command: wminfo -p conky.toptime.wmi -u 15 -b#000000 -f#ff0000
+
+# the plugin uses conky-parser function by Peter Trenholme
+
+if [ "`which conky-parser 2> /dev/null`" == "" ]
+then
+    echo "$0: put conky-parser script into PATH."
+    echo -e "         \n         \n         \n         \n"
+    exit
+fi
+
+. conky-parser TOPTIME
+

@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# macos-unix: converts CR ends of lines to LF ones
+
+tr '\r' '\n'
+

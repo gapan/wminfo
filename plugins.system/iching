@@ -1,0 +1,85 @@
+#!/bin/bash
+
+# iching: searches iching.cfg file
+
+if [ -e iching.cfg ]
+then
+    datefile="iching.cfg"
+elif [ -e $HOME/bin/iching.cfg ]
+then
+    datefile="$HOME/bin/iching.cfg"
+elif [ -e /usr/local/bin/iching.cfg ]
+then
+    datefile="/usr/local/bin/iching.cfg"
+else
+    echo "iching: There's no iching.cfg file."
+    exit
+fi
+
+if [ "$1" == "" ]
+then
+    echo "iching [<hexagram> | <tosses> | oracle]"
+    exit
+fi
+
+length=${#1}
+result=""
+
+if [ $length -le 2 ]
+then
+    hexagram=" $1"
+    hexagram="${hexagram: -2}"
+    if ! [[ "$hexagram" =~ ^( )?[0-9]+$ ]] || [ $hexagram -lt 1 ] || [ $hexagram -gt 64 ]
+    then
+	echo "iching: Invalid parameter."
+	exit
+    fi
+    result="`grep "^$hexagram\." $datefile`"
+    result=${result:4}
+    result=${result/ */}
+    new_result=""
+elif [ $length -eq 6 ]
+then
+    if [ "$1" == "oracle" ]
+    then
+	for n in `seq 1 6`
+	do
+	    toss=$RANDOM
+	    let "toss %= 4"
+	    let "toss += 6"
+	    result="$toss$result"
+	done
+    else
+	result="$1"
+    fi
+    simplified_result="$result"
+    simplified_result="${simplified_result//6/8}"
+    simplified_result="${simplified_result//9/7}"
+    if ! [[ "$simplified_result" =~ ^[78]+$ ]]
+    then
+	echo "iching: Invalid parameter."
+	exit
+    fi
+    hexagram="`grep "$simplified_result" $datefile`"
+    hexagram=${hexagram:0:2}
+    new_result="$result"
+    new_result="${new_result//6/7}"
+    new_result="${new_result//9/8}"
+else
+    echo "iching: Invalid parameter."
+    exit
+fi
+
+above=${result:0:3}
+below=${result: -3}
+
+multiplier=`expr $hexagram - 1`
+record=`expr $multiplier \* 5 + 1`
+
+tail -n +$record $datefile | head -n 5 | sed -E "s/[78]+ //;s/^above/$above/;s/^below/$below/" | format
+
+if [ "$new_result" != "" ]
+then
+    grep "$new_result" $datefile | sed 's/\. /./' | format
+fi
+

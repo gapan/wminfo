@@ -1,0 +1,46 @@
+#!/bin/bash
+
+# wminfo plugin: displays days since the past date or until the future date
+
+# command: wminfo -p days.wmi -u 60 -b#000000 -f#ffff00
+
+if [ -e days.cfg ]
+then
+    daysfile="days.cfg"
+elif [ -e "$HOME/bin/days.cfg" ]
+then
+    daysfile="$HOME/bin/days.cfg"
+elif [ -e /usr/local/bin/days.cfg ]
+then
+    daysfile="/usr/local/bin/days.cfg"
+else
+    echo "days.wmi: there is no days.cfg database."
+    exit
+fi
+
+today=`date +"%Y-%m-%d"`
+today=`echo $today | awk  -F\- '{print $1$2$3}'`
+
+for date in `cat $daysfile | grep -v '^#' | awk '{print $1}' | sort`
+do
+    EVENT=`cat $daysfile | grep -v '^#' | grep "$date" | cut -d " "  -f 1- | sed "s/$date //"`
+    if [ "$EVENT" == "" ]
+    then
+	EVENT=$date
+    fi
+    date=`echo $date | awk  -F\- '{print $1$2$3}'`
+    if [ "$today" -ge "$date" ]
+    then
+	START_DATE=`date --date=$date +"%s"`
+	END_DATE=`date --date=$today +"%s"`
+	DAYS=$((($END_DATE - $START_DATE) / 86400))
+	echo $DAYS $EVENT
+    elif [ "$today" -lt "$date" ]
+    then
+	START_DATE=`date --date=$today +"%s"`
+	END_DATE=`date --date=$date +"%s"`
+	DAYS=-$((($END_DATE - $START_DATE) / 86400))
+	echo $DAYS $EVENT
+    fi
+done
+

@@ -5,11 +5,57 @@ wminfo README.1st.plugins.offline
 This directory contains sample wminfo plugins, online script, and wminfo
 launcher to use when the machine is sometimes off-line.
 
-To use some of these plugins system-wide copy them as well as the online
-script manually to the PATH, for example to /usr/local/bin directory.  Then
-edit online script and remove the commands mirroring the sites for the
-plugins you omitted.  Finally register online script in crontab according to
-the following decription.
+To use these plugins install curl, lynx, and links packages.
+
+To use some of these plugins system-wide copy them manually to the PATH.
+The recommended directory is /usr/local/bin.
+
+online                        stores localhost versions of Internet websites.
+
+run-all-wminfo-plugins        wminfo launcher: runs all wminfo plugins.
+
+arch-patches.wmi              Arch Linux patches from Community repository.
+bbc-mundo.wmi                 headlines from Spanish service bbc.co.uk/mundo/.
+billboard-top10.wmi           Billboard Top 10.
+cnet.wmi                      headlines from news.cnet.com.
+commentcamarche.wmi           headlines from French service commentcamarche.net.
+currencies-pl-avg.wmi         currency exchange rates of Polish zloty (average).
+currencies-pl-buy.wmi         currency exchange rates of Polish zloty (buy).
+currencies-pl-sell.wmi        currency exchange rates of Polish zloty (sell).
+dockapps.wmi                  new dockapps at dockapps.windowmaker.org.
+dpreview.wmi                  headlines from dpreview.com.
+forecast.new-york.wmi         displays weather forecasts for today and tomorrow.
+forecast.sydney.wmi           displays weather forecasts for today and tomorrow.
+forecast.wroclaw.wmi          displays weather forecasts for today and tomorrow.
+freecode.wmi                  program submissions from freecode.com (formerly
+                                freshmeat.net).
+kernel-2.4.wmi                kernel 2.4 versions.
+kernel-2.6.wmi                kernel 2.6 versions.
+kernel-3.x.wmi                kernel 3.x versions.
+kommersant.wmi                headlines from Russian newspaper kommersant.ru.
+linuxquestions-slackware.wmi  new threads in Slackware section of
+                                LinuxQuestions.org.
+nasdaq.wmi                    NASDAQ Stock Prices.
+pitchfork.wmi                 Pitchfork best new albums.
+slackbuilds.wmi               the versions of the applications at
+                                SlackBuilds.org.
+slackware-patches.wmi         Slackware Linux patches found on the selected
+                                mirror.
+slashdot.wmi                  headlines from slashdot.org.
+spiegel.wmi                   headlines from German service spiegel.de.
+tvn24.wmi                     headlines from Polish service tvn24.pl.
+twitter.wmi                   tweets from twitter.com.
+weather.wmi                   weather conditions for the selected airport.
+wrapper-currencies-pl.wmi     monitors Polish zloty buy/sell currency exchange
+                                rates.
+wrapper-internet-allinone.wmi monitors Slackware Linux patches and Polish zloty
+                                buy/sell currency exchange rates
+wrapper-weather.wmi           monitors weather report and weather forecasts for
+                                Wroclaw, Poland.
+wyborcza.wmi                  headlines from Polish service wyborcza.pl.
+
+                                      *
+                                    *   *
 
 The plugins from the plugins.offline directory are basically the same as the
 plugins from the plugins.online directory.  The difference is the plugins
@@ -17,8 +63,17 @@ from the current directory use localhost mirrors of the respective websites
 so these versions of plugins do not require constant Internet connection to
 work properly though the connection is necessary to update the mirrored
 content.  Before running wminfo with these plugins you have to run online
-script at least once when Internet connection is available.  The best method
-of running online script is to use crontab task such as:
+script at least once when Internet connection is available.
+
+The online script stores mirrored sites in /var/www/htdocs/wminfo directory.
+So it has to be run with root priviledges or root has to make such a
+directory and change its mode bits to allow the other users to write there.
+
+To use some of the mentioned above plugins system-wide copy them as well as
+the online script manually to the PATH.  The recommended directory is
+/usr/local/bin.  Then edit online script and remove the commands mirroring
+the sites for the plugins you omitted.  Finally register the online script
+in crontab according to the following decription:
 
     */6 * * * * if [ "`route | grep 'default'`" != "" ] ; then /usr/local/bin/online ; fi
 
@@ -28,9 +83,6 @@ or:
 
 or the similar specific for your system.
 
-The online script stores mirrored sites in /var/www/htdocs/wminfo directory.
-So it has to be run with root priviledges or root has to make such a
-directory and change its mode bits to allow the other users to write there.
 If your HTTPD server stores HTML files in the other location than
 /var/www/htdocs customize DIRECTORY variable at the beginning of the online
 script.  The wminfo plugins from the current directory require working HTTPD
@@ -48,40 +100,8 @@ locally with links -source command the valid command to download the local
 mirror source code is lynx --source.  See arch-patches.wmi and slashdot.wmi
 wminfo plugins.
 
-online                       stores localhost versions of Internet websites.
-
-run-all-internet-plugins     wminfo launcher: runs all wminfo Internet
-                               dependent plugins.
-
-arch-patches.wmi             Arch Linux patches from Community repository.
-bbc-mundo.wmi                headlines from Spanish service bbc.co.uk/mundo/.
-billboard-top10.wmi          Billboard Top 10.
-cnet.wmi                     headlines from news.cnet.com.
-commentcamarche.wmi          headlines from French service commentcamarche.net.
-currencies-pl-avg.wmi        currency exchange rates of Polish zloty (average).
-currencies-pl-buy.wmi        currency exchange rates of Polish zloty (buy).
-currencies-pl-sell.wmi       currency exchange rates of Polish zloty (sell).
-dockapps.wmi                 new dockapps at www.dockapps.org.
-dpreview.wmi                 headlines from dpreview.com.
-freecode.wmi                 program submissions from freecode.com (formerly
-                               freshmeat.net).
-kernel-2.4.wmi               kernel 2.4 versions.
-kernel-2.6.wmi               kernel 2.6 versions.
-kernel-3.0.wmi               kernel 3.0 versions.
-kommersant.wmi               headlines from Russian newspaper kommersant.ru.
-linuxquestions-slackware.wmi new threads in Slackware section of
-                               LinuxQuestions.org.
-nasdaq.wmi                   NASDAQ Stock Prices.
-pitchfork.wmi                Pitchfork best new albums.
-slackbuilds.wmi              the versions of the applications at
-                               SlackBuilds.org.
-slackware-patches.wmi        Slackware Linux patches found on the selected
-                               mirror.
-slashdot.wmi                 headlines from slashdot.org.
-spiegel.wmi                  headlines from German service spiegel.de.
-tvn24.wmi                    headlines from Polish service tvn24.pl.
-weather.wmi                  weather conditions for the selected airport.
-wyborcza.wmi                 headlines from Polish service wyborcza.pl.
+                                      *
+                                    *   *
 
 To test the consecutive plugins run the commands such as:
 
@@ -93,11 +113,14 @@ To use the plugins use the command such as:
 
 or try all plugins with the command:
 
-    run-all-internet-plugins
+    run-all-wminfo-plugins
 
 Each plugin contains the information about the suggested command to run it.
 In the case of the websites mirrors the colors of the background are taken
 from the respective logos.
+
+                                      *
+                                    *   *
 
 Instead of running wminfo you can check the information displayed by the
 plugin running the plugin alone.  For example the command:
@@ -115,12 +138,19 @@ UTF-8.  So the valid commands are:
     tvn24.wmi | iso2-utf8
     kommersant.wmi | iso5-utf8
 
+                                      *
+                                    *   *
+
 The websites change from time to time.  Some changes can cause the
 particular wminfo plugin stop to work.  In such a situation try to remove
-the consecutive commands one by one starting from the end of the plugin.
-You can redirect the output of the plugin to the file or display it with
-less.  When you see the correct output recreate the plugin using the new set
-of commands.
+the consecutive commands one by one starting from the end of the plugin. You
+can redirect the output of the plugin to the file or display it with less. 
+When you see the correct output recreate the plugin using the new set of the
+commands.
+
+                                      *
+                                    *   *
 
 The current directory is copied to the system doc directory during the
 installation of wminfo.
+

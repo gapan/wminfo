@@ -2,7 +2,7 @@
 
 # wminfo plugin: ACPI status of IBM/Lenovo ThinkPad machines
 
-# command: wminfo -p thinkpad.wmi -u 5 -s 0 -b#000000 -f#00ff00
+# command: wminfo -p thinkpad.wmi -u 5 -b#000000 -f#00ff00
 
 #
 # CONFIGURATION SECTION BEGINS HERE
@@ -11,9 +11,9 @@
 Temperature="C"		# "C" for Celsius
 			# "F" for Fahrenheit
 
-Monitor="off"		# "on" or "off"
+Suspend="off"		# "on" or "off" (register the suspend script in /etc/sudoers)
 
-Correction="off"	# "on" or "off"
+Low_Battery="5"
 
 #
 # CONFIGURATION SECTION ENDS HERE
@@ -29,6 +29,12 @@ fi
 
 # Determining basic values
 
+if [ ! -e /proc/acpi/ibm ]
+then
+    echo "thinkpad.wmi: it isn't IBM ThinkPad."
+    exit
+fi
+
 BATTERY_STATE=`cat /proc/acpi/battery/BAT0/state | grep 'present:' | awk '{print $2}'`
 
 if [ "$BATTERY_STATE" == "yes" ]
@@ -40,7 +46,7 @@ elif [ "$BATTERY_STATE" == "no" ]
 then
     BATTERY_PERCENTAGE="0"
 else
-    echo "Error: there is no working ACPI."
+    echo "thinkpad.wmi: there is no working ACPI."
     exit
 fi
 
@@ -67,67 +73,13 @@ fi
 
 # Power off-line and present battery
 
-tempfile_drain="/tmp/.$USER.thinkpad+.tmp"
-tempfile_drain_monitor="$tempfile_drain.tmp"
-
-if [ "$POWER_SUPPLY" == "PWR" ] || [ "$POWER_SUPPLY" == "PWR & BAT" ] && [ -s $tempfile_drain ]
-then
-    > $tempfile_drain
-fi
-
 if [ "$POWER_SUPPLY" == "BAT" ]
 then
-    if [ -s $tempfile_drain ]
-    then
-	. $tempfile_drain
-    else
-	echo FIRST_TIME=`date +"%s"` > $tempfile_drain
-	echo FIRST_PERCENTAGE=$BATTERY_PERCENTAGE >> $tempfile_drain
-	if [ "$Monitor" == "on" ]
-	then
-	> $tempfile_drain_monitor
-	fi
-    fi
     CURRENT_TIME=`date +"%s"`
     if [ "$FIRST_TIME" == "" ]; then FIRST_TIME=0 ; fi
     let "ELAPSED_TIME=($CURRENT_TIME-$FIRST_TIME)/60"
     PRESENT_RATE=`cat /proc/acpi/battery/BAT0/state | grep 'present rate:' | awk '{print $3}'`
     REMAINING_CAPACITY=`cat /proc/acpi/battery/BAT0/state | grep 'remaining capacity:' | awk '{print $3}'`
-    if [ $PRESENT_RATE -gt 0 ]
-    then
-	let "DRAINING_TIME=60*$REMAINING_CAPACITY/$PRESENT_RATE"
-    fi
-    if [ "$DRAINING_TIME" == "" ]; then DRAINING_TIME=0 ; fi
-    if [ "$Correction" == "on" ]
-    then
-	if [ $BATTERY_PERCENTAGE -eq 100 ]
-	then
-	    let "DRAINING_TIME=$DRAINING_TIME*85/100"
-	elif [ $BATTERY_PERCENTAGE -le 99 ] && [ $BATTERY_PERCENTAGE -ge 40 ]
-	then
-	    let "DRAINING_TIME=$DRAINING_TIME"
-	elif [ $BATTERY_PERCENTAGE -le 39 ] && [ $BATTERY_PERCENTAGE -ge 24 ]
-	then
-	    let "DRAINING_TIME=$DRAINING_TIME*90/100"
-	elif [ $BATTERY_PERCENTAGE -le 23 ] && [ $BATTERY_PERCENTAGE -ge 11 ]
-	then
-	    let "DRAINING_TIME=$DRAINING_TIME*80/100"
-	elif [ $BATTERY_PERCENTAGE -le 10 ] && [ $BATTERY_PERCENTAGE -ge 9 ]
-	then
-	    let "DRAINING_TIME=$DRAINING_TIME*65/100"
-	elif [ $BATTERY_PERCENTAGE -le 8 ] && [ $BATTERY_PERCENTAGE -ge 3 ]
-	then
-	    let "DRAINING_TIME=$DRAINING_TIME*50/100"
-	elif [ $BATTERY_PERCENTAGE -eq 2 ]
-	then
-	    let "DRAINING_TIME=$DRAINING_TIME*30/100"
-	elif [ $BATTERY_PERCENTAGE -eq 1 ]
-	then
-	    DRAINING_TIME=1
-	fi
-    fi
-    let "HOURS=$DRAINING_TIME/60"
-    let "MINUTES=$DRAINING_TIME-60*$HOURS"
     if [ $HOURS -lt 10 ]
     then
 	HOURS="0$HOURS"
@@ -137,68 +89,18 @@ then
 	MINUTES="0$MINUTES"
     fi
     TIME="+$HOURS:$MINUTES"
-    if [ "$Monitor" == "on" ]
-    then
-	echo -e "$ELAPSED_TIME\\t$BATTERY_PERCENTAGE\\t$DRAINING_TIME" >> $tempfile_drain_monitor
-    fi
 fi
 
 # Power on-line and present battery
 
-tempfile_load="/tmp/.$USER.thinkpad-.tmp"
-tempfile_load_monitor="$tempfile_load.tmp"
-
-if [ "$POWER_SUPPLY" == "PWR" ] || [ "$POWER_SUPPLY" == "BAT" ] && [ -s $tempfile_load ]
-then
-    > $tempfile_load
-fi
-
 if [ "$POWER_SUPPLY" == "PWR & BAT" ]
 then
-    if [ -s $tempfile_load ]
-    then
-	. $tempfile_load
-    else
-	echo FIRST_TIME=`date +"%s"` > $tempfile_load
-	echo FIRST_PERCENTAGE=$BATTERY_PERCENTAGE >> $tempfile_load
-	if [ "$Monitor" == "on" ]
-	then
-	    > $tempfile_load_monitor
-	fi
-    fi
     CURRENT_TIME=`date +"%s"`
     if [ "$FIRST_TIME" == "" ]; then FIRST_TIME=0 ; fi
     if [ "$FIRST_PERCENTAGE" == "" ]; then FIRST_PERCENTAGE=0 ; fi
     let "ELAPSED_TIME=($CURRENT_TIME-$FIRST_TIME)/60"
     let "GAINED_BATTERY=$BATTERY_PERCENTAGE-$FIRST_PERCENTAGE"
     let "REMAINING_BATTERY=100-$BATTERY_PERCENTAGE"
-    if [ $GAINED_BATTERY -gt 0 ]
-    then
-	let "LOADING_TIME=$REMAINING_BATTERY*$ELAPSED_TIME/$GAINED_BATTERY"
-    fi
-    if [ "$LOADING_TIME" == "" ]; then LOADING_TIME=0 ; fi
-    if [ "$Correction" == "on" ]
-    then
-	if [ $BATTERY_PERCENTAGE -ge 1 ] && [ $BATTERY_PERCENTAGE -le 5 ]
-	then
-	    let "LOADING_TIME=$LOADING_TIME*175/100"
-	elif [ $BATTERY_PERCENTAGE -ge 6 ] && [ $BATTERY_PERCENTAGE -le 12 ]
-	then
-	    let "LOADING_TIME=$LOADING_TIME*140/100"
-	elif [ $BATTERY_PERCENTAGE -ge 13 ] && [ $BATTERY_PERCENTAGE -le 74 ]
-	then
-	    let "LOADING_TIME=$LOADING_TIME*125/100"
-	elif [ $BATTERY_PERCENTAGE -ge 75 ] && [ $BATTERY_PERCENTAGE -le 92 ]
-	then
-	    let "LOADING_TIME=$LOADING_TIME*120/100"
-	elif [ $BATTERY_PERCENTAGE -ge 93 ] && [ $BATTERY_PERCENTAGE -le 96 ]
-	then
-	    let "LOADING_TIME=$LOADING_TIME*110/100"
-	elif [ $BATTERY_PERCENTAGE -ge 97 ] && [ $BATTERY_PERCENTAGE -le 99 ]
-	then
-	    let "LOADING_TIME=$LOADING_TIME"
-	fi
-    fi
     if [ "$LOADING_TIME" == "" ]; then LOADING_TIME=0 ; fi
     let "HOURS=$LOADING_TIME/60"
     let "MINUTES=$LOADING_TIME-60*$HOURS"
@@ -220,10 +122,6 @@ then
     elif [ "$CHARGING_STATE" == "charged" ]
     then
 	TIME="00:00"
-    fi
-    if [ "$Monitor" == "on" ]
-    then
-	echo -e "$ELAPSED_TIME\\t$BATTERY_PERCENTAGE\\t$LOADING_TIME" >> $tempfile_load_monitor
     fi
 fi
 
@@ -256,33 +154,29 @@ echo "$GRAPH"
 if [ -d /proc/acpi/ibm ]
 then
     CPU_TEMP=`cat /proc/acpi/ibm/thermal | awk '{print $2}'`
-    VIDEO_TEMP=`cat /proc/acpi/ibm/thermal | awk '{print $5}'`
-    MB_TEMP=`cat /proc/acpi/ibm/thermal | awk '{print $3}'`
+    GPU_TEMP=`cat /proc/acpi/ibm/thermal | awk '{print $5}'`
+    if [ "$GPU_TEMP" == "-128" ]
+    then
+	GPU_TEMP=`cat /proc/acpi/ibm/thermal | awk '{print $10}'`
+    fi
     if [ "$Temperature" == "C" ]
     then
 	echo "CPU: $CPU_TEMP C"
-	echo "VID: $VIDEO_TEMP C"
-#	echo "M-B: $MB_TEMP C"
+	echo "GPU: $GPU_TEMP C"
     elif [ "$Temperature" == "F" ]
     then
 	let "CPU_TEMP=9*$CPU_TEMP/5+32"
-	let "VIDEO_TEMP=9*$VIDEO_TEMP/5+32"
-	let "MB_TEMP=9*$MB_TEMP/5+32"
+	let "GPU_TEMP=9*$GPU_TEMP/5+32"
 	if [ $CPU_TEMP -lt 100 ]
 	then
 	    CPU_TEMP=" $CPU_TEMP"
 	fi
-	if [ $VIDEO_TEMP -lt 100 ]
+	if [ $GPU_TEMP -lt 100 ]
 	then
-	    VIDEO_TEMP=" $VIDEO_TEMP"
-	fi
-	if [ $MB_TEMP -lt 100 ]
-	then
-	    MB_TEMP=" $MB_TEMP"
+	    GPU_TEMP=" $GPU_TEMP"
 	fi
 	echo "CPU: ${CPU_TEMP}F"
-	echo "VID: ${VIDEO_TEMP}F"
-#	echo "M-B: ${MB_TEMP}F"
+	echo "GPU: ${GPU_TEMP}F"
     fi
     FAN_SPEED=`cat /proc/acpi/ibm/fan | grep 'speed:' | awk '{print $2}'`
     if [ "$FAN_SPEED" == "0" ]
@@ -292,11 +186,14 @@ then
     echo "FAN: $FAN_SPEED"
 fi
 
-# Attention: to use suspend feature register /usr/bin/suspend script
-#            in /etc/sudoers file and remove echo from the command below.
+# Attention: to use suspend feature register suspend script in /etc/sudoers file
 
-if [ $BATTERY_PERCENTAGE -lt 5 ] && [ $BATTERY_PERCENTAGE -gt 0 ] && [ "`echo $POWER_SUPPLY | grep 'PWR'`" == "" ]
+if [ "$Suspend" == "on" ]
 then
-    echo sudo /usr/bin/suspend
+    if [ $BATTERY_PERCENTAGE -le $Low_Battery ] && [ $BATTERY_PERCENTAGE -gt 0 ] && [ "`echo $POWER_SUPPLY | grep 'PWR'`" == "" ]
+    then
+	sudo `which suspend`
+	sleep 60
+    fi
 fi
 

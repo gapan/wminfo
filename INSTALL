@@ -9,11 +9,11 @@ Root access if you want to install the program system-wide.
 
 Installation
 ----------------------------------------------------------------------------
-  tar xzf wminfo-2.5.2.tar.gz
-  cd wminfo-2.5.2/wminfo
+  tar xzf wminfo-4.1.2.tar.gz
+  cd wminfo-4.1.2/wminfo
   ./configure
   make
-  su -                     # to install the program system-wide
+  su -
   killall wminfo           # if an old version of wminfo is running
   make install
 
@@ -29,14 +29,15 @@ before the compilation and installation of the program.
 
 Usage
 ----------------------------------------------------------------------------
-After the installation go to /usr/local/doc/wminfo-2.5.2 or
-/usr/doc/wminfo-2.5.2 directory depending on the installation method and try
-the plugins from plugins.online, plugins.system, and plugins.conky
-directories.  To test them use respectively run-all-internet-plugins,
-run-all-system-plugins, and run-all-conky-plugins scripts.  Before testing
-conky dependent plugins you have to configure and run conky.  You can also
-test wminfo running plugins from samples directory.  To run them use
-run-all-samples script.
+
+After the installation go to /usr/local/doc/wminfo-4.1.2 or
+/usr/doc/wminfo-4.1.2 directory depending on the installation method and try
+the plugins from plugins.binary, plugins.conky, plugins.online, and
+plugins.system directories.  To test them use the run-all-wminfo-plugins
+script from the respective directories.
+
+You can also test wminfo running plugins from contrib and samples
+directories using the respective run-all-wminfo-plugins script.
 
 After the tests you can kill all wminfo instances running killall wminfo
 command.
@@ -44,13 +45,18 @@ command.
 Instead of the plugins from plugins.online directory you can use the plugins
 from plugins.offline directory.  The latter do not require the constant
 Internet access but some system customization is necessary in order to use
-them.
+them -- it is described in README.1st file.
 
 To use the particular plugins system-wide copy them to /usr/local/bin
 directory.  Some plugins use scripts or text files.  Copy them together with
-the plugins.  To use plugins from plugins.offline directory copy as well
-online script and register it in crontab.  The directories with the plugins
-include useful README files.  Read them if you want to know more.
+the plugins.  Sample plugin named plugin.wmi can use the script named plugin
+and the text file named plugin.cfg.
+
+To use the plugins from plugins.offline directory copy them as well as
+online script to /usr/local/bin directory and register it in crontab.
+
+The directories with the plugins include useful README.* files.  Read them
+if you want to know more.
 
 To run wminfo use the following commands:
 
@@ -59,17 +65,19 @@ To run wminfo use the following commands:
 
 Each plugin includes a comment with the recommended command to run it
 including: update time, ISO encoding, and background and foreground colors.
-The same commands appear in run-all-*-plugins scripts from plugins.conky,
-plugins.offline, plugins.online, and plugins.system directories.
+The run-all-wminfo-plugins scripts use these comments to run the respective
+plugins.
 
-If wminfo displays its help in dockable application window (that is it uses
-default.wmi plugin) it means that the used command is wrong -- for example
-you omitted -p switch before the plugin.wmi name.
+You can display the recommended commands for all the plugins copied to
+/usr/local/bin directory using the command plugin -a or plugin --all or
+display the descriptions of the plugins using the command plugin -h or
+plugin --help.
 
 For more information see: man wminfo.
 
 
 Deinstallation
 ----------------------------------------------------------------------------
-  cd wminfo-2.5.2/wminfo
+  cd wminfo-4.1.2/wminfo
   make uninstall
+

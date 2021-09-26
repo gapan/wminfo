@@ -25,3 +25,4 @@ lynx --source localhost/wminfo/kernel-3.x.html | \
     sort -n -t . -k 2,3 | \
     perl -pe 's/\.00-rca//;s/-rca//g;s/\.00(\.00)?(-rc.*)/$2/;s/\.0([0-9])/.$1/g;s/\.0$//' | \
     tac
+echo
