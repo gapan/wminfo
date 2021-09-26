@@ -1,0 +1,1 @@
+lynx -source http://www.tvprogram.nu/cgi-tvprogram/tvfix.cgi?NU-tvms.htm | grep 'size="4"' | cut -d '>' -f 8-

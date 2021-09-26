@@ -1,0 +1,36 @@
+wmInfo - Public Release
+--------------------------------------------------------------
+Authors...:	Robert Kling
+
+Description
+--------------------------------------------------------------
+wmInfo is a dockapp that can display text-format information.
+You use a plugin that writes to stdout and wmInfo will capture
+the output and display it row by row.
+
+Usage
+--------------------------------------------------------------
+wmwinfo -h to print the switches. A couple of plugins named
+<something>.wmiplugin should have come with the tarball.
+Note that the plugins need NOT have the extension wmiplugin
+and need NOT to be shell-scripts.
+
+Files
+--------------------------------------------------------------
+README		This file.
+INSTALL		Installation instructions.
+CHANGES		Description of changes.
+COPYING		GNU General Public License Version 2.
+	
+Bugs
+--------------------------------------------------------------
+If you discover any bugs in this software, please send a 
+bugreport to robkli-8@student.luth.se and describe the
+problem as detailed! as you can.
+
+Copyright
+--------------------------------------------------------------
+wmInfo is copyright (c) 2000 by Robert Kling
+
+wmInfo is licensed through the GNU General Public License.
+Read the COPYING file for the complete GNU license.

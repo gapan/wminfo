@@ -1,0 +1,1 @@
+lynx --source www.freshmeat.net | grep 'SIZE="+2"' | cut -d '>' -f -4

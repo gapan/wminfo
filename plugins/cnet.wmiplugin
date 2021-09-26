@@ -1,0 +1,1 @@
+lynx --source http://news.cnet.com/news/0-1002.html?tag=st.cn.1.dir.1002 | grep '<li>' | grep '0-'

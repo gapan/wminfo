@@ -1,0 +1,22 @@
+Installation instructions for wmInfo
+
+Requirements
+---------------------------------------------------------------
+- root access	If you want to install the software system-wide
+
+
+Installation
+--------------------------------------------------------------
+1)  % tar -zxvfs wminfo-1.51.tar.gz
+2)  % cd wminfo/wminfo
+3)  % make 
+4)  % su root
+5)  % make install
+6)  % wminfo & (or wminfo -h for brief help).
+
+
+General Notes
+--------------------------------------------------------------
+Note 1: If "make install" fails on your system, please edit
+        the Makefile to set the paths according to your setup.
+        "make install" defaults to /usr/local/bin, $HOME & /etc.
