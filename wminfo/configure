@@ -42,6 +42,7 @@ PACKAGE=wminfo-$version
 BINDIR=\$(PREFIX)/bin
 DOCDIR=\$(PREFIX)/doc/\$(PACKAGE)
 MANDIR=\$(PREFIX)/man/man1
+LIBEXECDIR=\$(PREFIX)/libexec/wminfo
 
 LIBDIR = -L/usr/X11R6/lib
 LIBS   = -lXpm -lXext -lX11
@@ -75,12 +76,13 @@ install:
 	chmod 755 \$(DESTDIR)/\$(BINDIR)/wminfo
 	chown root:root \$(DESTDIR)/\$(BINDIR)/wminfo
 
-	cp -p regex \$(DESTDIR)/\$(BINDIR)
-	chmod 755 \$(DESTDIR)/\$(BINDIR)/regex
-	chown root:root \$(DESTDIR)/\$(BINDIR)/regex
+	install -m 755 -d \$(DESTDIR)/\$(LIBEXECDIR)
+	cp -p regex \$(DESTDIR)/\$(LIBEXECDIR)
+	chmod 755 \$(DESTDIR)/\$(LIBEXECDIR)/regex
+	chown root:root \$(DESTDIR)/\$(LIBEXECDIR)/regex
 
 	for f in \$(CONTRIB) \\
-	; do cp -p ../contrib/\$\$f \$(DESTDIR)/\$(BINDIR) ; done
+	; do cp -p ../contrib/\$\$f \$(DESTDIR)/\$(LIBEXECDIR) ; done
 
 	if [ ! -d \$(DESTDIR)/\$(MANDIR) ]; then mkdir -p \$(DESTDIR)/\$(MANDIR); fi
 
@@ -96,11 +98,11 @@ install:
 	cp -p ../\$\$d/* \$(DESTDIR)/\$(DOCDIR)/\$\$d ; done
 
 	for d in \$(DIRS) \\
-	; do if [ ! -x \$(DESTDIR)/\$(DOCDIR)/\$\$d/run-all-wminfo-plugins ]; then ln -sf \$(BINDIR)/run-all-wminfo-plugins \$(DESTDIR)/\$(DOCDIR)/\$\$d/run-all-wminfo-plugins; fi ; done
+	; do if [ ! -x \$(DESTDIR)/\$(DOCDIR)/\$\$d/run-all-wminfo-plugins ]; then ln -sf \$(LIBEXECDIR)/run-all-wminfo-plugins \$(DESTDIR)/\$(DOCDIR)/\$\$d/run-all-wminfo-plugins; fi ; done
 
-	if [ ! -x \$(DESTDIR)/\$(BINDIR)/\$\$d/empty.wmi ]; then ln -sf \$(BINDIR)/bash-empty.wmi \$(DESTDIR)/\$(BINDIR)/\$\$d/empty.wmi; fi
+	if [ ! -x \$(DESTDIR)/\$(LIBEXECDIR)/\$\$d/empty.wmi ]; then ln -sf \$(LIBEXECDIR)/bash-empty.wmi \$(DESTDIR)/\$(LIBEXECDIR)/\$\$d/empty.wmi; fi
 
-	for f in ../plugins.binary/*.bin ; do chmod 755 \$\$f ; chown root:root \$\$f ; cp -p \$\$f \$(DESTDIR)/\$(BINDIR)/ ; done
+	for f in ../plugins.binary/*.bin ; do chmod 755 \$\$f ; chown root:root \$\$f ; cp -p \$\$f \$(DESTDIR)/\$(LIBEXECDIR)/ ; done
 
 uninstall:
 	for f in wminfo regex empty.wmi \$(CONTRIB) \\
