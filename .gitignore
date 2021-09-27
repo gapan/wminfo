@@ -1,0 +1,6 @@
+wmgeneral/*.o
+wminfo/*.o
+wminfo/wminfo
+wminfo/regex
+wminfo/Makefile
+plugins.binary/*.bin
