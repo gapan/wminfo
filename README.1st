@@ -21,7 +21,7 @@ To use the wminfo dockable application and the plugins:
 
 1) install wminfo;
 
-2) go to /usr/local/doc/wminfo-4.2.1 or /usr/doc/wminfo-4.2.1
+2) go to /usr/local/doc/wminfo-4.3.0 or /usr/doc/wminfo-4.3.0
    directory and test the plugins from plugins.* directories
    except for the plugins.offline one running in each case the
    run-all-wminfo-plugins scripts;
@@ -164,7 +164,7 @@ appropriate ~/.wminfo/conky.conf configuration file.
 
 To use wminfo you need some plugins.  The complete set of the plugins as
 well as all provided documents are copied during the installation to the
-/usr/local/doc/wminfo-4.2.1 or /usr/doc/wminfo-4.2.1 directory depending on
+/usr/local/doc/wminfo-4.3.0 or /usr/doc/wminfo-4.3.0 directory depending on
 the installation method.
 
 Before you test them install in the system the following packages: lynx,

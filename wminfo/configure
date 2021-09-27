@@ -1,9 +1,10 @@
 #!/bin/bash
 
-# configure prepares Makefile for wminfo 4.2.1
+# configure prepares Makefile for wminfo 4.3.0
+# Copyright (C) 2021 George Vlahavas <vlahavas@gmail.com>
 # Copyright (C) 2011-2015 Cezary M. Kruk <c.kruk@bigfoot.com>
 
-version=4.2.1
+version=4.3.0
 
 if [ "$1" == "-h" -o "$1" == "--help" ]
 then
