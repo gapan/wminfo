@@ -30,7 +30,7 @@ Boston, MA 02111-1307, USA.  */
 #define __LIST_H_
 
 #if defined(__GNUC__) && !defined(__STRICT_ANSI__)
-# define INLINE inline
+# define INLINE extern inline
 #else
 # define INLINE
 #endif
