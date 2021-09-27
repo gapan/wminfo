@@ -70,7 +70,7 @@ DOCS    = BUGS COPYING ChangeLog INSTALL Plugins-HOWTO README README.1st README.
 DIRS    = plugins.binary plugins.conky plugins.offline plugins.online plugins.system-1 plugins.system-2 samples
 
 install:
-	install -d 755 \$(DESTDIR)/\$(BINDIR)
+	install -m 755 -d \$(DESTDIR)/\$(BINDIR)
 	cp -p wminfo \$(DESTDIR)/\$(BINDIR)
 	chmod 755 \$(DESTDIR)/\$(BINDIR)/wminfo
 	chown root:root \$(DESTDIR)/\$(BINDIR)/wminfo
