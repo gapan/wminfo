@@ -2,6 +2,13 @@
 wminfo ChangeLog
 
 
+wminfo 4.3.0, 2021-09-27:
+----------------------------------------------------------------------------
+* Added support for ISO-8859-7 (Greek) encoding
+* Changed inline functions in list.h to extern inline. This is needed in
+    order to compile with newer GCC versions.
+
+
 wminfo 4.2.1, 2015-04-01:
 ----------------------------------------------------------------------------
 * Modified sun-moon.wmi plugin -- to use it install wmSunMoon program
