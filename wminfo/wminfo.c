@@ -74,7 +74,7 @@
 
 int scroll_speed = 1;          // default: 1    allowed: from 0 upwards
 int rewind_speed = 18;         // default: 18   allowed: from 0 upwards
-int iso_encoding = 0;          // default: 0    allowed: 1, 2, 5,
+int iso_encoding = 0;          // default: 0    allowed: 1, 2, 5, 7
                                //                        and 0 for none
 char *upd_int = {"180"};       // default: 180  allowed: from 1 upwards
 
@@ -90,7 +90,7 @@ int commove_changed_lines = 0; // default: 0    allowed: 0 or 1
 int keep_empty_lines = 0;      // default: 0    allowed: 0 or 1
 int verbose = 0;               // default: 0    allowed: 0 or 1
 
-int encodings_number = 5;      // default: 5    the number of the encodings
+int encodings_number = 7;      // default: 7    the number of the encodings
 
 char *week_starts = {"Mon"};   // "Mon" or "Sun"
 
@@ -771,6 +771,7 @@ void print_help()
 	printf("                            1 for ISO-8859-1,\n");
 	printf("                            2 for ISO-8859-2,\n");
 	printf("                            5 for ISO-8859-5\n");
+	printf("                            7 for ISO-8859-7\n");
 	printf("                            (default: %d; encodings number: %d).\n", iso_encoding, encodings_number);
 	printf("  -u xxx    : updates frequency in seconds or time related regex (default: %s).\n", upd_int);
 	printf("  -b#rrggbb : background color: from #000000 to #ffffff (default: %s).\n", colors[0].value);
