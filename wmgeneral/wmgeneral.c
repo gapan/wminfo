@@ -71,6 +71,8 @@ GC		NormalGC;
 XpmIcon		wmgen;
 Pixmap		pixmask;
 
+Display *display;
+
   /*****************/
  /* Mouse Regions */
 /*****************/
