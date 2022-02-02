@@ -2,6 +2,11 @@
 wminfo ChangeLog
 
 
+wminfo 4.3.1, 2022-02-03:
+----------------------------------------------------------------------------
+* Fig compilation with GCC 10
+* Set default value for DESTDIR during installation
+
 wminfo 4.3.0, 2021-09-27:
 ----------------------------------------------------------------------------
 * Added support for ISO-8859-7 (Greek) encoding
