@@ -44,6 +44,8 @@ DOCDIR=\$(PREFIX)/doc/\$(PACKAGE)
 MANDIR=\$(PREFIX)/man/man1
 LIBEXECDIR=\$(PREFIX)/libexec/wminfo
 
+DESTDIR ?= /
+
 LIBDIR = -L/usr/X11R6/lib
 LIBS   = -lXpm -lXext -lX11
 CFLAGS ?= -march=native -O2 -pipe
