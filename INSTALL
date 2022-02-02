@@ -9,8 +9,8 @@ Root access if you want to install the program system-wide.
 
 Installation
 ----------------------------------------------------------------------------
-  tar xzf wminfo-4.3.0.tar.gz
-  cd wminfo-4.3.0/wminfo
+  tar xzf wminfo-4.3.1.tar.gz
+  cd wminfo-4.3.1/wminfo
   ./configure
   make
   su -
@@ -30,8 +30,8 @@ before the compilation and installation of the program.
 Usage
 ----------------------------------------------------------------------------
 
-After the installation go to /usr/local/doc/wminfo-4.3.0 or
-/usr/doc/wminfo-4.3.0 directory depending on the installation method and try
+After the installation go to /usr/local/doc/wminfo-4.3.1 or
+/usr/doc/wminfo-4.3.1 directory depending on the installation method and try
 the plugins from plugins.binary, plugins.conky, plugins.online, and
 plugins.system-* directories.  To test them use the run-all-wminfo-plugins
 script from the respective directories.
@@ -78,6 +78,6 @@ For more information see: man wminfo.
 
 Deinstallation
 ----------------------------------------------------------------------------
-  cd wminfo-4.3.0/wminfo
+  cd wminfo-4.3.1/wminfo
   make uninstall
 

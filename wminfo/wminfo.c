@@ -2,6 +2,7 @@
 
  wminfo.c
 
+ Version 4.3.1 (2022-02-03)
  Version 4.3.0 (2021-09-27)
 
  - George Vlahavas
@@ -29,9 +30,9 @@
 
 */
 
-#define WMINFO_VERSION_GV "4.3.0"
-#define WMINFO_REVYEAR_GV "2021"
-#define WMINFO_REVDATE_GV "2021-09-27"
+#define WMINFO_VERSION_GV "4.3.1"
+#define WMINFO_REVYEAR_GV "2021-2022"
+#define WMINFO_REVDATE_GV "2022-02-03"
 
 #define WMINFO_VERSION_CK "4.2.1"
 #define WMINFO_REVYEAR_CK "2011-2015"
@@ -769,7 +770,7 @@ void find_pattern()
 
 void print_help()
 {
-	printf("\nwminfo %s  (C)      %s George Vlahavas (%s)\n",WMINFO_VERSION_GV,WMINFO_REVYEAR_GV,WMINFO_REVDATE_GV);
+	printf("\nwminfo %s  (C) %s George Vlahavas (%s)\n",WMINFO_VERSION_GV,WMINFO_REVYEAR_GV,WMINFO_REVDATE_GV);
 	printf("wminfo %s  (C) %s Cezary M. Kruk  (%s)\n",WMINFO_VERSION_CK,WMINFO_REVYEAR_CK,WMINFO_REVDATE_CK);
 	printf("              (C) %s Peter Trenholme\n",WMINFO_REVYEAR_PT);
 	printf("              (C) %s Noam Postavsky\n",WMINFO_REVYEAR_NP);
