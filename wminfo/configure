@@ -130,7 +130,7 @@ clean:
 	rm -f core
 	rm -f Makefile
 
-	for f in ../plugins.binary/*.bin ; do rm \$\$f ; done
+	for f in ../plugins.binary/*.bin ; do rm -f \$\$f ; done
 
 EOF
 fi
